@@ -45,6 +45,7 @@ import yt_dlp
 from tqdm import tqdm
 
 import resolver_client
+import conpack
 
 __version__ = '2.2.0'
 
@@ -67,9 +68,10 @@ ffplayPath      = shutil.which('ffplay')
 # is a harmless 0 everywhere else.
 NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
 
-# tv_embedded gets DASH streams (needed for bestvideo above 360p) without PO tokens.
-# android_vr / android are fallbacks if embedded is blocked.
-YOUTUBE_CLIENTS = ['tv_embedded', 'android_vr', 'android']
+# YouTube clients to use. None = yt-dlp's own defaults, which yt-dlp keeps up
+# to date. Forcing tv_embedded/android_vr/android started getting 403 Forbidden
+# on every video download.
+YOUTUBE_CLIENTS = None
 
 # strip these from titles before searching so we don't get playthrough results
 # longer forms first, otherwise 'RB3' strips inside '(RB3 version)' and leaves '( version)'
@@ -86,9 +88,10 @@ TEMP_ARTIFACTS = [
 SEARCH_RESULTS = 5
 GATE_CANDIDATES = 3
 
-# random pause between songs so it doesn't look like a bot hammering the API
-SONG_DELAY_MIN = 1.0
-SONG_DELAY_MAX = 3.0
+# pause between songs so YouTube doesn't see it as abuse: at least 30 s,
+# with a little randomness so it doesn't look like a fixed-interval bot
+SONG_DELAY_MIN = 30.0
+SONG_DELAY_MAX = 36.0
 
 # if YouTube rate-limits us, wait and retry the same song before giving up
 BOT_BACKOFF_SECONDS = [60, 180, 420]
@@ -272,13 +275,15 @@ def video_id_of(url):
 
 
 def _base_opts():
-    return {
+    opts = {
         'quiet': True,
         'no_warnings': True,
         'noplaylist': 1,
-        'extractor_args': {'youtube': {'player_client': YOUTUBE_CLIENTS}},
         'sleep_interval_requests': 1,
     }
+    if YOUTUBE_CLIENTS:
+        opts['extractor_args'] = {'youtube': {'player_client': YOUTUBE_CLIENTS}}
+    return opts
 
 
 def search_candidates(query, n=SEARCH_RESULTS):
@@ -361,6 +366,43 @@ def _chart_duration(folder):
     return None
 
 
+# Per-song progress for the GUI. run_song_with_backoff sets _progress_cb to a
+# callable(text, fraction 0..1); the steps below call it. Console runs leave it
+# None, so nothing changes there.
+_progress_cb = None
+_step_state = {'n': 0, 'total': 1, 'label': '', 'pct': -1}
+
+
+def _step(n, total, label):
+    """Start step n of total, e.g. 2/5 Searching YouTube."""
+    _step_state.update(n=n, total=total, label=label, pct=-1)
+    if _progress_cb:
+        _progress_cb(f'{n}/{total} {label}', (n - 1) / total)
+
+
+def _substep(sub, detail=''):
+    """Progress inside the current step (sub 0..1). Only reports whole-percent
+    changes so a fast download doesn't flood the GUI."""
+    if not _progress_cb:
+        return
+    st = _step_state
+    pct = int(max(0.0, min(1.0, sub)) * 100)
+    if pct == st['pct'] and not detail:
+        return
+    st['pct'] = pct
+    text = f"{st['n']}/{st['total']} {st['label']}"
+    text += f' {detail}' if detail else f' {pct}%'
+    _progress_cb(text, (st['n'] - 1 + pct / 100) / st['total'])
+
+
+def _ydl_progress_hook(d):
+    if d.get('status') != 'downloading':
+        return
+    total = d.get('total_bytes') or d.get('total_bytes_estimate')
+    if total:
+        _substep(d.get('downloaded_bytes', 0) / total)
+
+
 def download_video(folder, url, quality, info=None):
     """Download video to a temp file, then rename to video.mp4 once complete.
 
@@ -376,6 +418,8 @@ def download_video(folder, url, quality, info=None):
     opts.update({
         'outtmpl': dl,
         'format': quality,
+        'merge_output_format': 'mp4',   # only used when a format merges video+audio
+        'progress_hooks': [_ydl_progress_hook],
         'nooverwrites': 0,
         'sleep_interval': 1,
         'max_sleep_interval': 3,
@@ -407,6 +451,7 @@ def download_video(folder, url, quality, info=None):
         os.replace(dl, final)
         return
 
+    _substep(1.0, '(formatting video)')
     print('  Formatting downloaded video for Clone Hero')
     tmp = os.path.join(folder, 'video.tmp.mp4')
     try:
@@ -469,7 +514,9 @@ def select_video(folder, candidates, sync_ready, target_h=0):
         ordered = list(candidates)
 
     best = None   # (url, title, ms, height, conf, vinfo) - best match so far
-    for url, title, _ in ordered[:GATE_CANDIDATES]:
+    tries = ordered[:GATE_CANDIDATES]
+    for k, (url, title, _) in enumerate(tries):
+        _substep(k / len(tries), f'(video {k + 1}/{len(tries)})')
         audio, max_h, vinfo = fetch_audio(folder, url)
         try:
             if not audio:
@@ -539,6 +586,7 @@ def process_download(folder, song_name, quality, sync_ready, replace):
         url = 'https://www.youtube.com/watch?v=' + hit['video_id']
         print('\nResolved (community-confirmed): ' + (build_query(artist, title) or song_name))
         try:
+            _step(1, 1, 'Downloading')
             download_video(folder, url, quality)
             if is_converted(folder):
                 print('  Phase Shift converter file detected - video kept, timing left as-is')
@@ -560,6 +608,8 @@ def process_download(folder, song_name, quality, sync_ready, replace):
 
     # resolver miss - do a search and fingerprint-check candidates
     query = build_query(artist, title)
+    steps = 3 if sync_ready else 2
+    _step(1, steps, 'Searching YouTube')
     print('\nLooking on YouTube for: ' + query)
 
     candidates = search_candidates(query)
@@ -567,8 +617,11 @@ def process_download(folder, song_name, quality, sync_ready, replace):
     # that actually has it
     m = re.search(r'height<=(\d+)', quality)
     target_h = int(m.group(1)) if m else 0
+    if sync_ready:
+        _step(2, steps, 'Matching audio')
     url, vid_title, offset, matched, conf, vinfo = select_video(
         folder, candidates, sync_ready, target_h)
+    _step(steps, steps, 'Downloading')
     print('Downloading: ' + vid_title)
 
     # old video stays until new one is fully downloaded, so nothing is left half-done
@@ -602,6 +655,73 @@ def process_download(folder, song_name, quality, sync_ready, replace):
         resolver_client.report(ch, vid, offset, conf or 1.0, artist, title)
 
 
+def process_con_download(con, song_id, artist, title, quality, sync_ready, replace):
+    """Same search/sync/download as process_download, for one song inside a packed
+    CON. The CON is never modified. Stops after the download: the raw video waits
+    in the song's work dir (state.json has the YouTube ID and measured offset)
+    until the user reviews it and picks a render (conpack.render).
+    YouTube IDs marked bad for this song are skipped. Returns 'review'."""
+    if not replace and (conpack.existing_video(con, song_id)
+                        or conpack.load_review(con, song_id)):
+        return 'skipped'
+
+    ids = conpack.video_ids(con, song_id)
+    bad = set(ids['bad'])
+    work = conpack.work_folder(con, song_id)
+    steps = 4 if sync_ready else 2
+    n = 0
+    ok = False
+    try:
+        if sync_ready:
+            n += 1
+            _step(n, steps, 'Reading song audio')
+            print('\nReading song audio from ' + os.path.basename(con))
+            conpack.prepare_song_audio(con, song_id, work)
+
+        query = build_query(artist, title) or song_id
+        n += 1
+        _step(n, steps, 'Searching YouTube')
+        print('Looking on YouTube for: ' + query)
+        # pull extra results to make up for the ones already marked bad
+        candidates = [c for c in search_candidates(query, SEARCH_RESULTS + len(bad))
+                      if video_id_of(c[0]) not in bad]
+        if ids['good'] and ids['good'] not in bad:
+            good_url = 'https://www.youtube.com/watch?v=' + ids['good']
+            candidates = [(good_url, 'previously approved video', None)] + \
+                         [c for c in candidates if c[0] != good_url]
+        if not candidates:
+            raise Exception('no more search results (all marked bad)')
+        m = re.search(r'height<=(\d+)', quality)
+        target_h = int(m.group(1)) if m else 0
+        if sync_ready:
+            n += 1
+            _step(n, steps, 'Matching audio')
+        url, vid_title, offset, matched, _, vinfo = select_video(
+            work, candidates, sync_ready, target_h)
+        n += 1
+        _step(n, steps, 'Downloading')
+        print('Downloading: ' + vid_title)
+        # video + audio (the audio stays in the render for manual fixes)
+        used_url = download_with_fallback(work, url, candidates,
+                                          conpack.video_format(target_h or 720), info=vinfo)
+        if matched and used_url != url:
+            offset, matched = DEFAULT_START_TIME, False
+        conpack.save_review(con, song_id, video_id_of(used_url), offset, matched, vid_title)
+        # the chart audio was only needed for matching
+        for name in os.listdir(work):
+            if name not in ('video.mp4', 'state.json'):
+                try:
+                    os.remove(os.path.join(work, name))
+                except OSError:
+                    pass
+        print('  Downloaded, waiting for review (' + ('auto-synced' if matched else 'default offset') + ')')
+        ok = True
+    finally:
+        if not ok:
+            shutil.rmtree(work, ignore_errors=True)
+    return 'review'
+
+
 def process_resync(folder, song_name, sync_ready):
     """Re-fingerprint an existing video to fix its timing."""
     if not sync_ready:
@@ -610,6 +730,7 @@ def process_resync(folder, song_name, sync_ready):
         return
 
     artist, title = read_metadata(folder)
+    _step(1, 1, 'Matching audio')
 
     source = get_stored_source(folder)
 
@@ -668,10 +789,16 @@ def probe_resolution(folder):
     """Read video.mp4's height via ffmpeg, cache it in song.ini, and return it
     (e.g. '720p'), '?' if it couldn't be read, or None if there's nothing to
     probe. Shared by the download flow and the GUI's library scan."""
-    if not ffmpegAvailable:
-        return None
-    video = os.path.join(folder, 'video.mp4')
-    if not os.path.exists(video):
+    res = probe_video_height(os.path.join(folder, 'video.mp4'))
+    if res and res != '?':
+        set_ini_values(folder, {'backstagehero_res': res})
+    return res
+
+
+def probe_video_height(video):
+    """A video file's height as e.g. '720p', '?' if unreadable, None if missing.
+    Nothing is written anywhere (CON songs have no song.ini)."""
+    if not ffmpegAvailable or not os.path.exists(video):
         return None
     try:
         r = subprocess.run(
@@ -683,11 +810,9 @@ def probe_resolution(folder):
         video_line = next((l for l in r.stderr.splitlines() if 'Video:' in l), '')
         m = re.search(r'(\d{3,4})x(\d{3,4})', video_line or r.stderr)
         if m:
-            res = f'{int(m.group(2))}p'
-            set_ini_values(folder, {'backstagehero_res': res})
-            return res
+            return f'{int(m.group(2))}p'
     except Exception:
-        log.debug('Resolution probe failed for %s', folder, exc_info=True)
+        log.debug('Resolution probe failed for %s', video, exc_info=True)
     return '?'
 
 
@@ -921,15 +1046,35 @@ def main():
 
 
 def run_song_with_backoff(folder, song_name, quality, sync_ready, replace, resync,
-                          errored, stop_evt=None, events=None):
+                          errored, stop_evt=None, events=None, con_song=None,
+                          progress=None):
     """Process one song, retrying with longer waits each time YouTube throttles us.
 
     Pass stop_evt (a threading.Event) and the backoff wait becomes cancellable,
     so the GUI's Stop doesn't sit there for minutes. Returns 'stopped' then.
     Pass a list as events and it gets 'throttled' appended whenever YouTube
-    pushes back, so the caller can pace itself accordingly."""
+    pushes back, so the caller can pace itself accordingly.
+    con_song=(con_path, song_id, artist, title) handles a song inside a packed
+    CON instead of a song folder; returns 'unsynced' if it fell back to the
+    default offset.
+    progress(text, fraction) gets the current step, e.g. ('4/5 Downloading 45%', 0.69)."""
+    global _progress_cb
+    _progress_cb = progress
+    try:
+        return _run_song(folder, song_name, quality, sync_ready, replace, resync,
+                         errored, stop_evt, events, con_song)
+    finally:
+        _progress_cb = None
+
+
+def _run_song(folder, song_name, quality, sync_ready, replace, resync,
+              errored, stop_evt, events, con_song):
     for attempt in range(len(BOT_BACKOFF_SECONDS) + 1):
         try:
+            if con_song:
+                con, song_id, artist, title = con_song
+                return process_con_download(con, song_id, artist, title, quality,
+                                            sync_ready, replace)
             if resync:
                 process_resync(folder, song_name, sync_ready)
             else:
@@ -940,7 +1085,8 @@ def run_song_with_backoff(folder, song_name, quality, sync_ready, replace, resyn
         except KeyboardInterrupt:
             raise
         except BotDetected:
-            cleanup_temp_files(folder)
+            if not con_song:   # CON songs work in their own scratch folder
+                cleanup_temp_files(folder)
             if events is not None:
                 events.append('throttled')
             if attempt >= len(BOT_BACKOFF_SECONDS):
@@ -950,6 +1096,8 @@ def run_song_with_backoff(folder, song_name, quality, sync_ready, replace, resyn
                 log.warning('Rate-limited and gave up on %s', song_name)
                 return 'stop'
             wait = BOT_BACKOFF_SECONDS[attempt]
+            if _progress_cb:
+                _progress_cb(f'YouTube rate limit, retrying in {wait}s', None)
             print('\nYouTube rate-limit hit. Waiting ' + str(wait) + 's before retrying this song...')
             # cancellable wait, so Stop doesn't leave you waiting minutes
             if stop_evt is not None and stop_evt.wait(wait):
@@ -960,7 +1108,8 @@ def run_song_with_backoff(folder, song_name, quality, sync_ready, replace, resyn
             log.exception('Error on song: %s', song_name)
             print('  ' + str(e))
             print('Error on song: ' + song_name + '. Skipping')
-            cleanup_temp_files(folder)
+            if not con_song:
+                cleanup_temp_files(folder)
             errored.append(str(e) or song_name)
             return 'ok'
     return 'ok'

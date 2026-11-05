@@ -24,7 +24,9 @@ from VideoDownload import (
     ffmpegAvailable, ffplayPath, audiosync, __version__,
     DEFAULT_START_TIME, get_stored_source, NO_WINDOW,
     SONG_DELAY_MIN, SONG_DELAY_MAX, probe_resolution, scan_song,
+    probe_video_height,
 )
+import conpack
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import updater
 import resolver_client
@@ -81,6 +83,19 @@ _YELLOW  = '#f9e2af'
 _BLUE    = '#89b4fa'
 _MAUVE   = '#cba6f7'
 
+# Actions column for CON songs: key -> (icon, hover hint), one narrow tree
+# column per icon so a click can tell which one was hit.
+_ACTIONS = {
+    'play':    ('▶',    'Play video in your default player'),
+    'collage': ('▦',    'Show frame collage'),
+    'search':  ('↻',    'Wrong video: search YouTube again'),
+    'mp4':     ('MP4',  'Render to MP4 (fast) and approve this video'),
+    'webm':    ('WebM', 'Render to WebM (smaller, slow) and approve this video'),
+}
+_ACTION_KEYS = tuple(_ACTIONS)
+_ACTION_COLS = tuple('act_' + k for k in _ACTION_KEYS)
+_ACTION_W = 46
+
 _SONGS_FILE = os.path.join(updater.data_dir(), 'songs_path.txt')
 
 
@@ -132,16 +147,16 @@ def _validate_folder(path):
             'Please select the folder that contains all your song packs, '
             'not a folder inside one of them.')
 
-    # Check for any song.ini anywhere inside
+    # Check for any song.ini anywhere inside, or a packed CON/LIVE file (YARG)
     found = next(
         glob.iglob(os.path.join(glob.escape(path), '**', 'song.ini'),
                    recursive=True), None)
-    if not found:
+    if not found and not conpack.find_con_files(path):
         return False, (
             'No songs found in that folder.\n\n'
-            'Make sure you\'re selecting your Clone Hero Songs folder.\n'
-            'It should contain your downloaded song packs, each with a '
-            'song.ini file inside.')
+            'Make sure you\'re selecting your Clone Hero / YARG Songs folder.\n'
+            'It should contain song folders with a song.ini file inside, '
+            'or Rock Band CON files.')
 
     return True, ''
 
@@ -157,6 +172,21 @@ class Song:
     checked  : bool = False
     status   : str  = ''    # live status text during a run
     stag     : str  = ''    # colour tag: 'done'|'error'|'busy'|'dim'|''
+    # songs inside a packed CON (YARG): video is <song_id>.webm next to the CON
+    con      : str  = ''    # abs path to the CON file, '' for song folders
+    song_id  : str  = ''
+    artist   : str  = ''
+    title    : str  = ''
+    review   : object = None   # CON download waiting for review (conpack.load_review)
+    rendering: str  = ''       # '' | 'queued' | 'running'
+
+    @property
+    def video(self):
+        """The song's finished background video (may not exist yet)."""
+        if self.con:
+            return (conpack.existing_video(self.con, self.song_id)
+                    or conpack.video_path(self.con, self.song_id))
+        return os.path.join(self.folder, 'video.mp4')
 
 
 def _open_in_file_manager(path):
@@ -192,8 +222,32 @@ def _scan_library(songs_folder, progress=None):
             has_video=has_vid, res=res))
         if progress and len(songs) % 50 == 0:
             progress(len(songs))
+
+    # packed Rock Band CONs: one row per song inside, listed through Nautilus
+    cons = conpack.find_con_files(songs_folder)
+    con_errors = {}
+    if cons and conpack.nautilus_ready():
+        listing, con_errors = conpack.list_songs(
+            cons, progress=(lambda d, t: progress(f'reading CON files {d}/{t}'))
+            if progress else None)
+        for con, entries in listing.items():
+            pack = os.path.basename(con)
+            for e in entries:
+                label = (build_query(e['artist'], e['name']) or e['id']) + f'   [{pack}]'
+                has_vid = conpack.existing_video(con, e['id']) is not None
+                review = conpack.load_review(con, e['id'])
+                songs.append(Song(
+                    filename=con, folder=os.path.dirname(con),
+                    label=label, key=label.lower(),
+                    has_video=has_vid, res='...' if has_vid else '-',
+                    con=con, song_id=e['id'], artist=e['artist'], title=e['name'],
+                    review=review,
+                    status='◆  Review download' if review else '',
+                    stag='warn' if review else ''))
+        for con, err in con_errors.items():
+            log.warning('Could not read %s: %s', con, err)
     songs.sort(key=lambda s: s.key)
-    return songs
+    return songs, cons, con_errors
 
 
 class SyncEditor(ctk.CTkToplevel):
@@ -747,6 +801,73 @@ class UpdateDialog(ctk.CTkToplevel):
                           fg_color='#313244', hover_color='#414160').pack(pady=(8, 0))
 
 
+class CollageViewer(ctk.CTkToplevel):
+    """Gallery for checking a download: the collage first, then each frame used
+    in it, in order. Left/Right (or A/D, mouse wheel) to move, Home/End to
+    jump, Esc to close."""
+
+    def __init__(self, parent, title, collage, frames):
+        super().__init__(parent)
+        from PIL import Image
+        self._Image = Image
+        self.title(f'Collage  ·  {title}')
+        self.configure(fg_color=_BG)
+        self.geometry('1100x760')
+        self.minsize(480, 360)
+        # (path, caption)
+        self._items = [(collage, f'Collage  ·  {len(frames)} frames')] + [
+            (p, f'Frame {k}/{len(frames)}  ·  {int(t // 60)}:{t % 60:05.2f}')
+            for k, (p, t) in enumerate(frames, 1)]
+        self._idx = 0
+        self._photo = None
+
+        self._img = tk.Label(self, bg=_BG, bd=0)
+        self._img.pack(fill='both', expand=True, padx=8, pady=(8, 0))
+        bar = ctk.CTkFrame(self, fg_color='transparent')
+        bar.pack(fill='x', padx=8, pady=8)
+        ctk.CTkButton(bar, text='◀', width=44, command=lambda: self._go(-1)).pack(side='left')
+        ctk.CTkButton(bar, text='▶', width=44, command=lambda: self._go(1)).pack(side='left', padx=(6, 0))
+        self._cap = ctk.CTkLabel(bar, text='', text_color=_TEXT)
+        self._cap.pack(side='left', padx=12)
+        ctk.CTkLabel(bar, text='← →  browse    Home/End  first/last    Esc  close',
+                     text_color=_SUBTEXT).pack(side='right')
+
+        for key, step in (('<Left>', -1), ('<Right>', 1), ('<a>', -1), ('<d>', 1),
+                          ('<Prior>', -1), ('<Next>', 1)):
+            self.bind(key, lambda e, st=step: self._go(st))
+        self.bind('<Home>', lambda e: self._jump(0))
+        self.bind('<End>', lambda e: self._jump(len(self._items) - 1))
+        self.bind('<Escape>', lambda e: self.destroy())
+        self.bind('<MouseWheel>', lambda e: self._go(-1 if e.delta > 0 else 1))
+        self._img.bind('<Configure>', lambda e: self._show())
+        self.after(50, self._focus)
+
+    def _focus(self):
+        self.lift()
+        self.focus_force()
+
+    def _go(self, step):
+        self._jump((self._idx + step) % len(self._items))
+
+    def _jump(self, idx):
+        self._idx = idx
+        self._show()
+
+    def _show(self):
+        from PIL import ImageTk
+        path, caption = self._items[self._idx]
+        w = max(50, self._img.winfo_width())
+        h = max(50, self._img.winfo_height())
+        try:
+            im = self._Image.open(path)
+            im.thumbnail((w, h), self._Image.LANCZOS)
+            self._photo = ImageTk.PhotoImage(im)
+            self._img.configure(image=self._photo)
+        except Exception as e:
+            self._img.configure(image='', text=str(e), fg=_RED)
+        self._cap.configure(text=f'{self._idx + 1}/{len(self._items)}   {caption}')
+
+
 class App(ctk.CTk):
 
     def __init__(self):
@@ -781,6 +902,15 @@ class App(ctk.CTk):
         self._search_after = None        # debounce handle for the search box
         self._settings    = _load_settings()
         resolver_client.set_sharing(self._settings.get('share_matches', True))
+        conpack.set_nautilus_path(self._settings.get('nautilus_path'))
+        self._nautilus_asked = False     # ask for Nautilus.exe once per session
+        self._action_hint  = ''
+        self._render_jobs  : queue.Queue = queue.Queue()
+        self._render_thread = None
+        self._pending      : list = []   # (song, replace, resync) waiting for the download thread
+        self._dl_lock      = threading.Lock()
+        self._dl_alive     = False
+        self._run_quality  = None
         self._sync_ready  : bool = (
             ffmpegAvailable and audiosync is not None
             and audiosync.is_available())
@@ -904,7 +1034,7 @@ class App(ctk.CTk):
 
         self._tree = ttk.Treeview(
             tree_outer, style='BH.Treeview',
-            columns=('check', 'label', 'res', 'status'),
+            columns=('check', 'label', 'res', 'status') + _ACTION_COLS,
             show='headings', selectmode='none')
 
         self._tree.heading('check',  text='',
@@ -916,9 +1046,17 @@ class App(ctk.CTk):
         self._tree.heading('status', text='Status', anchor='w')
 
         self._tree.column('check',  width=36,  minwidth=36,  anchor='center', stretch=False)
-        self._tree.column('label',  width=520, minwidth=200, anchor='w',      stretch=True)
+        self._tree.column('label',  width=520, minwidth=200, anchor='w',      stretch=False)
         self._tree.column('res',    width=95,  minwidth=70,  anchor='center', stretch=False)
         self._tree.column('status', width=170, minwidth=100, anchor='w',      stretch=False)
+        for k, col in enumerate(_ACTION_COLS):
+            self._tree.heading(col, text='Actions' if k == 0 else '', anchor='w')
+            self._tree.column(col, width=_ACTION_W, minwidth=_ACTION_W,
+                              anchor='center', stretch=False)
+        # Song 60% / Resolution 20% / Status 20% of the width left after the
+        # checkbox and the action icons
+        self._tree.bind('<Configure>', self._size_columns, add='+')
+        self._tree.bind('<Motion>', self._on_tree_motion, add='+')
 
         self._tree.tag_configure('done',  foreground=_GREEN)
         self._tree.tag_configure('error', foreground=_RED)
@@ -1126,15 +1264,41 @@ class App(ctk.CTk):
 
         # Scan off the UI thread so the window stays responsive on big libraries.
         def _worker():
-            songs = _scan_library(
+            songs, cons, con_errors = _scan_library(
                 path, progress=lambda c: self._queue.put(('scan_progress', c)))
-            self._queue.put(('library_scanned', songs))
+            self._queue.put(('library_scanned', songs, cons, con_errors))
         threading.Thread(target=_worker, daemon=True).start()
 
-    def _on_library_scanned(self, songs):
+    def _ask_nautilus(self, con_count):
+        """CON files were found but Nautilus isn't set up. Returns True if the
+        user picked a valid Nautilus.exe (library should be rescanned)."""
+        if not messagebox.askyesno(
+                'Rock Band CON files found',
+                f'Found {con_count} CON file{"s" if con_count != 1 else ""} in your library.\n\n'
+                'BackstageHero reads them through Nautilus (it decrypts the song '
+                'audio for syncing). The CON files are never modified.\n\n'
+                'Locate Nautilus.exe now?'):
+            return False
+        path = filedialog.askopenfilename(
+            title='Locate Nautilus.exe',
+            filetypes=[('Nautilus', 'Nautilus.exe'), ('Programs', '*.exe')])
+        if not path:
+            return False
+        conpack.set_nautilus_path(path)
+        self._persist_setting('nautilus_path', path)
+        return True
+
+    def _on_library_scanned(self, songs, cons=(), con_errors=None):
+        if cons and not conpack.nautilus_ready() and not self._nautilus_asked:
+            self._nautilus_asked = True
+            if self._ask_nautilus(len(cons)):
+                self._load_library(self._songs_folder)
+                return
         self._songs = songs
         self._apply_filter()
         n = len(songs)
+        if con_errors:
+            log.warning('%d CON file(s) could not be read', len(con_errors))
         unprobed = [s for s in songs if s.has_video and s.res == '...']
         if unprobed and ffmpegAvailable:
             self._status_lbl.configure(
@@ -1151,7 +1315,10 @@ class App(ctk.CTk):
         parallel (ffmpeg is the bottleneck, so this is ~Nx faster on first scan)."""
         done = 0
         with ThreadPoolExecutor(max_workers=4) as pool:
-            futures = {pool.submit(probe_resolution, s.folder): s for s in songs}
+            # CON songs: read the .webm directly, there's no song.ini to cache it in
+            futures = {(pool.submit(probe_video_height, s.video) if s.con
+                        else pool.submit(probe_resolution, s.folder)): s
+                       for s in songs}
             for fut in as_completed(futures):
                 if self._stop_evt.is_set():
                     break
@@ -1222,22 +1389,46 @@ class App(ctk.CTk):
             text=f'Resolution  {up if col == "res" else "↕"}')
         self._apply_filter()
 
+    def _size_columns(self, event):
+        avail = event.width - 36 - 2 - _ACTION_W * len(_ACTION_COLS)
+        if avail < 300:
+            return
+        res = status = int(avail * 0.2)
+        self._tree.column('label',  width=avail - res - status)
+        self._tree.column('res',    width=res)
+        self._tree.column('status', width=status)
+
+    # ---- actions column ------------------------------------------------------
+
+    def _actions_of(self, s):
+        """Which action icons are enabled for a song."""
+        if s.rendering:                      # rendering: everything locked
+            return set()
+        if s.review:                         # downloaded, waiting for review
+            return {'play', 'collage', 'search', 'mp4', 'webm'}
+        if s.has_video:                      # finished video
+            return {'play', 'search'}
+        return set()
+
+    def _row_values(self, s):
+        chk         = '  ☑' if s.checked else '  ☐'
+        status_text = s.status or ('✔' if s.has_video else '✗')
+        enabled = self._actions_of(s)
+        icons = tuple(_ACTIONS[a][0] if a in enabled else '' for a in _ACTION_KEYS)
+        return (chk, s.label, s.res or '-', status_text) + icons
+
+    def _row_tags(self, s, row_tag):
+        stag = s.stag or ('dim' if s.has_video else 'error')
+        return (row_tag,) + ((stag,) if stag else ())
+
     def _refresh_tree(self):
         self._tree.delete(*self._tree.get_children())
         self._iid_map.clear()
         self._iid_of.clear()
         for i, s in enumerate(self._filtered):
-            chk         = '  ☑' if s.checked else '  ☐'
-            res_disp    = s.res or '-'
-            status_text = s.status
-            if not status_text:
-                status_text = '✔' if s.has_video else '✗'
-            stag     = s.stag or ('dim' if s.has_video else 'error')
-            row_tag  = 'row_even' if i % 2 == 0 else 'row_odd'
-            tags     = (row_tag,) + ((stag,) if stag else ())
-            iid = self._tree.insert('', 'end',
-                                    values=(chk, s.label, res_disp, status_text),
-                                    tags=tags)
+            row_tag = 'row_even' if i % 2 == 0 else 'row_odd'
+            iid = self._tree.insert('', 'end', values=self._row_values(s),
+                                    tags=self._row_tags(s, row_tag))
             self._iid_map[iid] = s
             self._iid_of[id(s)] = iid
         self._update_buttons()
@@ -1247,29 +1438,131 @@ class App(ctk.CTk):
         iid = self._iid_of.get(id(s))
         if not iid:
             return   # not currently visible under the active filter
-        chk         = '  ☑' if s.checked else '  ☐'
-        res_disp    = s.res or '-'
-        status_text = s.status or ('✔' if s.has_video else '✗')
-        stag        = s.stag or ('dim' if s.has_video else 'error')
-        existing    = list(self._tree.item(iid, 'tags'))
-        row_tag     = next((t for t in existing
-                            if t in ('row_even', 'row_odd')), 'row_odd')
-        tags = (row_tag,) + ((stag,) if stag else ())
-        self._tree.item(iid,
-                        values=(chk, s.label, res_disp, status_text),
-                        tags=tags)
+        existing = list(self._tree.item(iid, 'tags'))
+        row_tag  = next((t for t in existing
+                         if t in ('row_even', 'row_odd')), 'row_odd')
+        self._tree.item(iid, values=self._row_values(s),
+                        tags=self._row_tags(s, row_tag))
+
+    def _action_at(self, event):
+        """(song, action key) under the mouse, or (song, None) / (None, None)."""
+        iid = self._tree.identify_row(event.y)
+        s = self._iid_map.get(iid) if iid else None
+        if not s:
+            return None, None
+        col = self._tree.identify_column(event.x)        # '#1'.. in display order
+        try:
+            name = self._tree['columns'][int(col[1:]) - 1]
+        except (ValueError, IndexError):
+            return s, None
+        key = _ACTION_KEYS[_ACTION_COLS.index(name)] if name in _ACTION_COLS else None
+        return s, key
+
+    def _on_tree_motion(self, event):
+        s, key = self._action_at(event)
+        hint = ''
+        if s and key and key in self._actions_of(s):
+            hint = _ACTIONS[key][1]
+            if key == 'play' and s.review:
+                hint = 'Play the downloaded video (not cut yet)'
+        cursor = 'hand2' if hint else ''
+        if str(self._tree.cget('cursor')) != cursor:
+            self._tree.configure(cursor=cursor)
+        if hint != self._action_hint:
+            self._action_hint = hint
+            if hint:
+                self._status_lbl.configure(text=f'{s.label}   ·   {hint}')
 
     def _on_tree_click(self, event):
         region = self._tree.identify_region(event.x, event.y)
         if region == 'heading':
             return      # column-header command handles sort
         if region in ('cell', 'tree'):
-            iid = self._tree.identify_row(event.y)
-            if iid and iid in self._iid_map:
-                s = self._iid_map[iid]
-                s.checked = not s.checked
-                self._update_row(s)
-                self._update_buttons()
+            s, key = self._action_at(event)
+            if not s:
+                return
+            if key:
+                if key in self._actions_of(s):
+                    self._do_action(s, key)
+                return
+            s.checked = not s.checked
+            self._update_row(s)
+            self._update_buttons()
+
+    def _do_action(self, s, key):
+        if key == 'play':
+            path = s.review['raw'] if s.review else s.video
+            if os.path.exists(path):
+                _open_in_file_manager(path)     # opens files in the default player
+        elif key == 'collage':
+            self._show_collage(s)
+        elif key == 'search':
+            self._search_again(s)
+        elif key in ('mp4', 'webm'):
+            self._queue_render(s, key)
+
+    def _show_collage(self, s):
+        out_dir = os.path.join(conpack.work_dir(s.con, s.song_id), 'collage')
+        s.status, s.stag = '⟳  Making collage...', 'busy'
+        self._update_row(s)
+
+        def _worker():
+            try:
+                result = conpack.make_collage(s.review['raw'], out_dir)
+                self._queue.put(('collage_ready', s, result, None))
+            except Exception as e:
+                self._queue.put(('collage_ready', s, None, str(e)))
+        threading.Thread(target=_worker, daemon=True).start()
+
+    def _search_again(self, s):
+        """Mark the current YouTube video bad and look for a different one."""
+        if s.review:
+            if not messagebox.askyesno(
+                    'Search again?',
+                    f'{s.label}\n\nMark this video as wrong and search YouTube again?\n'
+                    '(it will be skipped in future searches)'):
+                return
+            conpack.mark_bad(s.con, s.song_id, s.review['video_id'])
+            conpack.discard_work(s.con, s.song_id)
+            s.review = None
+            self._enqueue_downloads([s], replace=True)
+            return
+        # finished video: same checks as Re-download (protects hand-made videos)
+        if not self._confirm_redownload([s]):
+            return
+        tag = conpack.read_tag(s.video) or ''
+        m = re.search(r'source=(\S+)', tag)
+        if m:
+            conpack.mark_bad(s.con, s.song_id, m.group(1))
+        self._enqueue_downloads([s], replace=True)
+
+    def _queue_render(self, s, fmt):
+        s.rendering = 'queued'
+        s.status, s.stag = f'⏸  Queued for {fmt.upper()}', 'dim'
+        self._update_row(s)
+        self._render_jobs.put((s, fmt))
+        if not self._render_thread or not self._render_thread.is_alive():
+            self._render_thread = threading.Thread(target=self._render_worker, daemon=True)
+            self._render_thread.start()
+
+    def _render_worker(self):
+        """Renders one video at a time (encoding is CPU heavy), while downloads
+        keep going on their own thread."""
+        while True:
+            try:
+                s, fmt = self._render_jobs.get(timeout=1)
+            except queue.Empty:
+                return
+            self._queue.put(('render_progress', s, f'Rendering {fmt.upper()}', 0.0))
+            try:
+                dest = conpack.render(
+                    s.con, s.song_id, fmt, __version__,
+                    progress=lambda f, s=s, fmt=fmt: self._queue.put(
+                        ('render_progress', s, f'Rendering {fmt.upper()}', f)))
+                self._queue.put(('render_done', s, dest, None))
+            except Exception as e:
+                log.exception('Render failed for %s', s.label)
+                self._queue.put(('render_done', s, None, str(e)))
 
     def _toggle_all(self):
         """Click on the checkbox column header: select/deselect all visible."""
@@ -1301,9 +1594,13 @@ class App(ctk.CTk):
                        activebackground='#313244', activeforeground=_TEXT,
                        relief='flat', borderwidth=1,
                        activeborderwidth=0)
-        if s.has_video:
+        if s.has_video and not s.con:   # CON videos are cut, not offset
             menu.add_command(label='Adjust sync offset',
                              command=lambda: self._open_sync_editor(s))
+            menu.add_separator()
+        if s.has_video:
+            menu.add_command(label='Re-download video...',
+                             command=lambda: self._redownload_one(s))
             menu.add_separator()
         menu.add_command(label='Open folder',
                          command=lambda: _open_in_file_manager(s.folder))
@@ -1335,7 +1632,7 @@ class App(ctk.CTk):
     def _update_buttons(self):
         checked    = [s for s in self._songs if s.checked]
         n          = len(checked)
-        has_vid    = [s for s in checked if s.has_video]
+        has_vid    = [s for s in checked if s.has_video and not s.con]
         can_start  = n > 0 and not self._running
         can_resync = len(has_vid) > 0 and not self._running and self._sync_ready
 
@@ -1376,15 +1673,12 @@ class App(ctk.CTk):
         else:
             # they only picked songs that already have a video, so Start would do
             # nothing. probably means they want them re-fetched, so ask first.
-            ne = len(existing)
-            if not messagebox.askyesno(
-                    'Re-download videos?',
-                    f'All {ne} selected song{"s" if ne != 1 else ""} already '
-                    f'have a video.\n\nRe-download from YouTube and replace them?'):
+            work = self._confirm_redownload(existing)
+            if not work:
                 self._status_lbl.configure(
                     text='Nothing to download, selection already has videos')
                 return
-            work, replace = existing, True
+            replace = True
 
         if not self._confirm_batch(work, 'download'):
             return
@@ -1393,12 +1687,69 @@ class App(ctk.CTk):
     def _start_resync(self):
         if self._running:
             return
-        work = [s for s in self._songs if s.checked and s.has_video]
+        # CON videos have the sync baked into the cut; re-download to redo them
+        work = [s for s in self._songs if s.checked and s.has_video and not s.con]
         if not work:
             return
         if not self._confirm_batch(work, 'auto-sync'):
             return
         self._launch(work, replace=False, resync=True)
+
+    @staticmethod
+    def _made_by_us(s):
+        """True if the song's current video came from BackstageHero: a CON video
+        carries our WebM tag, a folder video has backstagehero_source in song.ini.
+        A video fixed by hand and re-exported from an editor loses the tag."""
+        if s.con:
+            return conpack.is_ours(s.video)
+        return bool(get_stored_source(s.folder))
+
+    def _confirm_redownload(self, existing):
+        """Ask before replacing existing videos, and ask again for any that
+        BackstageHero didn't make (manual downloads/syncs). Returns the songs to
+        replace, or [] to do nothing."""
+        ne = len(existing)
+        if not messagebox.askyesno(
+                'Re-download videos?',
+                f'{"All " if ne != 1 else ""}{ne} selected song{"s" if ne != 1 else ""} '
+                f'already {"have" if ne != 1 else "has"} a video.\n\n'
+                f'Re-download from YouTube and replace {"them" if ne != 1 else "it"}?'):
+            return []
+        self._status_lbl.configure(text='Checking which videos were made by BackstageHero...')
+        self.update_idletasks()
+        foreign = [s for s in existing if not self._made_by_us(s)]
+        if not foreign:
+            return existing
+        names = '\n'.join('  ' + s.label for s in foreign[:8])
+        if len(foreign) > 8:
+            names += f'\n  ...and {len(foreign) - 8} more'
+        if len(foreign) == len(existing) == 1:
+            ok = messagebox.askyesno(
+                'Not a BackstageHero video',
+                f'This video wasn\'t downloaded by BackstageHero:\n\n{names}\n\n'
+                'It may be one you downloaded or synced by hand.\n'
+                'Are you really sure you want to re-download it?',
+                icon='warning', default='no')
+            return existing if ok else []
+        ans = messagebox.askyesnocancel(
+            'Not BackstageHero videos',
+            f'{len(foreign)} of these videos weren\'t downloaded by BackstageHero:\n\n'
+            f'{names}\n\n'
+            'They may be ones you downloaded or synced by hand.\n\n'
+            'Yes: re-download them too\n'
+            'No: keep them, only replace the BackstageHero ones\n'
+            'Cancel: do nothing',
+            icon='warning', default='no')
+        if ans is None:
+            return []
+        if ans:
+            return existing
+        return [s for s in existing if s not in foreign]
+
+    def _redownload_one(self, s):
+        work = self._confirm_redownload([s])
+        if work:
+            self._enqueue_downloads(work, replace=True)
 
     def _confirm_batch(self, work, verb):
         """Guard against an accidental huge run. Returns False to abort."""
@@ -1411,27 +1762,39 @@ class App(ctk.CTk):
             + '.\n\nContinue?')
 
     def _launch(self, targets, replace, resync):
-        if self._running or not targets:
+        self._enqueue_downloads(targets, replace, resync)
+
+    def _enqueue_downloads(self, targets, replace, resync=False):
+        """Queue songs for the download thread; starts it if it isn't running.
+        Songs added mid-run (e.g. 'search again') join the end of the queue."""
+        if not targets:
             return
-        quality = quality_format(1080 if self._quality_var.get() == '1080p' else 720)
-
-        self._running = True
-        self._stop_evt.clear()
-        self._progress.set(0)
-        self._update_buttons()
-
         for s in targets:
             s.status = '○  Pending'
             s.stag   = 'dim'
             self._update_row(s)
+        with self._dl_lock:
+            self._pending.extend((s, replace, resync) for s in targets)
+            if self._dl_alive:
+                return
+            self._dl_alive = True
+        self._run_quality = quality_format(1080 if self._quality_var.get() == '1080p' else 720)
+        self._running = True
+        self._stop_evt.clear()
+        self._progress.set(0)
+        self._update_buttons()
+        threading.Thread(target=self._dl_thread, daemon=True).start()
 
-        threading.Thread(
-            target=self._dl_thread,
-            args=(targets, quality, replace, resync),
-            daemon=True).start()
+    def _next_pending(self):
+        with self._dl_lock:
+            if self._pending and not self._stop_evt.is_set():
+                return self._pending.pop(0)
+            self._pending.clear()
+            self._dl_alive = False
+            return None
 
-    def _dl_thread(self, targets, quality, replace, resync):
-        total = len(targets)
+    def _dl_thread(self):
+        quality = self._run_quality
         done = skipped = errors = 0
         # adaptive pacing: pause between songs that hit YouTube, scaled by how
         # the run is going. clean streaks creep the delay down, getting throttled
@@ -1440,15 +1803,35 @@ class App(ctk.CTk):
         pace = 1.0
         clean_streak = 0
         prev_hit_network = False
-        for i, s in enumerate(targets):
+        i = -1
+        while True:
+            item = self._next_pending()
+            if item is None:
+                break
+            s, replace, resync = item
+            i += 1
+            total = i + 1 + len(self._pending)
             if self._stop_evt.is_set():
+                self._abandon_pending()
                 self._queue.put(('stopped', i, total, done, skipped, errors))
                 return
 
-            if prev_hit_network and self._stop_evt.wait(
-                    random.uniform(SONG_DELAY_MIN, SONG_DELAY_MAX) * pace):
-                self._queue.put(('stopped', i, total, done, skipped, errors))
-                return
+            if prev_hit_network:
+                # pause between YouTube downloads, counting down in the GUI
+                end = time.monotonic() + random.uniform(SONG_DELAY_MIN, SONG_DELAY_MAX) * pace
+                stopped = False
+                while True:
+                    left = end - time.monotonic()
+                    if left <= 0:
+                        break
+                    self._queue.put(('song_wait', s, i, total, int(left + 0.999)))
+                    if self._stop_evt.wait(min(1.0, left)):
+                        stopped = True
+                        break
+                if stopped:
+                    self._abandon_pending()
+                    self._queue.put(('stopped', i, total, done, skipped, errors))
+                    return
 
             self._queue.put(('song_start', s, i, total))
             errored = []
@@ -1457,7 +1840,10 @@ class App(ctk.CTk):
                 s.folder, s.label, quality,
                 self._sync_ready,
                 replace=replace, resync=resync,
-                errored=errored, stop_evt=self._stop_evt, events=events)
+                errored=errored, stop_evt=self._stop_evt, events=events,
+                con_song=(s.con, s.song_id, s.artist, s.title) if s.con else None,
+                progress=lambda text, frac, s=s, i=i: self._queue.put(
+                    ('song_progress', s, i, total, text, frac)))
 
             prev_hit_network = result != 'skipped'
             if events:
@@ -1468,17 +1854,23 @@ class App(ctk.CTk):
                 clean_streak += 1
                 if clean_streak >= 8:
                     # going fine, ease off the brake a notch
-                    pace = max(pace * 0.7, 0.5)
+                    pace = max(pace * 0.7, 1.0)   # never under the 30 s floor
                     clean_streak = 0
 
             if result == 'stop':
+                self._abandon_pending()
                 self._queue.put(('rate_limited', s, i, total))
                 return
             if result == 'stopped':
+                self._abandon_pending()
                 self._queue.put(('stopped', i, total, done, skipped, errors))
                 return
 
-            if result == 'skipped':
+            if result == 'review':
+                done += 1
+                s.review = conpack.load_review(s.con, s.song_id)
+                self._queue.put(('song_review', s, i, total))
+            elif result == 'skipped':
                 skipped += 1
                 self._queue.put(('song_skipped', s, i, total))
             elif errored:
@@ -1487,13 +1879,20 @@ class App(ctk.CTk):
             else:
                 done += 1
                 # process_download already probed and stored the resolution in song.ini
-                if not resync:
+                if s.con:
+                    s.res = probe_video_height(s.video) or '?'
+                elif not resync:
                     stored = get_stored_resolution(s.folder)
                     if stored:
                         s.res = stored
-                self._queue.put(('song_done', s, i, total))
+                self._queue.put(('song_done', s, i, total, result == 'unsynced'))
 
-        self._queue.put(('finished', total, done, skipped, errors))
+        self._queue.put(('finished', i + 1, done, skipped, errors))
+
+    def _abandon_pending(self):
+        with self._dl_lock:
+            self._pending.clear()
+            self._dl_alive = False
 
     @staticmethod
     def _run_summary(done, skipped, errors):
@@ -1531,9 +1930,68 @@ class App(ctk.CTk):
             self._status_lbl.configure(
                 text=f'{i + 1} / {total}   {s.label}')
 
-        elif kind == 'song_done':
+        elif kind == 'song_wait':
+            # countdown before the next song's YouTube requests
+            _, s, i, total, secs = msg
+            s.status = f'⏳  Waiting {secs}s'
+            s.stag   = 'dim'
+            self._update_row(s)
+            self._status_lbl.configure(
+                text=f'{i + 1} / {total}   Waiting {secs}s before the next download '
+                     f'(so YouTube doesn\'t flag it as abuse)')
+
+        elif kind == 'song_review':
             _, s, i, total = msg
-            s.status    = '✔  Done'
+            synced = s.review and s.review.get('matched')
+            s.status = '◆  Review download' + ('' if synced else ' (not synced)')
+            s.stag   = 'warn'
+            self._update_row(s)
+            self._progress.set((i + 1) / total)
+
+        elif kind == 'collage_ready':
+            _, s, result, err = msg
+            s.status = '◆  Review download' if s.review else ''
+            s.stag   = 'warn' if s.review else ''
+            self._update_row(s)
+            if err:
+                messagebox.showerror('Collage', f'Could not make the collage:\n\n{err}')
+            else:
+                CollageViewer(self, s.label, *result)
+
+        elif kind == 'render_progress':
+            _, s, text, frac = msg
+            s.rendering = 'running'
+            s.status = f'⟳  {text} {int(frac * 100)}%'
+            s.stag   = 'busy'
+            self._update_row(s)
+
+        elif kind == 'render_done':
+            _, s, dest, err = msg
+            s.rendering = ''
+            if err:
+                s.status, s.stag = f'✗  Render failed: {err[:30]}', 'error'
+            else:
+                s.review    = None
+                s.has_video = True
+                s.res       = probe_video_height(dest) or '?'
+                s.status    = f'✔  Rendered {os.path.splitext(dest)[1][1:].upper()}'
+                s.stag      = 'done'
+            self._update_row(s)
+
+        elif kind == 'song_progress':
+            # step inside the current song: '3/5 Matching audio (video 2/3)'
+            _, s, i, total, text, frac = msg
+            s.status = f'⟳  {text}'
+            s.stag   = 'busy'
+            self._update_row(s)
+            if frac is not None:
+                self._progress.set((i + frac) / total)
+            self._status_lbl.configure(text=f'{i + 1} / {total}   {s.label}   ·   {text}')
+
+        elif kind == 'song_done':
+            _, s, i, total, unsynced = msg
+            # CON videos can't be re-timed later, so flag a guessed cut
+            s.status    = '✔  Done (not synced, default cut)' if unsynced else '✔  Done'
             s.stag      = 'done'
             s.has_video = True
             self._update_row(s)
@@ -1607,11 +2065,11 @@ class App(ctk.CTk):
                 self._offer_update(latest, asset, sha)
 
         elif kind == 'scan_progress':
-            self._status_lbl.configure(
-                text=f'Scanning your library... {msg[1]} songs')
+            what = msg[1] if isinstance(msg[1], str) else f'{msg[1]} songs'
+            self._status_lbl.configure(text=f'Scanning your library... {what}')
 
         elif kind == 'library_scanned':
-            self._on_library_scanned(msg[1])
+            self._on_library_scanned(*msg[1:])
 
         elif kind == 'ytdlp_updated':
             _, ver = msg
