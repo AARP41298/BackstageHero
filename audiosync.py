@@ -233,7 +233,9 @@ def _offset_seconds(ref_table, probe_table):
 
     # Second-spike check: if a rival offset away from the winner gets anywhere
     # close, the song probably repeats itself and either offset is a guess.
-    rival_mask = np.abs(values - values[top]) > 1
+    # Bins within DRIFT_BINS of the winner are the same alignment smeared by a
+    # slightly different master/speed, not a loop; a repeat is seconds away.
+    rival_mask = np.abs(values - values[top]) > DRIFT_BINS
     if rival_mask.any():
         rival = int(counts[rival_mask].max())
         if rival * AMBIGUITY_RATIO > votes:
