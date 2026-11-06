@@ -36,6 +36,22 @@ log = logging.getLogger('backstagehero')
 ctk.set_appearance_mode('dark')
 ctk.set_default_color_theme('blue')
 
+# Every font in the app goes through this, so text size is one knob.
+FONT_SCALE = 1.25
+
+
+def _fs(size):
+    return int(round(size * FONT_SCALE))
+
+
+def _font(size, **kw):
+    return ctk.CTkFont(size=_fs(size), **kw)
+
+
+# widgets without an explicit font use the theme default
+ctk.ThemeManager.theme['CTkFont']['size'] = _fs(
+    ctk.ThemeManager.theme['CTkFont'].get('size', 13))
+
 
 def _asset_path(name):
     """Resolve a bundled asset path - works both frozen (PyInstaller) and from source."""
@@ -87,14 +103,14 @@ _MAUVE   = '#cba6f7'
 # column per icon so a click can tell which one was hit.
 _ACTIONS = {
     'play':    ('▶',    'Play video in your default player'),
-    'collage': ('▦',    'Show frame collage'),
+    'collage': ('👁',    'Show frame collage'),
     'search':  ('↻',    'Wrong video: search YouTube again'),
     'mp4':     ('MP4',  'Render to MP4 (fast) and approve this video'),
     'webm':    ('WebM', 'Render to WebM (smaller, slow) and approve this video'),
 }
 _ACTION_KEYS = tuple(_ACTIONS)
 _ACTION_COLS = tuple('act_' + k for k in _ACTION_KEYS)
-_ACTION_W = 46
+_ACTION_W = _fs(46)
 
 _SONGS_FILE = os.path.join(updater.data_dir(), 'songs_path.txt')
 
@@ -316,12 +332,12 @@ class SyncEditor(ctk.CTkToplevel):
         hdr.pack(fill='x')
         hdr.pack_propagate(False)
         ctk.CTkLabel(hdr, text=self._song.label,
-                     font=ctk.CTkFont(size=14, weight='bold'),
+                     font=_font(14, weight='bold'),
                      text_color=_TEXT, anchor='w').pack(
             side='left', padx=18, fill='y')
         res = self._song.res if self._song.res not in ('-', '...', '') else '?'
         ctk.CTkLabel(hdr, text=res,
-                     font=ctk.CTkFont(size=11),
+                     font=_font(11),
                      text_color=_SUBTEXT).pack(side='right', padx=18)
 
         # Embedded video surface (mpv renders into this frame)
@@ -344,27 +360,27 @@ class SyncEditor(ctk.CTkToplevel):
         top_row.pack(fill='x', padx=16, pady=(12, 0))
         self._ms_lbl = ctk.CTkLabel(
             top_row, text='',
-            font=ctk.CTkFont(size=30, weight='bold'), text_color=_BLUE)
+            font=_font(30, weight='bold'), text_color=_BLUE)
         self._ms_lbl.pack(side='left')
         # live indicator, only when ffplay is around
         if ffplayPath:
             self._live_lbl = ctk.CTkLabel(
                 top_row, text='',
-                font=ctk.CTkFont(size=10), text_color=_SUBTEXT)
+                font=_font(10), text_color=_SUBTEXT)
             self._live_lbl.pack(side='right', padx=4, pady=(8, 0))
         else:
             self._live_lbl = None
         self._desc_lbl = ctk.CTkLabel(
             card, text='',
-            font=ctk.CTkFont(size=11), text_color=_SUBTEXT)
+            font=_font(11), text_color=_SUBTEXT)
         self._desc_lbl.pack(pady=(2, 12))
 
         # Slider
         sf = ctk.CTkFrame(self, fg_color='transparent')
         sf.pack(fill='x', padx=20, pady=(14, 0))
-        ctk.CTkLabel(sf, text='-30s', font=ctk.CTkFont(size=10),
+        ctk.CTkLabel(sf, text='-30s', font=_font(10),
                      text_color=_SUBTEXT).pack(side='left')
-        ctk.CTkLabel(sf, text='+90s', font=ctk.CTkFont(size=10),
+        ctk.CTkLabel(sf, text='+90s', font=_font(10),
                      text_color=_SUBTEXT).pack(side='right')
         self._slider = ctk.CTkSlider(
             sf, from_=self._MS_MIN, to=self._MS_MAX,
@@ -379,7 +395,7 @@ class SyncEditor(ctk.CTkToplevel):
         bf.pack(fill='x', padx=20, pady=(10, 0))
         _b = dict(height=26, corner_radius=6,
                   fg_color='#2a2a3e', hover_color='#383858',
-                  text_color=_TEXT, font=ctk.CTkFont(size=10))
+                  text_color=_TEXT, font=_font(10))
         for lbl, delta in (('-5s', -5000), ('-1s', -1000),
                            ('-100ms', -100), ('-10ms', -10),
                            ('+10ms', 10),   ('+100ms', 100),
@@ -395,27 +411,27 @@ class SyncEditor(ctk.CTkToplevel):
             self._play_btn = ctk.CTkButton(
                 prev_row, text='⏸  Pause', width=100, height=28,
                 fg_color='#2a2a3e', hover_color='#383858',
-                text_color=_TEXT, font=ctk.CTkFont(size=11),
+                text_color=_TEXT, font=_font(11),
                 command=self._toggle_play)
             self._play_btn.pack(side='left')
             ctk.CTkButton(
                 prev_row, text='↻  Restart', width=100, height=28,
                 fg_color='#2a2a3e', hover_color='#383858',
-                text_color=_TEXT, font=ctk.CTkFont(size=11),
+                text_color=_TEXT, font=_font(11),
                 command=self._restart_at_song).pack(side='left', padx=(8, 0))
             ctk.CTkLabel(prev_row,
                          text='Drag the slider, sync updates live as it plays.',
-                         font=ctk.CTkFont(size=10),
+                         font=_font(10),
                          text_color=_SUBTEXT).pack(side='right')
         elif ffplayPath:
             ctk.CTkButton(
                 prev_row, text='▶  Preview', width=110, height=28,
                 fg_color='#2a2a3e', hover_color='#383858',
-                text_color=_TEXT, font=ctk.CTkFont(size=11),
+                text_color=_TEXT, font=_font(11),
                 command=self._launch_preview).pack(side='left')
         else:
             ctk.CTkLabel(prev_row, text='Player not bundled. Adjust the offset and Save.',
-                         font=ctk.CTkFont(size=10),
+                         font=_font(10),
                          text_color=_SUBTEXT).pack(side='left')
 
         # Divider
@@ -427,14 +443,14 @@ class SyncEditor(ctk.CTkToplevel):
         shr.pack(fill='x', padx=20)
         ctk.CTkCheckBox(shr, text='Share with community',
                         variable=self._share,
-                        font=ctk.CTkFont(size=12), text_color=_TEXT,
+                        font=_font(12), text_color=_TEXT,
                         checkbox_width=18, checkbox_height=18,
                         checkmark_color=_BG, fg_color=_BLUE,
                         hover_color='#7aaef8').pack(anchor='w')
         ctk.CTkLabel(shr,
                      text='Once enough users confirm the same offset it becomes\n'
                           'the default for this chart, no fingerprinting needed.',
-                     font=ctk.CTkFont(size=10), text_color=_SUBTEXT,
+                     font=_font(10), text_color=_SUBTEXT,
                      justify='left', anchor='w').pack(anchor='w', pady=(4, 0))
 
         # Cancel / Save
@@ -443,12 +459,12 @@ class SyncEditor(ctk.CTkToplevel):
         ctk.CTkButton(foot, text='Cancel', width=110,
                       fg_color='transparent', border_width=1,
                       border_color=_BORDER, hover_color='#30304a',
-                      text_color=_SUBTEXT, font=ctk.CTkFont(size=12),
+                      text_color=_SUBTEXT, font=_font(12),
                       command=self._close).pack(side='left')
         ctk.CTkButton(foot, text='Save', width=110,
                       fg_color=_BLUE, hover_color='#7aaef8',
                       text_color='#11111b',
-                      font=ctk.CTkFont(size=13, weight='bold'),
+                      font=_font(13, weight='bold'),
                       command=self._save).pack(side='right')
 
     def _read_offset(self):
@@ -745,10 +761,10 @@ class UpdateDialog(ctk.CTkToplevel):
             pass
 
         ctk.CTkLabel(self, text='Updating BackstageHero',
-                     font=ctk.CTkFont(size=15, weight='bold'),
+                     font=_font(15, weight='bold'),
                      text_color=_TEXT).pack(padx=24, pady=(22, 4), anchor='w')
         self._stat = ctk.CTkLabel(self, text='Preparing...',
-                                  font=ctk.CTkFont(size=12), text_color=_SUBTEXT)
+                                  font=_font(12), text_color=_SUBTEXT)
         self._stat.pack(padx=24, anchor='w')
         self._bar = ctk.CTkProgressBar(self, width=372, height=14,
                                        progress_color=_BLUE)
@@ -757,7 +773,7 @@ class UpdateDialog(ctk.CTkToplevel):
         self._bar.configure(mode='indeterminate')
         self._bar.start()
         self._detail = ctk.CTkLabel(self, text='',
-                                    font=ctk.CTkFont(size=10), text_color=_SUBTEXT)
+                                    font=_font(10), text_color=_SUBTEXT)
         self._detail.pack(padx=24, pady=(6, 0), anchor='w')
 
         self.after(50, self._center)
@@ -958,11 +974,11 @@ class App(ctk.CTk):
         else:
             ctk.CTkLabel(hdr,
                          text='BackstageHero',
-                         font=ctk.CTkFont(size=17, weight='bold'),
+                         font=_font(17, weight='bold'),
                          text_color=_TEXT).grid(row=0, column=0, padx=(16, 6), pady=14)
         ctk.CTkLabel(hdr,
                      text=f'v{__version__}',
-                     font=ctk.CTkFont(size=11),
+                     font=_font(11),
                      text_color=_SUBTEXT).grid(row=0, column=1, pady=14,
                                                padx=(0, 16), sticky='w')
 
@@ -971,15 +987,15 @@ class App(ctk.CTk):
         folder_row.grid_columnconfigure(0, weight=1)
         self._folder_lbl = ctk.CTkLabel(
             folder_row, text='No folder selected',
-            font=ctk.CTkFont(size=11), text_color=_SUBTEXT, anchor='e')
+            font=_font(11), text_color=_SUBTEXT, anchor='e')
         self._folder_lbl.grid(row=0, column=0, padx=(0, 10), sticky='e')
         ctk.CTkButton(folder_row, text='Show log',
-                      width=80, height=28, font=ctk.CTkFont(size=11),
+                      width=80, height=28, font=_font(11),
                       fg_color=_SURFACE, text_color=_TEXT,
                       border_color=_BORDER, border_width=1, hover_color='#30304a',
                       command=_open_log).grid(row=0, column=1, padx=(0, 6))
         ctk.CTkButton(folder_row, text='Change folder',
-                      width=115, height=28, font=ctk.CTkFont(size=11),
+                      width=115, height=28, font=_font(11),
                       command=self._pick_folder).grid(row=0, column=2)
 
         # Filter / search bar
@@ -990,7 +1006,7 @@ class App(ctk.CTk):
         # column 4 is the search box pinned to the right.
         fbar.grid_columnconfigure(3, weight=1)
 
-        _btn = dict(height=30, width=130, font=ctk.CTkFont(size=12),
+        _btn = dict(height=30, width=130, font=_font(12),
                     corner_radius=6)
 
         self._btn_missing = ctk.CTkButton(
@@ -1032,11 +1048,11 @@ class App(ctk.CTk):
         sty.theme_use('clam')
         sty.configure('BH.Treeview',
                        background=_BG, foreground=_TEXT,
-                       fieldbackground=_BG, rowheight=30,
-                       font=('Segoe UI', 11), borderwidth=0, relief='flat')
+                       fieldbackground=_BG, rowheight=_fs(30),
+                       font=('Segoe UI', _fs(11)), borderwidth=0, relief='flat')
         sty.configure('BH.Treeview.Heading',
                        background='#181825', foreground=_SUBTEXT,
-                       font=('Segoe UI', 10, 'bold'),
+                       font=('Segoe UI', _fs(10), 'bold'),
                        relief='flat', borderwidth=0)
         sty.map('BH.Treeview',
                 background=[('selected', '#313244')],
@@ -1099,17 +1115,17 @@ class App(ctk.CTk):
         foot.grid_columnconfigure(7, weight=1)
 
         _fbtn = dict(height=34, corner_radius=7)
-        _font  = ctk.CTkFont(size=12)
-        _font_bold = ctk.CTkFont(size=13, weight='bold')
+        _foot_font = _font(12)
+        _foot_bold = _font(13, weight='bold')
 
         self._sel_btn = ctk.CTkButton(
-            foot, text='Select all', width=105, font=_font,
+            foot, text='Select all', width=105, font=_foot_font,
             fg_color=_BORDER, hover_color='#44445a', text_color=_TEXT,
             command=self._select_all_visible, **_fbtn)
         self._sel_btn.grid(row=0, column=0, padx=(12, 4), pady=15)
 
         self._clr_btn = ctk.CTkButton(
-            foot, text='Clear all', width=90, font=_font,
+            foot, text='Clear all', width=90, font=_foot_font,
             fg_color='transparent', hover_color='#30304a',
             text_color=_SUBTEXT, border_color=_BORDER, border_width=1,
             command=self._clear_all, **_fbtn)
@@ -1121,21 +1137,21 @@ class App(ctk.CTk):
             foot, variable=self._quality_var,
             values=['720p', '1080p'], width=88, height=34,
             command=lambda *_: self._persist_setting('quality', self._quality_var.get()),
-            font=_font).grid(row=0, column=2, padx=4, pady=15)
+            font=_foot_font).grid(row=0, column=2, padx=4, pady=15)
 
         self._start_btn = ctk.CTkButton(
-            foot, text='▶  Search & Download', width=175, font=_font_bold,
+            foot, text='▶  Search & Download', width=175, font=_foot_bold,
             command=self._start_download, **_fbtn)
         self._start_btn.grid(row=0, column=3, padx=4, pady=15)
 
         self._resync_btn = ctk.CTkButton(
-            foot, text='↺  Auto-sync', width=120, font=_font,
+            foot, text='↺  Auto-sync', width=120, font=_foot_font,
             fg_color='#313244', hover_color='#414160', text_color=_TEXT,
             command=self._start_resync, **_fbtn)
         self._resync_btn.grid(row=0, column=4, padx=4, pady=15)
 
         self._stop_btn = ctk.CTkButton(
-            foot, text='■  Stop', width=90, font=_font,
+            foot, text='■  Stop', width=90, font=_foot_font,
             fg_color='#4a1a2a', hover_color='#6a2a3e', text_color=_RED,
             state='disabled', command=self._stop, **_fbtn)
         self._stop_btn.grid(row=0, column=5, padx=4, pady=15)
@@ -1145,7 +1161,7 @@ class App(ctk.CTk):
             value=self._settings.get('share_matches', True))
         share_cb = ctk.CTkCheckBox(
             foot, text='Share matches', variable=self._share_var,
-            font=ctk.CTkFont(size=11), text_color=_SUBTEXT,
+            font=_font(11), text_color=_SUBTEXT,
             checkbox_width=18, checkbox_height=18,
             command=self._on_share_toggle)
         share_cb.grid(row=0, column=6, padx=(12, 4), pady=15)
@@ -1161,7 +1177,7 @@ class App(ctk.CTk):
 
         self._status_lbl = ctk.CTkLabel(
             prog_frame, text='Ready',
-            font=ctk.CTkFont(size=10), text_color=_SUBTEXT,
+            font=_font(10), text_color=_SUBTEXT,
             anchor='e', width=190)
         self._status_lbl.pack()
 
