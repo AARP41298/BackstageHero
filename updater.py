@@ -73,8 +73,31 @@ def prefer_cached_ytdlp():
             _swap_dir(staged, cache)
         if os.path.isfile(os.path.join(cache, 'yt_dlp', '__init__.py')):
             sys.path.insert(0, cache)
+            try:
+                import yt_dlp  # noqa: F401  - prove the cached copy loads here
+            except Exception:
+                # e.g. a newer yt-dlp that needs a newer Python than this exe
+                # was built with. Drop it and fall back to the bundled copy.
+                log.warning('cached yt-dlp failed to import; using bundled copy',
+                            exc_info=True)
+                sys.path.remove(cache)
+                for name in [m for m in sys.modules
+                             if m == 'yt_dlp' or m.startswith('yt_dlp.')]:
+                    del sys.modules[name]
+                shutil.rmtree(cache, ignore_errors=True)
     except Exception:
         pass
+
+
+def _python_ok(spec):
+    """True if this interpreter satisfies a PyPI requires_python spec like '>=3.11'.
+    Only lower bounds matter here; anything we can't parse is treated as OK."""
+    for m in re.finditer(r'(>=|>)\s*(\d+(?:\.\d+)*)', spec or ''):
+        need = _ver_tuple(m.group(2))
+        have = tuple(sys.version_info[:len(need)])
+        if have < need or (m.group(1) == '>' and have == need):
+            return False
+    return True
 
 
 def _wheel_url_and_version():
@@ -82,8 +105,14 @@ def _wheel_url_and_version():
     PyPI publishes the digest in the same response, so downloads get verified."""
     info = _get_json(_PYPI_YTDLP)
     version = info['info']['version']
+    if not _python_ok(info['info'].get('requires_python')):
+        log.info('yt-dlp %s needs Python %s; this build is %d.%d - not updating',
+                 version, info['info'].get('requires_python'), *sys.version_info[:2])
+        return None
     for entry in info.get('urls', []):
         if entry.get('packagetype') == 'bdist_wheel':
+            if not _python_ok(entry.get('requires_python')):
+                continue
             sha = (entry.get('digests') or {}).get('sha256') or ''
             return entry['url'], version, sha.lower()
     return None

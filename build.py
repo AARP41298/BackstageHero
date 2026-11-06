@@ -4,7 +4,8 @@ Build script -- produces BackstageHero.exe from VideoDownload.py.
 Usage:
     python build.py
 
-Requirements: Python 3.8+, internet connection (first run only).
+Requirements: Python 3.11+ (current yt-dlp needs it), internet connection
+(first run only).
 PyInstaller and Pillow are installed automatically if missing.
 The finished exe appears in dist\\BackstageHero.exe.
 """
@@ -22,6 +23,13 @@ def pip_install(package):
         [sys.executable, '-m', 'pip', 'install', '--quiet', package],
         check=True,
     )
+
+
+if sys.version_info < (3, 11):
+    print('WARNING: building with Python %d.%d. Current yt-dlp needs 3.11+, so this'
+          % sys.version_info[:2])
+    print('         exe will be stuck on its bundled yt-dlp and never auto-update it.')
+    print('         Build with Python 3.11+ (e.g. "py -3.12 build.py") instead.\n')
 
 
 # 1. Ensure PyInstaller is available
