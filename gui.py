@@ -202,6 +202,17 @@ def _open_in_file_manager(path):
         log.warning('Could not open folder: %s', path)
 
 
+def _open_log():
+    """Open log.txt in the default text viewer (the data folder if there's no log yet)."""
+    for h in log.handlers:
+        try:
+            h.flush()
+        except Exception:
+            pass
+    path = os.path.join(updater.data_dir(), 'log.txt')
+    _open_in_file_manager(path if os.path.exists(path) else updater.data_dir())
+
+
 def _scan_library(songs_folder, progress=None):
     """Return a list[Song] for the folder, sorted alphabetically.
     progress(count) is called periodically so the UI can show a live tally."""
@@ -962,9 +973,14 @@ class App(ctk.CTk):
             folder_row, text='No folder selected',
             font=ctk.CTkFont(size=11), text_color=_SUBTEXT, anchor='e')
         self._folder_lbl.grid(row=0, column=0, padx=(0, 10), sticky='e')
+        ctk.CTkButton(folder_row, text='Show log',
+                      width=80, height=28, font=ctk.CTkFont(size=11),
+                      fg_color=_SURFACE, text_color=_TEXT,
+                      border_color=_BORDER, border_width=1, hover_color='#30304a',
+                      command=_open_log).grid(row=0, column=1, padx=(0, 6))
         ctk.CTkButton(folder_row, text='Change folder',
                       width=115, height=28, font=ctk.CTkFont(size=11),
-                      command=self._pick_folder).grid(row=0, column=1)
+                      command=self._pick_folder).grid(row=0, column=2)
 
         # Filter / search bar
         fbar = ctk.CTkFrame(self, fg_color=_SURFACE, corner_radius=0, height=50)
