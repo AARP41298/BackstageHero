@@ -319,7 +319,7 @@ def encode_synced_webm(src, offset_ms, dest, work, tag='', progress=None):
               + ['-c:v', 'libvpx', '-crf', VP8_CRF, '-b:v', VP8_MAX_BITRATE,
                  '-g', KEYFRAME_DISTANCE, '-auto-alt-ref', '1', '-lag-in-frames', '16',
                  '-deadline', 'good', '-cpu-used', '1',
-                 '-passlogfile', os.path.join(work, 'vp8pass')])
+                 '-passlogfile:v', os.path.join(work, 'vp8pass')])
     tmp = dest + '.part.webm'
     # output length, for the progress bar: source minus the cut, plus padding
     total = _duration(src)
@@ -328,10 +328,10 @@ def encode_synced_webm(src, offset_ms, dest, work, tag='', progress=None):
     p1 = (lambda f: progress(0.4 * f)) if progress else None
     p2 = (lambda f: progress(0.4 + 0.6 * f)) if progress else None
     try:
-        _run_ffmpeg(common + ['-an', '-pass', '1', '-f', 'webm', os.devnull], total, p1)
+        _run_ffmpeg(common + ['-an', '-pass:v', '1', '-f', 'webm', os.devnull], total, p1)
         _run_ffmpeg(common + ['-c:a', 'libopus', '-b:a', '128k',
                               '-metadata', f'{TAG_KEY}={tag or "1"}',
-                              '-pass', '2', '-f', 'webm', tmp], total, p2)
+                              '-pass:v', '2', '-f', 'webm', tmp], total, p2)
         os.replace(tmp, dest)
     finally:
         if os.path.exists(tmp):
