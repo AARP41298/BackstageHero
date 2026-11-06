@@ -111,8 +111,9 @@ def _run_nautilus(args, out_path):
         raise Exception('Nautilus: ' + (reason or f'failed (exit code {code})'))
 
 
-# Song lists are cached by file path + size + mtime, so rescanning a library of
-# multi-GB packs doesn't re-run Nautilus for CONs that haven't changed.
+# Song lists are cached by file path + size + mtime (and the Nautilus build that
+# read them), so rescanning a library of multi-GB packs doesn't re-run Nautilus
+# for CONs that haven't changed.
 _CACHE_FILE = os.path.join(updater.data_dir(), 'con_cache.json')
 
 
@@ -140,6 +141,12 @@ def list_songs(cons, progress=None):
     cache = _load_cache()
     result, errors = {}, {}
     dirty = False
+    # a different Nautilus build may read packs differently, so it re-lists them
+    try:
+        nst = os.stat(_nautilus_exe)
+        tool = f'{nst.st_size}:{int(nst.st_mtime)}'
+    except (OSError, TypeError):
+        tool = ''
     work = tempfile.mkdtemp(prefix='bh_list_')
     try:
         for i, con in enumerate(cons):
@@ -151,7 +158,7 @@ def list_songs(cons, progress=None):
                 errors[con] = str(e)
                 continue
             key = os.path.abspath(con).lower()
-            stamp = [st.st_size, int(st.st_mtime)]
+            stamp = [st.st_size, int(st.st_mtime), tool]
             hit = cache.get(key)
             if hit and hit.get('stamp') == stamp:
                 result[con] = hit['songs']
