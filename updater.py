@@ -54,6 +54,18 @@ def _ver_tuple(v):
     return tuple(int(n) for n in re.findall(r'\d+', v or ''))
 
 
+def _app_ver(v):
+    """App version/tag to comparable key. A pre-release sorts before its release,
+    so 'v2.2.1-rc1' < '2.2.1' < 'v2.2.2'."""
+    v = v or ''
+    m = re.search(r'\d+(?:\.\d+)*', v)
+    if not m:
+        return ((), 1, 0)
+    base = tuple(int(n) for n in m.group().split('.'))
+    pre = re.search(r'\d+', v[m.end():])
+    return (base, 0, int(pre.group())) if pre else (base, 1, 0)
+
+
 def _get_json(url, timeout=_META_TIMEOUT):
     req = urllib.request.Request(url, headers={'User-Agent': _UA,
                                                'Accept': 'application/json'})
@@ -343,7 +355,7 @@ def check_app_update(current_version):
     try:
         release = _get_json(_API_LATEST)
         tag = release.get('tag_name') or ''
-        if _ver_tuple(tag) <= _ver_tuple(current_version):
+        if _app_ver(tag) <= _app_ver(current_version):
             return None
         asset = _find_release_asset(release, EXE_ASSET_NAME)
         if not asset:
