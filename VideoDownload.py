@@ -47,7 +47,7 @@ from tqdm import tqdm
 import resolver_client
 import conpack
 
-__version__ = '2.2.0'
+__version__ = '2.2.1'
 
 try:
     import audiosync
