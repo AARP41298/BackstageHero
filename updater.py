@@ -18,7 +18,7 @@ import zipfile
 
 log = logging.getLogger('backstagehero')
 
-GITHUB_REPO = 'jmb988/BackstageHero'
+GITHUB_REPO = 'AARP41298/BackstageHero'
 EXE_ASSET_NAME = 'BackstageHero.exe'
 
 _API_LATEST = f'https://api.github.com/repos/{GITHUB_REPO}/releases/latest'
