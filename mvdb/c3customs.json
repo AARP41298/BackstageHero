@@ -1,0 +1,3872 @@
+{
+ "source": "c3customs",
+ "name": "C3 Customs",
+ "songs": [
+  {
+   "artist": "AFI",
+   "title": "Days of the Phoenix",
+   "charter": "TheFrisk",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Amaranthe",
+   "title": "Amaranthine",
+   "charter": "TheMasterShred",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1267,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Amon Amarth",
+   "title": "First Kill",
+   "charter": "Sleepy Panda",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Ataris",
+   "title": "The Boys of Summer",
+   "charter": "Sygenysis + Nunchuck",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3100,
+     "submitted_by": "moocartoons sheet",
+     "notes": "desyncs about two thirds in due to shortened version used in music video (they cut the guitar solo)",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Avenged Sevenfold",
+   "title": "A Little Piece of Heaven",
+   "charter": "Furiouss",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 7400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Avril Lavigne",
+   "title": "Girlfriend",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 7200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Avril Lavigne",
+   "title": "Nobody's Fool",
+   "charter": "Nudles",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Performance",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "desyncs a bit towards the end of the song, but mostly fine",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Backstreet Boys",
+   "title": "Everybody",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 40500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "\"This Is End\" Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Beastie Boys",
+   "title": "Intergalactic",
+   "charter": "Stock",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 34250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Benny Benassi",
+   "title": "Satisfaction",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Beyonce",
+   "title": "Single Ladies",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Billy Talent",
+   "title": "Fallen Leaves",
+   "charter": "DeadCanadian",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2465,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Billy Talent",
+   "title": "Rusted from the Rain",
+   "charter": "DeadCanadian",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Bloudhound Gang",
+   "title": "The Bad Touch",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -12900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Blur",
+   "title": "Beetlebum",
+   "charter": "Yaniv",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "offset_ms": 2700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Blur",
+   "title": "Parklife",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 13500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Blur",
+   "title": "To The End",
+   "charter": "Yaniv & HighFlyingBirds",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Blur",
+   "title": "The Universal",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Bob's Burgers",
+   "title": "Bad Stuff Happens in the Bathroom",
+   "charter": "Kloporte",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "TV Clip",
+     "offset_ms": -26750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Bowling for Soup",
+   "title": "Girl All The Bad Guys Want",
+   "charter": "Nunchuk & Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 12370,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Britney Spears",
+   "title": "Womanizer",
+   "charter": "Mati12Osorio",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Buckcherry",
+   "title": "Crazy Bitch",
+   "charter": "clintilona",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Butthole Surfers",
+   "title": "Pepper",
+   "charter": "Nunchuk & Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -17000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Carley Rae Jepson",
+   "title": "Boy Problems",
+   "charter": "Septekka",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Carley Rae Jepson",
+   "title": "I Really Like You",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Carley Rae Jepson",
+   "title": "Now That I Found You",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Carley Rae Jepson",
+   "title": "Run Away With Me",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Carley Rae Jepson",
+   "title": "This Kiss",
+   "charter": "PopGoesRockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Cee Lo Green",
+   "title": "Fuck You",
+   "charter": "Spindoctor/MrPrezident",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Ofiicial Music Video",
+     "offset_ms": 2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Music Video (Lyric Ver.)",
+     "offset_ms": -4750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Chainsmokers",
+   "title": "Paris",
+   "charter": "ShadowMaurix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Charli XCX",
+   "title": "Boom Clap",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Childish Gambino",
+   "title": "Feels Like Summer",
+   "charter": "ninikee456",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Childish Gambino",
+   "title": "This Is America",
+   "charter": "CUTstudi0s",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Cinderella",
+   "title": "Somebody Save Me",
+   "charter": "AllFleshIsEqualWhenBurnt",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 34300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Cole Swindell",
+   "title": "Hope You Get Lonely Tonight",
+   "charter": "Spindoctor",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Cradle of Filth",
+   "title": "Her Ghost in the Fog",
+   "charter": "DeathThreatUK & Nightmare Lyle",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5600,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Song syncs, but charted audio is much longer than the music video",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Cradle of Filth",
+   "title": "Nymphetamine Fix",
+   "charter": "Nightmare Lyre / TrojanNemo",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Crazy Frog",
+   "title": "Axel F",
+   "charter": "Pipiris24",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Aerodynamic",
+   "charter": "Nightmare Lyre",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Film Sequence",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Around The World",
+   "charter": "Nightmare Lyre",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Harder Better Faster Stronger",
+   "charter": "Nightmare Lyre / TrojanNemo",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Film Sequence",
+     "offset_ms": 1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Instant Crush",
+   "charter": "Saul1616",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Lose Yourself To Dance",
+   "charter": "veritasisacerbus",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -23000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "One More Time",
+   "charter": "Nightmare Lyre / TrojanNemo",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Film Sequence",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Robot Rock",
+   "charter": "veritasisacerbus",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Something About Us",
+   "charter": "MiltoniusPrime & Nightmare Lyre",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Film Sequence",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Touch",
+   "charter": "egead",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Visual",
+     "offset_ms": -500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Deadmau5",
+   "title": "Ghosts 'n' Stuff (ft. Rob Swire)",
+   "charter": "Gigakoops",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -39000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Dead or Alive",
+   "title": "You Spin Me Round (Like a Record)",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Death Cab For Cutie",
+   "title": "I Will Follow You Into The Dark",
+   "charter": "GreenPanda12",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video (Rabbit Version)",
+     "offset_ms": -4200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Deftones",
+   "title": "Back to School",
+   "charter": "naginalJJ, TheWay123, BansheeFlyer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5150,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Dj Snake",
+   "title": "Turn Down For What (ft. Lil John)",
+   "charter": "Gigakoops",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -22500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Duck Sauce",
+   "title": "Barbra Streisand",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Dwayne The Rock Johnson",
+   "title": "You're Welcome",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Movie Clip",
+     "offset_ms": -1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Electric Light Orchestra",
+   "title": "Mr. Blue Sky",
+   "charter": "Four Neat Guys",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 14000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video (Animated)",
+     "offset_ms": -600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Gardians of the Galaxy Vol. 2 OP",
+     "offset_ms": 400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Elle Goulding",
+   "title": "Lights",
+   "charter": "Oddbrother",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Eminem",
+   "title": "The Real Slim Shady",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Estelle",
+   "title": "American Boy (ft. Kanye West)",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -12000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Fatboy Slim",
+   "title": "The Rocakafeller Skank",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Feeder",
+   "title": "Buck Rogers",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Feeder",
+   "title": "Just A Day",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Song syncs up until the 'intermission' in the music video about 1:36 in",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Feist",
+   "title": "1234",
+   "charter": "Ungrateful Dead",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video (Vimeo)",
+     "offset_ms": 5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Fergie",
+   "title": "Glamorous (ft. Ludacris)",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Finch",
+   "title": "Letters to You",
+   "charter": "thespike",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Flight of the Conchords",
+   "title": "Hurt Feelings",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "TV Clip",
+     "offset_ms": 250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Flight of the Conchords",
+   "title": "I Told You I Was Freaky",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "TV Clip",
+     "offset_ms": 7500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "falls out of sync mid way due to added verse",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Foster The People",
+   "title": "Houdini",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "Androgyny",
+   "charter": "pik412",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "Cherry Lips (Go Baby Go!)",
+   "charter": "BornGamerRob",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "Only Happy When It Rains",
+   "charter": "c",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 8500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "Queer",
+   "charter": "BornGamerRob",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "Special",
+   "charter": "Four Neat Guys",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 11500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "When I Grow Up",
+   "charter": "BornGamerRob",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "George Andreas and Chris Sutherland",
+   "title": "DK Rap",
+   "charter": "DVDSmith",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Video Game Opening",
+     "offset_ms": 13500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Goo Goo Dolls",
+   "title": "Black Balloon",
+   "charter": "ws54",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Goo Goo Dolls",
+   "title": "Sympathy",
+   "charter": "Truce",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Dirty Harry",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 31000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Empire Ants (ft. Little Dragon)",
+   "charter": "SynthStreaks",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Live Visual (Fan Recreation)",
+     "offset_ms": 6000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Garage Place (feat. Little Simz)",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Visual",
+     "offset_ms": -1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Man Research (Clapper)",
+   "charter": "i0brendan0",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual (Mirror)",
+     "offset_ms": -11000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Sleeping Powder",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 13250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Tomorrow Comes Today",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Tranz",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 52500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gotye",
+   "title": "Somebody That I Used To Know",
+   "charter": "TrojanNemo, MFX, pksage",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Guns and Roses",
+   "title": "Paradise City",
+   "charter": "Farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gwen Stefani",
+   "title": "Hollaback Girl",
+   "charter": "Ungrateful Dead",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Icona Pop",
+   "title": "I Love It (ft. Charli XCX)",
+   "charter": "???",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Iggy Azalea",
+   "title": "Fancy (ft. Charli XCX)",
+   "charter": "tram455",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Iggy Pop",
+   "title": "Real Wild Child",
+   "charter": "Nunchuk & Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Jacksfilms",
+   "title": "Twitter for Android",
+   "charter": "Pizzachamp, island man76",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Youtube Video",
+     "offset_ms": -1250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Jam Project",
+   "title": "THE HERO!!",
+   "charter": "Rex Voluntas",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Japandroids",
+   "title": "The House That Heaven Built",
+   "charter": "Kamotch",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Jason Paige",
+   "title": "Pokemon Theme",
+   "charter": "???",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Music Video",
+     "offset_ms": -3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Joe Satriani",
+   "title": "Crowd Chant",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Live Preformance",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "John Mayer",
+   "title": "Free Fallin' (Live)",
+   "charter": "Mati12Osorio",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Jon Lajoie",
+   "title": "Everyday Normal Guy",
+   "charter": "MrPrezident",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Jon Lajoie",
+   "title": "I Kill People",
+   "charter": "GreenPanda12, Bamboo Crew",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Video",
+     "offset_ms": -2750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Jon Lajoie",
+   "title": "Show Me Your Genitals",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Video",
+     "offset_ms": -4250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Jon Lajoie",
+   "title": "Wtf Collective",
+   "charter": "Sunfire Cobra",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Video",
+     "offset_ms": 250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "JonTron",
+   "title": "Firework",
+   "charter": "pik412",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 11000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Katy Perry",
+   "title": "Dark Horse (ft. Juicy J)",
+   "charter": "Jbiz72",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 2250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Katy Perry",
+   "title": "Firework",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kayne West",
+   "title": "POWER",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kayne West",
+   "title": "Stronger",
+   "charter": "Rocker1999, Meta123",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kayne West & Lil Pump",
+   "title": "I Love It",
+   "charter": "Rocker1999, Meta123",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Ke$ha",
+   "title": "Tik Tok",
+   "charter": "Nunchuk & Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kid Rock",
+   "title": "Picture",
+   "charter": "Spindoctor/MrPrezident",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Korn",
+   "title": "Blind",
+   "charter": "Froogs/Alternity",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Alejandro",
+   "charter": "Fieldy92",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 106750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Eh Eh (Nothing Else I Can Say)",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Stupid Love",
+   "charter": "GreenPanda12, Bamboo Crew",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 12500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga and Bradley Cooper",
+   "title": "Shallow",
+   "charter": "Bsbloom, Yabarnian",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Less Than Jake",
+   "title": "All My Best Friends Are Metalheads",
+   "charter": "Nightmare Lyre",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 8200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lil Deuce Deuce",
+   "title": "Beep Beep I'm A Sheep",
+   "charter": "TheSheepQueen",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Limp Bizkit",
+   "title": "Break Stuff",
+   "charter": "Maupy2",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Limp Bizkit",
+   "title": "Rollin'",
+   "charter": "Convour, Nightmare Lyra",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 23500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Limp Bizkit",
+   "title": "Take A Look Around",
+   "charter": "AllFleshIsEqualWhenBurnt",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lit",
+   "title": "Over My Head",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Little V",
+   "title": "My Name Is Mc",
+   "charter": "TheBassSinger",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "LMFAO",
+   "title": "Sexy And I Know It",
+   "charter": "???",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Dick in a Box (feat. Justin Timberlake)",
+   "charter": "RealCheese",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 8500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Fan Music Video",
+     "offset_ms": 4700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Equal Rights (ft. P!nk)",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Official Video (Deleted Scene)",
+     "offset_ms": -14750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Finest Girl (Bin Laden Song)",
+   "charter": "RealCheese",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Go Kindergarden",
+   "charter": "psiven",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 17500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Dance Rehearsal",
+     "offset_ms": 2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "I Just Had Sex ( ft. Akon)",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "I'm On A Boat",
+   "charter": "atupomaruru",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 21000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Jack Sparrow",
+   "charter": "mortarion42",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 18900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Jizz in my Pants",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lostprophets",
+   "title": "Shinobi vs Dragon Ninja",
+   "charter": "Nunchuk & Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Song syncs, but charted audio is much longer than the music video",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Macklemore & Ryan Lewis",
+   "title": "Downtown",
+   "charter": "jake4316",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Macklemore & Ryan Lewis",
+   "title": "Thrift Shop (feat. Wanz)",
+   "charter": "lpunderground19",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Madonna",
+   "title": "Material Girl",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 26500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Mariah Carey",
+   "title": "All I Want for Christmas Is You",
+   "charter": "FUGGNUTZ, drummerockband, kueller, mazegeek999",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video (B&W Version)",
+     "offset_ms": -6500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Song syncs, but music video is longer than the charted audio",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "MC Hammer",
+   "title": "U Can't Touch This",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 10250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metallica",
+   "title": "The Unforgiven II",
+   "charter": "MB1Nightmare",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric (The Clash at Demonhead)",
+   "title": "Black Sheep",
+   "charter": "PIK,WarMarioDragon",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Official Music Video (Film Ver.)",
+     "offset_ms": -187500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Sung by Captain Marvel Herself",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Breathing Underwater",
+   "charter": "markmc",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Dead Disco",
+   "charter": "Paolex",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Offical Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Gimmi Symphany",
+   "charter": "pksage",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Synthetica",
+   "charter": "markmc",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Youth Without Youth",
+   "charter": "anglebracket",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "MGMT",
+   "title": "Electric Feel",
+   "charter": "Daedalus, MrBurpler",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "MGMT",
+   "title": "Time to Pretend",
+   "charter": "rageer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Michael Jackson",
+   "title": "Black or White",
+   "charter": "markmc",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Official Music Video (Fan Edit)",
+     "offset_ms": -3875,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Michael Jackson",
+   "title": "Give In To Me",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -9000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Midnight Beast",
+   "title": "Better Than Sex",
+   "charter": "TheFrisk",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Mike Oldfield",
+   "title": "Nuclear",
+   "charter": "Linos Melendi",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "MGSV E3 2014 Trailer",
+     "offset_ms": 31000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Miley Cyrus",
+   "title": "Wrecking Ball",
+   "charter": "Nightmare Lyre & Gigakoops",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video (Director's Cut)",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "MOB CHOIR",
+   "title": "99",
+   "charter": "Linos Melendi",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Anime Op",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Muse",
+   "title": "Reapers",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2481,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/FancySkunk",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 SIngle"
+    }
+   ]
+  },
+  {
+   "artist": "Natalie Imbruglia",
+   "title": "Torn",
+   "charter": "Sygenysis + Nunchuck",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5200,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Need to track down where I got the chart from",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Nelly",
+   "title": "Hot in Herre",
+   "charter": "Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Nelly Furtado",
+   "title": "Promiscuous (Ft.Timbaland)",
+   "charter": "BornGamerRob",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "New Found Glory",
+   "title": "Hit or Miss",
+   "charter": "FUGGNUTZ",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Nicki Minaj",
+   "title": "Anaconda",
+   "charter": "BP",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 15750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Ninja Sex Party",
+   "title": "Danny Don't You Know",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 10000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Nirvana",
+   "title": "Where Did You Sleep Last Night",
+   "charter": "Ollie",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Performance",
+     "offset_ms": 52300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Noisestorm",
+   "title": "Crab Rave",
+   "charter": "VreyIsGrey",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 25000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "NSYNC",
+   "title": "Bye Bye Bye",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Offspring",
+   "title": "Want You Bad",
+   "charter": "Nunchuk & Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Ok Go",
+   "title": "Do what you want",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video (Ver. 2)",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "\"Juno\" Cast and Crew Dance",
+     "offset_ms": -1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Old Dominion",
+   "title": "Make It Sweet",
+   "charter": "Spindoctor",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Pantera",
+   "title": "Cowboys from Hell",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Paramore",
+   "title": "Emergency",
+   "charter": "GreenPanda12 & Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "PewDiePie",
+   "title": "Bitch Lasagna",
+   "charter": "Alternity",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Pink Guy",
+   "title": "Nickelodeon Girls",
+   "charter": "MissingElements",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Psy",
+   "title": "Daddy",
+   "charter": "SkyDown",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Psy",
+   "title": "Gangnam Style",
+   "charter": "pksage",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Psy",
+   "title": "Gentlemen",
+   "charter": "Ghostbyob",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Quad City DJ's",
+   "title": "Space Jam",
+   "charter": "BP",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Radiohead",
+   "title": "Fake Plastic Trees",
+   "charter": "Septekka",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Red Hot Chili Peppers",
+   "title": "Can't Stop",
+   "charter": "thewinnerisgreg",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 777,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Bringdown",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Republica",
+   "title": "Ready To Go",
+   "charter": "Four Neat Guys",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -33000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Rihanna",
+   "title": "California King Bed",
+   "charter": "BassSinger313",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 24800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "R. Kelly",
+   "title": "Ignition (Remix)",
+   "charter": "antiquation",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Santana",
+   "title": "Into The Night (feat. Chad Kroeger)",
+   "charter": "Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 14100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Savage Garden",
+   "title": "Truly Madly Deeply",
+   "charter": "Jordan",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -760,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Scatman John",
+   "title": "Scatman (ski-ba-bop-ba-dop-bop)",
+   "charter": "markmc",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Schmoyoho",
+   "title": "Songify The Room (You're Tearing Me Apart)",
+   "charter": "GreenPanda12 & Ultimate_MANG0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sex Bomb-Omb",
+   "title": "We are Sex Bomb-omb",
+   "charter": "Saint Harri",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Movie Clip",
+     "offset_ms": 66250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Shakira",
+   "title": "Hips Don't Lie (ft. Wyclef Jean)",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sia",
+   "title": "Big Girls Cry",
+   "charter": "Tails4eva",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Simple Plan",
+   "title": "I'd Do Anything",
+   "charter": "RyanHYK",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sir Mix-a-Lot",
+   "title": "Back Got Back",
+   "charter": "Omgyourdead",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Smashing Pumpkins",
+   "title": "Disarm",
+   "charter": "DemonUnicorns, BearzUnlimited",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Smashing Pumpkins",
+   "title": "The End Is The Begining Is The End",
+   "charter": "DemonUnicorns",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Smashing Pumpkins",
+   "title": "Rhinoceros",
+   "charter": "DemonUnicorns",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -200,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video desyncs slightly after guitar solo",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Smashing Pumpkins",
+   "title": "Tarantula",
+   "charter": "DemonUnicorns",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Smashing Pumpkins",
+   "title": "Tonight, Tonight",
+   "charter": "BearzUnlimited",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Smash Mouth",
+   "title": "I'm a Believer",
+   "charter": "Bansheeflyer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Soil",
+   "title": "Halo",
+   "charter": "Sygenysis + Nunchuck",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3150,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Desyncs after second chorus due to shorter version used in music video",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Spongebob Squarepants",
+   "title": "Campfire Song Song",
+   "charter": "GreenPanda12",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "TV Clip",
+     "offset_ms": 2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Steppenwolf",
+   "title": "Magic Carpet Ride",
+   "charter": "MrPrezident, MrBurpler, mrcoupdetat",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4800,
+     "submitted_by": "moocartoons sheet",
+     "notes": "desyncs a bit towards end of the song",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sum 41",
+   "title": "Underclass Hero",
+   "charter": "Jordan",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Taylor Swift",
+   "title": "Blank Space",
+   "charter": "funkydunkleman",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Team America",
+   "title": "America, Fuck Yeah",
+   "charter": "pksage",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tegan and Sara",
+   "title": "Alligator",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tegan and Sara",
+   "title": "Back in Your Head",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tegan and Sara",
+   "title": "Closer",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tegan and Sara",
+   "title": "Everything is AWESOME!",
+   "charter": "drummerockband and Gigakoops",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    },
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Film End Credits",
+     "offset_ms": 750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tegan and Sara",
+   "title": "I Was a Fool",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tegan and Sara",
+   "title": "Walking with a Ghost",
+   "charter": "drummerockband",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tenacious D",
+   "title": "Beelzeboss (The Final Showdown)",
+   "charter": "RealCheese",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Movie Clip",
+     "offset_ms": 70750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Tenacious D",
+   "title": "Wonderboy",
+   "charter": "MrPrezident",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 21250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Two Door Cinima Club",
+   "title": "Come Back Home",
+   "charter": "markmc",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Two Door Cinima Club",
+   "title": "Sun",
+   "charter": "Ungrateful Dead",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Two Door Cinima Club",
+   "title": "Undercover Martyn",
+   "charter": "BP",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Wannadies",
+   "title": "You & Me Song",
+   "charter": "AJFOne23",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Africa",
+   "charter": "chachi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Can't Knock The Hustle",
+   "charter": "chachi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -8500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "The Good Life",
+   "charter": "chachi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "High As A Kite",
+   "charter": "chachi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Keep Fishin",
+   "charter": "chachi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 70000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "\"Weird Al\" Yankovic",
+   "title": "Albuquerque",
+   "charter": "pksage",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Flash Fan Animation",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "\"Weird Al\" Yankovic",
+   "title": "White And Nerdy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Wheatus",
+   "title": "Teenage Dirtbag",
+   "charter": "anglebracket",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 4800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "will.i.am",
+   "title": "Scream & Shout ft. Britney Spears",
+   "charter": "Gigakoops & Nightmare Lyra",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Within Temptation",
+   "title": "Ice Queen",
+   "charter": "FbS-13",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -40150,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Yelle",
+   "title": "Que Veux Tu",
+   "charter": "i0brendan0",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 26750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "Yvlis",
+   "title": "The Fox (What Does the Fox Say?)",
+   "charter": "Gigakoops",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  },
+  {
+   "artist": "ZZ Top",
+   "title": "Sharp Dressed Man",
+   "charter": "Bansheeflyer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "C3 Single"
+    }
+   ]
+  }
+ ]
+}

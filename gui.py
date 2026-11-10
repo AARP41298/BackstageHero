@@ -194,6 +194,7 @@ class Song:
     song_id  : str  = ''
     artist   : str  = ''
     title    : str  = ''
+    game_origin: str = ''   # songs.dta game_origin of CON songs (mvdb source)
     review   : object = None   # CON download waiting for review (conpack.load_review)
     rendering: str  = ''       # '' | 'queued' | 'running'
 
@@ -279,6 +280,7 @@ def _scan_library(songs_folder, progress=None):
                     label=label, key=label.lower(),
                     has_video=has_vid, res='...' if has_vid else '-',
                     con=con, song_id=e['id'], artist=e['artist'], title=e['name'],
+                    game_origin=e.get('game_origin', ''),
                     review=review,
                     status=_review_status(review),
                     stag='warn' if review else ''))

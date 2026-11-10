@@ -1,0 +1,185 @@
+{
+ "source": "rb1",
+ "name": "Rock Band",
+ "songs": [
+  {
+   "artist": "Beastie Boys",
+   "title": "Sabotage",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band"
+    }
+   ]
+  },
+  {
+   "artist": "Faith No More",
+   "title": "Epic",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3435,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Bringdown",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band"
+    }
+   ]
+  },
+  {
+   "artist": "Freezepop",
+   "title": "Brainpower",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 28000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "I Think I'm Paranoid",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1"
+    }
+   ]
+  },
+  {
+   "artist": "Hole",
+   "title": "Celebrity Skin",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 600,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video is slightly shorter than charted audio and desyncs part ways in",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1"
+    }
+   ]
+  },
+  {
+   "artist": "The Killers",
+   "title": "When You Were Young",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "submitted_by": "moocartoons sheet",
+     "notes": "Pre Synced Official Music Video edit. Please refer to READ ME file for furthe instructions",
+     "sync_credit": "@Cinderkin",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1"
+    }
+   ]
+  },
+  {
+   "artist": "Ok Go",
+   "title": "Here it Goes Again",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Say it Ain't So",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band"
+    }
+   ]
+  },
+  {
+   "artist": "Whitesnake",
+   "title": "Here I Go Again",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4240,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band"
+    }
+   ]
+  },
+  {
+   "artist": "The Yeah Yeah Yeahs",
+   "title": "Maps",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 35400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "submitted_by": "moocartoons sheet",
+     "notes": "Pre Synced Official Music Video edit",
+     "sync_credit": "@Cinderkin",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1"
+    }
+   ]
+  }
+ ]
+}

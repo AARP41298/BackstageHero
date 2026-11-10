@@ -1,0 +1,1343 @@
+{
+ "source": "dlc",
+ "name": "Rock Band 1/2 DLC",
+ "songs": [
+  {
+   "artist": "30 Seconds to Mars",
+   "title": "Closer to the Edge",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 27000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "30 Seconds to Mars",
+   "title": "The Kill",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 67900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "3 Doors Down",
+   "title": "It's Not My Time",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "3 Doors Down",
+   "title": "Kryptonite",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3799,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Alanis Morissette",
+   "title": "Head Over Feet",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Alanis Morissette",
+   "title": "Ironic",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -899,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Alien Ant Farm",
+   "title": "Smooth Criminal",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Desyncs slightly after intermission in the video about 2:10 in",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Avenged Sevenfold",
+   "title": "Nightmare",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Vidoe",
+     "offset_ms": 4350,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Bangles",
+   "title": "Walk Like an Egyption",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Black Keys",
+   "title": "Strange Times",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 25250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Black Keys",
+   "title": "Your Touch",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 20100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Blind Melon",
+   "title": "No Rain",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 27000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Blink 182",
+   "title": "All The Small Things",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Blur (WaveGroup)",
+   "title": "Beetlebum",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6099,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Blur",
+   "title": "There's No Other Way",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5399,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Brooks & Dunn",
+   "title": "Hillbilly Deluxe",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -13200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Creedence Clearwater Revival",
+   "title": "Down on the Corner",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Fan Video",
+     "offset_ms": 800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "The Animal",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Another Way to Die",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -7700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Asylum",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -106199,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Indestructible",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -12560,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Inside the Fire",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 59898,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Stricken",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -899,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Stupify",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4599,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Voices",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 11000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Evanescence",
+   "title": "Bring Me to Life",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Franz Ferdinand",
+   "title": "Take Me Out",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Freezepop",
+   "title": "Less Tokk Moar Rokk",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -42500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Clint Eastwood",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 15000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video cuts off before extended instramental outro",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    },
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual",
+     "offset_ms": 40500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Feel Good Inc.",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 17000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    },
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Performance",
+     "offset_ms": 48500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Re-Hash",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Live Visual (Fan Recreation)",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "In This Moment",
+   "title": "Forever",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3350,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "2 Minutes to Midnight",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Aces High (Live)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Can I Play With Madness",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Hallowed Be Thy Name (Live)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -7700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Powerslave",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 20000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Run to the Hills (Original Version)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "The Trooper",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4399,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Wasted Years",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Kenny Rogers",
+   "title": "The Gambler",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4850,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Solid synch early, slowly drifts apart later in the song",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Bad Romance",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 10750,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Fun fact: I could FC this song on Dance Central (Hard)",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Just Dance",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Poker Face",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Motley Crue",
+   "title": "Dont Go Away Mad",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5600,
+     "submitted_by": "moocartoons sheet",
+     "notes": "MV uses a very short version of the song...cuts off about 75% through the chart",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Motley Crue",
+   "title": "Without You",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Nirvana",
+   "title": "Smells Like Teen Spirit",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -11500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Syncs up at start of first lyric to solo, out of sync for the rest",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "No Doubt",
+   "title": "Don't Speak",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 24910,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Oasis",
+   "title": "Don't Look Back in Anger",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Offspring",
+   "title": "Pretty Fly (For A White Guy)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 2635,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Ottis Redding",
+   "title": "(Sittin On) The Dock of the Bay",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Pixies",
+   "title": "Debaser",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Pixies",
+   "title": "Here Comes Your Man",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Poison",
+   "title": "Every Rose Has It's Thorn",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 22850,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Rancid",
+   "title": "Last One To Die",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Rancid",
+   "title": "Ruby Soho",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 10200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Reba McEntire",
+   "title": "Fancy",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 71800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Shania Twain",
+   "title": "Any Man of Mine",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6350,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Chart requires +3000ms Song Offset",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Smashing Pumpkins",
+   "title": "Zero",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Smash Mouth",
+   "title": "All Star",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 33500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Sonic Youth",
+   "title": "Kool Thing",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2150,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "System of a Down",
+   "title": "Toxicity",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Tenacious D",
+   "title": "Master Exploder",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Movie Clip",
+     "offset_ms": 42500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Toby Keith",
+   "title": "Beer for My Horses",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 51500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Toby Keith",
+   "title": "How Do You Like Me Now?",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 35825,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Toby Keith",
+   "title": "I Love This Bar",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 18400,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Starts in sync, slowly fades away",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "(If You're Wondering If I Want You To)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Beverly Hills",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 35250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Buddy Holly",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 32500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "El Scorcho",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Pork and Beans",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 5250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Troublemaker",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 8000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The White Stripes",
+   "title": "Dead Leaves and the Dity Ground",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The White Stripes",
+   "title": "Fell in Love with a Girl",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The White Stripes",
+   "title": "Icky Thump",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -825,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "X Japan",
+   "title": "IV",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1850,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Yeah Yeah Yeahs",
+   "title": "Date With The Night",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 1 DLC"
+    }
+   ]
+  }
+ ]
+}

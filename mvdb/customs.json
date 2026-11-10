@@ -3,110 +3,703 @@
  "name": "Custom Songs",
  "songs": [
   {
-   "artist": "Ariana Grande",
-   "title": "God is a woman",
+   "artist": "Amon Amarth",
+   "title": "The Pursuit of Vikings",
+   "charter": "BurpLeTurtle",
    "videos": [
     {
      "type": "official",
-     "youtube": "kHLHSlExFis",
-     "title": "Ariana Grande - God is a woman (Official Video)",
+     "youtube": "",
+     "title": "Official Music Video",
      "offset_ms": 0,
-     "autoedit": {
-      "segments": [
-       {
-        "ref_start": 0.0,
-        "ref_end": 97.944,
-        "vid_start": 0.0,
-        "vid_end": 97.476,
-        "speed": 0.9952
-       },
-       {
-        "ref_start": 97.944,
-        "ref_end": 134.561,
-        "vid_start": 105.747,
-        "vid_end": 142.312,
-        "speed": 0.9986
-       },
-       {
-        "ref_start": 134.561,
-        "ref_end": 191.587,
-        "vid_start": 169.791,
-        "vid_end": 226.777,
-        "speed": 0.9993
-       },
-       {
-        "ref_start": 191.587,
-        "ref_end": 197.59,
-        "vid_start": 225.902,
-        "vid_end": 231.905,
-        "speed": 1.0
-       }
-      ],
-      "log": [
-       "segment 0:00.000-1:37.476 change speed by -0.48%",
-       "segment 1:37.476-1:45.747 was cut",
-       "segment 2:22.312-2:49.791 was cut",
-       "at 3:11.587, the fragment 3:45.902-3:46.777 was inserted",
-       "segment 3:51.905-4:01.561 was cut (outro)"
-      ]
-     },
-     "submitted_by": "AARP41298",
-     "notes": "Video has a break at 1:37 and an interlude at 2:22, both cut.",
-     "reference_audio": "vpohuhgqf5w"
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Babymetal",
+   "title": "Megitsune",
+   "charter": "Matthew Jay Reynolds",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2550,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Billie Eilish",
+   "title": "bad guy",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC June 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Billie Eilish",
+   "title": "you should see me in a crown",
+   "charter": "aznkirby",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video (Instagram Ver.)",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Black Veil Brides",
+   "title": "In The End",
+   "charter": "FSG & ErupTi0n & Capt1an_GuitarHero",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Blur",
+   "title": "Coffee and TV",
+   "charter": "UKwonderboy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Blur",
+   "title": "Girls and Boys",
+   "charter": "Garbo",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Bomfunk MC's",
+   "title": "Freestyler",
+   "charter": "BurpLeTurtle",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -16700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Not available"
+    }
+   ]
+  },
+  {
+   "artist": "brentalfloss",
+   "title": "Wii Shop Channel With Lyrics",
+   "charter": "Mintorment",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 7750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC Sept 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Britney Spears",
+   "title": "...Baby One More Time",
+   "charter": "Haggis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 15000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Krystal",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC Sept 2021"
+    }
+   ]
+  },
+  {
+   "artist": "Britney Spears",
+   "title": "Toxic",
+   "charter": "Jaded",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC April 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Chelmico",
+   "title": "Easy Breezy",
+   "charter": "torqqes",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC June 2020"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "Paradise",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -27000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Daft Punk",
+   "title": "Digital Love",
+   "charter": "Raspberriel",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Film Sequence",
+     "offset_ms": -5500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Depeche Mode",
+   "title": "Enjoy The Silence",
+   "charter": "BurpLeTurtle",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 7034,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Bringdown",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "DJ Shadow",
+   "title": "Nobody Speak (feat. Run the Jewels)",
+   "charter": "Supradyke & iZenPenguin",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Krystal",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC Aug 2021"
+    }
+   ]
+  },
+  {
+   "artist": "Earl Scruggs",
+   "title": "Foggy Mountain Breakdown",
+   "charter": "Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Eminem",
+   "title": "The Real Slim Shady",
+   "charter": "Big Whoop Magazine",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Fatboy Slim",
+   "title": "Praise You",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Fountains of Wayne",
+   "title": "Stacy's Mom",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Garbage",
+   "title": "Stupid Girl",
+   "charter": "Sygenysis + Nunchuck",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
     }
    ]
   },
   {
    "artist": "Gorillaz",
-   "title": "Silent Running",
+   "title": "19-2000 (Soulchild Remix)",
+   "charter": "anglebracket",
    "videos": [
     {
      "type": "official",
-     "youtube": "_0Pf48RqSsg",
-     "title": "Gorillaz - Silent Running ft. Adeleye Omotayo (Official Video)",
+     "youtube": "",
+     "title": "Official Music Video (Mirror)",
+     "offset_ms": 4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "5/4",
+   "charter": "ShadowOfTheServer",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Fan Animation (2020)",
+     "offset_ms": 9750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    },
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual (Mirror)",
+     "offset_ms": -4500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "68 State",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Fan Visualizer",
+     "offset_ms": -11000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Andromeda (Feat. D.R.A.M)",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Visualizer",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Ascension (Feat. Vince Staples)",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Visualizer",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Dare",
+   "charter": "ShadowOfTheServer & Ruka",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 49250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    },
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Performance",
+     "offset_ms": 15000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Under \"eetsdae\"",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Helvian's Drive"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Humility",
+   "charter": "Richynator",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Kids with Guns",
+   "charter": "Kloporte",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Visualizer",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Momentary Bliss (feat. slowthai and Slaves)",
+   "charter": "BATE#0001",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 62500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "November Has Come",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual (Mirror)",
+     "offset_ms": -5500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Best I could do, Live version does not sync with original recording",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "O Green World",
+   "charter": "Ren752",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual",
      "offset_ms": 0,
-     "autoedit": {
-      "segments": [
-       {
-        "ref_start": 0.0,
-        "ref_end": 18.608,
-        "vid_start": 0.0,
-        "vid_end": 18.619,
-        "speed": 1.0006
-       },
-       {
-        "ref_start": 18.608,
-        "ref_end": 206.794,
-        "vid_start": 2.9,
-        "vid_end": 191.091,
-        "speed": 1.0
-       },
-       {
-        "ref_start": 206.794,
-        "ref_end": 240.409,
-        "vid_start": 175.371,
-        "vid_end": 209.029,
-        "speed": 1.0013
-       },
-       {
-        "ref_start": 240.409,
-        "ref_end": 266.421,
-        "vid_start": 191.238,
-        "vid_end": 216.786,
-        "speed": 0.9822
-       }
-      ],
-      "log": [
-       "at 0:18.608, the fragment 0:02.900-0:18.619 was inserted",
-       "at 3:26.794, the fragment 2:55.371-3:11.091 was inserted",
-       "at 4:00.409, the fragment 3:11.238-3:29.029 was inserted",
-       "segment 3:11.238-3:36.786 change speed by -1.78%"
-      ]
-     },
-     "crop": "crop=1920:816:0:132",
-     "submitted_by": "AARP41298",
-     "notes": "Album version is longer: intro, an extra section and the outro are filled with reused footage.",
-     "reference_audio": "GSLdiC48Q7Q"
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "On Melancoly Hill",
+   "charter": "ShadowOfTheServer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 28000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Punk",
+   "charter": "@dolordetula.exe",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual (Mirror)",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Rockit",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Saturnz Barz",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 139000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Sound Check (Gravity)",
+   "charter": "petegaveglia",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual (Mirror)",
+     "offset_ms": -5500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Stylo",
+   "charter": "Ultimate_MANG0, ShadowOfTheServer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "White Light",
+   "charter": "deadcanadian",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Visual (Mirror)",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Gorillaz Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Incubus",
+   "title": "Absolution Callin",
+   "charter": "GuitarZero132",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Krystal",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
     }
    ]
   },
@@ -125,6 +718,937 @@
      "youtube": "cSLQDiXtorY",
      "title": "South Park episode edited to Carry on Wayward Son",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "artist": "K/DA",
+   "title": "POP/STARS",
+   "charter": "JaysonTM",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Flamingo",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Fan Animation",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Lipslap",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 21750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Only Acting",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Trampoline",
+   "charter": "PrettyChillPhil",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "BUTTS TITS MONEY",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Anti Hero: Beach Ep"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "The Government Knows",
+   "charter": "Raspberriel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -7500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video starts after extended instramental outro",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "Overtime (Live Band Session)",
+   "charter": "GanonMetroid",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "Time Travler",
+   "charter": "JoeyD",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 23750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Circuit Breaker"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "G.U.Y.",
+   "charter": "gaebpls, Paturages",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC April 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Little V",
+   "title": "Aggretsko Theme",
+   "charter": "HaloMillennium",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Little V",
+   "title": "Face My Fears",
+   "charter": "RightBrain",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Mucic Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Little V",
+   "title": "U Got That",
+   "charter": "Big Whoop Magazine",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Motherlover (feat. Justin Timberlake)",
+   "charter": "Grim Birthday",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 13750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Louis Cole",
+   "title": "Mean It",
+   "charter": "JoeyD",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "M83",
+   "title": "Midnight City",
+   "charter": "XEntombmentX",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Cricuit Breaker"
+    }
+   ]
+  },
+  {
+   "artist": "Macklemore & Ryan Lewis",
+   "title": "Can't Hold Us (feat. Ray Dalton)",
+   "charter": "Oktoberfest",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 58250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Madeon",
+   "title": "Pop Culture",
+   "charter": "Paturages",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Nathan Barnatt Dance Video",
+     "offset_ms": 29500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Major Lazer",
+   "title": "Lean On",
+   "charter": "Raspberriel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Black Sheep",
+   "charter": "Mr Deftino",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Official Music Video (Film Ver.)",
+     "offset_ms": -16000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "From Scott Pilgrim Vs. The World",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "M.I.A.",
+   "title": "Paper Planes",
+   "charter": "phatnugget150",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Mick Gordon",
+   "title": "BFG Division",
+   "charter": "XEntombmentX",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC September 2018"
+    }
+   ]
+  },
+  {
+   "artist": "Mike Diva & Sick System",
+   "title": "Kazoo Kid-Trap Remix",
+   "charter": "Helvian",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Under file \"kazzokid\" (I renamed the artist in the .ini file)",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Helvian's Drive"
+    }
+   ]
+  },
+  {
+   "artist": "Missy Elliot",
+   "title": "Lose Control (feat. Ciara & Fatman Scoop)",
+   "charter": "Jaded",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Triangle Meme Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Why did I do this.",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC March 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Ninja Sex Party",
+   "title": "Mansion Party",
+   "charter": "MercuryHg34",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2650,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/FancySkunk",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Cohrus"
+    }
+   ]
+  },
+  {
+   "artist": "NOMA",
+   "title": "8 Awesome Angles of Youtube",
+   "charter": "Plumato & Shikitashi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "NOMA",
+   "title": "Brain Power",
+   "charter": "Aren Eternal",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Lyric Video",
+     "offset_ms": 10250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Circuit Breaker"
+    }
+   ]
+  },
+  {
+   "artist": "The Outfield",
+   "title": "Your Love",
+   "charter": "InevitableEnd",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 32500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "RB4 Recreation (FoF)"
+    }
+   ]
+  },
+  {
+   "artist": "Pluffaduff",
+   "title": "Baby i'm Back III",
+   "charter": "Pluffaduff",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Pluffaduff",
+   "title": "Baby i'm Back IV",
+   "charter": "Pluffaduff",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Included in chart",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Properly synced included vid",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Psy",
+   "title": "Gangnam Style",
+   "charter": "JoeyD",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Circuit Breaker"
+    }
+   ]
+  },
+  {
+   "artist": "Seth Everman",
+   "title": "Music Genre: Video Game 2",
+   "charter": "???",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "notes": "The chart I got didn't list the charter in the .ini",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Shawn Wasabi",
+   "title": "Burnt Rice",
+   "charter": "CyclopsDragon",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC June 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Silvagunner",
+   "title": "Dedede Fusion Collab",
+   "charter": "LordMau5",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Unofficial Visual",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "LordMau5's Drive"
+    }
+   ]
+  },
+  {
+   "artist": "Skid Row",
+   "title": "18 And Life",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Skid Row",
+   "title": "I Remember You",
+   "charter": "clintilona",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3835,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "SOPHIE",
+   "title": "Ponyboy",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sum 41",
+   "title": "Fat Lip",
+   "charter": "JaysonTM",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 18400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sumire Uesaka",
+   "title": "Pop Team Epic",
+   "charter": "Ghostbyob, Linos Melendi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Music Video (Vimeo Recording)",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "J-Rock Band Reboot"
+    }
+   ]
+  },
+  {
+   "artist": "Superorganism",
+   "title": "Night Time",
+   "charter": "MRFKontesSEO",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Taylor Swift",
+   "title": "Fearless",
+   "charter": "Amak11",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 8700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Not available"
+    }
+   ]
+  },
+  {
+   "artist": "Team 10",
+   "title": "It's Everyday Bro",
+   "charter": "JaysonTM",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Teenage Wrist",
+   "title": "Earth Is A Black Hole",
+   "charter": "Seven Chakras",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Krystal",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Tenacious D",
+   "title": "Master Exploder",
+   "charter": "XEntombmentX",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Movie Clip",
+     "offset_ms": 43250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC Sept 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Travis $cott",
+   "title": "Sicko Mode (Feat. Drake)",
+   "charter": "st0rm",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "\"Official\" Video",
+     "offset_ms": -250,
+     "submitted_by": "moocartoons sheet",
+     "notes": "\"That\" version",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "This One"
+    }
+   ]
+  },
+  {
+   "artist": "Trivium",
+   "title": "The Sin and the Sentence",
+   "charter": "Miscellany",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -17365,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Two Door Cinima Club",
+   "title": "What You Know",
+   "charter": "Phyrexius",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Utada Hikaru",
+   "title": "Sanctuary",
+   "charter": "Gooba",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Kingdom Hearts 2 Opening",
+     "offset_ms": 30000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Kingdom Hearts Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Utada Hikaru",
+   "title": "SImple and Clean",
+   "charter": "Gooba",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Kingdom Hearts Opening",
+     "offset_ms": 41000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Kingdom Hearts Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Utada Hikaru & Skrillex",
+   "title": "Face My Fears",
+   "charter": "Mintorment",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Kingdom Hearts 3 Opening",
+     "offset_ms": 18500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Weather Girls",
+   "title": "It's Raining Men",
+   "charter": "Jaded",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -20250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC August 2018"
+    }
+   ]
+  },
+  {
+   "artist": "Wham!",
+   "title": "Wake Me Up Before You Go-Go",
+   "charter": "Paturages",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC August 2018"
+    }
+   ]
+  },
+  {
+   "artist": "The Yeah Yeah Yeahs",
+   "title": "Heads Will Role",
+   "charter": "Jaded",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC Oct 2018"
+    }
+   ]
+  },
+  {
+   "artist": "Yoshinori Nakamura",
+   "title": "The Most Muscular",
+   "charter": "Mintorment",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "My Own Goshdarn Gameplay",
+     "offset_ms": 29000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Why yes, I am overpromoting my GAMER SQUATS",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Mintorment's Drive"
     }
    ]
   }

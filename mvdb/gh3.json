@@ -1,0 +1,39 @@
+{
+ "source": "gh3",
+ "name": "Guitar Hero III: Legends of Rock",
+ "songs": [
+  {
+   "artist": "The Killers",
+   "title": "When You Were Young",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "submitted_by": "moocartoons sheet",
+     "notes": "Pre Synced Official Music Video edit. Please refer to READ ME file for furthe instructions",
+     "sync_credit": "@Cinderkin",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero 3"
+    }
+   ]
+  },
+  {
+   "artist": "Sex Pistols",
+   "title": "Anarchy in the UK",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Macho❤Sadness #9946",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero 3"
+    }
+   ]
+  }
+ ]
+}

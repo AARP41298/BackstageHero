@@ -1,0 +1,57 @@
+{
+ "source": "ghwt",
+ "name": "Guitar Hero: World Tour",
+ "songs": [
+  {
+   "artist": "Airbourne",
+   "title": "Too Much, Too Young, Too Fast",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero World Tour"
+    }
+   ]
+  },
+  {
+   "artist": "Alien Ant Farm",
+   "title": "Smooth Criminal",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "CloudX",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero World Tour"
+    }
+   ]
+  },
+  {
+   "artist": "Foo Fighters",
+   "title": "Everlong",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero World Tour"
+    }
+   ]
+  }
+ ]
+}

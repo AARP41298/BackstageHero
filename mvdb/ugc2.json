@@ -1,0 +1,278 @@
+{
+ "source": "ugc2",
+ "name": "Rock Band Network 2.0",
+ "songs": [
+  {
+   "artist": "The Agonist",
+   "title": "Thank You, Pain.",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -440,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Anamanguchi",
+   "title": "Airbrushed",
+   "charter": "RockGamer",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Visual",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Asking Alexandria",
+   "title": "A Prophecy (RB3 version)",
+   "charter": "RhythmAuthors",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Black Tide",
+   "title": "Warriors of Time",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Performance",
+     "offset_ms": 20500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Celldweller",
+   "title": "Unshakeable",
+   "charter": "RBN Unknown Author",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Drowning Pool",
+   "title": "Bodies",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2940,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Eiffil 65",
+   "title": "Blue",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Eurobeat Brony",
+   "title": "Discord (The Living Tombstone Remix)",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "The Haunted",
+   "title": "No Ghost",
+   "charter": "RockGamer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 37000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "The Haunted",
+   "title": "Trenches",
+   "charter": "Alt-StrumProductions",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Lemon Demon",
+   "title": "The Ultimate Showdown (RBN Mix)",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Animation",
+     "offset_ms": -5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Netowrk"
+    }
+   ]
+  },
+  {
+   "artist": "Mega64",
+   "title": "My Name's Horatio, You Got Me, (Etc.)",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "",
+     "title": "Clip",
+     "offset_ms": -5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Rose of Jericho",
+   "title": "Buried Cold (RB3 version)",
+   "charter": "RhythmAuthors",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Rose of Jericho",
+   "title": "Midnight Eyes (RB3 version)",
+   "charter": "roseofjericho",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -6000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Stan Bush",
+   "title": "The Touch",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Network"
+    }
+   ]
+  },
+  {
+   "artist": "Weebl's Stuff",
+   "title": "Amazing Horse",
+   "charter": "RBN Charters",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Extended Video",
+     "offset_ms": -900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Networks"
+    }
+   ]
+  }
+ ]
+}

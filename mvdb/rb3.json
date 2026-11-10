@@ -1,0 +1,195 @@
+{
+ "source": "rb3",
+ "name": "Rock Band 3",
+ "songs": [
+  {
+   "artist": "Def Leppard",
+   "title": "Foolin'",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "Huey Lewis and The News",
+   "title": "The Power of Love",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 132200,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Desyncs about two thirds through due to slight audio difference in video",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "Jimmy Eat World",
+   "title": "The Middle",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "Joan Jett & The Blackhearts",
+   "title": "I Love Rock N' Roll",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 24300,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video uses slightly different audio to chart, so sync is not perfect",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Combat Baby",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "The Ravonettes",
+   "title": "Last Dance",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "Roy Orbison",
+   "title": "Blue Bayou",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Tribute Video",
+     "offset_ms": -3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "The Sounds",
+   "title": "Living in America",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3650,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "Tegan and Sara",
+   "title": "The Con",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "The Vines",
+   "title": "Get Free",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  },
+  {
+   "artist": "The White Stripes",
+   "title": "The Hardest Button to Button",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3"
+    }
+   ]
+  }
+ ]
+}

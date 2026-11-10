@@ -1,0 +1,23 @@
+{
+ "source": "bh",
+ "name": "Band Hero",
+ "songs": [
+  {
+   "artist": "Ok Go",
+   "title": "A Million Ways",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 7500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Band Hero"
+    }
+   ]
+  }
+ ]
+}

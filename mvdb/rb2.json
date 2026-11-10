@@ -1,0 +1,307 @@
+{
+ "source": "rb2",
+ "name": "Rock Band 2",
+ "songs": [
+  {
+   "artist": "Alanis Morissette",
+   "title": "You Oughta Know",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3199,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Beastie Boys",
+   "title": "So WhatCha Want",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "offset_ms": 1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Beck",
+   "title": "E-Pro",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -13650,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video starts 8s after audio",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Breaking Benjamin",
+   "title": "The Diary of Jane",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Breaking Benjamin",
+   "title": "I Will Not Fall",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Disturbed",
+   "title": "Down With The Sickness",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -15699,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Foo Fighters",
+   "title": "Everlong",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Journey",
+   "title": "Any Way You Want It",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 35470,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Song desyncs very slightly about halfway through",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Lit",
+   "title": "My Own Worst Enemy",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 9100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Modest Mouse",
+   "title": "Float On",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "The Offspring",
+   "title": "Come Out and Play (Keep 'em Separated)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Panic! at the Disco",
+   "title": "Nine it the Afternoon",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 2800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Pearl Jam",
+   "title": "Jeremy",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 13600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Red Hot Chili Peppers",
+   "title": "Give it Away Now",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Silversun Pickups",
+   "title": "Lazy Eye",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3900,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video ends 3/4 way thru chart",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Smashing Pumpkins",
+   "title": "Today",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 19200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "artist": "Warren Zeevon",
+   "title": "Werewolves of London",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 2"
+    }
+   ]
+  }
+ ]
+}

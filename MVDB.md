@@ -21,7 +21,10 @@ keys of Rock Band 3 Deluxe's
 | `customs.json`   | other custom songs             |
 | `gh3.json`, `ghwt.json`, ... | Guitar Hero games  |
 
-The full list is `SOURCES` in [`mvdb.py`](mvdb.py).
+The full list is `SOURCES` in [`mvdb.py`](mvdb.py). For CON songs the source
+is the songs.dta `game_origin`, read by Nautilus (a build with `game_origin`
+in its `-backstagehero list` output); a `game_origin` that isn't in the list
+gets a file of its own.
 
 ## Format
 
@@ -110,8 +113,8 @@ what each person syncs for the songs they like.
    database doesn't have yet: rendered CON songs (with their auto-edit) and
    song folders that have a `backstagehero_source` in `song.ini`.
 4. Check the `type` (everything starts as `official`) and the `source`
-   (everything starts as `customs`), then attach the file to an issue or
-   pull request.
+   (CON songs use their `game_origin`, song folders start as `customs`), then
+   attach the file to an issue or pull request.
 
 To merge submissions:
 

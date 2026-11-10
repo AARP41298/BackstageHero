@@ -1,0 +1,971 @@
+{
+ "source": "rb3dlc",
+ "name": "Rock Band 3 DLC",
+ "songs": [
+  {
+   "artist": "38 Special",
+   "title": "Hold on Loosely",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Tribute Video",
+     "offset_ms": -2700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "3 Doors Down",
+   "title": "Here Without You",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "3 Doors Down",
+   "title": "When You're Young",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "A Flock of Seagulls",
+   "title": "I Ran (So Far Away)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -70599,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "A-Ha",
+   "title": "Take On Me",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Andrew WK",
+   "title": "Party Hard",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 13900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Beastie Boys",
+   "title": "No Sleep Til Brooklyn",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 28800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Bee Gees",
+   "title": "Stayin' Alive",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Billy Squier",
+   "title": "Everybody Wants You",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -450,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Black Keys",
+   "title": "Howlin' for You",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Black Keys",
+   "title": "Lonely Boy",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Black Keys",
+   "title": "Tighten Up",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 20650,
+     "submitted_by": "moocartoons sheet",
+     "notes": "In Sync until comedic speaking break in video",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "B.o.B. ft Hayley Williams",
+   "title": "Airplanes",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4875,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Bon Jovi",
+   "title": "Blaze of Glory",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Buffalo Springfield",
+   "title": "For What It's Worth",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Youtube Compilation Video",
+     "offset_ms": -2250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Carley Rae Jepson",
+   "title": "Call Me Maybe",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Carrie Underwood",
+   "title": "Before He Cheats",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Chumbawumba",
+   "title": "Tubthumping",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Cinderella",
+   "title": "Don't Know What You Got (Til Its Gone)",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "Clocks",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "Every Teardrop is a Waterfall",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2699,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "Fix You",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -9100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "The Scientist",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -32500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "Viva la Vida",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4399,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "Yellow",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1050,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    },
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Creedence Clearwater Revival",
+   "title": "Lodi",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Official Lyric Video",
+     "offset_ms": -3800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Cutting Crew",
+   "title": "(I Just) Died in Your Arms",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 450,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "The Darkness",
+   "title": "I Believe In A Thing Called Love",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 8100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "EMF",
+   "title": "Unbelievable",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -18000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Foster The People",
+   "title": "Helena Beat",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Huey Lewis and The News",
+   "title": "Do You Believe in Love",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Huey Lewis and The News",
+   "title": "Heart of Rock and Roll",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 13100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Incubus",
+   "title": "Drive",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Flight of Icarus",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4898,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Infinite Dreams",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4199,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "Rime of the Ancient Mariner",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -7500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Jason Aldean",
+   "title": "Crazy Town",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Crazy Town (Live)",
+     "offset_ms": 2500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video is from a live show but very closely synced",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Korn",
+   "title": "Freak on a Leash",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Born This Way",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 150000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "LoveGame",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Lady Gaga",
+   "title": "Paparazzi",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 147250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Matchbox 20",
+   "title": "Bent",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Men at Work",
+   "title": "Down Under",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2100,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Source video contains bad lip syncing",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Nickleback",
+   "title": "How You Remind Me",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Red Hot Chili Peppers",
+   "title": "Californication",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "REO Speedwagon",
+   "title": "Keep on Loving You",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 8300,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Rick Astly",
+   "title": "Never Gonna Give You Up",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Santana",
+   "title": "Smooth ft. Rob Thomas",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Sheryl Crow",
+   "title": "All I Wanna Do",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Original Music Video",
+     "offset_ms": -4700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Slipknot",
+   "title": "Wait and Bleed",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Tears for Fears",
+   "title": "Head over Heels",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Train",
+   "title": "Drops of Jupiter",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "",
+     "title": "Fan Video",
+     "offset_ms": -5200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Back To The Shack",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 24500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Hash Pipe",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Island In The Sun",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Weezer",
+   "title": "Perfect Situation",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -16500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band 3 DLC"
+    }
+   ]
+  }
+ ]
+}

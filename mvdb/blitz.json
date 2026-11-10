@@ -1,0 +1,108 @@
+{
+ "source": "blitz",
+ "name": "Rock Band Blitz",
+ "songs": [
+  {
+   "artist": "Barenaked Ladies",
+   "title": "One Week",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -799,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Blitz"
+    }
+   ]
+  },
+  {
+   "artist": "Collective Soul",
+   "title": "Shine",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4399,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Blitz"
+    }
+   ]
+  },
+  {
+   "artist": "Foster The People",
+   "title": "Pumped Up Kids",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Blitz"
+    }
+   ]
+  },
+  {
+   "artist": "Fun.",
+   "title": "We Are Young ft. Janelle Monáe",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Blitz"
+    }
+   ]
+  },
+  {
+   "artist": "Iron Maiden",
+   "title": "The Wicker Man",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4800,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "taynaron#0385",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Blitz"
+    }
+   ]
+  },
+  {
+   "artist": "Living Color",
+   "title": "Cult of Personality",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Rock Band Blitz"
+    }
+   ]
+  }
+ ]
+}

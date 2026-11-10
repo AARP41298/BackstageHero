@@ -136,7 +136,7 @@ def _save_cache(cache):
 
 
 def list_songs(cons, progress=None):
-    """{con_path: [{'id','name','artist'}...]} for each CON, plus {con: error} for
+    """{con_path: [{'id','name','artist','game_origin'}...]} for each CON, plus {con: error} for
     the ones that couldn't be read. progress(done, total) is called as it goes."""
     cache = _load_cache()
     result, errors = {}, {}
@@ -166,9 +166,12 @@ def list_songs(cons, progress=None):
             out = os.path.join(work, f'{i}.json')
             try:
                 _run_nautilus(['list', con, out], out)
+                # game_origin needs a Nautilus build from after it was added;
+                # older builds leave it '' and songs fall back to 'customs'
                 with open(out, encoding='utf-8') as f:
                     songs = [{'id': s['id'], 'name': s.get('name') or s['id'],
-                              'artist': s.get('artist') or ''}
+                              'artist': s.get('artist') or '',
+                              'game_origin': s.get('game_origin') or ''}
                              for s in json.load(f) if s.get('id')]
             except Exception as e:
                 if 'no songs.dta' not in str(e):
@@ -551,7 +554,8 @@ def record_contribution(con, song_id, state, artist='', title='', source=''):
                                 title=state.get('title', ''),
                                 offset_ms=0 if plan else state.get('offset'),
                                 autoedit=plan, pack=os.path.basename(con))
-        items.append({'source': source or mvdb.DEFAULT_SOURCE, 'song': song, 'video': video})
+        source = source or meta.get('game_origin') or mvdb.DEFAULT_SOURCE
+        items.append({'source': mvdb.source_key(source), 'song': song, 'video': video})
         tmp = _CONTRIB_FILE + '.tmp'
         with open(tmp, 'w', encoding='utf-8') as f:
             json.dump(items, f, indent=1)

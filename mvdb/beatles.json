@@ -1,0 +1,23 @@
+{
+ "source": "beatles",
+ "name": "The Beatles: Rock Band",
+ "songs": [
+  {
+   "artist": "The Beatles",
+   "title": "Revolution",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "The Beatles: Rock Band"
+    }
+   ]
+  }
+ ]
+}

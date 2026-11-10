@@ -694,7 +694,8 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
         candidates = [c for c in search_candidates(query, SEARCH_RESULTS + len(bad))
                       if video_id_of(c[0]) not in bad]
         # videos the music video database knows for this song go first
-        for c in reversed(_db_candidates(song_id, artist, title)):
+        origin = conpack._song_meta(con, song_id).get('game_origin')
+        for c in reversed(_db_candidates(song_id, artist, title, origin)):
             if video_id_of(c[0]) not in bad:
                 candidates = [c] + [x for x in candidates if x[0] != c[0]]
         if ids['good'] and ids['good'] not in bad:
@@ -765,13 +766,15 @@ def _plan_autoedit(work):
     return plan
 
 
-def _db_candidates(con_id, artist, title):
+def _db_candidates(con_id, artist, title, source=None):
     """(url, title, None) for videos the music video database lists for a song."""
     if mvdb is None:
         return []
     try:
         db = mvdb.load()
-        vids = mvdb.videos_for(db, con_id, artist, title)
+        # the song's own source first (its offsets are for that chart), then any
+        vids = (mvdb.videos_for(db, con_id, artist, title, mvdb.source_key(source))
+                if source else []) or mvdb.videos_for(db, con_id, artist, title)
     except Exception:
         return []
     return [('https://www.youtube.com/watch?v=' + v['youtube'],

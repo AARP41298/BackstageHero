@@ -35,7 +35,7 @@ SOURCES = {
     'ugc1': 'Rock Band Network 1.0', 'ugc2': 'Rock Band Network 2.0',
     'blitz': 'Rock Band Blitz', 'pearljam': 'Pearl Jam: Rock Band',
     'rb4': 'Rock Band 4', 'rb4dlc': 'Rock Band 4 DLC', 'rbvr': 'Rock Band VR',
-    'rb4_rivals': 'Rock Band Rivals', 'lost_dlc': 'Lost Rock Band DLC',
+    'rb4_rivals': 'Rock Band Rivals', 'rb4_dlc': 'Rock Band 4 DLC', 'rbjapan': 'Rock Band Japan', 'lost_dlc': 'Lost Rock Band DLC',
     'rbtp_vol_1': 'Track Pack Vol. 1', 'rbtp_vol_2': 'Track Pack Vol. 2',
     'rbtp_acdc': 'AC/DC Live Track Pack', 'rbtp_classic_rock': 'Classic Rock Track Pack',
     'rbtp_country_1': 'Country Track Pack', 'rbtp_country_2': 'Country Track Pack 2',
@@ -48,8 +48,10 @@ SOURCES = {
     'gh5': 'Guitar Hero 5', 'gh5dlc': 'Guitar Hero 5 DLC', 'bh': 'Band Hero',
     'ghvh': 'Guitar Hero: Van Halen', 'ghwor': 'Guitar Hero: Warriors of Rock',
     'ghwordlc': 'Guitar Hero: Warriors of Rock DLC', 'ghl': 'Guitar Hero Live',
-    'c3customs': 'C3 Customs', 'customs': 'Custom Songs',
-    'ugc_rv': 'RhythmVerse Customs', 'ch': 'Clone Hero',
+    'c3customs': 'C3 Customs', 'customs': 'Custom Songs', 'rb1_dlc': 'Rock Band 1/2 DLC',
+    'ugc': 'Custom Songs', 'ugc_plus': 'Custom Songs', 'ugc_c3': 'C3 Customs',
+    'ugc_lost': 'Lost Rock Band Network', 'ugc_rv': 'RhythmVerse Customs',
+    'c3legacy': 'Legacy C3 Customs', 'ch': 'Clone Hero',
 }
 DEFAULT_SOURCE = 'customs'
 
@@ -72,9 +74,12 @@ _SOURCE_ALIASES = [
 
 
 def source_key(name):
-    """Map a source name (or an existing key) to a source key."""
+    """Map a source name, a songs.dta game_origin, or a key to a source key."""
     n = (name or '').strip().lower()
     if n in SOURCES:
+        return n
+    # an unknown game_origin (a custom pack's own value) keeps its own file
+    if re.fullmatch(r'[a-z0-9]+_[a-z0-9_]+', n):
         return n
     for pat, key in _SOURCE_ALIASES:
         if re.search(pat, n):

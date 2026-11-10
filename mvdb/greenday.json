@@ -1,0 +1,74 @@
+{
+ "source": "greenday",
+ "name": "Green Day: Rock Band",
+ "songs": [
+  {
+   "artist": "Green Day",
+   "title": "21 Guns",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Green Day: Rock Band DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Green Day",
+   "title": "Know Your Enemy",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Green Day: Rock Band"
+    }
+   ]
+  },
+  {
+   "artist": "Green Day",
+   "title": "Last of the American Girls",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Green Day: Rock Band DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Green Day",
+   "title": "Whatsername",
+   "charter": "Harmonix",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "",
+     "title": "Live Performance",
+     "offset_ms": -24600,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Green Day: Rock Band"
+    }
+   ]
+  }
+ ]
+}

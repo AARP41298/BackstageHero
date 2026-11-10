@@ -1,0 +1,57 @@
+{
+ "source": "gh5dlc",
+ "name": "Guitar Hero 5 DLC",
+ "songs": [
+  {
+   "artist": "Faith No More",
+   "title": "Epic",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3275,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Bringdown",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero 5 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Ok Go",
+   "title": "Get Over It",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero 5 DLC"
+    }
+   ]
+  },
+  {
+   "artist": "Papa Roach",
+   "title": "Last Resort",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -5100,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero 5 DLC"
+    }
+   ]
+  }
+ ]
+}

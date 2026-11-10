@@ -1,0 +1,23 @@
+{
+ "source": "gha",
+ "name": "Guitar Hero: Aerosmith",
+ "songs": [
+  {
+   "artist": "Joan Jett & The Blackhearts",
+   "title": "I Hate Myself For Loving You",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 4200,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero: Aerosmith"
+    }
+   ]
+  }
+ ]
+}

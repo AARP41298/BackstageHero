@@ -1,0 +1,57 @@
+{
+ "source": "ghwor",
+ "name": "Guitar Hero: Warriors of Rock",
+ "songs": [
+  {
+   "artist": "5FDP",
+   "title": "Hard To See",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 3457,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Bringdown",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "GH Warriors of Rock"
+    }
+   ]
+  },
+  {
+   "artist": "The Dillinger Escape Plan",
+   "title": "Setting Fire To Sleeping Giants",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 6150,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Guitar Hero: WoR"
+    }
+   ]
+  },
+  {
+   "artist": "SoundGarden",
+   "title": "Black Rain",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 29755,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Bringdown",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Warriors of Rock"
+    }
+   ]
+  }
+ ]
+}
