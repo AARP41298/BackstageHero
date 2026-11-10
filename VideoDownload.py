@@ -50,6 +50,14 @@ import conpack
 __version__ = '2.2.1-rc1'
 
 try:
+    import autoedit
+except Exception:
+    autoedit = None
+try:
+    import mvdb
+except Exception:
+    mvdb = None
+try:
     import audiosync
 except Exception:
     audiosync = None
@@ -685,6 +693,10 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
         # pull extra results to make up for the ones already marked bad
         candidates = [c for c in search_candidates(query, SEARCH_RESULTS + len(bad))
                       if video_id_of(c[0]) not in bad]
+        # videos the music video database knows for this song go first
+        for c in reversed(_db_candidates(song_id, artist, title)):
+            if video_id_of(c[0]) not in bad:
+                candidates = [c] + [x for x in candidates if x[0] != c[0]]
         if ids['good'] and ids['good'] not in bad:
             good_url = 'https://www.youtube.com/watch?v=' + ids['good']
             candidates = [(good_url, 'previously approved video', None)] + \
@@ -706,7 +718,14 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
                                           conpack.video_format(target_h or 720), info=vinfo)
         if matched and used_url != url:
             offset, matched = DEFAULT_START_TIME, False
-        conpack.save_review(con, song_id, video_id_of(used_url), offset, matched, vid_title)
+        plan = _plan_autoedit(work) if sync_ready else None
+        if plan and not autoedit.needs_edit(plan) and not matched:
+            # single offset that audiosync missed: use it, no rebuild needed
+            offset, matched, plan = autoedit.offset_ms(plan), True, None
+        elif plan and not autoedit.needs_edit(plan):
+            plan = None
+        conpack.save_review(con, song_id, video_id_of(used_url), offset, matched, vid_title,
+                            autoedit=plan)
         # the chart audio was only needed for matching
         for name in os.listdir(work):
             if name not in ('video.mp4', 'state.json'):
@@ -714,12 +733,50 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
                     os.remove(os.path.join(work, name))
                 except OSError:
                     pass
-        print('  Downloaded, waiting for review (' + ('auto-synced' if matched else 'default offset') + ')')
+        how = (f'auto-edit, {len(plan["log"])} edit(s)' if plan
+               else 'auto-synced' if matched else 'default offset')
+        print('  Downloaded, waiting for review (' + how + ')')
         ok = True
     finally:
         if not ok:
             shutil.rmtree(work, ignore_errors=True)
     return 'review'
+
+
+def _plan_autoedit(work):
+    """Auto-edit plan for a CON download (song.wav vs the downloaded video), with
+    its edit log, or None when it can't be trusted or autoedit isn't usable."""
+    ref, raw = os.path.join(work, 'song.wav'), os.path.join(work, 'video.mp4')
+    if autoedit is None or not (os.path.exists(ref) and os.path.exists(raw)):
+        return None
+    try:
+        _substep(0.9, '(auto-edit)')
+        plan = autoedit.plan(ref, raw)
+    except Exception as e:
+        print('  Auto-edit check failed (' + str(e) + ')')
+        return None
+    if not plan['ok']:
+        print('  Auto-edit: no confident match')
+        return None
+    plan['log'] = autoedit.edit_log(plan['segments'], conpack._duration(raw))
+    print('  Auto-edit: ' + plan['info'])
+    for e in plan['log']:
+        print('    ' + e['text'])
+    return plan
+
+
+def _db_candidates(con_id, artist, title):
+    """(url, title, None) for videos the music video database lists for a song."""
+    if mvdb is None:
+        return []
+    try:
+        db = mvdb.load()
+        vids = mvdb.videos_for(db, con_id, artist, title)
+    except Exception:
+        return []
+    return [('https://www.youtube.com/watch?v=' + v['youtube'],
+             v.get('title') or f'database ({v.get("type")})', None)
+            for v in vids if v.get('youtube')]
 
 
 def process_resync(folder, song_name, sync_ready):

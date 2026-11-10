@@ -24,12 +24,13 @@ from VideoDownload import (
     ffmpegAvailable, ffplayPath, audiosync, __version__,
     DEFAULT_START_TIME, get_stored_source, NO_WINDOW,
     SONG_DELAY_MIN, SONG_DELAY_MAX, probe_resolution, scan_song,
-    probe_video_height,
+    probe_video_height, _read_ini_value as _ini_value,
 )
 import conpack
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import updater
 import resolver_client
+import mvdb
 
 log = logging.getLogger('backstagehero')
 
@@ -229,6 +230,16 @@ def _open_log():
     _open_in_file_manager(path if os.path.exists(path) else updater.data_dir())
 
 
+def _review_status(review):
+    """Status text for a CON song waiting for review."""
+    if not review:
+        return ''
+    plan = review.get('autoedit')
+    if plan:
+        return f'◆  Review download (auto-edit, {len(plan.get("log") or [])} edits)'
+    return '◆  Review download'
+
+
 def _scan_library(songs_folder, progress=None):
     """Return a list[Song] for the folder, sorted alphabetically.
     progress(count) is called periodically so the UI can show a live tally."""
@@ -269,7 +280,7 @@ def _scan_library(songs_folder, progress=None):
                     has_video=has_vid, res='...' if has_vid else '-',
                     con=con, song_id=e['id'], artist=e['artist'], title=e['name'],
                     review=review,
-                    status='◆  Review download' if review else '',
+                    status=_review_status(review),
                     stag='warn' if review else ''))
         for con, err in con_errors.items():
             log.warning('Could not read %s: %s', con, err)
@@ -1166,9 +1177,16 @@ class App(ctk.CTk):
             command=self._on_share_toggle)
         share_cb.grid(row=0, column=6, padx=(12, 4), pady=15)
 
+        # Videos you synced that the music video database doesn't have yet
+        self._missed_btn = ctk.CTkButton(
+            foot, text='⇪  Missed entries', width=140, font=_foot_font,
+            fg_color='#313244', hover_color='#414160', text_color=_TEXT,
+            command=self._export_missed, **_fbtn)
+        self._missed_btn.grid(row=0, column=7, padx=4, pady=15)
+
         # Progress + status (right side of footer)
         prog_frame = ctk.CTkFrame(foot, fg_color='transparent')
-        prog_frame.grid(row=0, column=7, padx=(8, 16), pady=15, sticky='e')
+        prog_frame.grid(row=0, column=8, padx=(8, 16), pady=15, sticky='e')
 
         self._progress = ctk.CTkProgressBar(prog_frame, width=190, height=8,
                                              corner_radius=4)
@@ -1182,6 +1200,66 @@ class App(ctk.CTk):
         self._status_lbl.pack()
 
         self._update_buttons()
+
+    # ---- music video database contributions ------------------------------------
+
+    def _local_videos(self):
+        """Every video this library has that we know the YouTube source of, as
+        mvdb submission items: rendered CON songs plus song folders whose
+        song.ini has the backstagehero_source BackstageHero writes."""
+        items = list(conpack.load_contributions())
+        for s in getattr(self, '_songs', []) or []:
+            if s.con or not s.has_video:
+                continue
+            vid = _ini_value(s.folder, 'backstagehero_source')
+            if not vid:
+                continue
+            off = _ini_value(s.folder, 'video_start_time')
+            try:
+                off = int(float(off)) if off else None
+            except ValueError:
+                off = None
+            song = {'artist': _ini_value(s.folder, 'artist') or s.artist,
+                    'title': _ini_value(s.folder, 'name') or s.title or s.label}
+            charter = _ini_value(s.folder, 'charter')
+            if charter:
+                song['charter'] = charter
+            items.append({'source': mvdb.DEFAULT_SOURCE, 'song': song,
+                          'video': mvdb.make_video(vid, 'official', offset_ms=off)})
+        return items
+
+    def _export_missed(self):
+        name = self._settings.get('contributor_name', '')
+        if not name:
+            dlg = ctk.CTkInputDialog(
+                title='Missed entries',
+                text='Name to credit you with in the database\n'
+                     '(GitHub / Discord / Reddit name):')
+            name = (dlg.get_input() or '').strip()
+            if not name:
+                return
+            self._persist_setting('contributor_name', name)
+        try:
+            db = mvdb.load()
+            entries = mvdb.missed_entries(db, self._local_videos(), name)
+        except Exception as e:
+            messagebox.showerror('Missed entries', f'Could not read the database:\n{e}')
+            return
+        if not entries:
+            messagebox.showinfo('Missed entries',
+                                'Every video you synced is already in the database.')
+            return
+        path = filedialog.asksaveasfilename(
+            title='Save missed entries', defaultextension='.json',
+            initialfile='missed_entries.json', filetypes=[('JSON', '*.json')])
+        if not path:
+            return
+        mvdb.write_missed(path, entries, name)
+        messagebox.showinfo(
+            'Missed entries',
+            f'{len(entries)} video(s) the database doesn\'t have yet were saved to\n{path}\n\n'
+            'Set the type (official / alternate / fan / meme) and the source if you know '
+            'them, then attach the file to an issue or pull request on GitHub.')
 
     def _persist_setting(self, key, value):
         self._settings[key] = value
@@ -1974,15 +2052,15 @@ class App(ctk.CTk):
 
         elif kind == 'song_review':
             _, s, i, total = msg
-            synced = s.review and s.review.get('matched')
-            s.status = '◆  Review download' + ('' if synced else ' (not synced)')
+            synced = s.review and (s.review.get('matched') or s.review.get('autoedit'))
+            s.status = _review_status(s.review) + ('' if synced else ' (not synced)')
             s.stag   = 'warn'
             self._update_row(s)
             self._progress.set((i + 1) / total)
 
         elif kind == 'collage_ready':
             _, s, result, err = msg
-            s.status = '◆  Review download' if s.review else ''
+            s.status = _review_status(s.review)
             s.stag   = 'warn' if s.review else ''
             self._update_row(s)
             if err:

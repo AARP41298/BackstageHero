@@ -49,6 +49,20 @@ CON songs don't render right away. After the download the song shows **Review do
 
 Rendered videos keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident.
 
+## Auto-edit and the music video database
+
+When a music video isn't the album cut (an interlude, a missing chorus, a
+slightly different tempo), a single offset can't sync it. Auto-edit maps the
+whole video onto the song audio and rebuilds it: cutting the extra parts,
+re-using footage where the album has more, and adjusting the speed. It logs
+every edit, and can export the edit as a Premiere/Resolve XML or an
+auto-editor timeline to fine tune by hand. See [AUTOEDIT.md](AUTOEDIT.md).
+
+[mvdb/](mvdb/) lists which video (official, live/visualizer, fan edit or meme)
+goes with which chart and how it was synced. **⇪ Missed entries** exports the
+videos you synced that it doesn't have yet, so you can contribute them. See
+[MVDB.md](MVDB.md).
+
 ## How the timing works
 
 Every music video has a different amount of intro before the song starts, so you can't use one offset for everything. Once it's picked a video it grabs the audio and matches it against the chart's stems to find where they line up. It compares the pattern of peaks rather than the raw audio, so a louder or differently mastered YouTube version still matches. If it's sure, it writes the offset into `video_start_time`. If it isn't (live version, remix, just the wrong video) it leaves the default and you fix that one by hand.

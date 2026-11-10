@@ -1,0 +1,132 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Ariana Grande",
+   "title": "God is a woman",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "kHLHSlExFis",
+     "title": "Ariana Grande - God is a woman (Official Video)",
+     "offset_ms": 0,
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 97.944,
+        "vid_start": 0.0,
+        "vid_end": 97.476,
+        "speed": 0.9952
+       },
+       {
+        "ref_start": 97.944,
+        "ref_end": 134.561,
+        "vid_start": 105.747,
+        "vid_end": 142.312,
+        "speed": 0.9986
+       },
+       {
+        "ref_start": 134.561,
+        "ref_end": 191.587,
+        "vid_start": 169.791,
+        "vid_end": 226.777,
+        "speed": 0.9993
+       },
+       {
+        "ref_start": 191.587,
+        "ref_end": 197.59,
+        "vid_start": 225.902,
+        "vid_end": 231.905,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "segment 0:00.000-1:37.476 change speed by -0.48%",
+       "segment 1:37.476-1:45.747 was cut",
+       "segment 2:22.312-2:49.791 was cut",
+       "at 3:11.587, the fragment 3:45.902-3:46.777 was inserted",
+       "segment 3:51.905-4:01.561 was cut (outro)"
+      ]
+     },
+     "submitted_by": "AARP41298",
+     "notes": "Video has a break at 1:37 and an interlude at 2:22, both cut.",
+     "reference_audio": "vpohuhgqf5w"
+    }
+   ]
+  },
+  {
+   "artist": "Gorillaz",
+   "title": "Silent Running",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "_0Pf48RqSsg",
+     "title": "Gorillaz - Silent Running ft. Adeleye Omotayo (Official Video)",
+     "offset_ms": 0,
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 18.608,
+        "vid_start": 0.0,
+        "vid_end": 18.619,
+        "speed": 1.0006
+       },
+       {
+        "ref_start": 18.608,
+        "ref_end": 206.794,
+        "vid_start": 2.9,
+        "vid_end": 191.091,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 206.794,
+        "ref_end": 240.409,
+        "vid_start": 175.371,
+        "vid_end": 209.029,
+        "speed": 1.0013
+       },
+       {
+        "ref_start": 240.409,
+        "ref_end": 266.421,
+        "vid_start": 191.238,
+        "vid_end": 216.786,
+        "speed": 0.9822
+       }
+      ],
+      "log": [
+       "at 0:18.608, the fragment 0:02.900-0:18.619 was inserted",
+       "at 3:26.794, the fragment 2:55.371-3:11.091 was inserted",
+       "at 4:00.409, the fragment 3:11.238-3:29.029 was inserted",
+       "segment 3:11.238-3:36.786 change speed by -1.78%"
+      ]
+     },
+     "crop": "crop=1920:816:0:132",
+     "submitted_by": "AARP41298",
+     "notes": "Album version is longer: intro, an extra section and the outro are filled with reused footage.",
+     "reference_audio": "GSLdiC48Q7Q"
+    }
+   ]
+  },
+  {
+   "artist": "Kansas",
+   "title": "Carry on Wayward Son",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "P5ZJui3aPoQ",
+     "title": "Kansas - Carry on Wayward Son (Official Video)",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "cSLQDiXtorY",
+     "title": "South Park episode edited to Carry on Wayward Son",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  }
+ ]
+}

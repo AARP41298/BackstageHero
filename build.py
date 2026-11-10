@@ -193,6 +193,7 @@ subprocess.run(
         '--hidden-import', 'audiosync',   # fingerprint sync module
         '--hidden-import', 'mpv',         # python-mpv (loaded dynamically in gui)
         '--add-data', 'assets' + os.pathsep + 'assets',  # icon + other assets
+        '--add-data', 'mvdb' + os.pathsep + 'mvdb',      # music video database
         '--name', 'BackstageHero',
         *ffmpeg_flag,
         *mpv_flag,

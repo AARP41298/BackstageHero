@@ -374,10 +374,14 @@ def discard_work(con, song_id):
 # collage, search again, or render. state.json in its work_dir remembers which
 # video it is and the measured offset, so this survives a restart.
 
-def save_review(con, song_id, video_id, offset_ms, matched, title):
+def save_review(con, song_id, video_id, offset_ms, matched, title, autoedit=None):
+    """autoedit: an autoedit.plan() result (with 'log') when the video needs
+    cuts/inserts/speed changes; render() then rebuilds it instead of offsetting."""
+    state = {'video_id': video_id, 'offset': offset_ms, 'matched': matched, 'title': title}
+    if autoedit:
+        state['autoedit'] = autoedit
     with open(os.path.join(work_dir(con, song_id), 'state.json'), 'w', encoding='utf-8') as f:
-        json.dump({'video_id': video_id, 'offset': offset_ms, 'matched': matched,
-                   'title': title}, f)
+        json.dump(state, f)
 
 
 def load_review(con, song_id):
@@ -462,19 +466,107 @@ def render(con, song_id, fmt, version, progress=None):
     if not state:
         raise Exception('no downloaded video to render')
     dest = video_path(con, song_id, fmt)
-    tag = (f'v{version} source={state["video_id"]} offset={state["offset"]} '
-           f'synced={"yes" if state.get("matched") else "no"}')
     work = work_dir(con, song_id)
-    if fmt == 'mp4':
-        encode_synced_mp4(state['raw'], state['offset'], dest, tag, progress)
+    plan = state.get('autoedit')
+    if plan:
+        tag = (f'v{version} source={state["video_id"]} autoedit='
+               f'{len(plan.get("log") or [])}edits synced=yes')
+        encode_autoedit(state['raw'], plan, dest, fmt, work, tag, progress)
     else:
-        encode_synced_webm(state['raw'], state['offset'], dest, work, tag, progress)
+        tag = (f'v{version} source={state["video_id"]} offset={state["offset"]} '
+               f'synced={"yes" if state.get("matched") else "no"}')
+        if fmt == 'mp4':
+            encode_synced_mp4(state['raw'], state['offset'], dest, tag, progress)
+        else:
+            encode_synced_webm(state['raw'], state['offset'], dest, work, tag, progress)
+    record_contribution(con, song_id, state)
     other = video_path(con, song_id, 'mp4' if fmt == 'webm' else 'webm')
     if os.path.exists(other):
         os.remove(other)
     mark_good(con, song_id, state['video_id'])
     discard_work(con, song_id)
     return dest
+
+
+def encode_autoedit(src, plan, dest, fmt, work, tag='', progress=None):
+    """Render an auto-edit plan with the same codecs, watermark and tag as the
+    offset renders. The video's own audio is cut the same way and kept."""
+    import autoedit
+    segs = plan['segments']
+    total = max(1.0, segs[-1]['ref_end'])
+    base = autoedit.build_cmd(src, segs, keep_audio=True, post=_watermark_filter())
+    tmp = dest + ('.part.mp4' if fmt == 'mp4' else '.part.webm')
+    try:
+        if fmt == 'mp4':
+            _run_ffmpeg(base + ['-c:v', 'libx264', '-preset', 'medium', '-crf', '20',
+                                '-g', KEYFRAME_DISTANCE, '-c:a', 'aac', '-b:a', '192k',
+                                '-metadata', f'{TAG_KEY}={tag or "1"}',
+                                '-movflags', '+faststart+use_metadata_tags', tmp],
+                        total, progress)
+        else:
+            vp8 = ['-c:v', 'libvpx', '-crf', VP8_CRF, '-b:v', VP8_MAX_BITRATE,
+                   '-g', KEYFRAME_DISTANCE, '-auto-alt-ref', '1', '-lag-in-frames', '16',
+                   '-deadline', 'good', '-cpu-used', '1',
+                   '-passlogfile:v', os.path.join(work, 'vp8pass')]
+            p1 = (lambda f: progress(0.4 * f)) if progress else None
+            p2 = (lambda f: progress(0.4 + 0.6 * f)) if progress else None
+            _run_ffmpeg(base + vp8 + ['-an', '-pass:v', '1', '-f', 'webm', os.devnull],
+                        total, p1)
+            _run_ffmpeg(base + vp8 + ['-c:a', 'libopus', '-b:a', '128k',
+                                      '-metadata', f'{TAG_KEY}={tag or "1"}',
+                                      '-pass:v', '2', '-f', 'webm', tmp], total, p2)
+        os.replace(tmp, dest)
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+
+
+# ---- contributions for the music video database (mvdb) ----------------------
+# Every render is remembered here; the GUI's "Export missed entries" compares
+# them against mvdb/ and writes the ones it doesn't have to missed_entries.json.
+
+_CONTRIB_FILE = os.path.join(updater.data_dir(), 'contributions.json')
+
+
+def load_contributions():
+    try:
+        with open(_CONTRIB_FILE, encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+
+def record_contribution(con, song_id, state, artist='', title='', source=''):
+    """Remember a rendered video so it can be submitted to the database."""
+    try:
+        import mvdb
+        items = [i for i in load_contributions()
+                 if not (i['song'].get('con_id') == song_id
+                         and i['video'].get('youtube') == state.get('video_id'))]
+        meta = _song_meta(con, song_id)
+        song = {'con_id': song_id, 'artist': artist or meta.get('artist', ''),
+                'title': title or meta.get('name', '')}
+        plan = state.get('autoedit')
+        video = mvdb.make_video(state.get('video_id', ''), 'official',
+                                title=state.get('title', ''),
+                                offset_ms=0 if plan else state.get('offset'),
+                                autoedit=plan, pack=os.path.basename(con))
+        items.append({'source': source or mvdb.DEFAULT_SOURCE, 'song': song, 'video': video})
+        tmp = _CONTRIB_FILE + '.tmp'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(items, f, indent=1)
+        os.replace(tmp, _CONTRIB_FILE)
+    except Exception as e:
+        print('Could not record contribution: ' + str(e))
+
+
+def _song_meta(con, song_id):
+    """name/artist of one CON song from the list cache (no Nautilus run)."""
+    hit = _load_cache().get(os.path.abspath(con).lower()) or {}
+    for s in hit.get('songs', []):
+        if s.get('id') == song_id:
+            return s
+    return {}
 
 
 def _cut_filters(offset_ms):
