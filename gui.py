@@ -108,6 +108,7 @@ _ACTIONS = {
     'search':  ('↻',    'Wrong video: search YouTube again'),
     'mp4':     ('MP4',  'Render to MP4 (fast) and approve this video'),
     'webm':    ('WebM', 'Render to WebM (smaller, slow) and approve this video'),
+    'more':    ('⋯',    'Video links: search YouTube, open, set or fix the links'),
 }
 _ACTION_KEYS = tuple(_ACTIONS)
 _ACTION_COLS = tuple('act_' + k for k in _ACTION_KEYS)
@@ -195,6 +196,7 @@ class Song:
     artist   : str  = ''
     title    : str  = ''
     game_origin: str = ''   # songs.dta game_origin of CON songs (mvdb source)
+    mv       : object = None   # music video database entry (mvdb), None = No Entry
     review   : object = None   # CON download waiting for review (conpack.load_review)
     rendering: str  = ''       # '' | 'queued' | 'running'
 
@@ -258,7 +260,7 @@ def _scan_library(songs_folder, progress=None):
         songs.append(Song(
             filename=ini, folder=folder,
             label=label, key=label.lower(),
-            has_video=has_vid, res=res))
+            has_video=has_vid, res=res, artist=artist or '', title=title or ''))
         if progress and len(songs) % 50 == 0:
             progress(len(songs))
 
@@ -908,6 +910,144 @@ class CollageViewer(ctk.CTkToplevel):
         self._cap.configure(text=f'{self._idx + 1}/{len(self._items)}   {caption}')
 
 
+class VideoLinksWindow(ctk.CTkToplevel):
+    """The "⋯" action: every video type the music video database knows for a
+    song, with its YouTube link. Links open in the browser; Edit / Set link
+    change them. Changes are saved in the local mvdb layer and are what
+    "Missed entries" submits."""
+
+    _TYPE_HELP = {
+        'official':  'The artist\'s official music video',
+        'alternate': 'Live performance, visualizer or live visual that matches the album audio',
+        'fan':       'Fan-made video or fan edit synced to the album audio',
+        'meme':      'TV / movie / game clip or meme set to the song',
+    }
+
+    def __init__(self, app, song):
+        super().__init__(app)
+        self._app, self._s = app, song
+        self.title(f'Video links  ·  {song.label}')
+        self.configure(fg_color=_BG)
+        self.geometry(f'{_fs(720)}x{_fs(470)}')
+        self.minsize(_fs(560), _fs(380))
+
+        head = ctk.CTkFrame(self, fg_color='transparent')
+        head.pack(fill='x', padx=16, pady=(14, 4))
+        ctk.CTkLabel(head, text=song.label, font=_font(15, weight='bold'),
+                     text_color=_TEXT, anchor='w').pack(side='left', fill='x', expand=True)
+        ctk.CTkButton(head, text='🔍  Search on YouTube', width=_fs(170),
+                      command=self._search).pack(side='right')
+        self._info = ctk.CTkLabel(self, text='', font=_font(11), text_color=_SUBTEXT,
+                                  anchor='w', justify='left')
+        self._info.pack(fill='x', padx=16)
+
+        self._rows = ctk.CTkFrame(self, fg_color=_SURFACE, corner_radius=8)
+        self._rows.pack(fill='both', expand=True, padx=16, pady=10)
+        self._rows.grid_columnconfigure(1, weight=1)
+
+        foot = ctk.CTkFrame(self, fg_color='transparent')
+        foot.pack(fill='x', padx=16, pady=(0, 12))
+        ctk.CTkLabel(foot, text='Links you set or fix are saved on this PC and go into '
+                                '⇪ Missed entries, to share them.',
+                     font=_font(11), text_color=_SUBTEXT).pack(side='left')
+        ctk.CTkButton(foot, text='Close', width=_fs(90), fg_color='#313244',
+                      hover_color='#414160', command=self.destroy).pack(side='right')
+
+        self._build_rows()
+        self.bind('<Escape>', lambda e: self.destroy())
+        self.after(50, lambda: (self.lift(), self.focus_force()))
+
+    # what to search / show
+
+    def _query(self):
+        s = self._s
+        return (build_query(s.artist, s.title) or s.label).strip()
+
+    def _search(self):
+        import webbrowser
+        from urllib.parse import quote_plus
+        webbrowser.open('https://www.youtube.com/results?search_query='
+                        + quote_plus(self._query() + ' official video'))
+
+    def _build_rows(self):
+        for w in self._rows.winfo_children():
+            w.destroy()
+        s = self._s
+        if s.mv is None:
+            self._info.configure(text='No Entry: this song isn\'t in the database yet. '
+                                      'Downloads use the automatic YouTube search.')
+        else:
+            src = self._app._mv_source(s)
+            con = s.mv.get('con_id') or '-'
+            self._info.configure(text=f'Source: {mvdb.SOURCES.get(src, src)} ({src})'
+                                      f'    CON ID: {con}')
+        for r, (vtype, v) in enumerate(mvdb.types_of(s.mv)):
+            pad = dict(padx=10, pady=(10 if r == 0 else 4, 4))
+            name = ctk.CTkLabel(self._rows, text=vtype.capitalize(), width=_fs(90),
+                                font=_font(13, weight='bold'), text_color=_TEXT, anchor='w')
+            name.grid(row=2 * r, column=0, sticky='w', **pad)
+            vid = (v or {}).get('youtube') or ''
+            if vid:
+                url = 'https://www.youtube.com/watch?v=' + vid
+                text = url
+                if v.get('title'):
+                    text += '   ·   ' + v['title']
+                link = ctk.CTkLabel(self._rows, text=text, text_color=_BLUE,
+                                    font=_font(12, underline=True), anchor='w', cursor='hand2')
+                link.bind('<Button-1>', lambda e, u=url: __import__('webbrowser').open(u))
+            else:
+                text = 'no link'
+                if v is not None:
+                    text += ' (the database has this type, but not the video)'
+                link = ctk.CTkLabel(self._rows, text=text, text_color=_SUBTEXT,
+                                    font=_font(12), anchor='w')
+            link.grid(row=2 * r, column=1, sticky='we', **pad)
+            ctk.CTkButton(self._rows, text='✎  Edit' if vid else '+  Set link', width=_fs(100),
+                          fg_color='#313244' if vid else None,
+                          hover_color='#414160' if vid else None,
+                          command=lambda t=vtype, old=vid: self._edit(t, old)
+                          ).grid(row=2 * r, column=2, sticky='e', **pad)
+            details = [self._TYPE_HELP[vtype]]
+            if vtype == mvdb.chosen_type(s.mv):
+                details.insert(0, '● in use')
+            if v is not None:
+                if v.get('autoedit'):
+                    details.append(f'auto-edit, {len(v["autoedit"].get("log") or [])} edits')
+                elif v.get('offset_ms') is not None:
+                    details.append(f'offset {v["offset_ms"]} ms')
+                if v.get('edited'):
+                    details.append('changed by you')
+                credit = v.get('sync_credit') or v.get('submitted_by')
+                if credit:
+                    details.append(f'by {credit}')
+            ctk.CTkLabel(self._rows, text='   ·   '.join(details), font=_font(10),
+                         text_color=_SUBTEXT, anchor='w'
+                         ).grid(row=2 * r + 1, column=1, columnspan=2, sticky='w', padx=10)
+
+    def _edit(self, vtype, old):
+        dlg = ctk.CTkInputDialog(
+            title=f'{vtype.capitalize()} video',
+            text=f'YouTube link or video ID for the {vtype} video of\n{self._s.label}:')
+        raw = (dlg.get_input() or '').strip()
+        if not raw:
+            return
+        vid = mvdb.youtube_id(raw)
+        if not vid:
+            messagebox.showerror('Video links', f'That isn\'t a YouTube link:\n{raw}', parent=self)
+            return
+        if vid == old:
+            return
+        s = self._s
+        ref = {'con_id': s.song_id if s.con else (s.mv or {}).get('con_id', ''),
+               'artist': (s.mv or {}).get('artist') or s.artist,
+               'title': (s.mv or {}).get('title') or s.title or s.label}
+        db = self._app._mvdb
+        mvdb.set_link(db, self._app._mv_source(s), ref, vtype, vid, old or None)
+        s.mv = mvdb.resolve(db, ref['con_id'], ref['artist'], ref['title'])
+        self._app._update_row(s)
+        self._build_rows()
+
+
 class App(ctk.CTk):
 
     def __init__(self):
@@ -927,6 +1067,13 @@ class App(ctk.CTk):
 
         # State
         self._songs       : list[Song]       = []
+        self._mvdb        : dict             = {}   # music video database (+ your edits)
+        self._yt_titles   : dict             = {}   # YouTube ID -> title (cache)
+        self._yt_pending  : set              = set()
+        self._yt_jobs     = queue.Queue()
+        self._yt_thread   = None
+        self._yt_save_after = None
+        self._load_yt_titles()
         self._filtered    : list[Song]       = []
         self._iid_map     : dict[str, Song]  = {}
         self._iid_of      : dict[int, str]   = {}   # id(Song) -> tree iid (O(1) row updates)
@@ -1079,7 +1226,7 @@ class App(ctk.CTk):
 
         self._tree = ttk.Treeview(
             tree_outer, style='BH.Treeview',
-            columns=('check', 'label', 'res', 'status') + _ACTION_COLS,
+            columns=('check', 'label', 'res', 'status', 'vtype', 'yt') + _ACTION_COLS,
             show='headings', selectmode='none')
 
         self._tree.heading('check',  text='',
@@ -1089,11 +1236,16 @@ class App(ctk.CTk):
         self._tree.heading('res',    text='Resolution  ↕',
                            anchor='center', command=lambda: self._sort('res'))
         self._tree.heading('status', text='Status', anchor='w')
+        self._tree.heading('vtype',  text='Video type  ↕', anchor='w',
+                           command=lambda: self._sort('vtype'))
+        self._tree.heading('yt',     text='Open in browser', anchor='w')
 
         self._tree.column('check',  width=36,  minwidth=36,  anchor='center', stretch=False)
         self._tree.column('label',  width=520, minwidth=200, anchor='w',      stretch=False)
         self._tree.column('res',    width=95,  minwidth=70,  anchor='center', stretch=False)
         self._tree.column('status', width=170, minwidth=100, anchor='w',      stretch=False)
+        self._tree.column('vtype',  width=130, minwidth=90,  anchor='w',      stretch=False)
+        self._tree.column('yt',     width=220, minwidth=120, anchor='w',      stretch=False)
         for k, col in enumerate(_ACTION_COLS):
             self._tree.heading(col, text='Actions' if k == 0 else '', anchor='w')
             self._tree.column(col, width=_ACTION_W, minwidth=_ACTION_W,
@@ -1111,6 +1263,10 @@ class App(ctk.CTk):
         # Slightly more contrast between rows so a long list is easy to scan
         self._tree.tag_configure('row_even', background='#272740')
         self._tree.tag_configure('row_odd',  background='#1e1e2e')
+        self._tree.tag_configure('flash',    background='#45475a')   # clicked link
+        # ttk.Treeview can't draw per-column borders: two 1px lines placed over
+        # the edges of the "Open in browser" column stand in for one
+        self._yt_lines = [tk.Frame(self._tree, bg=_BLUE, width=1) for _ in range(2)]
 
         vsb = ttk.Scrollbar(tree_outer, orient='vertical',
                             style='BH.Vertical.TScrollbar',
@@ -1203,13 +1359,185 @@ class App(ctk.CTk):
 
         self._update_buttons()
 
-    # ---- music video database contributions ------------------------------------
+    # ---- music video database ----------------------------------------------------
+
+    def _attach_mvdb(self, songs):
+        """Find each song's database entry: CON songs by con_id, else (and
+        song folders) by artist + title. Name matches of CON songs get their
+        con_id linked, saved in one go."""
+        try:
+            self._mvdb = mvdb.load_all()
+        except Exception as e:
+            log.warning('Could not load the music video database: %s', e)
+            self._mvdb = {}
+            return
+        pending = []
+        for s in songs:
+            s.mv = mvdb.resolve(self._mvdb, s.song_id if s.con else '',
+                                s.artist, s.title, s.game_origin or None, pending)
+        if pending:
+            log.info('mvdb: linked %d con_id(s) by name', len(pending))
+            mvdb.remember_con_ids(self._mvdb, pending)
+
+    # ---- "Open in browser" column ----------------------------------------------
+
+    def _yt_text(self, s):
+        v = mvdb.chosen_video(s.mv)
+        vid = (v or {}).get('youtube')
+        if not vid:
+            return '🔍  Search on YouTube'
+        title = self._yt_titles.get(vid)
+        if title is None:
+            self._want_title(vid)
+            return '↗  youtu.be/' + vid
+        return '↗  ' + (title or 'youtu.be/' + vid)
+
+    def _open_yt(self, s):
+        import webbrowser
+        from urllib.parse import quote_plus
+        v = mvdb.chosen_video(s.mv)
+        vid = (v or {}).get('youtube')
+        if vid:
+            webbrowser.open('https://www.youtube.com/watch?v=' + vid)
+        else:
+            q = (build_query(s.artist, s.title) or s.label) + ' official video'
+            webbrowser.open('https://www.youtube.com/results?search_query=' + quote_plus(q))
+        # highlight the clicked row for a moment
+        iid = self._iid_of.get(id(s))
+        if iid:
+            tags = tuple(self._tree.item(iid, 'tags'))
+            self._tree.item(iid, tags=tags + ('flash',))
+            self.after(900, lambda: self._unflash(s))
+
+    def _unflash(self, s):
+        iid = self._iid_of.get(id(s))
+        if iid:
+            self._tree.item(iid, tags=tuple(t for t in self._tree.item(iid, 'tags')
+                                            if t != 'flash'))
+
+    def _place_yt_border(self):
+        try:
+            cols = self._tree['displaycolumns']
+            cols = self._tree['columns'] if cols in ('#all', ('#all',)) else cols
+            x = 0
+            for c in cols:
+                if c == 'yt':
+                    break
+                x += int(self._tree.column(c, 'width'))
+            w = int(self._tree.column('yt', 'width'))
+            h = self._tree.winfo_height()
+            self._yt_lines[0].place(x=x, y=0, width=1, height=h)
+            self._yt_lines[1].place(x=x + w - 1, y=0, width=1, height=h)
+        except Exception:
+            pass
+
+    # YouTube titles: fetched in the background with oEmbed (no API key, one
+    # small request per video) and cached in the data dir
+
+    _YT_CACHE = os.path.join(updater.data_dir(), 'youtube_titles.json')
+
+    def _load_yt_titles(self):
+        try:
+            with open(self._YT_CACHE, encoding='utf-8') as f:
+                self._yt_titles = _json.load(f)
+        except Exception:
+            self._yt_titles = {}
+
+    def _want_title(self, vid):
+        if vid in self._yt_pending:
+            return
+        self._yt_pending.add(vid)
+        self._yt_jobs.put(vid)
+        if not self._yt_thread or not self._yt_thread.is_alive():
+            self._yt_thread = threading.Thread(target=self._yt_worker, daemon=True)
+            self._yt_thread.start()
+
+    def _yt_worker(self):
+        import urllib.request
+        import urllib.error
+        while True:
+            try:
+                vid = self._yt_jobs.get(timeout=2)
+            except queue.Empty:
+                return
+            url = ('https://www.youtube.com/oembed?format=json&url='
+                   'https://www.youtube.com/watch?v=' + vid)
+            try:
+                with urllib.request.urlopen(url, timeout=10) as r:
+                    title = _json.load(r).get('title') or ''
+            except urllib.error.HTTPError as e:
+                # 401/403: embedding disabled, still a real video; 404: gone
+                title = '(video unavailable)' if e.code in (400, 404) else ''
+            except Exception:
+                self._yt_pending.discard(vid)   # offline: try again next time
+                continue
+            self._queue.put(('yt_title', vid, title))
+
+    def _on_yt_title(self, vid, title):
+        self._yt_titles[vid] = title
+        for s in self._filtered:
+            v = mvdb.chosen_video(s.mv)
+            if v and v.get('youtube') == vid:
+                self._update_row(s)
+        if not self._yt_save_after:
+            self._yt_save_after = self.after(3000, self._save_yt_titles)
+
+    def _save_yt_titles(self):
+        self._yt_save_after = None
+        try:
+            tmp = self._YT_CACHE + '.tmp'
+            with open(tmp, 'w', encoding='utf-8') as f:
+                _json.dump(self._yt_titles, f, ensure_ascii=False)
+            os.replace(tmp, self._YT_CACHE)
+        except Exception as e:
+            log.warning('Could not save YouTube titles: %s', e)
+
+    def _type_menu(self, s, event):
+        """Click on the Video type cell: pick the type to use for this song."""
+        menu = tk.Menu(self, tearoff=0, bg=_SURFACE, fg=_TEXT, activebackground='#414160',
+                       activeforeground=_TEXT, font=_font(12))
+        have = mvdb.available_types(s.mv)
+        pick = mvdb.chosen_type(s.mv)
+        links = dict(mvdb.types_of(s.mv))
+        if not have:
+            menu.add_command(label='No Entry: the automatic search is used', state='disabled')
+        for t in mvdb.TYPES:
+            if t not in have:
+                continue
+            v = links[t]
+            label = ('●  ' if t == pick else '     ') + t + \
+                ('' if v.get('youtube') else '   (no link: automatic search)')
+            if t == 'official' and t != pick:
+                label += '   (default)'
+            menu.add_command(label=label, command=lambda t=t: self._choose_type(s, t))
+        menu.add_separator()
+        menu.add_command(label='⋯  Video links...', command=lambda: VideoLinksWindow(self, s))
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
+
+    def _choose_type(self, s, vtype):
+        if s.mv is None or vtype == mvdb.chosen_type(s.mv):
+            return
+        mvdb.set_choice(self._mvdb, self._mv_source(s),
+                        {'con_id': s.mv.get('con_id', ''), 'artist': s.mv.get('artist', ''),
+                         'title': s.mv.get('title', '')}, vtype)
+        self._update_row(s)
+
+    def _mv_source(self, s):
+        if s.mv is not None:
+            for k, g in self._mvdb.items():
+                if any(x is s.mv for x in g['songs']):
+                    return k
+        return mvdb.source_key(s.game_origin) if s.game_origin else mvdb.DEFAULT_SOURCE
+
 
     def _local_videos(self):
         """Every video this library has that we know the YouTube source of, as
         mvdb submission items: rendered CON songs plus song folders whose
         song.ini has the backstagehero_source BackstageHero writes."""
-        items = list(conpack.load_contributions())
+        items = mvdb.link_edits() + list(conpack.load_contributions())
         for s in getattr(self, '_songs', []) or []:
             if s.con or not s.has_video:
                 continue
@@ -1407,6 +1735,7 @@ class App(ctk.CTk):
                 self._load_library(self._songs_folder)
                 return
         self._songs = songs
+        self._attach_mvdb(songs)
         self._apply_filter()
         n = len(songs)
         if con_errors:
@@ -1483,6 +1812,8 @@ class App(ctk.CTk):
                 m = re.match(r'(\d+)', s.res)
                 return int(m.group(1)) if m else 0
             out.sort(key=_res_key, reverse=not self._sort_asc)
+        elif self._sort_col == 'vtype':
+            out.sort(key=lambda s: (mvdb.sort_key(s.mv), s.key), reverse=not self._sort_asc)
         else:
             out.sort(key=lambda s: s.key, reverse=not self._sort_asc)
         self._filtered = out
@@ -1499,16 +1830,24 @@ class App(ctk.CTk):
             text=f'Song / Artist  {up if col == "label" else "↕"}')
         self._tree.heading('res',
             text=f'Resolution  {up if col == "res" else "↕"}')
+        self._tree.heading('vtype',
+            text=f'Video type  {up if col == "vtype" else "↕"}')
         self._apply_filter()
 
     def _size_columns(self, event):
         avail = event.width - 36 - 2 - _ACTION_W * len(_ACTION_COLS)
         if avail < 300:
             return
-        res = status = int(avail * 0.2)
-        self._tree.column('label',  width=avail - res - status)
+        res = int(avail * 0.08)
+        status = int(avail * 0.18)
+        vtype = int(avail * 0.13)
+        yt = int(avail * 0.22)
+        self._tree.column('label',  width=avail - res - status - vtype - yt)
         self._tree.column('res',    width=res)
         self._tree.column('status', width=status)
+        self._tree.column('vtype',  width=vtype)
+        self._tree.column('yt',     width=yt)
+        self.after_idle(self._place_yt_border)
 
     # ---- actions column ------------------------------------------------------
 
@@ -1517,17 +1856,18 @@ class App(ctk.CTk):
         if s.rendering:                      # rendering: everything locked
             return set()
         if s.review:                         # downloaded, waiting for review
-            return {'play', 'collage', 'search', 'mp4', 'webm'}
-        if s.has_video:                      # finished video
-            return {'play', 'search'}
-        return set()
+            return {'play', 'collage', 'search', 'mp4', 'webm', 'more'}
+        if s.con and s.has_video:            # finished video
+            return {'play', 'search', 'more'}
+        return {'more'}                      # video links work for every song
 
     def _row_values(self, s):
         chk         = '  ☑' if s.checked else '  ☐'
         status_text = s.status or ('✔' if s.has_video else '✗')
         enabled = self._actions_of(s)
         icons = tuple(_ACTIONS[a][0] if a in enabled else '' for a in _ACTION_KEYS)
-        return (chk, s.label, s.res or '-', status_text) + icons
+        return (chk, s.label, s.res or '-', status_text, mvdb.type_summary(s.mv),
+                self._yt_text(s)) + icons
 
     def _row_tags(self, s, row_tag):
         stag = s.stag or ('dim' if s.has_video else 'error')
@@ -1568,12 +1908,23 @@ class App(ctk.CTk):
         except (ValueError, IndexError):
             return s, None
         key = _ACTION_KEYS[_ACTION_COLS.index(name)] if name in _ACTION_COLS else None
+        if name in ('vtype', 'yt', 'check'):
+            key = name
         return s, key
 
     def _on_tree_motion(self, event):
         s, key = self._action_at(event)
         hint = ''
-        if s and key and key in self._actions_of(s):
+        if s and key == 'yt':
+            v = mvdb.chosen_video(s.mv)
+            hint = ('Open the video in your browser' if v and v.get('youtube')
+                    else 'Search YouTube in your browser')
+        elif s and key == 'check':
+            hint = 'Select'
+        elif s and key == 'vtype':
+            hint = ('Choose which video type to use' if len(mvdb.available_types(s.mv)) > 1
+                    else 'Video links')
+        elif s and key and key in self._actions_of(s):
             hint = _ACTIONS[key][1]
             if key == 'play' and s.review:
                 hint = 'Play the downloaded video (not cut yet)'
@@ -1593,13 +1944,19 @@ class App(ctk.CTk):
             s, key = self._action_at(event)
             if not s:
                 return
-            if key:
-                if key in self._actions_of(s):
-                    self._do_action(s, key)
+            if key == 'vtype':
+                self._type_menu(s, event)
                 return
-            s.checked = not s.checked
-            self._update_row(s)
-            self._update_buttons()
+            if key == 'yt':
+                self._open_yt(s)
+                return
+            if key == 'check':          # only the checkbox selects a row
+                s.checked = not s.checked
+                self._update_row(s)
+                self._update_buttons()
+                return
+            if key and key in self._actions_of(s):
+                self._do_action(s, key)
 
     def _do_action(self, s, key):
         if key == 'play':
@@ -1612,6 +1969,8 @@ class App(ctk.CTk):
             self._search_again(s)
         elif key in ('mp4', 'webm'):
             self._queue_render(s, key)
+        elif key == 'more':
+            VideoLinksWindow(self, s)
 
     def _show_collage(self, s):
         out_dir = os.path.join(conpack.work_dir(s.con, s.song_id), 'collage')
@@ -2051,6 +2410,10 @@ class App(ctk.CTk):
             self._status_lbl.configure(
                 text=f'{i + 1} / {total}   Waiting {secs}s before the next download '
                      f'(so YouTube doesn\'t flag it as abuse)')
+
+        elif kind == 'yt_title':
+            _, vid, title = msg
+            self._on_yt_title(vid, title)
 
         elif kind == 'song_review':
             _, s, i, total = msg

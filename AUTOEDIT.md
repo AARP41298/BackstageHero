@@ -136,5 +136,10 @@ only needs an offset that the first sync missed, that offset is used.
 The plan and its edit log go into the music video database when you share
 the video. See [MVDB.md](MVDB.md).
 
+Every CON render (offset or auto-edit) also crops the video's black bars:
+letterbox (2.35 films) or pillarbox (4:3 videos uploaded as 16:9). It's
+measured once on the download and the watermark is drawn on the cropped
+picture.
+
 Clone Hero song folders still use `video_start_time` only; use the command
 line to auto-edit those for now.

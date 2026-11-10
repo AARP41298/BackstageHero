@@ -695,7 +695,10 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
                       if video_id_of(c[0]) not in bad]
         # videos the music video database knows for this song go first
         origin = conpack._song_meta(con, song_id).get('game_origin')
-        for c in reversed(_db_candidates(song_id, artist, title, origin)):
+        entry = _db_entry(song_id, artist, title, origin)
+        if entry:
+            print('  Music video database: ' + mvdb.type_summary(entry))
+        for c in reversed(_db_candidates(entry)):
             if video_id_of(c[0]) not in bad:
                 candidates = [c] + [x for x in candidates if x[0] != c[0]]
         if ids['good'] and ids['good'] not in bad:
@@ -725,6 +728,11 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
             offset, matched, plan = autoedit.offset_ms(plan), True, None
         elif plan and not autoedit.needs_edit(plan):
             plan = None
+        if not matched and not plan:
+            db_off = _db_offset(entry, video_id_of(used_url))
+            if db_off is not None:
+                print(f'  Using the database offset ({db_off} ms)')
+                offset = db_off
         conpack.save_review(con, song_id, video_id_of(used_url), offset, matched, vid_title,
                             autoedit=plan)
         # the chart audio was only needed for matching
@@ -766,20 +774,46 @@ def _plan_autoedit(work):
     return plan
 
 
-def _db_candidates(con_id, artist, title, source=None):
-    """(url, title, None) for videos the music video database lists for a song."""
+def _db_entry(con_id, artist, title, source=None):
+    """The music video database entry for a chart (None = No Entry)."""
     if mvdb is None:
-        return []
+        return None
     try:
-        db = mvdb.load()
-        # the song's own source first (its offsets are for that chart), then any
-        vids = (mvdb.videos_for(db, con_id, artist, title, mvdb.source_key(source))
-                if source else []) or mvdb.videos_for(db, con_id, artist, title)
-    except Exception:
+        return mvdb.resolve(mvdb.load_all(), con_id, artist, title, source)
+    except Exception as e:
+        log.warning('mvdb lookup failed: %s', e)
+        return None
+
+
+def _db_candidates(entry):
+    """(url, title, None) for the linked videos of a database entry, best type
+    first. Types without a link add nothing: those songs use the search."""
+    if not entry:
         return []
-    return [('https://www.youtube.com/watch?v=' + v['youtube'],
-             v.get('title') or f'database ({v.get("type")})', None)
-            for v in vids if v.get('youtube')]
+    out = []
+    for vtype, v in mvdb.ordered_types(entry):     # your chosen type first
+        if v and v.get('youtube'):
+            out.append(('https://www.youtube.com/watch?v=' + v['youtube'],
+                        v.get('title') or f'database ({vtype})', None))
+    return out
+
+
+def _db_offset(entry, video_id):
+    """offset_ms the database has for this video (or, for a video found by the
+    search, the chosen type's, which is usually the same video), else None."""
+    if not entry:
+        return None
+    vids = entry.get('videos', [])
+    for v in vids:
+        if v.get('youtube') == video_id and v.get('offset_ms') is not None \
+                and not v.get('autoedit'):
+            return v['offset_ms']
+    pick = mvdb.chosen_type(entry)
+    for v in vids:
+        if not v.get('youtube') and v.get('type', 'official') == pick \
+                and v.get('offset_ms') is not None:
+            return v['offset_ms']
+    return None
 
 
 def process_resync(folder, song_name, sync_ready):

@@ -232,6 +232,264 @@ def add(db, source, song, video):
     return True
 
 
+# ---- your edits (local layer) ------------------------------------------------
+# The bundled database is read-only inside the exe, so what you change in the
+# app (links you set or fix, con_ids matched by name) goes to a local file in
+# the data dir and is applied on top of it at load time. Those edits are what
+# "Missed entries" submits. Running from source, con_id matches are also
+# written straight into mvdb/ (that's the maintainer's checkout).
+
+def _data_dir():
+    try:
+        import updater
+        return updater.data_dir()
+    except Exception:
+        return os.path.join(os.path.expanduser('~'), '.backstagehero')
+
+
+def local_path():
+    return os.path.join(_data_dir(), 'mvdb_local.json')
+
+
+def load_local():
+    try:
+        with open(local_path(), encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+
+def _save_local(edits):
+    path = local_path()
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump(edits, f, indent=1, ensure_ascii=False)
+    os.replace(tmp, path)
+
+
+def _apply(db, e):
+    source = source_key(e.get('source'))
+    song = e['song']
+    if e['kind'] == 'choice':
+        s = (find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', ''),
+                       source if source in db else None)
+             or find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', '')))
+        if s is not None:
+            s['chosen'] = e['type']
+        return
+    if e['kind'] == 'con_id':
+        s = find_song(db, '', song.get('artist', ''), song.get('title', ''),
+                      source if source in db else None)
+        if s is not None and not s.get('con_id'):
+            s['con_id'] = song['con_id']
+        return
+    # kind == 'link': set the YouTube video of one type
+    group = db.setdefault(source, _empty(source))
+    s = (find_song(db, song.get('con_id', ''), song.get('artist', ''),
+                   song.get('title', ''), source if source in db else None)
+         or find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', '')))
+    if s is None:
+        s = {k: song[k] for k in ('con_id', 'artist', 'title') if song.get(k)}
+        s['videos'] = []
+        group['songs'].append(s)
+    vids = [v for v in s['videos'] if v.get('type', 'official') == e['type']]
+    target = next((v for v in vids if v.get('youtube') == e.get('old')), None) \
+        or next((v for v in vids if not v.get('youtube')), None) \
+        or (vids[0] if vids and e.get('old') is not None else None)
+    if target is None:
+        target = {'type': e['type']}
+        s['videos'].append(target)
+    if target.get('youtube') and target['youtube'] != e['youtube']:
+        # a different video: the old sync data doesn't apply to it
+        for k in ('offset_ms', 'autoedit', 'crop', 'title'):
+            target.pop(k, None)
+    target['youtube'] = e['youtube']
+    target['edited'] = True
+
+
+def load_all():
+    """The database with your local edits applied (what the app uses)."""
+    db = load()
+    for e in load_local():
+        try:
+            _apply(db, e)
+        except Exception as ex:
+            print(f'mvdb: skipping local edit: {ex}')
+    return db
+
+
+def song_ref(con_id='', artist='', title=''):
+    return {k: v for k, v in (('con_id', con_id), ('artist', artist), ('title', title)) if v}
+
+
+def resolve(db, con_id='', artist='', title='', source=None, pending=None):
+    """The song entry for a chart: by con_id, else by artist + title (the
+    chart's source first). A name match gets the con_id linked, saved in the
+    local layer (and in mvdb/ when running from source). None = No Entry.
+    pending: a list to collect those links in instead of saving each one;
+    save them all at once with remember_con_ids()."""
+    src = source_key(source) if source else None
+    if con_id:
+        s = find_song(db, con_id, '', '', None)
+        if s is not None:
+            return s
+    s = None
+    if src in db:
+        s = find_song(db, '', artist, title, src)
+    if s is None:
+        s = find_song(db, '', artist, title)
+    if s is not None and con_id and not s.get('con_id'):
+        s['con_id'] = con_id
+        if pending is not None:
+            pending.append((s, con_id, src))
+        else:
+            remember_con_ids(db, [(s, con_id, src)])
+    return s
+
+
+def _source_of(db, song):
+    for k, g in db.items():
+        if any(x is song for x in g['songs']):
+            return k
+    return None
+
+
+def remember_con_ids(db, links):
+    """Save con_ids matched by name: [(song entry, con_id, source)]."""
+    if not links:
+        return
+    edits = load_local()
+    have = {e['song'].get('con_id') for e in edits if e['kind'] == 'con_id'}
+    rows = []
+    for song, con_id, src in links:
+        key = _source_of(db, song) or src or DEFAULT_SOURCE
+        rows.append((key, song, con_id))
+        if con_id not in have:
+            have.add(con_id)
+            edits.append({'kind': 'con_id', 'source': key,
+                          'song': song_ref(con_id, song.get('artist', ''), song.get('title', ''))})
+    try:
+        _save_local(edits)
+    except Exception as ex:
+        print(f'mvdb: could not save con_ids: {ex}')
+    if getattr(sys, 'frozen', False):
+        return
+    # from source: write them into the repo's files too
+    try:
+        base = load()
+        touched = set()
+        for key, song, con_id in rows:
+            if key not in base:
+                continue
+            s = find_song({key: base[key]}, '', song.get('artist', ''), song.get('title', ''), key)
+            if s is not None and not s.get('con_id'):
+                s['con_id'] = con_id
+                touched.add(key)
+        if touched:
+            save({k: base[k] for k in touched})
+    except Exception as ex:
+        print(f'mvdb: could not write con_ids to mvdb/: {ex}')
+
+
+def set_link(db, source, song, vtype, video_id, old=None):
+    """Set (or fix) the YouTube video of one type for a song: saved in the
+    local layer, applied to `db`, and offered by Missed entries."""
+    e = {'kind': 'link', 'source': source_key(source) if source else DEFAULT_SOURCE,
+         'song': song_ref(song.get('con_id', ''), song.get('artist', ''), song.get('title', '')),
+         'type': vtype, 'youtube': video_id, 'old': old,
+         'time': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')}
+    edits = [x for x in load_local()
+             if not (x['kind'] == 'link' and x['type'] == vtype and x['song'] == e['song'])]
+    edits.append(e)
+    _save_local(edits)
+    _apply(db, e)
+
+
+def link_edits():
+    """Your link edits as submission items ({'source','song','video'})."""
+    out = []
+    for e in load_local():
+        if e['kind'] == 'link' and e.get('youtube'):
+            out.append({'source': e['source'], 'song': e['song'],
+                        'video': make_video(e['youtube'], e['type'])})
+    return out
+
+
+def set_choice(db, source, song, vtype):
+    """Which type to use for a song (default: official). Saved locally only:
+    it's your preference, not a database change, so it isn't submitted."""
+    e = {'kind': 'choice', 'source': source_key(source) if source else DEFAULT_SOURCE,
+         'song': song_ref(song.get('con_id', ''), song.get('artist', ''), song.get('title', '')),
+         'type': vtype}
+    edits = [x for x in load_local()
+             if not (x['kind'] == 'choice' and x['song'] == e['song'])]
+    edits.append(e)
+    _save_local(edits)
+    _apply(db, e)
+
+
+def types_of(song):
+    """[(type, video or None)] for every type, in TYPES order."""
+    out = []
+    for t in TYPES:
+        vids = [v for v in (song or {}).get('videos', []) if v.get('type', 'official') == t]
+        linked = [v for v in vids if v.get('youtube')]
+        out.append((t, (linked or vids or [None])[0]))
+    return out
+
+
+def available_types(song):
+    """Types the entry has a video record for (linked or not)."""
+    return [t for t, v in types_of(song) if v is not None]
+
+
+def chosen_type(song):
+    """The type used for a song: your choice, else official, else the first
+    type it has. None for No Entry."""
+    have = available_types(song)
+    if not have:
+        return None
+    pick = (song or {}).get('chosen')
+    if pick in have:
+        return pick
+    return 'official' if 'official' in have else have[0]
+
+
+def chosen_video(song):
+    """The video record of the type in use (may have no 'youtube'), or None."""
+    pick = chosen_type(song)
+    return dict(types_of(song))[pick] if pick else None
+
+
+def ordered_types(song):
+    """types_of() with the chosen type first (download order)."""
+    pick = chosen_type(song)
+    items = types_of(song)
+    return sorted(items, key=lambda tv: tv[0] != pick)
+
+
+def type_summary(song):
+    """Video Type column text: the type that will be used, '(no link)' when
+    the database has no video for it, and '*' when other types are available."""
+    pick = chosen_type(song)
+    if pick is None:
+        return 'No Entry'
+    v = dict(types_of(song))[pick]
+    text = pick + ('' if v.get('youtube') else ' (no link)')
+    return text + ('*' if len(available_types(song)) > 1 else '')
+
+
+def sort_key(song):
+    """Sorts entries by the type in use: official, alternate, fan, meme, then
+    the ones without a link, No Entry last."""
+    pick = chosen_type(song)
+    if pick is None:
+        return (2, 0)
+    v = dict(types_of(song))[pick]
+    return (0 if v.get('youtube') else 1, TYPES.index(pick))
+
+
 # ---- contributions -------------------------------------------------------------
 
 def missed_entries(db, local, submitted_by):

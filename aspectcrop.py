@@ -98,8 +98,9 @@ def analyze(path, coverage=1.0, fps=2.0):
         share[name] = float(np.mean((heights <= ch + 1) & (widths <= cw + 1)))
 
     # content size at the requested coverage (quantile, padded by 1 probe pixel)
-    need_h = min(H, np.quantile(heights, coverage) + sy)
-    need_w = min(W, np.quantile(widths, coverage) + sx)
+    # analysed below full resolution, an edge can be off by one probe pixel
+    need_h = min(H, np.quantile(heights, coverage) + (sy if sy > 1 else 0))
+    need_w = min(W, np.quantile(widths, coverage) + (sx if sx > 1 else 0))
 
     # tightest standard ratio that still contains need_w x need_h
     best = None

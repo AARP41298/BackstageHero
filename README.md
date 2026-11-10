@@ -38,30 +38,72 @@ Songs that already have a video are skipped, so re-running after you add charts 
 
 It also works on packed Rock Band CON/LIVE files, the way [YARG](https://wiki.yarg.in/wiki/Backgrounds) reads background videos: one video per song, next to the CON, named after the song ID (shortname). For example `RB1\creep.webm` for the song `creep` inside `RB1\RB1_pack`. The CON itself is never touched, so instead of writing an offset, the video gets cut (or padded) so it starts with the song.
 
-Reading the songs and the audio needs a build of [Nautilus](https://github.com/AARP41298/Nautilus/tree/master-backstage) with the `-backstagehero` command line (it lists the songs and decrypts the mogg). Point BackstageHero at `Nautilus.exe` the first time it finds a CON. The mogg tracks are mixed at -5 dB to match against the video.
+Reading the songs and the audio needs a build of [Nautilus](https://github.com/AARP41298/Nautilus/tree/master-backstage) with the `-backstagehero` command line (it lists the songs with their `game_origin` and decrypts the mogg). Point BackstageHero at `Nautilus.exe` the first time it finds a CON. The mogg tracks are mixed at -5 dB to match against the video.
 
-CON songs don't render right away. After the download the song shows **Review download** and the Actions column gives you:
+CON songs don't render right away. After the download the song shows **Review download** (or **Review download (auto-edit, N edits)** when the video had to be rebuilt, see [Auto-edit](#auto-edit)) and the Actions column gives you:
 
 - **▶** play the downloaded video in your default player
 - **▦** frame collage: a 4×6 grid of frames across the video, then each frame on its own (←/→, A/D, Page Up/Down or the mouse wheel to browse, Esc to close). Handy for spotting album-cover uploads
 - **↻** search again: marks that YouTube video as bad and searches again without it
 - **MP4** / **WebM** render the synced video next to the CON and mark the YouTube video as good. WebM uses YARG's recommended settings (VP8 2-pass, keyframe every 128 frames, Opus 128k) and is much smaller, but takes a few times longer than MP4
+- **⋯** video links for the song (see [the music video database](#the-music-video-database))
 
-Rendered videos keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident.
+Rendered videos have their black bars cropped (letterbox or pillarbox, snapped to a standard ratio such as 4:3, 16:9 or 2.35 Scope, so no picture is lost), keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident.
 
-## Auto-edit and the music video database
+## Auto-edit
 
-When a music video isn't the album cut (an interlude, a missing chorus, a
-slightly different tempo), a single offset can't sync it. Auto-edit maps the
-whole video onto the song audio and rebuilds it: cutting the extra parts,
-re-using footage where the album has more, and adjusting the speed. It logs
-every edit, and can export the edit as a Premiere/Resolve XML or an
-auto-editor timeline to fine tune by hand. See [AUTOEDIT.md](AUTOEDIT.md).
+Official music videos often aren't the album cut: a long intro, an interlude
+or skit, one chorus fewer, a slightly different tempo. A single offset can't
+sync those. After a CON download, auto-edit maps the whole video onto the
+song audio and, when it needs more than an offset, rebuilds it: it cuts the
+extra parts, re-uses footage where the song is longer and adjusts the speed.
 
-[mvdb/](mvdb/) lists which video (official, live/visualizer, fan edit or meme)
-goes with which chart and how it was synced. **⇪ Missed entries** exports the
-videos you synced that it doesn't have yet, so you can contribute them. See
-[MVDB.md](MVDB.md).
+Every edit is logged in plain words:
+
+```
+segment 1:37.476-1:45.747 was cut
+at 0:18.608, the fragment 0:02.900-0:18.619 was inserted
+segment 0:00.000-1:37.476 change speed by -0.48%
+```
+
+From the command line it also works on any video/audio pair, and exports
+the edit as a Premiere/Resolve XML or an [auto-editor](https://github.com/WyattBlue/auto-editor)
+timeline to fine tune by hand. `aspectcrop.py` does the black bar crop on
+its own. See [AUTOEDIT.md](AUTOEDIT.md).
+
+## The music video database
+
+[mvdb/](mvdb/) lists which video goes with which chart, and how it was
+synced: one JSON per song source (`rb3dlc`, `ugc2`, `c3customs`, ... the
+Rock Band 3 Deluxe source keys), with four types of video:
+
+- **official**: the official music video
+- **alternate**: a live performance, visualizer or live visual that matches the album audio
+- **fan**: a fan video or fan edit
+- **meme**: a TV/movie/game clip or meme set to the song
+
+It starts with the ~570 syncs of the community
+[Clone Hero Background Video Time Codes](https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI/htmlview)
+sheet. Songs are matched by CON ID, else by artist and title (and the CON ID
+gets linked). In the song list:
+
+- **Video type** shows the type that will be used (official by default) with
+  a `*` when there are other types, `(no link)` when the database only has
+  the offset, or **No Entry**. Click it to pick another type; click the
+  header to sort.
+- **Open in browser** shows the YouTube title of that video and opens it.
+- **⋯** opens the song's video links: every type with its link, **Edit** for a
+  wrong one, **Set link** for a missing one, and **Search on YouTube**.
+
+Linked videos are tried before the YouTube search; when the audio sync can't
+measure an offset, the database's is used. No Entry songs just use the search.
+
+The links you set or fix are saved on your PC. **⇪ Missed entries** writes
+them (plus the videos you rendered) to `missed_entries.json` with your name
+in `submitted_by`; attach it to an issue or pull request to add them to the
+database. See [MVDB.md](MVDB.md).
+
+Only the checkbox selects a song; clicking elsewhere on a row doesn't.
 
 ## How the timing works
 
@@ -95,11 +137,12 @@ python build.py
 
 The script does everything else on its own:
 
-1. installs PyInstaller (and Pillow) if they're missing
-2. converts `assets/icon.png` to an `.ico` and generates the header logo and splash image (`make_brand.py`)
-3. downloads `ffmpeg.exe` from [BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds/releases) if it isn't in the folder yet (set `FFMPEG_URL` to pin a specific build)
-4. downloads `libmpv-2.dll` for the embedded preview in the sync editor. Extracting it needs 7-Zip or WinRAR installed; without it the build still works and the editor falls back to ffplay
-5. packs everything into a single `dist/BackstageHero.exe` and writes `dist/BackstageHero.exe.sha256` next to it
+1. stops right away if a requirement (yt-dlp, numpy, ...) is missing for the Python running it, since PyInstaller would otherwise build an exe without it
+2. installs PyInstaller (and Pillow) if they're missing
+3. converts `assets/icon.png` to an `.ico` and generates the header logo and splash image (`make_brand.py`)
+4. downloads `ffmpeg.exe` from [BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds/releases) if it isn't in the folder yet (set `FFMPEG_URL` to pin a specific build)
+5. downloads `libmpv-2.dll` for the embedded preview in the sync editor. Extracting it needs 7-Zip or WinRAR installed; without it the build still works and the editor falls back to ffplay
+6. packs everything into a single `dist/BackstageHero.exe` and writes `dist/BackstageHero.exe.sha256` next to it
 
 The first build takes a few minutes because of the downloads. After that `ffmpeg.exe` and `libmpv-2.dll` are reused.
 
@@ -110,3 +153,5 @@ Nautilus isn't bundled. CON support uses whatever `Nautilus.exe` you point it at
 ## Credits
 
 ffmpeg ([BtbN builds](https://github.com/BtbN/FFmpeg-Builds), GPLv3) and [yt-dlp](https://github.com/yt-dlp/yt-dlp) do the real work.
+
+The music video database starts from the Clone Hero Background Video Time Codes sheet by moocartoons and its contributors. Song source keys follow [Rock Band 3 Deluxe](https://github.com/hmxmilohax/rock-band-3-deluxe). Auto-edit's terms and timeline export follow [auto-editor](https://github.com/WyattBlue/auto-editor).

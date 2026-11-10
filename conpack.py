@@ -315,7 +315,7 @@ def _run_ffmpeg(cmd, total_seconds, on_progress):
         raise Exception('WebM encode failed: ' + (msg[-1] if msg else f'exit code {proc.returncode}'))
 
 
-def encode_synced_webm(src, offset_ms, dest, work, tag='', progress=None):
+def encode_synced_webm(src, offset_ms, dest, work, tag='', progress=None, crop=''):
     """Cut the video so it starts with the song, as a YARG-style WebM.
 
     offset_ms uses the video_start_time convention: -3000 means the song starts
@@ -323,7 +323,7 @@ def encode_synced_webm(src, offset_ms, dest, work, tag='', progress=None):
     video starts after the song, so that much black (and silence) is added in front.
     2-pass VP8 at constant quality, keyframe every 128 frames, Opus 128 kb/s.
     `tag` goes into the BACKSTAGEHERO metadata tag."""
-    pre, filters = _cut_filters(offset_ms)
+    pre, filters = _cut_filters(offset_ms, crop)
     common =(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y'] + pre
               + ['-i', src] + filters
               + ['-c:v', 'libvpx', '-crf', VP8_CRF, '-b:v', VP8_MAX_BITRATE,
@@ -470,18 +470,19 @@ def render(con, song_id, fmt, version, progress=None):
         raise Exception('no downloaded video to render')
     dest = video_path(con, song_id, fmt)
     work = work_dir(con, song_id)
+    crop = bars_crop(state, work)
     plan = state.get('autoedit')
     if plan:
         tag = (f'v{version} source={state["video_id"]} autoedit='
                f'{len(plan.get("log") or [])}edits synced=yes')
-        encode_autoedit(state['raw'], plan, dest, fmt, work, tag, progress)
+        encode_autoedit(state['raw'], plan, dest, fmt, work, tag, progress, crop)
     else:
         tag = (f'v{version} source={state["video_id"]} offset={state["offset"]} '
                f'synced={"yes" if state.get("matched") else "no"}')
         if fmt == 'mp4':
-            encode_synced_mp4(state['raw'], state['offset'], dest, tag, progress)
+            encode_synced_mp4(state['raw'], state['offset'], dest, tag, progress, crop)
         else:
-            encode_synced_webm(state['raw'], state['offset'], dest, work, tag, progress)
+            encode_synced_webm(state['raw'], state['offset'], dest, work, tag, progress, crop)
     record_contribution(con, song_id, state)
     other = video_path(con, song_id, 'mp4' if fmt == 'webm' else 'webm')
     if os.path.exists(other):
@@ -491,13 +492,14 @@ def render(con, song_id, fmt, version, progress=None):
     return dest
 
 
-def encode_autoedit(src, plan, dest, fmt, work, tag='', progress=None):
+def encode_autoedit(src, plan, dest, fmt, work, tag='', progress=None, crop=''):
     """Render an auto-edit plan with the same codecs, watermark and tag as the
     offset renders. The video's own audio is cut the same way and kept."""
     import autoedit
     segs = plan['segments']
     total = max(1.0, segs[-1]['ref_end'])
-    base = autoedit.build_cmd(src, segs, keep_audio=True, post=_watermark_filter())
+    base = autoedit.build_cmd(src, segs, keep_audio=True, crop=crop,
+                              post=_watermark_filter())
     tmp = dest + ('.part.mp4' if fmt == 'mp4' else '.part.webm')
     try:
         if fmt == 'mp4':
@@ -573,9 +575,38 @@ def _song_meta(con, song_id):
     return {}
 
 
-def _cut_filters(offset_ms):
-    """(input args, ffmpeg filter args) for cutting/padding plus the watermark."""
-    pre, vf, af = [], [], []
+def bars_crop(state, work):
+    """ffmpeg crop filter that removes the video's black bars (letterbox or
+    pillarbox, see aspectcrop), measured on the raw download once and kept in
+    state.json. '' when there's nothing to crop or it can't be measured."""
+    if 'crop' in state:
+        return state['crop']
+    crop = ''
+    try:
+        import aspectcrop
+        r = aspectcrop.analyze(state['raw'])
+        crop = aspectcrop.crop_filter(r.get('crop'))
+        print('Black bars: ' + r.get('info', ''))
+    except Exception as e:
+        print('Could not check for black bars: ' + str(e))
+        return ''
+    state['crop'] = crop
+    try:
+        path = os.path.join(work, 'state.json')
+        with open(path, encoding='utf-8') as f:
+            saved = json.load(f)
+        saved['crop'] = crop
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(saved, f)
+    except Exception:
+        pass
+    return crop
+
+
+def _cut_filters(offset_ms, crop=''):
+    """(input args, ffmpeg filter args) for cutting/padding plus the watermark.
+    crop (aspectcrop) goes first, so the watermark lands on the picture."""
+    pre, vf, af = [], [crop] if crop else [], []
     if offset_ms < 0:
         pre = ['-ss', f'{-offset_ms / 1000:.3f}']
     elif offset_ms > 0:
@@ -585,9 +616,9 @@ def _cut_filters(offset_ms):
     return pre, ['-vf', ','.join(vf)] + af
 
 
-def encode_synced_mp4(src, offset_ms, dest, tag='', progress=None):
+def encode_synced_mp4(src, offset_ms, dest, tag='', progress=None, crop=''):
     """Same cut as the WebM, as H.264/AAC MP4: one pass, much faster."""
-    pre, filters = _cut_filters(offset_ms)
+    pre, filters = _cut_filters(offset_ms, crop)
     total = _duration(src)
     if total:
         total = max(1.0, total + offset_ms / 1000)

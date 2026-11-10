@@ -97,9 +97,28 @@ Video fields:
 
 ## How BackstageHero uses it
 
-When searching for a song's video, the videos the database lists for it
-(by CON ID, then artist + title) are tried before the YouTube search results,
-official first.
+Each song is matched to its entry by CON ID; if that fails, by artist +
+title (the chart's own source first), and the CON ID gets linked to that
+entry. The **Video type** column shows the types the entry has (`official`,
+`official (no link)`, ...) or **No Entry**.
+
+When downloading:
+
+- linked videos are tried before the YouTube search results, official first
+- a type without a link (most imported sheet entries) still uses the
+  automatic search, and its offset is used when the audio sync can't
+  measure one
+- **No Entry** songs use the automatic search and the database isn't touched
+
+### The ⋯ window
+
+The **⋯** action opens a window with every type (official, alternate, fan,
+meme) for that song: open a link in the browser, **Edit** a wrong one or
+**Set link** for a missing one, and **Search on YouTube** to find it.
+
+Your changes (and CON IDs matched by name) are kept in `mvdb_local.json`
+in the app's data folder and applied on top of the database. Running from
+source, matched CON IDs are also written into `mvdb/`.
 
 ## Contributing
 
@@ -109,9 +128,10 @@ what each person syncs for the songs they like.
 1. Sync your videos in BackstageHero as usual.
 2. Click **⇪ Missed entries** in the bottom bar. The first time it asks for
    the name to credit you with.
-3. It writes `missed_entries.json` with every video in your library that the
-   database doesn't have yet: rendered CON songs (with their auto-edit) and
-   song folders that have a `backstagehero_source` in `song.ini`.
+3. It writes `missed_entries.json` with every video the database doesn't
+   have yet: the links you set or fixed in the ⋯ window, rendered CON songs
+   (with their auto-edit) and song folders that have a `backstagehero_source`
+   in `song.ini`.
 4. Check the `type` (everything starts as `official`) and the `source`
    (CON songs use their `game_origin`, song folders start as `customs`), then
    attach the file to an issue or pull request.
@@ -126,12 +146,14 @@ python mvdb.py            # counts per source
 ## Importing the community sheet
 
 The [Clone Hero Background Video Time Codes](https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI/htmlview)
-sheet (moocartoons and contributors) has offsets for ~550 charts, but no
-YouTube links. To import it, open it, File > Download > CSV, then:
+sheet (moocartoons and contributors) has offsets and video links for ~560
+charts. Open it, File > Download > Web page (.html), unzip, then:
 
 ```
-python tools/import_sheet.py sheet.csv
+python tools/import_sheet.py "Time Codes_.html"
 ```
 
-Imported videos keep the sheet's description and sync credit with an empty
-`youtube`. Fill the ID in once someone finds the exact video.
+Use the HTML export: CSV drops the links. Videos keep the sheet's
+description, sync credit, the chart's download page (`chart_url`) and
+`from_sheet`; non-YouTube videos (Vimeo) keep their link in `url`.
+Importing again replaces the earlier import and keeps linked CON IDs.

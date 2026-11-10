@@ -10,9 +10,10 @@
     {
      "type": "official",
      "youtube": "",
+     "title": "@Cinderkin",
      "submitted_by": "moocartoons sheet",
-     "notes": "Pre Synced Official Music Video edit. Please refer to READ ME file for furthe instructions",
-     "sync_credit": "@Cinderkin",
+     "notes": "Pre Synced Official Music Video edit",
+     "sync_credit": "Please refer to READ ME file for furthe instructions",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Guitar Hero 3"
     }
@@ -25,7 +26,7 @@
    "videos": [
     {
      "type": "official",
-     "youtube": "",
+     "youtube": "cBojbjoMttI",
      "title": "Official Music Video",
      "offset_ms": -2000,
      "submitted_by": "moocartoons sheet",
