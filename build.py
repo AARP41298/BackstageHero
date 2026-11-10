@@ -32,6 +32,23 @@ if sys.version_info < (3, 11):
     print('         Build with Python 3.11+ (e.g. "py -3.12 build.py") instead.\n')
 
 
+# 0. The app's own requirements must be importable by THIS Python, or
+# PyInstaller silently leaves them out and the exe dies on start
+# ("No module named 'yt_dlp'").
+
+import importlib.util
+
+_missing = [name for mod, name in (('yt_dlp', 'yt-dlp'), ('numpy', 'numpy'),
+                                   ('customtkinter', 'customtkinter'), ('tqdm', 'tqdm'),
+                                   ('PIL', 'pillow'), ('mpv', 'python-mpv'))
+            if importlib.util.find_spec(mod) is None]
+if _missing:
+    print('Missing for ' + sys.executable + ': ' + ', '.join(_missing))
+    print('Install them with:')
+    print('    "' + sys.executable + '" -m pip install -r requirements.txt')
+    sys.exit(1)
+
+
 # 1. Ensure PyInstaller is available
 
 check = subprocess.run(
