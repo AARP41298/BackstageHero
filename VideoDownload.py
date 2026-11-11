@@ -47,7 +47,7 @@ from tqdm import tqdm
 import resolver_client
 import conpack
 
-__version__ = '2.2.1-rc1'
+__version__ = '2.2.1-rc2'
 
 try:
     import autoedit
