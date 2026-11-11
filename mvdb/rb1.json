@@ -17,7 +17,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band"
     }
-   ]
+   ],
+   "con_id": "sabotage"
   },
   {
    "artist": "Faith No More",
@@ -34,7 +35,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band"
     }
-   ]
+   ],
+   "con_id": "epic"
   },
   {
    "artist": "Freezepop",
@@ -51,7 +53,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 1"
     }
-   ]
+   ],
+   "con_id": "brainpower"
   },
   {
    "artist": "Garbage",
@@ -68,7 +71,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 1"
     }
-   ]
+   ],
+   "con_id": "ithinkimparanoid"
   },
   {
    "artist": "Hole",
@@ -86,7 +90,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 1"
     }
-   ]
+   ],
+   "con_id": "celebrityskin"
   },
   {
    "artist": "The Killers",
@@ -103,7 +108,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 1"
     }
-   ]
+   ],
+   "con_id": "whenyouwereyoung"
   },
   {
    "artist": "Ok Go",
@@ -120,7 +126,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 1"
     }
-   ]
+   ],
+   "con_id": "hereitgoesagain"
   },
   {
    "artist": "Weezer",
@@ -137,7 +144,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band"
     }
-   ]
+   ],
+   "con_id": "sayitaintso"
   },
   {
    "artist": "Whitesnake",
@@ -180,7 +188,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 1"
     }
-   ]
+   ],
+   "con_id": "maps"
   }
  ]
 }
