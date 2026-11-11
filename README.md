@@ -44,11 +44,15 @@ CON songs don't render right away. After the download the song shows **Review do
 
 - **▶** play the downloaded video in your default player
 - **▦** frame collage: a 4×6 grid of frames across the video, then each frame on its own (←/→, A/D, Page Up/Down or the mouse wheel to browse, Esc to close). Handy for spotting album-cover uploads
-- **↻** search again: marks that YouTube video as bad and searches again without it
+- **🔍** search again: marks that YouTube video as wrong and searches YouTube again without it (a video the [music video database](#the-music-video-database) links for the song is skipped for that search, but never marked wrong)
+- **⬇** download the video type picked in the Video type column from the database, or download it again (also for songs that already have a video, after confirming)
 - **MP4** / **WebM** render the synced video next to the CON and mark the YouTube video as good. WebM uses YARG's recommended settings (VP8 2-pass, keyframe every 128 frames, Opus 128k) and is much smaller, but takes a few times longer than MP4
-- **⋯** video links for the song (see [the music video database](#the-music-video-database))
+- **🗑** clear cache: delete the song's kept original download (see below)
+- **@** video links for the song (see [the music video database](#the-music-video-database))
 
-Rendered videos have their black bars cropped (letterbox or pillarbox, snapped to a standard ratio such as 4:3, 16:9 or 2.35 Scope, so no picture is lost), keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident.
+Exporting keeps the original download in the cache (in the app's data folder), so you can export a quick MP4 to check the result (auto-edit included) and then the WebM, without downloading again. **Add WebM to queue** collects songs and the green **Export N WebMs** button renders them all. **🗑 Clear cache** in the bottom bar deletes every kept download.
+
+Rendered videos have their black bars cropped (letterbox or pillarbox, snapped to a standard ratio such as 4:3, 16:9 or 2.35 Scope, so no picture is lost), keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading (or **🔍** / **⬇** on) a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident.
 
 ## Auto-edit
 
@@ -92,7 +96,7 @@ gets linked). In the song list:
   the offset, or **No Entry**. Click it to pick another type; click the
   header to sort.
 - **Open in browser** shows the YouTube title of that video and opens it.
-- **⋯** opens the song's video links: every type with its link, **Edit** for a
+- **@** opens the song's video links: every type with its link, **Edit** for a
   wrong one, **Set link** for a missing one, and **Search on YouTube**.
 
 Linked videos are tried before the YouTube search; when the audio sync can't

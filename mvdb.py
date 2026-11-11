@@ -13,6 +13,10 @@ Video types:
   meme       a TV/movie/game clip or meme set to the song (e.g. a South Park
              scene edited to Carry on Wayward Son)
 
+"directors_choice": true on a video makes it the one used by default; without
+it the order is fan > official > alternate > meme. Picking a type in the app
+overrides both.
+
 Contributions: the app writes missed_entries.json with every video you synced
 that the database doesn't have yet; submit it and it gets merged in.
 """
@@ -24,6 +28,9 @@ import re
 import sys
 
 TYPES = ('official', 'alternate', 'fan', 'meme')
+# which type is used when you haven't picked one: a video marked
+# "directors_choice": true first, then this order
+PRIORITY = ('fan', 'official', 'alternate', 'meme')
 
 # RB3DX source keys (dx_locale_sources.dta) plus the vanilla game_origin
 # values that file doesn't list.
@@ -429,14 +436,40 @@ def set_choice(db, source, song, vtype):
     _apply(db, e)
 
 
+def _best(vids):
+    """Of a type's videos: the director's choice, then a linked one, then any."""
+    return sorted(vids, key=lambda v: (not v.get('directors_choice'),
+                                       not v.get('youtube')))[0] if vids else None
+
+
 def types_of(song):
     """[(type, video or None)] for every type, in TYPES order."""
     out = []
     for t in TYPES:
         vids = [v for v in (song or {}).get('videos', []) if v.get('type', 'official') == t]
-        linked = [v for v in vids if v.get('youtube')]
-        out.append((t, (linked or vids or [None])[0]))
+        out.append((t, _best(vids)))
     return out
+
+
+def default_type(song):
+    """The type used when you haven't picked one: the director's choice,
+    else the first of PRIORITY (fan > official > alternate > meme) it has."""
+    have = available_types(song)
+    if not have:
+        return None
+    dc = [v for v in (song or {}).get('videos', []) if v.get('directors_choice')]
+    if dc:
+        dc.sort(key=lambda v: not v.get('youtube'))
+        return dc[0].get('type', 'official')
+    return next(t for t in PRIORITY if t in have)
+
+
+def directors_choice(song):
+    """The type marked as director's choice, or None."""
+    for v in (song or {}).get('videos', []):
+        if v.get('directors_choice'):
+            return v.get('type', 'official')
+    return None
 
 
 def available_types(song):
@@ -445,15 +478,15 @@ def available_types(song):
 
 
 def chosen_type(song):
-    """The type used for a song: your choice, else official, else the first
-    type it has. None for No Entry."""
+    """The type used for a song: your choice, else the default (director's
+    choice > fan > official > alternate > meme). None for No Entry."""
     have = available_types(song)
     if not have:
         return None
     pick = (song or {}).get('chosen')
     if pick in have:
         return pick
-    return 'official' if 'official' in have else have[0]
+    return default_type(song)
 
 
 def chosen_video(song):
@@ -463,10 +496,10 @@ def chosen_video(song):
 
 
 def ordered_types(song):
-    """types_of() with the chosen type first (download order)."""
+    """types_of() in download order: the chosen type, then PRIORITY order."""
     pick = chosen_type(song)
     items = types_of(song)
-    return sorted(items, key=lambda tv: tv[0] != pick)
+    return sorted(items, key=lambda tv: (tv[0] != pick, PRIORITY.index(tv[0])))
 
 
 def type_summary(song):
@@ -476,7 +509,8 @@ def type_summary(song):
     if pick is None:
         return 'No Entry'
     v = dict(types_of(song))[pick]
-    text = pick + ('' if v.get('youtube') else ' (no link)')
+    text = pick + (' ★' if v.get('directors_choice') else '')
+    text += '' if v.get('youtube') else ' (no link)'
     return text + ('*' if len(available_types(song)) > 1 else '')
 
 
@@ -487,7 +521,7 @@ def sort_key(song):
     if pick is None:
         return (2, 0)
     v = dict(types_of(song))[pick]
-    return (0 if v.get('youtube') else 1, TYPES.index(pick))
+    return (0 if v.get('youtube') else 1, PRIORITY.index(pick))
 
 
 # ---- contributions -------------------------------------------------------------

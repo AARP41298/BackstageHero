@@ -578,7 +578,7 @@ def download_with_fallback(folder, primary_url, candidates, quality, info=None):
     raise last_err if last_err else Exception('No downloadable candidate')
 
 
-def process_download(folder, song_name, quality, sync_ready, replace):
+def process_download(folder, song_name, quality, sync_ready, replace, mode='auto'):
     # already got one? leave it alone unless we're told to replace. stops a
     # re-run (or a batch with already-done songs) from hammering YouTube for
     # nothing.
@@ -588,8 +588,9 @@ def process_download(folder, song_name, quality, sync_ready, replace):
     artist, title = read_metadata(folder)
     ch = resolver_client.chart_hash(folder) if resolver_client.enabled() else None
 
-    # check the community resolver first - skips the YouTube search entirely for known charts
-    hit = resolver_client.resolve(ch)
+    # check the community resolver first - skips the YouTube search entirely for
+    # known charts (not when a specific video or a fresh search was asked for)
+    hit = resolver_client.resolve(ch) if mode == 'auto' else None
     if hit and hit.get('video_id'):
         url = 'https://www.youtube.com/watch?v=' + hit['video_id']
         print('\nResolved (community-confirmed): ' + (build_query(artist, title) or song_name))
@@ -620,7 +621,21 @@ def process_download(folder, song_name, quality, sync_ready, replace):
     _step(1, steps, 'Searching YouTube')
     print('\nLooking on YouTube for: ' + query)
 
-    candidates = search_candidates(query)
+    entry = _db_entry('', artist, title)
+    all_db = _db_candidates(entry)
+    db_cands = all_db[:1] if mode == 'db' else [] if mode == 'search' else all_db
+    if db_cands:
+        # a video the music video database links for this song: no search
+        print('  Music video database: ' + mvdb.type_summary(entry))
+        print('Using the music video database link: ' + db_cands[0][0])
+        candidates = db_cands
+    else:
+        skip = {c[0] for c in all_db} if mode == 'search' else set()
+        old = get_stored_source(folder) if mode == 'search' else None
+        candidates = [c for c in search_candidates(query)
+                      if c[0] not in skip and video_id_of(c[0]) != old]
+        if not candidates:
+            raise Exception('no search results')
     # the format string caps at height<=N; pass N so selection prefers a source
     # that actually has it
     m = re.search(r'height<=(\d+)', quality)
@@ -633,7 +648,24 @@ def process_download(folder, song_name, quality, sync_ready, replace):
     print('Downloading: ' + vid_title)
 
     # old video stays until new one is fully downloaded, so nothing is left half-done
-    used_url = download_with_fallback(folder, url, candidates, quality, info=vinfo)
+    try:
+        used_url = download_with_fallback(folder, url, candidates, quality, info=vinfo)
+    except BotDetected:
+        raise
+    except Exception:
+        if not db_cands or mode == 'db':
+            raise
+        print('  The database video could not be downloaded, searching instead')
+        candidates = [c for c in search_candidates(query)
+                      if c[0] not in {d[0] for d in db_cands}]
+        url, vid_title, offset, matched, conf, vinfo = select_video(
+            folder, candidates, sync_ready, target_h)
+        used_url = download_with_fallback(folder, url, candidates, quality, info=vinfo)
+    if not matched and db_cands and used_url == db_cands[0][0]:
+        db_off = _db_offset(entry, video_id_of(used_url))
+        if db_off is not None:
+            print(f'  Using the database offset ({db_off} ms)')
+            offset = db_off
 
     if is_converted(folder):
         print('  Phase Shift converter file detected - video kept, timing left as-is')
@@ -663,7 +695,8 @@ def process_download(folder, song_name, quality, sync_ready, replace):
         resolver_client.report(ch, vid, offset, conf or 1.0, artist, title)
 
 
-def process_con_download(con, song_id, artist, title, quality, sync_ready, replace):
+def process_con_download(con, song_id, artist, title, quality, sync_ready, replace,
+                         mode='auto'):
     """Same search/sync/download as process_download, for one song inside a packed
     CON. The CON is never modified. Stops after the download: the raw video waits
     in the song's work dir (state.json has the YouTube ID and measured offset)
@@ -688,20 +721,40 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
 
         query = build_query(artist, title) or song_id
         n += 1
-        _step(n, steps, 'Searching YouTube')
-        print('Looking on YouTube for: ' + query)
-        # pull extra results to make up for the ones already marked bad
-        candidates = [c for c in search_candidates(query, SEARCH_RESULTS + len(bad))
-                      if video_id_of(c[0]) not in bad]
-        # videos the music video database knows for this song go first
         origin = conpack._song_meta(con, song_id).get('game_origin')
         entry = _db_entry(song_id, artist, title, origin)
+        all_db = _db_candidates(entry)
+        db_ids = {video_id_of(c[0]) for c in all_db}
+        if mode == 'db':
+            # the Download action: exactly the chosen type's video, even if it
+            # was marked wrong before (choosing it again un-marks it)
+            db_cands = all_db[:1]
+            for c in db_cands:
+                conpack.unmark_bad(con, song_id, video_id_of(c[0]))
+        elif mode == 'search':
+            db_cands = []          # Search again: the YouTube search only
+        else:
+            db_cands = [c for c in all_db if video_id_of(c[0]) not in bad]
         if entry:
             print('  Music video database: ' + mvdb.type_summary(entry))
-        for c in reversed(_db_candidates(entry)):
-            if video_id_of(c[0]) not in bad:
-                candidates = [c] + [x for x in candidates if x[0] != c[0]]
-        if ids['good'] and ids['good'] not in bad:
+
+        def _search():
+            print('Looking on YouTube for: ' + query)
+            # pull extra results to make up for the ones already marked bad;
+            # a forced search also leaves the database links out
+            skip = bad | (db_ids if mode == 'search' else set())
+            return [c for c in search_candidates(query, SEARCH_RESULTS + len(skip))
+                    if video_id_of(c[0]) not in skip]
+
+        if db_cands:
+            # a video the database links for this song: use it, no search
+            _step(n, steps, 'Using the database video')
+            print('Using the music video database link: ' + db_cands[0][0])
+            candidates = db_cands
+        else:
+            _step(n, steps, 'Searching YouTube')
+            candidates = _search()
+        if mode == 'auto' and ids['good'] and ids['good'] not in bad:
             good_url = 'https://www.youtube.com/watch?v=' + ids['good']
             candidates = [(good_url, 'previously approved video', None)] + \
                          [c for c in candidates if c[0] != good_url]
@@ -718,8 +771,22 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
         _step(n, steps, 'Downloading')
         print('Downloading: ' + vid_title)
         # video + audio (the audio stays in the render for manual fixes)
-        used_url = download_with_fallback(work, url, candidates,
-                                          conpack.video_format(target_h or 720), info=vinfo)
+        fmt = conpack.video_format(target_h or 720)
+        try:
+            used_url = download_with_fallback(work, url, candidates, fmt, info=vinfo)
+        except BotDetected:
+            raise
+        except Exception:
+            if not db_cands or mode == 'db':
+                raise
+            # the linked video is gone (deleted / private): fall back to the search
+            print('  The database video could not be downloaded, searching instead')
+            candidates = [c for c in _search() if c[0] not in {d[0] for d in db_cands}]
+            if not candidates:
+                raise
+            url, vid_title, offset, matched, _, vinfo = select_video(
+                work, candidates, sync_ready, target_h)
+            used_url = download_with_fallback(work, url, candidates, fmt, info=vinfo)
         if matched and used_url != url:
             offset, matched = DEFAULT_START_TIME, False
         plan = _plan_autoedit(work) if sync_ready else None
@@ -1141,7 +1208,7 @@ def main():
 
 def run_song_with_backoff(folder, song_name, quality, sync_ready, replace, resync,
                           errored, stop_evt=None, events=None, con_song=None,
-                          progress=None):
+                          progress=None, mode='auto'):
     """Process one song, retrying with longer waits each time YouTube throttles us.
 
     Pass stop_evt (a threading.Event) and the backoff wait becomes cancellable,
@@ -1151,29 +1218,32 @@ def run_song_with_backoff(folder, song_name, quality, sync_ready, replace, resyn
     con_song=(con_path, song_id, artist, title) handles a song inside a packed
     CON instead of a song folder; returns 'unsynced' if it fell back to the
     default offset.
-    progress(text, fraction) gets the current step, e.g. ('4/5 Downloading 45%', 0.69)."""
+    progress(text, fraction) gets the current step, e.g. ('4/5 Downloading 45%', 0.69).
+    mode: 'auto' (database link if there is one, else search), 'db' (only the
+    database video of the chosen type) or 'search' (YouTube search, skipping the
+    database links)."""
     global _progress_cb
     _progress_cb = progress
     try:
         return _run_song(folder, song_name, quality, sync_ready, replace, resync,
-                         errored, stop_evt, events, con_song)
+                         errored, stop_evt, events, con_song, mode)
     finally:
         _progress_cb = None
 
 
 def _run_song(folder, song_name, quality, sync_ready, replace, resync,
-              errored, stop_evt, events, con_song):
+              errored, stop_evt, events, con_song, mode='auto'):
     for attempt in range(len(BOT_BACKOFF_SECONDS) + 1):
         try:
             if con_song:
                 con, song_id, artist, title = con_song
                 return process_con_download(con, song_id, artist, title, quality,
-                                            sync_ready, replace)
+                                            sync_ready, replace, mode)
             if resync:
                 process_resync(folder, song_name, sync_ready)
             else:
                 if process_download(folder, song_name, quality, sync_ready,
-                                    replace) == 'skipped':
+                                    replace, mode) == 'skipped':
                     return 'skipped'
             return 'ok'
         except KeyboardInterrupt:

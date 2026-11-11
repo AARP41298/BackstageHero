@@ -105,14 +105,18 @@ _MAUVE   = '#cba6f7'
 _ACTIONS = {
     'play':    ('▶',    'Play video in your default player'),
     'collage': ('👁',    'Show frame collage'),
-    'search':  ('↻',    'Wrong video: search YouTube again'),
-    'mp4':     ('MP4',  'Render to MP4 (fast) and approve this video'),
-    'webm':    ('WebM', 'Render to WebM (smaller, slow) and approve this video'),
-    'more':    ('⋯',    'Video links: search YouTube, open, set or fix the links'),
+    'search':  ('🔍',   'Wrong video: search YouTube again (skips the database link)'),
+    'download': ('⬇',   'Download the video type picked in the Video type column (again)'),
+    'mp4':     ('Export as MP4',     'Render to MP4 (fast) and approve this video'),
+    'webm':    ('Add WebM to queue', 'Add to the WebM queue (smaller, slow): render them all with Export WebM(s)'),
+    'clear':   ('🗑',   'Clear cache: delete the kept original download'),
+    'more':    ('@',    'Video links: search YouTube, open, set or fix the links'),
 }
 _ACTION_KEYS = tuple(_ACTIONS)
 _ACTION_COLS = tuple('act_' + k for k in _ACTION_KEYS)
 _ACTION_W = _fs(46)
+# the text actions need more room than the icons
+_ACTION_WIDTHS = {k: _fs({'mp4': 110, 'webm': 140}.get(k, 46)) for k in _ACTION_KEYS}
 
 _SONGS_FILE = os.path.join(updater.data_dir(), 'songs_path.txt')
 
@@ -197,6 +201,8 @@ class Song:
     title    : str  = ''
     game_origin: str = ''   # songs.dta game_origin of CON songs (mvdb source)
     mv       : object = None   # music video database entry (mvdb), None = No Entry
+    webm_queued: bool = False  # waiting for "Export N WebM(s)"
+    dl_mode  : str  = 'auto'   # next download: 'auto' | 'db' (⬇) | 'search' (🔍)
     review   : object = None   # CON download waiting for review (conpack.load_review)
     rendering: str  = ''       # '' | 'queued' | 'running'
 
@@ -234,13 +240,29 @@ def _open_log():
 
 
 def _review_status(review):
-    """Status text for a CON song waiting for review."""
+    """Status text for a CON song waiting for review (or exported, with its
+    original download still in the cache)."""
     if not review:
         return ''
+    if review.get('rendered'):
+        return f'✔  {review["rendered"].upper()} exported  (original kept)'
     plan = review.get('autoedit')
     if plan:
         return f'◆  Review download (auto-edit, {len(plan.get("log") or [])} edits)'
     return '◆  Review download'
+
+
+def _fmt_size(n):
+    for unit in ('B', 'KB', 'MB', 'GB'):
+        if n < 1024 or unit == 'GB':
+            return f'{n:.0f} {unit}' if unit in ('B', 'KB') else f'{n:.1f} {unit}'
+        n /= 1024
+
+
+def _review_tag(review):
+    if not review:
+        return ''
+    return 'done' if review.get('rendered') else 'warn'
 
 
 def _scan_library(songs_folder, progress=None):
@@ -285,7 +307,7 @@ def _scan_library(songs_folder, progress=None):
                     game_origin=e.get('game_origin', ''),
                     review=review,
                     status=_review_status(review),
-                    stag='warn' if review else ''))
+                    stag=_review_tag(review)))
         for con, err in con_errors.items():
             log.warning('Could not read %s: %s', con, err)
     songs.sort(key=lambda s: s.key)
@@ -911,7 +933,7 @@ class CollageViewer(ctk.CTkToplevel):
 
 
 class VideoLinksWindow(ctk.CTkToplevel):
-    """The "⋯" action: every video type the music video database knows for a
+    """The "@" action: every video type the music video database knows for a
     song, with its YouTube link. Links open in the browser; Edit / Set link
     change them. Changes are saved in the local mvdb layer and are what
     "Missed entries" submits."""
@@ -1010,6 +1032,8 @@ class VideoLinksWindow(ctk.CTkToplevel):
             details = [self._TYPE_HELP[vtype]]
             if vtype == mvdb.chosen_type(s.mv):
                 details.insert(0, '● in use')
+            if v is not None and v.get('directors_choice'):
+                details.insert(0, '★ director\'s choice')
             if v is not None:
                 if v.get('autoedit'):
                     details.append(f'auto-edit, {len(v["autoedit"].get("log") or [])} edits')
@@ -1048,6 +1072,64 @@ class VideoLinksWindow(ctk.CTkToplevel):
         self._build_rows()
 
 
+class ShutdownCountdown(ctk.CTkToplevel):
+    """Shown when the WebM exports finish with "Shut down when done" on:
+    counts down, then shuts Windows down. Cancel stops it."""
+
+    def __init__(self, app, seconds=60):
+        super().__init__(app)
+        self._app, self._left, self._job = app, seconds, None
+        self.title('Shutting down')
+        self.configure(fg_color=_BG)
+        self.geometry(f'{_fs(420)}x{_fs(170)}')
+        self.resizable(False, False)
+        self.attributes('-topmost', True)
+        ctk.CTkLabel(self, text='All WebM exports are done.', font=_font(14, weight='bold'),
+                     text_color=_TEXT).pack(pady=(18, 4))
+        self._lbl = ctk.CTkLabel(self, text='', font=_font(13), text_color=_YELLOW)
+        self._lbl.pack(pady=4)
+        row = ctk.CTkFrame(self, fg_color='transparent')
+        row.pack(pady=12)
+        ctk.CTkButton(row, text='Cancel', width=_fs(120), command=self._cancel
+                      ).pack(side='left', padx=6)
+        ctk.CTkButton(row, text='Shut down now', width=_fs(140), fg_color='#4a1a2a',
+                      hover_color='#6a2a3e', text_color=_RED, command=self._shutdown
+                      ).pack(side='left', padx=6)
+        self.protocol('WM_DELETE_WINDOW', self._cancel)
+        self.bind('<Escape>', lambda e: self._cancel())
+        self.after(50, lambda: (self.lift(), self.focus_force()))
+        self._tick()
+
+    def _tick(self):
+        self._lbl.configure(text=f'The PC shuts down in {self._left} s')
+        if self._left <= 0:
+            self._shutdown()
+            return
+        self._left -= 1
+        self._job = self.after(1000, self._tick)
+
+    def _cancel(self):
+        if self._job:
+            self.after_cancel(self._job)
+        self._app._shutdown_var.set(False)
+        self._app._status_lbl.configure(text='Shutdown cancelled')
+        self.destroy()
+
+    def _shutdown(self):
+        if self._job:
+            self.after_cancel(self._job)
+            self._job = None
+        log.info('Shutting down after the WebM exports')
+        try:
+            if sys.platform == 'win32':
+                subprocess.run(['shutdown', '/s', '/t', '0'], creationflags=NO_WINDOW)
+            else:
+                subprocess.run(['shutdown', '-h', 'now'])
+        except Exception as e:
+            messagebox.showerror('Shut down', f'Could not shut down:\n{e}', parent=self)
+        self.destroy()
+
+
 class App(ctk.CTk):
 
     def __init__(self):
@@ -1074,6 +1156,8 @@ class App(ctk.CTk):
         self._yt_thread   = None
         self._yt_save_after = None
         self._load_yt_titles()
+        self._cache_bytes = 0
+        self._webm_batch = False
         self._filtered    : list[Song]       = []
         self._iid_map     : dict[str, Song]  = {}
         self._iid_of      : dict[int, str]   = {}   # id(Song) -> tree iid (O(1) row updates)
@@ -1248,11 +1332,15 @@ class App(ctk.CTk):
         self._tree.column('yt',     width=220, minwidth=120, anchor='w',      stretch=False)
         for k, col in enumerate(_ACTION_COLS):
             self._tree.heading(col, text='Actions' if k == 0 else '', anchor='w')
-            self._tree.column(col, width=_ACTION_W, minwidth=_ACTION_W,
+            aw = _ACTION_WIDTHS[_ACTION_KEYS[k]]
+            self._tree.column(col, width=aw, minwidth=aw,
                               anchor='center', stretch=False)
         # Song 60% / Resolution 20% / Status 20% of the width left after the
         # checkbox and the action icons
         self._tree.bind('<Configure>', self._size_columns, add='+')
+        # dragging a column edge doesn't fire <Configure>: follow the drag too
+        for ev in ('<B1-Motion>', '<ButtonRelease-1>'):
+            self._tree.bind(ev, lambda e: self.after_idle(self._place_yt_border), add='+')
         self._tree.bind('<Motion>', self._on_tree_motion, add='+')
 
         self._tree.tag_configure('done',  foreground=_GREEN)
@@ -1342,9 +1430,32 @@ class App(ctk.CTk):
             command=self._export_missed, **_fbtn)
         self._missed_btn.grid(row=0, column=7, padx=4, pady=15)
 
+        # renders every song queued with the WebM action
+        self._webm_btn = ctk.CTkButton(
+            foot, text='Export 0 WebMs', width=150, font=_foot_bold,
+            fg_color='#2e7d4f', hover_color='#3a9a62', text_color='#ffffff',
+            text_color_disabled='#9fb8a8', state='disabled',
+            command=self._export_webms, **_fbtn)
+        self._webm_btn.grid(row=0, column=8, padx=4, pady=15)
+
+        # off on every start on purpose: a shutdown should never come from an
+        # old setting
+        self._shutdown_var = tk.BooleanVar(value=False)
+        ctk.CTkCheckBox(
+            foot, text='Shut down\nwhen done', variable=self._shutdown_var,
+            font=_font(11), text_color=_SUBTEXT,
+            checkbox_width=18, checkbox_height=18,
+            command=self._on_shutdown_toggle).grid(row=0, column=9, padx=(4, 8), pady=15)
+
+        self._cache_btn = ctk.CTkButton(
+            foot, text='🗑  Clear cache', width=150, font=_foot_font,
+            fg_color='#313244', hover_color='#414160', text_color=_TEXT,
+            command=self._clear_all_cache, **_fbtn)
+        self._cache_btn.grid(row=0, column=10, padx=4, pady=15)
+
         # Progress + status (right side of footer)
         prog_frame = ctk.CTkFrame(foot, fg_color='transparent')
-        prog_frame.grid(row=0, column=8, padx=(8, 16), pady=15, sticky='e')
+        prog_frame.grid(row=0, column=11, padx=(8, 16), pady=15, sticky='e')
 
         self._progress = ctk.CTkProgressBar(prog_frame, width=190, height=8,
                                              corner_radius=4)
@@ -1385,7 +1496,9 @@ class App(ctk.CTk):
         v = mvdb.chosen_video(s.mv)
         vid = (v or {}).get('youtube')
         if not vid:
-            return '🔍  Search on YouTube'
+            name = (f'{s.artist} - {s.title}' if s.artist and s.title
+                    else s.title or s.label)
+            return f'🔍  Search {name} on YouTube'
         title = self._yt_titles.get(vid)
         if title is None:
             self._want_title(vid)
@@ -1400,8 +1513,10 @@ class App(ctk.CTk):
         if vid:
             webbrowser.open('https://www.youtube.com/watch?v=' + vid)
         else:
+            # no video yet: search YouTube and open the links window to paste it
             q = (build_query(s.artist, s.title) or s.label) + ' official video'
             webbrowser.open('https://www.youtube.com/results?search_query=' + quote_plus(q))
+            VideoLinksWindow(self, s)
         # highlight the clicked row for a moment
         iid = self._iid_of.get(id(s))
         if iid:
@@ -1417,14 +1532,14 @@ class App(ctk.CTk):
 
     def _place_yt_border(self):
         try:
-            cols = self._tree['displaycolumns']
-            cols = self._tree['columns'] if cols in ('#all', ('#all',)) else cols
-            x = 0
-            for c in cols:
-                if c == 'yt':
-                    break
-                x += int(self._tree.column(c, 'width'))
-            w = int(self._tree.column('yt', 'width'))
+            # where Tk actually drew the column: the cell box of a visible row
+            rows = self._tree.get_children()
+            box = self._tree.bbox(rows[0], 'yt') if rows else None
+            if not box:
+                for w_ in self._yt_lines:
+                    w_.place_forget()
+                return
+            x, _, w, _ = box
             h = self._tree.winfo_height()
             self._yt_lines[0].place(x=x, y=0, width=1, height=h)
             self._yt_lines[1].place(x=x + w - 1, y=0, width=1, height=h)
@@ -1507,11 +1622,13 @@ class App(ctk.CTk):
             v = links[t]
             label = ('●  ' if t == pick else '     ') + t + \
                 ('' if v.get('youtube') else '   (no link: automatic search)')
-            if t == 'official' and t != pick:
+            if links[t].get('directors_choice'):
+                label += '   ★ director\'s choice'
+            if t == mvdb.default_type(s.mv) and t != pick:
                 label += '   (default)'
             menu.add_command(label=label, command=lambda t=t: self._choose_type(s, t))
         menu.add_separator()
-        menu.add_command(label='⋯  Video links...', command=lambda: VideoLinksWindow(self, s))
+        menu.add_command(label='@  Video links...', command=lambda: VideoLinksWindow(self, s))
         try:
             menu.tk_popup(event.x_root, event.y_root)
         finally:
@@ -1736,6 +1853,7 @@ class App(ctk.CTk):
                 return
         self._songs = songs
         self._attach_mvdb(songs)
+        self._refresh_cache_size()
         self._apply_filter()
         n = len(songs)
         if con_errors:
@@ -1835,7 +1953,7 @@ class App(ctk.CTk):
         self._apply_filter()
 
     def _size_columns(self, event):
-        avail = event.width - 36 - 2 - _ACTION_W * len(_ACTION_COLS)
+        avail = event.width - 36 - 2 - sum(_ACTION_WIDTHS.values())
         if avail < 300:
             return
         res = int(avail * 0.08)
@@ -1855,11 +1973,13 @@ class App(ctk.CTk):
         """Which action icons are enabled for a song."""
         if s.rendering:                      # rendering: everything locked
             return set()
-        if s.review:                         # downloaded, waiting for review
-            return {'play', 'collage', 'search', 'mp4', 'webm', 'more'}
+        v = mvdb.chosen_video(s.mv)
+        dl = {'download'} if (v and v.get('youtube') and not self._is_pending(s)) else set()
+        if s.review:                         # downloaded (review, or exported and kept)
+            return {'play', 'collage', 'search', 'mp4', 'webm', 'clear', 'more'} | dl
         if s.con and s.has_video:            # finished video
-            return {'play', 'search', 'more'}
-        return {'more'}                      # video links work for every song
+            return {'play', 'search', 'more'} | dl
+        return {'more'} | dl                 # video links work for every song
 
     def _row_values(self, s):
         chk         = '  ☑' if s.checked else '  ☐'
@@ -1884,6 +2004,7 @@ class App(ctk.CTk):
             self._iid_map[iid] = s
             self._iid_of[id(s)] = iid
         self._update_buttons()
+        self.after_idle(self._place_yt_border)
 
     def _update_row(self, s: Song):
         """Refresh the single visible row for Song s (O(1) lookup)."""
@@ -1918,7 +2039,7 @@ class App(ctk.CTk):
         if s and key == 'yt':
             v = mvdb.chosen_video(s.mv)
             hint = ('Open the video in your browser' if v and v.get('youtube')
-                    else 'Search YouTube in your browser')
+                    else 'Search YouTube in your browser and set the link')
         elif s and key == 'check':
             hint = 'Select'
         elif s and key == 'vtype':
@@ -1926,8 +2047,19 @@ class App(ctk.CTk):
                     else 'Video links')
         elif s and key and key in self._actions_of(s):
             hint = _ACTIONS[key][1]
-            if key == 'play' and s.review:
+            if key == 'play' and s.review and not s.has_video:
                 hint = 'Play the downloaded video (not cut yet)'
+            if key == 'play' and s.has_video:
+                hint = 'Play the exported video'
+            if key in ('mp4', 'webm') and s.review and s.review.get('rendered'):
+                hint += ' (again, from the kept original)'
+            if key == 'clear' and s.review and not s.review.get('rendered'):
+                hint = 'Clear cache: discard this download (not exported yet)'
+            if key == 'webm' and s.webm_queued:
+                hint = 'Remove from the WebM queue'
+            if key == 'download':
+                hint = f'Download the {mvdb.chosen_type(s.mv)} video from the database' + \
+                    (' again' if (s.has_video or s.review) else '')
         cursor = 'hand2' if hint else ''
         if str(self._tree.cget('cursor')) != cursor:
             self._tree.configure(cursor=cursor)
@@ -1960,15 +2092,22 @@ class App(ctk.CTk):
 
     def _do_action(self, s, key):
         if key == 'play':
-            path = s.review['raw'] if s.review else s.video
+            # the export once there is one (to check the auto-edit), else the download
+            path = s.video if s.has_video else s.review['raw']
             if os.path.exists(path):
                 _open_in_file_manager(path)     # opens files in the default player
         elif key == 'collage':
             self._show_collage(s)
         elif key == 'search':
             self._search_again(s)
-        elif key in ('mp4', 'webm'):
+        elif key == 'download':
+            self._download_db(s)
+        elif key == 'clear':
+            self._clear_cache(s)
+        elif key == 'mp4':
             self._queue_render(s, key)
+        elif key == 'webm':
+            self._toggle_webm(s)
         elif key == 'more':
             VideoLinksWindow(self, s)
 
@@ -1987,15 +2126,17 @@ class App(ctk.CTk):
 
     def _search_again(self, s):
         """Mark the current YouTube video bad and look for a different one."""
-        if s.review:
+        if s.review and not s.has_video:
             if not messagebox.askyesno(
                     'Search again?',
                     f'{s.label}\n\nMark this video as wrong and search YouTube again?\n'
                     '(it will be skipped in future searches)'):
                 return
-            conpack.mark_bad(s.con, s.song_id, s.review['video_id'])
+            self._mark_wrong(s, s.review['video_id'])
             conpack.discard_work(s.con, s.song_id)
             s.review = None
+            s.webm_queued = False
+            s.dl_mode = 'search'
             self._enqueue_downloads([s], replace=True)
             return
         # finished video: same checks as Re-download (protects hand-made videos)
@@ -2004,10 +2145,141 @@ class App(ctk.CTk):
         tag = conpack.read_tag(s.video) or ''
         m = re.search(r'source=(\S+)', tag)
         if m:
-            conpack.mark_bad(s.con, s.song_id, m.group(1))
+            self._mark_wrong(s, m.group(1))
+        if s.review:
+            conpack.clear_cache(s.con, s.song_id)
+            s.review = None
+            s.webm_queued = False
+        s.dl_mode = 'search'
         self._enqueue_downloads([s], replace=True)
 
+    def _db_ids(self, s):
+        return {v.get('youtube') for v in (s.mv or {}).get('videos', []) if v.get('youtube')}
+
+    def _mark_wrong(self, s, video_id):
+        """Search again marks the current video wrong, but never a video the
+        database links for the song: that one is skipped for this search only."""
+        if video_id and video_id not in self._db_ids(s):
+            conpack.mark_bad(s.con, s.song_id, video_id)
+
+    def _download_db(self, s):
+        """⬇: download the chosen type's database video, replacing what's there."""
+        v = mvdb.chosen_video(s.mv)
+        if not (v and v.get('youtube')):
+            return
+        what = f'the {mvdb.chosen_type(s.mv)} video (youtu.be/{v["youtube"]})'
+        if s.review and not s.has_video:
+            if not messagebox.askyesno(
+                    'Download again?',
+                    f'{s.label}\n\nDiscard the downloaded video waiting for review and '
+                    f'download {what} instead?'):
+                return
+            conpack.discard_work(s.con, s.song_id)
+            s.review = None
+            s.webm_queued = False
+        elif s.has_video:
+            # same checks as Re-download: protects videos BackstageHero didn't make
+            if not self._confirm_redownload([s]):
+                return
+            if s.review:
+                conpack.clear_cache(s.con, s.song_id)
+                s.review = None
+                s.webm_queued = False
+        s.dl_mode = 'db'
+        self._enqueue_downloads([s], replace=True)
+
+    def _is_pending(self, s):
+        return s.status.startswith(('○', '⟳'))
+
+    # ---- cache (kept original downloads) -----------------------------------
+
+    def _clear_cache(self, s):
+        if not s.review:
+            return
+        if not s.review.get('rendered') and not messagebox.askyesno(
+                'Clear cache?',
+                f'{s.label}\n\nThis download hasn\'t been exported yet. '
+                'Delete it anyway?\n(you\'d have to download it again)'):
+            return
+        conpack.clear_cache(s.con, s.song_id)
+        s.review = None
+        s.webm_queued = False
+        s.status, s.stag = '', ''
+        self._update_row(s)
+        self._update_buttons()
+        self._refresh_cache_size()
+
+    def _clear_all_cache(self):
+        cached = [s for s in self._songs if s.review]
+        pending = [s for s in cached if not s.review.get('rendered')]
+        if any(s.rendering for s in self._songs) or self._running:
+            messagebox.showinfo('Clear cache', 'Wait for the downloads and exports to finish.')
+            return
+        size = _fmt_size(self._cache_bytes)
+        msg = f'Delete the kept original downloads ({size})?'
+        if pending:
+            msg += (f'\n\n{len(pending)} of them haven\'t been exported yet and will need '
+                    'to be downloaded again.')
+        if not messagebox.askyesno('Clear cache', msg, icon='warning' if pending else 'question'):
+            return
+        conpack.clear_all_cache()
+        for s in cached:
+            s.review = None
+            s.webm_queued = False
+            s.status, s.stag = '', ''
+            self._update_row(s)
+        self._update_buttons()
+        self._refresh_cache_size()
+
+    def _refresh_cache_size(self):
+        def _worker():
+            try:
+                n = conpack.cache_size()
+            except Exception:
+                n = 0
+            self._queue.put(('cache_size', n))
+        threading.Thread(target=_worker, daemon=True).start()
+
+    def _toggle_webm(self, s):
+        """WebM renders are slow (2-pass VP8): queue them and export them all
+        at once with the green button."""
+        s.webm_queued = not s.webm_queued
+        if s.webm_queued:
+            s.status, s.stag = '⏸  In WebM queue', 'dim'
+        else:
+            s.status, s.stag = _review_status(s.review), _review_tag(s.review)
+        self._update_row(s)
+        self._update_buttons()
+
+    def _export_webms(self):
+        queued = [s for s in self._songs if s.webm_queued and s.review and not s.rendering]
+        for s in queued:
+            s.webm_queued = False
+            self._queue_render(s, 'webm')
+        if queued:
+            self._webm_batch = True
+        self._update_buttons()
+
+    # ---- shut down when the WebM exports finish ------------------------------
+
+    def _on_shutdown_toggle(self):
+        if self._shutdown_var.get():
+            self._status_lbl.configure(
+                text='The PC will shut down when the WebM exports finish (60 s to cancel)')
+
+    def _renders_idle(self):
+        return not any(s.rendering for s in self._songs) and self._render_jobs.empty()
+
+    def _maybe_shutdown(self):
+        """Called after each render: once the WebM batch is done, count down."""
+        if not (self._webm_batch and self._renders_idle()):
+            return
+        self._webm_batch = False
+        if self._shutdown_var.get() and not self._running:
+            ShutdownCountdown(self, seconds=60)
+
     def _queue_render(self, s, fmt):
+        s.webm_queued = False
         s.rendering = 'queued'
         s.status, s.stag = f'⏸  Queued for {fmt.upper()}', 'dim'
         self._update_row(s)
@@ -2114,6 +2386,14 @@ class App(ctk.CTk):
             state='normal' if can_resync else 'disabled')
         self._stop_btn.configure(
             state='normal' if self._running else 'disabled')
+
+        self._cache_btn.configure(
+            text=f'🗑  Clear cache ({_fmt_size(self._cache_bytes)})' if self._cache_bytes
+            else '🗑  Clear cache',
+            state='normal' if self._cache_bytes else 'disabled')
+        nq = sum(1 for s in self._songs if s.webm_queued)
+        self._webm_btn.configure(text=f'Export {nq} WebM{"" if nq == 1 else "s"}',
+                                 state='normal' if nq else 'disabled')
 
         all_vis_on = bool(self._filtered) and all(s.checked for s in self._filtered)
         self._sel_btn.configure(
@@ -2313,9 +2593,11 @@ class App(ctk.CTk):
                 replace=replace, resync=resync,
                 errored=errored, stop_evt=self._stop_evt, events=events,
                 con_song=(s.con, s.song_id, s.artist, s.title) if s.con else None,
+                mode=s.dl_mode,
                 progress=lambda text, frac, s=s, i=i: self._queue.put(
                     ('song_progress', s, i, total, text, frac)))
 
+            s.dl_mode = 'auto'
             prev_hit_network = result != 'skipped'
             if events:
                 # got pushed back this song, slow right down for a while
@@ -2411,6 +2693,10 @@ class App(ctk.CTk):
                 text=f'{i + 1} / {total}   Waiting {secs}s before the next download '
                      f'(so YouTube doesn\'t flag it as abuse)')
 
+        elif kind == 'cache_size':
+            self._cache_bytes = msg[1]
+            self._update_buttons()
+
         elif kind == 'yt_title':
             _, vid, title = msg
             self._on_yt_title(vid, title)
@@ -2421,12 +2707,13 @@ class App(ctk.CTk):
             s.status = _review_status(s.review) + ('' if synced else ' (not synced)')
             s.stag   = 'warn'
             self._update_row(s)
+            self._refresh_cache_size()
             self._progress.set((i + 1) / total)
 
         elif kind == 'collage_ready':
             _, s, result, err = msg
             s.status = _review_status(s.review)
-            s.stag   = 'warn' if s.review else ''
+            s.stag   = _review_tag(s.review)
             self._update_row(s)
             if err:
                 messagebox.showerror('Collage', f'Could not make the collage:\n\n{err}')
@@ -2446,12 +2733,14 @@ class App(ctk.CTk):
             if err:
                 s.status, s.stag = f'✗  Render failed: {err[:30]}', 'error'
             else:
-                s.review    = None
+                s.review    = conpack.load_review(s.con, s.song_id)   # original kept
                 s.has_video = True
                 s.res       = probe_video_height(dest) or '?'
                 s.status    = f'✔  Rendered {os.path.splitext(dest)[1][1:].upper()}'
                 s.stag      = 'done'
             self._update_row(s)
+            self._refresh_cache_size()
+            self._maybe_shutdown()
 
         elif kind == 'song_progress':
             # step inside the current song: '3/5 Matching audio (video 2/3)'

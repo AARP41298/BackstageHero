@@ -23,7 +23,17 @@ Both need Python 3.11+, numpy and ffmpeg/ffprobe on the PATH.
    (edits). Intros and outros are free.
 3. The path is split at jumps and fitted with straight lines: a short list of
    segments `album [ref_start, ref_end] <- video [vid_start, vid_end] x speed`.
-4. ffmpeg trims, re-times and joins the pieces.
+4. The intro and outro are fixed up. Before the first long piece (8 s+, in
+   order with the rest) and after the last one, that piece is continued into
+   the video's own pre-roll / ending, with no jump. Rock Band and Guitar Hero
+   charts start with a count-in: when the video's intro is long enough it
+   covers it. What it can't cover stays black while the chart audio is
+   silent (what the big offsets in the time codes sheet do); from where the
+   music starts, up to 3 s hold the first frame and longer parts reuse
+   footage from the video's first half. At the end, where the video runs
+   out, up to 3 s hold the last frame and longer gaps reuse footage from
+   the video's second half.
+5. ffmpeg trims, re-times and joins the pieces.
 
 What each difference turns into:
 
@@ -32,6 +42,9 @@ What each difference turns into:
 | long intro / interlude / skit  | **cut**: that part of the video is skipped                 |
 | different tempo                | **speed**: the piece plays a little faster/slower          |
 | missing chorus / longer album  | **insert**: an earlier part of the video plays again       |
+| count-in longer than the video's intro | **black** while the chart audio is silent |
+| album intro (with music) longer than the video's | **hold** the first frame (up to 3 s), else **insert** from the first half |
+| album outro longer than the video's | **hold** the last frame (up to 3 s), else **insert** from the second half |
 
 The match quality is checked against a random pairing of the two tracks;
 a wrong video sits near 1.0 and is refused (`match too weak`).

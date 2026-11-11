@@ -54,6 +54,8 @@ MIN_SEGMENT = 1.5          # seconds; shorter pieces are merged into neighbours
 LINE_TOLERANCE = 0.35      # seconds of path deviation before a piece is split
 MAX_SPEED_DEV = 0.25       # pieces faster/slower than this are treated as cuts
 BAD_MATCH = 0.6            # path cost / typical cost above this -> wrong video
+ANCHOR_MIN = 8.0           # seconds; the first/last pieces this long are the song's body
+HOLD_MAX = 3.0             # seconds; edge gaps up to this hold a frame instead of reusing
 
 
 # Audio and features
@@ -240,20 +242,144 @@ def plan(reference_audio, video_audio):
 
     path, jumps = _viterbi(cost)
     segs = _segments(path, _fit_pieces(path, jumps))
+    # where the chart audio has music (the count-in before it is near silent)
+    loud = ref_e > max(np.median(ref_e) * 0.03, ref_e.max() * 1e-4)
+    segs = _fix_edges(segs, cost, len(path) / FPS, cost.shape[1] / FPS, loud)
     for sg in segs:
-        a, b = int(sg['ref_start'] * FPS), max(int(sg['ref_start'] * FPS) + 1, int(sg['ref_end'] * FPS))
-        sg['match'] = round(float(cost[np.arange(a, b), path[a:b]].mean()), 3)
+        sg['match'] = _seg_cost(sg, cost)
     mean_cost = float(cost[np.arange(len(path)), path][~quiet].mean())
     # relative to a random pairing, so it doesn't depend on the absolute scale:
     # a real match is far below the matrix median, a wrong song sits near it
     rel = mean_cost / max(1e-6, float(np.median(cost[~quiet][:, ::7])))
     cuts = len(segs) - 1
-    speeds = [s['speed'] for s in segs]
+    speeds = [s['speed'] for s in segs if not s.get('hold')] or [1.0]
     info = (f'{len(segs)} segment(s), {cuts} cut(s), speed '
             f'{min(speeds):.3f}-{max(speeds):.3f}, match {rel:.2f} of random (lower is better)')
     return {'segments': segs, 'cost': round(mean_cost, 3),
             'ok': rel < BAD_MATCH, 'relative_cost': round(rel, 3), 'info': info,
             'duration': round(len(path) / FPS, 3)}
+
+
+# Intro / outro
+#
+# The path treats the song's intro and outro like any other part, so it may
+# jump anywhere for them (Almost Easy: the intro came from 1:05 although the
+# video had footage right before the song starts; Blinding Lights: the outro
+# reused footage although the video's own outro was long enough). Before the
+# first long piece and after the last one:
+#   1. continue that piece into the video's own pre-roll / outro, no jump
+#   2. intro the video can't cover: its silent start (Rock Band / Guitar Hero
+#      charts start with a count-in) stays black, like a positive offset; from
+#      where the music starts, up to 3 s hold the first frame and longer parts
+#      reuse footage from the video's first half (E-Pro used to take its ending)
+#   3. outro the video can't cover: short gaps hold the last frame, longer
+#      ones reuse footage from the video's second half
+
+def _seg_cost(sg, cost):
+    """Mean match cost along a segment's line (holds: their single frame)."""
+    n, m = cost.shape
+    a = int(sg['ref_start'] * FPS)
+    b = max(a + 1, int(sg['ref_end'] * FPS))
+    i = np.arange(a, min(b, n))
+    if i.size == 0:
+        return 0.0
+    t = sg['vid_start'] + (i / FPS - sg['ref_start']) * (0 if sg.get('hold') else sg['speed'])
+    j = np.clip(np.round(t * FPS).astype(int), 0, m - 1)
+    return round(float(cost[i, j].mean()), 3)
+
+
+def _match_region(cost, r0, r1, v0, v1):
+    """Segments for album frames [r0, r1) matched only against video frames
+    [v0, v1), in absolute seconds."""
+    sub = cost[r0:r1, v0:v1]
+    if sub.shape[0] < 2 or sub.shape[1] < 2:
+        return []
+    path, jumps = _viterbi(sub)
+    segs = _segments(path, _fit_pieces(path, jumps))
+    for sg in segs:
+        sg['ref_start'] = round(sg['ref_start'] + r0 / FPS, 3)
+        sg['ref_end'] = round(sg['ref_end'] + r0 / FPS, 3)
+        sg['vid_start'] = round(sg['vid_start'] + v0 / FPS, 3)
+        sg['vid_end'] = round(sg['vid_end'] + v0 / FPS, 3)
+    return segs
+
+
+def _hold(ref_start, ref_end, at):
+    return {'ref_start': round(ref_start, 3), 'ref_end': round(ref_end, 3),
+            'vid_start': round(at, 3), 'vid_end': round(at, 3), 'speed': 0.0, 'hold': True}
+
+
+def _fix_edges(segs, cost, ref_dur, vid_dur, loud=None):
+    long_ = [k for k, sg in enumerate(segs) if sg['ref_end'] - sg['ref_start'] >= ANCHOR_MIN]
+    if not long_:
+        return segs
+    # a long piece only counts as the body if it's in order with the next/previous
+    # long one: an intro taken from the end of the video (E-Pro) isn't
+    while len(long_) > 1 and segs[long_[1]]['vid_start'] < segs[long_[0]]['vid_start'] - 1:
+        long_.pop(0)
+    while len(long_) > 1 and segs[long_[-1]]['vid_end'] < segs[long_[-2]]['vid_end'] - 1:
+        long_.pop()
+    first, last = segs[long_[0]], segs[long_[-1]]
+    body = [dict(sg) for sg in segs[long_[0]:long_[-1] + 1]]
+    half = vid_dur / 2
+
+    # intro: run the first piece backwards into the video's pre-roll
+    lead = []
+    if first['ref_start'] > 0.05:
+        sp = first['speed']
+        back = first['ref_start'] * sp                      # video seconds wanted
+        if first['vid_start'] - back >= -0.05:
+            body[0]['vid_start'] = round(max(0.0, first['vid_start'] - back), 3)
+            body[0]['ref_start'] = 0.0
+        else:
+            have = first['vid_start'] / sp                  # album seconds it covers
+            gap_end = first['ref_start'] - have
+            body[0]['vid_start'] = 0.0
+            body[0]['ref_start'] = round(gap_end, 3)
+            # silent start (count-in): black. From where the music starts, fill.
+            g1 = int(gap_end * FPS)
+            if loud is not None and g1 > 0 and loud[:g1].any():
+                music = int(np.argmax(loud[:g1]))
+                m0 = music / FPS
+            elif loud is not None:
+                music, m0 = g1, gap_end                     # all count-in: black
+            else:
+                music, m0 = 0, 0.0
+            if gap_end - m0 >= 0.2:
+                if gap_end - m0 <= HOLD_MAX:
+                    lead = [_hold(m0, gap_end, 0.0)]
+                else:
+                    lead = _match_region(cost, music, g1, 0, int(half * FPS)) \
+                        or [_hold(m0, gap_end, 0.0)]
+                    lead[0]['ref_start'] = round(m0, 3)
+                    lead[-1]['ref_end'] = round(gap_end, 3)
+
+    # outro: run the last piece forwards into the video's own ending
+    tail = []
+    if ref_dur - last['ref_end'] > 0.05:
+        sp = last['speed']
+        fwd = (ref_dur - last['ref_end']) * sp
+        if last['vid_end'] + fwd <= vid_dur + 0.05:
+            body[-1]['vid_end'] = round(min(vid_dur, last['vid_end'] + fwd), 3)
+            body[-1]['ref_end'] = round(ref_dur, 3)
+        else:
+            have = (vid_dur - last['vid_end']) / sp
+            gap_start = last['ref_end'] + have
+            body[-1]['vid_end'] = round(vid_dur, 3)
+            body[-1]['ref_end'] = round(gap_start, 3)
+            if ref_dur - gap_start <= HOLD_MAX:
+                tail = [_hold(gap_start, ref_dur, max(0.0, vid_dur - 0.05))]
+            else:
+                tail = _match_region(cost, int(gap_start * FPS), cost.shape[0],
+                                     int(half * FPS), cost.shape[1]) \
+                    or [_hold(gap_start, ref_dur, max(0.0, vid_dur - 0.05))]
+                tail[0]['ref_start'] = round(gap_start, 3)
+    out = lead + body + tail
+    for sg in out:
+        if not sg.get('hold'):
+            span = sg['ref_end'] - sg['ref_start']
+            sg['speed'] = round((sg['vid_end'] - sg['vid_start']) / max(1e-6, span), 4)
+    return out
 
 
 # Rendering
@@ -271,8 +397,12 @@ def build_cmd(video, segments, audio=None, keep_audio=False, fps=30, crop='', po
     parts, vlabels, alabels, inputs = [], [], [], []
     for k, s in enumerate(segments):
         out_len = s['ref_end'] - s['ref_start']
-        src_len = max(1e-3, s['vid_end'] - s['vid_start'])
-        factor = out_len / src_len
+        if s.get('hold'):
+            # freeze one frame: a sliver of video padded out by tpad below
+            src_len, factor = 0.1, 1.0
+        else:
+            src_len = max(1e-3, s['vid_end'] - s['vid_start'])
+            factor = out_len / src_len
         # each piece gets its own seeked input: one shared input with several
         # trims makes ffmpeg buffer every frame for the later pieces (OOM)
         inputs += ['-ss', f"{s['vid_start']:.3f}", '-t', f"{src_len:.3f}", '-i', video]
@@ -282,15 +412,16 @@ def build_cmd(video, segments, audio=None, keep_audio=False, fps=30, crop='', po
                      f"trim=duration={out_len:.3f},setpts=PTS-STARTPTS[v{k}]")
         vlabels.append(f'[v{k}]')
         if keep_audio and not audio:
-            tempo = min(2.0, max(0.5, 1.0 / factor))
+            tempo = 1.0 if s.get('hold') else min(2.0, max(0.5, 1.0 / factor))
             parts.append(f"[{k}:a]asetpts=PTS-STARTPTS,atempo={tempo:.6f},"
                          f"apad,atrim=duration={out_len:.3f},asetpts=PTS-STARTPTS[a{k}]")
             alabels.append(f'[a{k}]')
-    # reference may start before the first matched frame (e.g. ref has silence)
+    # the song may start before the video does (count-in): black until then
     lead = segments[0]['ref_start']
     graph = ';'.join(parts) + ';' + ''.join(vlabels) + f'concat=n={len(vlabels)}:v=1:a=0'
     if lead > 0.01:
-        graph += f',tpad=start_mode=clone:start_duration={lead:.3f}'
+        # before the video starts (the chart's count-in): black
+        graph += f',tpad=start_duration={lead:.3f}:color=black'
     if post:
         graph += ',' + post
     graph += ',format=yuv420p[v]'
@@ -332,14 +463,17 @@ def render(video, segments, dest, audio=None, fps=30, extra=None, crop='',
 
 def needs_edit(plan_result):
     """True when the plan is more than a single offset (cuts, inserts or a
-    speed change), i.e. when a plain video_start_time offset can't sync it."""
-    segs = plan_result.get('segments') or []
+    speed change), i.e. when a plain video_start_time offset can't sync it.
+    A frame held at the very start or end is what an offset does anyway."""
+    segs = [s for s in plan_result.get('segments') or []
+            if not (s.get('hold') and (s is plan_result['segments'][0]
+                                       or s is plan_result['segments'][-1]))]
     return len(segs) > 1 or any(abs(s.get('speed', 1) - 1) > SPEED_EPS for s in segs)
 
 
 def offset_ms(plan_result):
     """video_start_time for a single-segment plan (same sign as audiosync)."""
-    s = plan_result['segments'][0]
+    s = next(x for x in plan_result['segments'] if not x.get('hold'))
     return -int(round((s['vid_start'] - s['ref_start']) * 1000))
 
 
@@ -382,6 +516,15 @@ def edit_log(segments, video_duration=None):
     entries = []
     if not segments:
         return entries
+    if segments and segments[0]['ref_start'] > GAP:
+        entries.append({'action': 'black', 'at': 0.0, 'start': 0.0, 'end': 0.0,
+                        'length': round(segments[0]['ref_start'], 3)})
+    for sg in segments:
+        if sg.get('hold'):
+            entries.append({'action': 'hold', 'at': sg['ref_start'], 'start': sg['vid_start'],
+                            'end': sg['vid_start'],
+                            'length': round(sg['ref_end'] - sg['ref_start'], 3)})
+    segments = [sg for sg in segments if not sg.get('hold')]
     # inserts: a piece that starts inside source already played
     played = []                       # (start, end) source ranges shown so far
     for k, sg in enumerate(segments):
@@ -408,7 +551,7 @@ def edit_log(segments, video_duration=None):
             entries.append({'action': 'speed', 'start': sg['vid_start'],
                             'end': sg['vid_end'], 'speed': sp,
                             'percent': round((sp - 1.0) * 100, 2)})
-    order = {'cut': 0, 'insert': 1, 'speed': 2}
+    order = {'black': -1, 'cut': 0, 'insert': 1, 'speed': 2, 'hold': 3}
     entries.sort(key=lambda e: (e['start'], order[e['action']]))
     for e in entries:
         for k in ('start', 'end', 'at'):
@@ -423,6 +566,10 @@ def describe(e):
     if e['action'] == 'cut':
         what = f" ({e['note']})" if e.get('note') else ''
         return f"segment {span} was cut{what}"
+    if e['action'] == 'black':
+        return f"0:00.000-{ts(e['length'])} black (count-in, before the music)"
+    if e['action'] == 'hold':
+        return f"at {ts(e['at'])}, the frame at {ts(e['start'])} was held for {e['length']:.3f}s"
     if e['action'] == 'insert':
         return f"at {ts(e['at'])}, the fragment {span} was inserted"
     return f"segment {span} change speed by {e['percent']:+.2f}%"
@@ -464,6 +611,8 @@ def export_v3(video, segments, dest, audio=None, fps=None):
     fps = fps or info['fps']
     v_clips, a_clips = [], []
     for sg in segments:
+        if sg.get('hold'):
+            sg = dict(sg, speed=1.0)     # a frame hold: a 1x clip from that frame
         start = round(sg['ref_start'] * fps)
         dur = max(1, round(sg['ref_end'] * fps) - start)
         clip = {'src': os.path.abspath(video), 'start': start, 'dur': dur,
@@ -511,6 +660,8 @@ def export_xml(video, segments, dest, audio=None, fps=None, name='BackstageHero 
              f'</samplecharacteristics></video></media></file>')
     clips = []
     for k, sg in enumerate(segments, 1):
+        if sg.get('hold'):
+            sg = dict(sg, speed=1.0)     # a frame hold: a 1x clip from that frame
         start = round(sg['ref_start'] * fps)
         end = max(start + 1, round(sg['ref_end'] * fps))
         sp = sg['speed']

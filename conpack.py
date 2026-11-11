@@ -450,6 +450,15 @@ def mark_bad(con, song_id, video_id):
     _save_ids(data)
 
 
+def unmark_bad(con, song_id, video_id):
+    """Take a video off the song's 'wrong video' list (chosen again on purpose)."""
+    data = _load_ids()
+    e = data.get(_song_key(con, song_id))
+    if e and video_id in e.get('bad', []):
+        e['bad'] = [b for b in e['bad'] if b != video_id]
+        _save_ids(data)
+
+
 # ---- rendering -----------------------------------------------------------------
 
 def existing_video(con, song_id):
@@ -463,7 +472,9 @@ def existing_video(con, song_id):
 
 def render(con, song_id, fmt, version, progress=None):
     """Cut + encode the reviewed download next to the CON as <song id>.<fmt>
-    ('webm' or 'mp4'), mark its YouTube ID good and drop the raw download.
+    ('webm' or 'mp4') and mark its YouTube ID good. The raw download stays in
+    the cache (work_dir) so it can be exported again, e.g. a quick MP4 to check
+    the auto-edit, then the WebM; clear_cache() removes it.
     A previous video of the other format is removed so YARG has just one."""
     state = load_review(con, song_id)
     if not state:
@@ -488,8 +499,52 @@ def render(con, song_id, fmt, version, progress=None):
     if os.path.exists(other):
         os.remove(other)
     mark_good(con, song_id, state['video_id'])
-    discard_work(con, song_id)
+    _update_state(work, rendered=fmt)
     return dest
+
+
+def _update_state(work, **values):
+    """Add keys to a work dir's state.json."""
+    path = os.path.join(work, 'state.json')
+    try:
+        with open(path, encoding='utf-8') as f:
+            saved = json.load(f)
+        saved.update(values)
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(saved, f)
+    except Exception as e:
+        print('Could not update ' + path + ': ' + str(e))
+
+
+# ---- cache: kept original downloads ------------------------------------------
+
+def _cache_root():
+    return os.path.join(updater.data_dir(), 'con_work')
+
+
+def _dir_size(path):
+    total = 0
+    for root, _, files in os.walk(path):
+        for f in files:
+            try:
+                total += os.path.getsize(os.path.join(root, f))
+            except OSError:
+                pass
+    return total
+
+
+def cache_size(con=None, song_id=None):
+    """Bytes kept for one song, or for every song when con is None."""
+    return _dir_size(work_dir(con, song_id) if con else _cache_root())
+
+
+def clear_cache(con, song_id):
+    """Delete one song's kept download (and its review, if not rendered)."""
+    discard_work(con, song_id)
+
+
+def clear_all_cache():
+    shutil.rmtree(_cache_root(), ignore_errors=True)
 
 
 def encode_autoedit(src, plan, dest, fmt, work, tag='', progress=None, crop=''):
@@ -591,15 +646,7 @@ def bars_crop(state, work):
         print('Could not check for black bars: ' + str(e))
         return ''
     state['crop'] = crop
-    try:
-        path = os.path.join(work, 'state.json')
-        with open(path, encoding='utf-8') as f:
-            saved = json.load(f)
-        saved['crop'] = crop
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(saved, f)
-    except Exception:
-        pass
+    _update_state(work, crop=crop)
     return crop
 
 

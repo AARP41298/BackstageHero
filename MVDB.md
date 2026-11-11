@@ -81,6 +81,7 @@ Video fields:
 | `chart_source` | which chart the offset is for, when one song has several    |
 | `submitted_by` | who contributed it                                          |
 | `sync_credit`  | who originally synced it (imported entries)                 |
+| `directors_choice` | `true` on the video to use by default for this song      |
 | `notes`        | anything else                                               |
 
 ### Types
@@ -94,6 +95,13 @@ Video fields:
   [P5ZJui3aPoQ](https://www.youtube.com/watch?v=P5ZJui3aPoQ), and there's a
   South Park scene edited to it:
   [cSLQDiXtorY](https://www.youtube.com/watch?v=cSLQDiXtorY)
+
+### Which video is used
+
+When you haven't picked a type in the Video type column, the video marked
+`"directors_choice": true` is used. Without one, the first type the song has
+in this order: **fan > official > alternate > meme**. The column shows a ★
+next to the director's choice. Picking a type in the app overrides both.
 
 ## How BackstageHero uses it
 
@@ -110,9 +118,9 @@ When downloading:
   measure one
 - **No Entry** songs use the automatic search and the database isn't touched
 
-### The ⋯ window
+### The @ window
 
-The **⋯** action opens a window with every type (official, alternate, fan,
+The **@** action opens a window with every type (official, alternate, fan,
 meme) for that song: open a link in the browser, **Edit** a wrong one or
 **Set link** for a missing one, and **Search on YouTube** to find it.
 
@@ -129,12 +137,14 @@ what each person syncs for the songs they like.
 2. Click **⇪ Missed entries** in the bottom bar. The first time it asks for
    the name to credit you with.
 3. It writes `missed_entries.json` with every video the database doesn't
-   have yet: the links you set or fixed in the ⋯ window, rendered CON songs
+   have yet: the links you set or fixed in the @ window, rendered CON songs
    (with their auto-edit) and song folders that have a `backstagehero_source`
    in `song.ini`.
 4. Check the `type` (everything starts as `official`) and the `source`
    (CON songs use their `game_origin`, song folders start as `customs`), then
    attach the file to an issue or pull request.
+
+How the file is built, its format and how merging works: [MISSED_ENTRIES.md](MISSED_ENTRIES.md).
 
 To merge submissions:
 
