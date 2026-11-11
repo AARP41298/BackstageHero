@@ -51,8 +51,32 @@
      "sync_credit": "JacobStone",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
+    },
+    {
+     "type": "official",
+     "youtube": "oKsxPW6i3pM",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 1.083,
+        "ref_end": 175.68,
+        "vid_start": 0.0,
+        "vid_end": 173.84,
+        "speed": 0.9957
+       }
+      ],
+      "log": [
+       "0:00.000-0:01.083 black (count-in, before the music)",
+       "segment 0:00.000-2:53.840 change speed by -0.43%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "Official Music Video",
+     "pack": "RB2-Rock-Band-2-Export"
     }
-   ]
+   ],
+   "con_id": "themiddle"
   },
   {
    "artist": "Joan Jett & The Blackhearts",

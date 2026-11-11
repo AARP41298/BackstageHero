@@ -667,6 +667,45 @@
      "sync_credit": "taynaron#0385",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2 DLC"
+    },
+    {
+     "type": "official",
+     "youtube": "86URGgqONvA",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 4.002,
+        "ref_end": 5.618,
+        "vid_start": 0.0,
+        "vid_end": 0.0,
+        "speed": 0.0
+       },
+       {
+        "ref_start": 5.618,
+        "ref_end": 238.077,
+        "vid_start": 0.0,
+        "vid_end": 231.705,
+        "speed": 0.9968
+       },
+       {
+        "ref_start": 238.077,
+        "ref_end": 238.608,
+        "vid_start": 231.655,
+        "vid_end": 231.655,
+        "speed": 0.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:04.002 black (count-in, before the music)",
+       "segment 0:00.000-3:51.705 change speed by -0.32%",
+       "at 0:04.002, the frame at 0:00.000 was held for 1.616s",
+       "at 3:58.077, the frame at 3:51.655 was held for 0.531s"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB1-Rock-Band-1-Export"
     }
    ],
    "con_id": "runtothehills"

@@ -21,6 +21,464 @@
    "con_id": "sabotage"
   },
   {
+   "con_id": "paranoid",
+   "artist": "Black Sabbath",
+   "title": "Paranoid",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "0qanF-91aJo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "wanteddeadoralive",
+   "artist": "Bon Jovi",
+   "title": "Wanted Dead or Alive",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "SRvCvsRp5ho",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "yoL_Mr97e4Q",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 6.803,
+        "ref_end": 18.608,
+        "vid_start": 7.924,
+        "vid_end": 19.186,
+        "speed": 0.954
+       },
+       {
+        "ref_start": 18.608,
+        "ref_end": 30.497,
+        "vid_start": 59.416,
+        "vid_end": 70.433,
+        "speed": 0.9267
+       },
+       {
+        "ref_start": 30.497,
+        "ref_end": 98.245,
+        "vid_start": 0.0,
+        "vid_end": 67.402,
+        "speed": 0.9949
+       },
+       {
+        "ref_start": 98.245,
+        "ref_end": 131.86,
+        "vid_start": 60.791,
+        "vid_end": 94.075,
+        "speed": 0.9902
+       },
+       {
+        "ref_start": 131.86,
+        "ref_end": 159.072,
+        "vid_start": 44.582,
+        "vid_end": 66.935,
+        "speed": 0.8214
+       },
+       {
+        "ref_start": 159.072,
+        "ref_end": 167.376,
+        "vid_start": 63.785,
+        "vid_end": 71.876,
+        "speed": 0.9743
+       },
+       {
+        "ref_start": 167.376,
+        "ref_end": 202.392,
+        "vid_start": 71.821,
+        "vid_end": 107.038,
+        "speed": 1.0057
+       },
+       {
+        "ref_start": 202.392,
+        "ref_end": 263.62,
+        "vid_start": 136.937,
+        "vid_end": 199.446,
+        "speed": 1.0209
+       },
+       {
+        "ref_start": 263.62,
+        "ref_end": 284.929,
+        "vid_start": 46.174,
+        "vid_end": 66.872,
+        "speed": 0.9713
+       },
+       {
+        "ref_start": 284.929,
+        "ref_end": 307.239,
+        "vid_start": 207.694,
+        "vid_end": 230.004,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 307.239,
+        "ref_end": 307.539,
+        "vid_start": 229.954,
+        "vid_end": 229.954,
+        "speed": 0.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:06.803 black (count-in, before the music)",
+       "at 0:30.497, the fragment 0:00.000-1:07.402 was inserted",
+       "segment 0:00.000-1:07.402 change speed by -0.51%",
+       "segment 0:07.924-0:19.186 change speed by -4.60%",
+       "at 2:11.860, the fragment 0:44.582-1:06.935 was inserted",
+       "segment 0:44.582-1:06.935 change speed by -17.86%",
+       "at 4:23.620, the fragment 0:46.174-1:06.872 was inserted",
+       "segment 0:46.174-1:06.872 change speed by -2.87%",
+       "segment 0:59.416-1:10.433 change speed by -7.33%",
+       "at 1:38.245, the fragment 1:00.791-1:10.433 was inserted",
+       "segment 1:00.791-1:34.075 change speed by -0.98%",
+       "at 2:39.072, the fragment 1:03.785-1:11.876 was inserted",
+       "segment 1:03.785-1:11.876 change speed by -2.57%",
+       "at 2:47.376, the fragment 1:11.821-1:34.075 was inserted",
+       "segment 1:11.821-1:47.038 change speed by +0.57%",
+       "segment 1:47.038-2:16.937 was cut",
+       "segment 2:16.937-3:19.446 change speed by +2.09%",
+       "segment 3:19.446-3:27.694 was cut",
+       "at 5:07.239, the frame at 3:49.954 was held for 0.300s"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (meme)",
+     "pack": "RB1-Rock-Band-1-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "foreplaylongtime",
+   "artist": "Boston",
+   "title": "Foreplay/Long Time",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "VV6abxvvvyk",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 465.739,
+        "vid_start": 0.0,
+        "vid_end": 464.911,
+        "speed": 0.9982
+       },
+       {
+        "ref_start": 465.739,
+        "ref_end": 499.726,
+        "vid_start": 378.277,
+        "vid_end": 408.75,
+        "speed": 0.8966
+       }
+      ],
+      "log": [
+       "at 7:45.739, the fragment 6:18.277-6:48.750 was inserted",
+       "segment 6:18.277-6:48.750 change speed by -10.34%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (fan)",
+     "pack": "RB1-Rock-Band-1-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "welcomehome",
+   "artist": "Coheed and Cambria",
+   "title": "Welcome Home",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "n0H3RlaQVrM",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 5.164,
+        "ref_end": 46.621,
+        "vid_start": 0.0,
+        "vid_end": 41.366,
+        "speed": 0.9978
+       },
+       {
+        "ref_start": 46.621,
+        "ref_end": 161.673,
+        "vid_start": 16.512,
+        "vid_end": 131.565,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 161.673,
+        "ref_end": 186.184,
+        "vid_start": 56.743,
+        "vid_end": 81.348,
+        "speed": 1.0038
+       },
+       {
+        "ref_start": 186.184,
+        "ref_end": 284.029,
+        "vid_start": 131.154,
+        "vid_end": 229.023,
+        "speed": 1.0002
+       },
+       {
+        "ref_start": 284.029,
+        "ref_end": 342.355,
+        "vid_start": 203.927,
+        "vid_end": 262.476,
+        "speed": 1.0038
+       },
+       {
+        "ref_start": 342.355,
+        "ref_end": 352.96,
+        "vid_start": 249.896,
+        "vid_end": 260.585,
+        "speed": 1.0079
+       },
+       {
+        "ref_start": 352.96,
+        "ref_end": 367.467,
+        "vid_start": 248.038,
+        "vid_end": 262.667,
+        "speed": 1.0084
+       },
+       {
+        "ref_start": 367.467,
+        "ref_end": 380.673,
+        "vid_start": 225.23,
+        "vid_end": 238.362,
+        "speed": 0.9944
+       },
+       {
+        "ref_start": 380.673,
+        "ref_end": 396.28,
+        "vid_start": 224.452,
+        "vid_end": 240.059,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:05.164 black (count-in, before the music)",
+       "segment 0:00.000-0:41.366 change speed by -0.22%",
+       "at 0:46.621, the fragment 0:16.512-0:41.366 was inserted",
+       "at 2:41.673, the fragment 0:56.743-1:21.348 was inserted",
+       "segment 0:56.743-1:21.348 change speed by +0.38%",
+       "at 3:06.184, the fragment 2:11.154-2:11.565 was inserted",
+       "at 4:44.029, the fragment 3:23.927-3:49.023 was inserted",
+       "segment 3:23.927-4:22.476 change speed by +0.38%",
+       "at 6:20.673, the fragment 3:44.452-4:00.059 was inserted",
+       "at 6:07.467, the fragment 3:45.230-3:58.362 was inserted",
+       "segment 3:45.230-3:58.362 change speed by -0.56%",
+       "at 5:52.960, the fragment 4:08.038-4:22.476 was inserted",
+       "segment 4:08.038-4:22.667 change speed by +0.84%",
+       "at 5:42.355, the fragment 4:09.896-4:20.585 was inserted",
+       "segment 4:09.896-4:20.585 change speed by +0.79%",
+       "segment 4:22.667-4:23.970 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB1-Rock-Band-1-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "highwaystar",
+   "artist": "Deep Purple",
+   "title": "Highway Star",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "AqEW53Ui2no",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 136.562,
+        "vid_start": 85.014,
+        "vid_end": 211.186,
+        "speed": 0.9239
+       },
+       {
+        "ref_start": 136.562,
+        "ref_end": 139.663,
+        "vid_start": 284.429,
+        "vid_end": 287.53,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 139.663,
+        "ref_end": 164.975,
+        "vid_start": 274.925,
+        "vid_end": 300.236,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 164.975,
+        "ref_end": 174.079,
+        "vid_start": 218.599,
+        "vid_end": 226.905,
+        "speed": 0.9123
+       },
+       {
+        "ref_start": 174.079,
+        "ref_end": 190.786,
+        "vid_start": 352.882,
+        "vid_end": 368.541,
+        "speed": 0.9373
+       },
+       {
+        "ref_start": 190.786,
+        "ref_end": 229.304,
+        "vid_start": 122.925,
+        "vid_end": 158.871,
+        "speed": 0.9332
+       },
+       {
+        "ref_start": 229.304,
+        "ref_end": 239.208,
+        "vid_start": 315.743,
+        "vid_end": 325.648,
+        "speed": 1.0001
+       },
+       {
+        "ref_start": 239.208,
+        "ref_end": 242.61,
+        "vid_start": 404.514,
+        "vid_end": 407.774,
+        "speed": 0.9583
+       },
+       {
+        "ref_start": 242.61,
+        "ref_end": 246.112,
+        "vid_start": 406.084,
+        "vid_end": 409.586,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 246.112,
+        "ref_end": 250.714,
+        "vid_start": 407.785,
+        "vid_end": 412.387,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 250.714,
+        "ref_end": 261.619,
+        "vid_start": 279.727,
+        "vid_end": 290.632,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 261.619,
+        "ref_end": 278.326,
+        "vid_start": 278.726,
+        "vid_end": 295.434,
+        "speed": 1.0001
+       },
+       {
+        "ref_start": 278.326,
+        "ref_end": 280.727,
+        "vid_start": 293.183,
+        "vid_end": 295.584,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 280.727,
+        "ref_end": 285.93,
+        "vid_start": 396.03,
+        "vid_end": 401.232,
+        "speed": 0.9998
+       },
+       {
+        "ref_start": 285.93,
+        "ref_end": 290.632,
+        "vid_start": 399.003,
+        "vid_end": 402.829,
+        "speed": 0.8137
+       },
+       {
+        "ref_start": 290.632,
+        "ref_end": 292.733,
+        "vid_start": 402.482,
+        "vid_end": 404.583,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 292.733,
+        "ref_end": 298.035,
+        "vid_start": 402.282,
+        "vid_end": 407.585,
+        "speed": 1.0002
+       },
+       {
+        "ref_start": 298.035,
+        "ref_end": 305.639,
+        "vid_start": 404.884,
+        "vid_end": 412.487,
+        "speed": 0.9999
+       },
+       {
+        "ref_start": 305.639,
+        "ref_end": 349.759,
+        "vid_start": 363.888,
+        "vid_end": 404.691,
+        "speed": 0.9248
+       },
+       {
+        "ref_start": 349.759,
+        "ref_end": 371.769,
+        "vid_start": 398.631,
+        "vid_end": 420.641,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "segment 0:00.000-1:25.014 was cut (intro)",
+       "segment 1:25.014-3:31.186 change speed by -7.61%",
+       "at 3:10.786, the fragment 2:02.925-2:38.871 was inserted",
+       "segment 2:02.925-2:38.871 change speed by -6.68%",
+       "segment 3:31.186-3:38.599 was cut",
+       "segment 3:38.599-3:46.905 change speed by -8.77%",
+       "segment 3:46.905-4:34.925 was cut",
+       "at 2:19.663, the fragment 4:34.925-4:47.530 was inserted",
+       "at 4:21.619, the fragment 4:38.726-4:55.434 was inserted",
+       "at 4:10.714, the fragment 4:39.727-4:50.632 was inserted",
+       "at 4:38.326, the fragment 4:53.183-4:55.584 was inserted",
+       "segment 5:00.236-5:15.743 was cut",
+       "segment 5:25.648-5:52.882 was cut",
+       "segment 5:52.882-6:08.541 change speed by -6.27%",
+       "at 5:05.639, the fragment 6:03.888-6:44.691 was inserted",
+       "segment 6:03.888-6:44.691 change speed by -7.52%",
+       "at 5:49.759, the fragment 6:38.631-6:52.487 was inserted",
+       "at 4:45.930, the fragment 6:39.003-6:41.232 was inserted",
+       "segment 6:39.003-6:42.829 change speed by -18.63%",
+       "at 4:52.733, the fragment 6:42.282-6:47.585 was inserted",
+       "at 4:50.632, the fragment 6:42.482-6:44.583 was inserted",
+       "segment 6:44.514-6:47.774 change speed by -4.17%",
+       "at 4:58.035, the fragment 6:44.884-6:52.387 was inserted",
+       "at 4:02.610, the fragment 6:46.084-6:47.774 was inserted",
+       "at 4:06.112, the fragment 6:47.785-6:49.586 was inserted",
+       "segment 7:00.641-7:21.970 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB1-Rock-Band-1-Export"
+    }
+   ]
+  },
+  {
    "artist": "Faith No More",
    "title": "Epic",
    "charter": "Harmonix",
@@ -37,6 +495,21 @@
     }
    ],
    "con_id": "epic"
+  },
+  {
+   "con_id": "deadonarrival",
+   "artist": "Fall Out Boy",
+   "title": "Dead on Arrival",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "qL02p9KhABo",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 2290,
+     "pack": "RB1-Rock-Band-1-Export"
+    }
+   ]
   },
   {
    "artist": "Freezepop",
@@ -107,9 +580,119 @@
      "sync_credit": "Please refer to READ ME file for furthe instructions",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 1"
+    },
+    {
+     "type": "official",
+     "youtube": "ff0oWESdmH0",
+     "submitted_by": "AARP41298"
     }
    ],
    "con_id": "whenyouwereyoung"
+  },
+  {
+   "con_id": "detroitrockcity",
+   "artist": "KISS",
+   "title": "Detroit Rock City",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Dz4EFziVkNE",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 98.545,
+        "vid_start": 0.0,
+        "vid_end": 94.495,
+        "speed": 0.9589
+       },
+       {
+        "ref_start": 98.545,
+        "ref_end": 231.377,
+        "vid_start": 84.289,
+        "vid_end": 216.498,
+        "speed": 0.9953
+       },
+       {
+        "ref_start": 231.377,
+        "ref_end": 239.509,
+        "vid_start": 117.453,
+        "vid_end": 125.657,
+        "speed": 1.0089
+       },
+       {
+        "ref_start": 239.509,
+        "ref_end": 242.11,
+        "vid_start": 123.556,
+        "vid_end": 126.157,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "segment 0:00.000-1:34.495 change speed by -4.11%",
+       "at 1:38.545, the fragment 1:24.289-1:34.495 was inserted",
+       "segment 1:24.289-3:36.498 change speed by -0.47%",
+       "at 3:51.377, the fragment 1:57.453-2:05.657 was inserted",
+       "segment 1:57.453-2:05.657 change speed by +0.89%",
+       "at 3:59.509, the fragment 2:03.556-2:06.157 was inserted"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB1-Rock-Band-1-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "entersandman",
+   "artist": "Metallica",
+   "title": "Enter Sandman",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "CD-E-LDc384",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 332.066,
+        "vid_start": 0.0,
+        "vid_end": 330.95,
+        "speed": 0.9966
+       },
+       {
+        "ref_start": 332.066,
+        "ref_end": 336.353,
+        "vid_start": 165.475,
+        "vid_end": 169.777,
+        "speed": 1.0035
+       }
+      ],
+      "log": [
+       "segment 0:00.000-5:30.950 change speed by -0.34%",
+       "at 5:32.066, the fragment 2:45.475-2:49.777 was inserted",
+       "segment 2:45.475-2:49.777 change speed by +0.35%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB1-Rock-Band-1-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "inbloom",
+   "artist": "Nirvana",
+   "title": "In Bloom",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "PbgKEjNBHqM",
+     "submitted_by": "AARP41298"
+    }
+   ]
   },
   {
    "artist": "Ok Go",
@@ -128,6 +711,30 @@
     }
    ],
    "con_id": "hereitgoesagain"
+  },
+  {
+   "con_id": "creep",
+   "artist": "Radiohead",
+   "title": "Creep",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "XFkzRNyygfk",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "blitzkriegbop",
+   "artist": "Ramones",
+   "title": "Blitzkrieg Bop",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "268C3N2dDYk",
+     "submitted_by": "AARP41298"
+    }
+   ]
   },
   {
    "artist": "Weezer",
@@ -161,6 +768,18 @@
      "sync_credit": "t1redmonkey#7540",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band"
+    }
+   ]
+  },
+  {
+   "con_id": "wontgetfooled",
+   "artist": "The Who",
+   "title": "Won't Get Fooled Again",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "UDfAdHBtK_Q",
+     "submitted_by": "AARP41298"
     }
    ]
   },

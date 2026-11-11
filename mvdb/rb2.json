@@ -20,6 +20,67 @@
    ]
   },
   {
+   "con_id": "maninthebox",
+   "artist": "Alice In Chains",
+   "title": "Man in the Box",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "TAqZb52sgpU",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 13.906,
+        "vid_start": 0.0,
+        "vid_end": 11.588,
+        "speed": 0.8333
+       },
+       {
+        "ref_start": 13.906,
+        "ref_end": 120.755,
+        "vid_start": 2.916,
+        "vid_end": 109.614,
+        "speed": 0.9986
+       },
+       {
+        "ref_start": 120.755,
+        "ref_end": 291.632,
+        "vid_start": 100.555,
+        "vid_end": 271.24,
+        "speed": 0.9989
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:11.588 change speed by -16.67%",
+       "at 0:13.906, the fragment 0:02.916-0:11.588 was inserted",
+       "at 2:00.755, the fragment 1:40.555-1:49.614 was inserted",
+       "segment 4:31.240-4:31.830 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "almosteasy",
+   "artist": "Avenged Sevenfold",
+   "title": "Almost Easy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Fi_GN1pHCVc",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 1020,
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
    "artist": "Beastie Boys",
    "title": "So WhatCha Want",
    "charter": "Harmonix",
@@ -64,6 +125,70 @@
    ]
   },
   {
+   "con_id": "whitewedding",
+   "artist": "Billy Idol",
+   "title": "White Wedding (Part 1)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "AAZQaYKZMTI",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "fan",
+     "youtube": "hgU0Hz3QKOM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "livinonaprayer",
+   "artist": "Bon Jovi",
+   "title": "Livin' on a Prayer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "lDK9QqIzhwk",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 248.012,
+        "vid_start": 0.0,
+        "vid_end": 247.799,
+        "speed": 0.9991
+       },
+       {
+        "ref_start": 248.012,
+        "ref_end": 251.014,
+        "vid_start": 224.776,
+        "vid_end": 227.534,
+        "speed": 0.9188
+       },
+       {
+        "ref_start": 251.014,
+        "ref_end": 265.12,
+        "vid_start": 23.356,
+        "vid_end": 36.864,
+        "speed": 0.9576
+       }
+      ],
+      "log": [
+       "at 4:11.014, the fragment 0:23.356-0:36.864 was inserted",
+       "segment 0:23.356-0:36.864 change speed by -4.24%",
+       "at 4:08.012, the fragment 3:44.776-3:47.534 was inserted",
+       "segment 3:44.776-3:47.534 change speed by -8.12%",
+       "segment 4:07.799-4:08.810 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
    "artist": "Breaking Benjamin",
    "title": "The Diary of Jane",
    "charter": "Harmonix",
@@ -98,6 +223,42 @@
    ]
   },
   {
+   "con_id": "hellothere",
+   "artist": "Cheap Trick",
+   "title": "Hello There",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "QK72bHiqM-Q",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "UbYi3arisw8",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 2.429,
+        "ref_end": 99.945,
+        "vid_start": 0.0,
+        "vid_end": 97.292,
+        "speed": 0.9977
+       }
+      ],
+      "log": [
+       "0:00.000-0:02.429 black (count-in, before the music)",
+       "segment 0:00.000-1:37.292 change speed by -0.23%",
+       "segment 1:37.292-1:37.830 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (meme)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
    "artist": "Disturbed",
    "title": "Down With The Sickness",
    "charter": "Harmonix",
@@ -115,6 +276,54 @@
    ]
   },
   {
+   "con_id": "hungrylikethewolf",
+   "artist": "Duran Duran",
+   "title": "Hungry Like the Wolf",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "oJL-lCzEXgI",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 150.768,
+        "vid_start": 0.368,
+        "vid_end": 151.79,
+        "speed": 1.0043
+       },
+       {
+        "ref_start": 150.768,
+        "ref_end": 206.794,
+        "vid_start": 165.062,
+        "vid_end": 221.368,
+        "speed": 1.005
+       },
+       {
+        "ref_start": 206.794,
+        "ref_end": 234.906,
+        "vid_start": 191.181,
+        "vid_end": 219.347,
+        "speed": 1.0019
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:00.368 was cut (intro)",
+       "segment 0:00.368-2:31.790 change speed by +0.43%",
+       "segment 2:31.790-2:45.062 was cut",
+       "segment 2:45.062-3:41.368 change speed by +0.50%",
+       "at 3:26.794, the fragment 3:11.181-3:39.347 was inserted",
+       "segment 3:41.368-3:42.330 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
    "artist": "Foo Fighters",
    "title": "Everlong",
    "charter": "Harmonix",
@@ -128,6 +337,202 @@
      "sync_credit": "JacobStone",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
+    },
+    {
+     "type": "official",
+     "youtube": "eBG7P-K-r1Y",
+     "submitted_by": "AARP41298"
+    }
+   ],
+   "con_id": "everlong"
+  },
+  {
+   "con_id": "wegotthebeat",
+   "artist": "Go-Go's",
+   "title": "We Got the Beat",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "f55KlPe81Yw",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 15.307,
+        "vid_start": 0.7,
+        "vid_end": 16.007,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 15.307,
+        "ref_end": 49.122,
+        "vid_start": 11.235,
+        "vid_end": 41.834,
+        "speed": 0.9049
+       },
+       {
+        "ref_start": 49.122,
+        "ref_end": 55.325,
+        "vid_start": 128.445,
+        "vid_end": 133.72,
+        "speed": 0.8503
+       },
+       {
+        "ref_start": 55.325,
+        "ref_end": 60.327,
+        "vid_start": 133.317,
+        "vid_end": 138.599,
+        "speed": 1.0559
+       },
+       {
+        "ref_start": 60.327,
+        "ref_end": 103.747,
+        "vid_start": 57.693,
+        "vid_end": 96.851,
+        "speed": 0.9019
+       },
+       {
+        "ref_start": 103.747,
+        "ref_end": 112.851,
+        "vid_start": 96.584,
+        "vid_end": 105.071,
+        "speed": 0.9323
+       },
+       {
+        "ref_start": 112.851,
+        "ref_end": 130.559,
+        "vid_start": 131.271,
+        "vid_end": 147.067,
+        "speed": 0.892
+       },
+       {
+        "ref_start": 130.559,
+        "ref_end": 132.46,
+        "vid_start": 120.755,
+        "vid_end": 122.656,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 132.46,
+        "ref_end": 158.272,
+        "vid_start": 122.499,
+        "vid_end": 145.869,
+        "speed": 0.9054
+       },
+       {
+        "ref_start": 158.272,
+        "ref_end": 161.273,
+        "vid_start": 0.017,
+        "vid_end": 3.135,
+        "speed": 1.0392
+       }
+      ],
+      "log": [
+       "at 2:38.272, the fragment 0:00.017-0:03.135 was inserted",
+       "segment 0:00.017-0:03.135 change speed by +3.92%",
+       "at 0:15.307, the fragment 0:11.235-0:16.007 was inserted",
+       "segment 0:11.235-0:41.834 change speed by -9.51%",
+       "segment 0:41.834-0:57.693 was cut",
+       "segment 0:57.693-1:36.851 change speed by -9.81%",
+       "at 1:43.747, the fragment 1:36.584-1:36.851 was inserted",
+       "segment 1:36.584-1:45.071 change speed by -6.77%",
+       "segment 1:45.071-2:00.755 was cut",
+       "at 2:12.460, the fragment 2:02.499-2:25.869 was inserted",
+       "segment 2:02.499-2:25.869 change speed by -9.46%",
+       "segment 2:08.445-2:13.720 change speed by -14.97%",
+       "at 1:52.851, the fragment 2:11.271-2:18.599 was inserted",
+       "segment 2:11.271-2:27.067 change speed by -10.80%",
+       "at 0:55.325, the fragment 2:13.317-2:13.720 was inserted",
+       "segment 2:13.317-2:18.599 change speed by +5.59%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB2-Rock-Band-2-Export"
+    },
+    {
+     "type": "alternate",
+     "youtube": "AwOPuDp3uq0",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "pda",
+   "artist": "Interpol",
+   "title": "PDA",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "3oL5QQ-6sQ0",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 192.487,
+        "vid_start": 3.434,
+        "vid_end": 195.872,
+        "speed": 0.9997
+       },
+       {
+        "ref_start": 192.487,
+        "ref_end": 200.391,
+        "vid_start": 101.646,
+        "vid_end": 109.55,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 200.391,
+        "ref_end": 207.094,
+        "vid_start": 101.046,
+        "vid_end": 107.749,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 207.094,
+        "ref_end": 215.898,
+        "vid_start": 101.396,
+        "vid_end": 110.2,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 215.898,
+        "ref_end": 224.802,
+        "vid_start": 99.945,
+        "vid_end": 108.849,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 224.802,
+        "ref_end": 244.011,
+        "vid_start": 86.089,
+        "vid_end": 105.298,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 244.011,
+        "ref_end": 304.738,
+        "vid_start": 86.939,
+        "vid_end": 147.667,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:03.434 was cut (intro)",
+       "at 3:44.802, the fragment 1:26.089-1:45.298 was inserted",
+       "at 4:04.011, the fragment 1:26.939-2:27.667 was inserted",
+       "at 3:35.898, the fragment 1:39.945-1:48.849 was inserted",
+       "at 3:20.391, the fragment 1:41.046-1:47.749 was inserted",
+       "at 3:27.094, the fragment 1:41.396-1:50.200 was inserted",
+       "at 3:12.487, the fragment 1:41.646-1:49.550 was inserted",
+       "segment 3:15.872-3:17.170 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB2-Rock-Band-2-Export"
     }
    ]
   },
@@ -146,6 +551,58 @@
      "sync_credit": "t1redmonkey#7540",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "con_id": "pretendweredead",
+   "artist": "L7",
+   "title": "Pretend We're Dead",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "PKLETNBTGx8",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 238.485,
+        "vid_start": 0.0,
+        "vid_end": 238.208,
+        "speed": 0.9988
+       },
+       {
+        "ref_start": 238.485,
+        "ref_end": 243.61,
+        "vid_start": 119.054,
+        "vid_end": 124.256,
+        "speed": 1.015
+       }
+      ],
+      "log": [
+       "at 3:58.485, the fragment 1:59.054-2:04.256 was inserted",
+       "segment 1:59.054-2:04.256 change speed by +1.50%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (fan)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "onestepcloser",
+   "artist": "Linkin Park",
+   "title": "One Step Closer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4qlCC1GOwFw",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -13048,
+     "pack": "RB2-Rock-Band-2-Export"
     }
    ]
   },
@@ -184,6 +641,48 @@
    ]
   },
   {
+   "con_id": "aceofspades",
+   "artist": "Motörhead",
+   "title": "Ace of Spades '08",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "3mbvWn1EY6g",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.201,
+        "ref_end": 175.179,
+        "vid_start": 0.0,
+        "vid_end": 166.172,
+        "speed": 0.9662
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.201 black (count-in, before the music)",
+       "segment 0:00.000-2:46.172 change speed by -3.38%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "drainyou",
+   "artist": "Nirvana",
+   "title": "Drain You",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "dUb69RIqfO8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "The Offspring",
    "title": "Come Out and Play (Keep 'em Separated)",
    "charter": "Harmonix",
@@ -197,6 +696,18 @@
      "sync_credit": "Gloobnib#9551",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "con_id": "nineintheafternoon",
+   "artist": "Panic at the Disco",
+   "title": "Nine in the Afternoon",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "yCto3PCn8wo",
+     "submitted_by": "AARP41298"
     }
    ]
   },
@@ -218,6 +729,30 @@
    ]
   },
   {
+   "con_id": "thatswhatyouget",
+   "artist": "Paramore",
+   "title": "That's What You Get",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "1kz6hNDlEEg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "alive",
+   "artist": "Pearl Jam",
+   "title": "Alive",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "qM0zINtulhM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Pearl Jam",
    "title": "Jeremy",
    "charter": "Harmonix",
@@ -231,6 +766,18 @@
      "sync_credit": "JacobStone",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "con_id": "testify",
+   "artist": "Rage Against the Machine",
+   "title": "Testify",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Q3dvbM6Pias",
+     "submitted_by": "AARP41298"
     }
    ]
   },
@@ -287,6 +834,126 @@
    ]
   },
   {
+   "con_id": "iwaswrong",
+   "artist": "Social Distortion",
+   "title": "I Was Wrong",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "aXAU4MmMIMo",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 1.679,
+        "ref_end": 239.004,
+        "vid_start": 0.0,
+        "vid_end": 237.208,
+        "speed": 0.9995
+       },
+       {
+        "ref_start": 239.004,
+        "ref_end": 247.612,
+        "vid_start": 118.554,
+        "vid_end": 127.258,
+        "speed": 1.0112
+       }
+      ],
+      "log": [
+       "0:00.000-0:01.679 black (count-in, before the music)",
+       "at 3:59.004, the fragment 1:58.554-2:07.258 was inserted",
+       "segment 1:58.554-2:07.258 change speed by +1.12%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "eyeofthetiger",
+   "artist": "Survivor",
+   "title": "Eye of the Tiger",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "btPJPFnesV4",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "ob8TNqQw2hY",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 239.909,
+        "vid_start": 0.0,
+        "vid_end": 237.01,
+        "speed": 0.9879
+       },
+       {
+        "ref_start": 239.909,
+        "ref_end": 249.813,
+        "vid_start": 219.474,
+        "vid_end": 229.416,
+        "speed": 1.0038
+       },
+       {
+        "ref_start": 249.813,
+        "ref_end": 260.018,
+        "vid_start": 228.541,
+        "vid_end": 237.85,
+        "speed": 0.9122
+       }
+      ],
+      "log": [
+       "segment 0:00.000-3:57.010 change speed by -1.21%",
+       "at 3:59.909, the fragment 3:39.474-3:49.416 was inserted",
+       "segment 3:39.474-3:49.416 change speed by +0.38%",
+       "at 4:09.813, the fragment 3:48.541-3:57.010 was inserted",
+       "segment 3:48.541-3:57.850 change speed by -8.78%",
+       "segment 3:57.850-4:04.590 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (meme)",
+     "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "chopsuey",
+   "artist": "System of a Down",
+   "title": "Chop Suey",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "CSvFpBOe8eY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "psychokiller",
+   "artist": "Talking Heads",
+   "title": "Psycho Killer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "CJ54eImz88w",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "llIttGcl0LI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Warren Zeevon",
    "title": "Werewolves of London",
    "charter": "Harmonix",
@@ -300,6 +967,18 @@
      "sync_credit": "Gloobnib#9551",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "con_id": "pinballwizard",
+   "artist": "The Who",
+   "title": "Pinball Wizard",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "hHc7bR6y06M",
+     "submitted_by": "AARP41298"
     }
    ]
   }
