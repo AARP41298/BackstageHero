@@ -11,7 +11,11 @@ frame is measured, and `coverage` decides how many frames must fit uncropped:
 1.0 (default) keeps every frame whole; 0.9 lets the widest 10% of frames lose
 their edges in exchange for a tighter (more ultra-wide) crop.
 
-CLI:  python aspectcrop.py video [--coverage 0.9] [--fps 2]
+The last END_SKIP seconds aren't measured: YouTube downloads often end on
+full-frame credits, closing curtains or a "watch more" end screen that would
+otherwise cancel the crop (Imagine's 4:3 pillarbox, a letterboxed meme video).
+
+CLI:  python aspectcrop.py video [--coverage 0.9] [--fps 2] [--end-skip 10]
 """
 
 import subprocess
@@ -32,6 +36,8 @@ RATIOS = {
 THRESHOLD = 20       # luma 0-255; above this a pixel counts as picture
 MIN_RUN = 0.004      # a line needs this share of bright pixels (ignores specks)
 PROBE_W = 0          # analysis width; 0 = full resolution (exact edges)
+END_SKIP = 10.0      # seconds at the end not measured (credits, end screens)
+END_SKIP_MAX = 0.10  # ...but never more than this share of the video
 
 
 def _probe(path):
@@ -43,11 +49,12 @@ def _probe(path):
     return int(d['width']), int(d['height']), float(d.get('duration', 0) or 0)
 
 
-def _frames(path, w, h, fps):
-    """Yield grayscale frames sampled `fps` times per second over the whole video."""
+def _frames(path, w, h, fps, until=0):
+    """Yield grayscale frames sampled `fps` times per second, up to `until`
+    seconds (0 = the whole video)."""
     pw = PROBE_W or w
     ph = int(round(h * pw / w / 2)) * 2
-    cmd = ['ffmpeg', '-v', 'error', '-i', path, '-an',
+    cmd = ['ffmpeg', '-v', 'error', '-i', path, '-an'] +         (['-t', f'{until:.3f}'] if until > 0 else []) + [
            '-vf', f'fps={fps},scale={pw}:{ph}:flags=area,format=gray',
            '-f', 'rawvideo', '-']
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=_NO_WINDOW)
@@ -65,15 +72,16 @@ def _extent(mask_lines, n):
     return (int(idx[0]), int(idx[-1]) + 1) if idx.size else None
 
 
-def analyze(path, coverage=1.0, fps=2.0):
-    """Scan the video and pick the crop.
+def analyze(path, coverage=1.0, fps=2.0, end_skip=END_SKIP):
+    """Scan the video (but its last `end_skip` seconds) and pick the crop.
 
     Returns dict: crop (w, h, x, y) in source pixels or None when no bars,
     ratio name, per-ratio share of frames, and a short info string.
     """
-    W, H, _ = _probe(path)
+    W, H, dur = _probe(path)
+    skip = min(end_skip, dur * END_SKIP_MAX) if dur > 0 else 0
     boxes = []
-    for f in _frames(path, W, H, fps):
+    for f in _frames(path, W, H, fps, until=dur - skip if skip > 0 else 0):
         bright = f > THRESHOLD
         rows = _extent(bright.mean(axis=1) > MIN_RUN, f.shape[0])
         cols = _extent(bright.mean(axis=0) > MIN_RUN, f.shape[1])
@@ -124,7 +132,8 @@ def analyze(path, coverage=1.0, fps=2.0):
     x = int(min(max(0, cx - cw / 2), W - cw)) // 2 * 2
     saved = 1 - (cw * ch) / (W * H)
     info = (f'{W}x{H} -> {cw}x{ch} ({name}), {saved:.0%} fewer pixels, '
-            f'{len(boxes)} frames, coverage {coverage:.0%}')
+            f'{len(boxes)} frames, coverage {coverage:.0%}'
+            + (f', last {skip:.0f} s skipped' if skip >= 0.5 else ''))
     return {'crop': (cw, ch, x, y), 'ratio': name, 'share': share,
             'frames': len(boxes), 'info': info}
 
@@ -141,7 +150,8 @@ if __name__ == '__main__':
     args = sys.argv[1:]
     cov = float(args[args.index('--coverage') + 1]) if '--coverage' in args else 1.0
     fps = float(args[args.index('--fps') + 1]) if '--fps' in args else 2.0
-    r = analyze(args[0], coverage=cov, fps=fps)
+    skip = float(args[args.index('--end-skip') + 1]) if '--end-skip' in args else END_SKIP
+    r = analyze(args[0], coverage=cov, fps=fps, end_skip=skip)
     print(r['info'])
     if r.get('crop'):
         print('filter:', crop_filter(r['crop']))

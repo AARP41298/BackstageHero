@@ -57,7 +57,8 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   WebM is queued (Add WebM to queue) and rendered with "Export N WebMs".
   "Shut down when done" (off on every start) shuts Windows down after the
   WebM batch, with a 60 s countdown that can be cancelled.
-- Renders crop black bars before the watermark.
+- Renders crop black bars before the watermark. The crop ignores the last
+  10 s (max 10% of the video): end screens, credits, closing curtains.
 - Auto-edit intro: the video's own pre-roll first; the silent count-in the
   video can't cover stays black; where the chart audio has music, up to 3 s
   hold the first frame, longer reuses footage from the video's first half.

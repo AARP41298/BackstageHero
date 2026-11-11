@@ -630,11 +630,17 @@ def _song_meta(con, song_id):
     return {}
 
 
+# bump when aspectcrop measures differently, so cached crops are redone
+# (2: the last seconds, end screens and credits, aren't measured)
+CROP_VERSION = 2
+
+
 def bars_crop(state, work):
     """ffmpeg crop filter that removes the video's black bars (letterbox or
     pillarbox, see aspectcrop), measured on the raw download once and kept in
-    state.json. '' when there's nothing to crop or it can't be measured."""
-    if 'crop' in state:
+    state.json. '' when there's nothing to crop or it can't be measured.
+    A crop measured by an older aspectcrop (crop_v) is measured again."""
+    if 'crop' in state and state.get('crop_v') == CROP_VERSION:
         return state['crop']
     crop = ''
     try:
@@ -645,8 +651,8 @@ def bars_crop(state, work):
     except Exception as e:
         print('Could not check for black bars: ' + str(e))
         return ''
-    state['crop'] = crop
-    _update_state(work, crop=crop)
+    state['crop'], state['crop_v'] = crop, CROP_VERSION
+    _update_state(work, crop=crop, crop_v=CROP_VERSION)
     return crop
 
 
