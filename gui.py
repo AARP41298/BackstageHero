@@ -1238,9 +1238,14 @@ class App(ctk.CTk):
                       fg_color=_SURFACE, text_color=_TEXT,
                       border_color=_BORDER, border_width=1, hover_color='#30304a',
                       command=_open_log).grid(row=0, column=1, padx=(0, 6))
+        ctk.CTkButton(folder_row, text='Open folder',
+                      width=95, height=28, font=_font(11),
+                      fg_color=_SURFACE, text_color=_TEXT,
+                      border_color=_BORDER, border_width=1, hover_color='#30304a',
+                      command=self._open_songs_folder).grid(row=0, column=2, padx=(0, 6))
         ctk.CTkButton(folder_row, text='Change folder',
                       width=115, height=28, font=_font(11),
-                      command=self._pick_folder).grid(row=0, column=2)
+                      command=self._pick_folder).grid(row=0, column=3)
 
         # Filter / search bar
         fbar = ctk.CTkFrame(self, fg_color=_SURFACE, corner_radius=0, height=50)
@@ -1783,6 +1788,14 @@ class App(ctk.CTk):
             if ok:
                 self.after(600, self.destroy)   # let "Restarting..." show briefly
         threading.Thread(target=_worker, daemon=True).start()
+
+    def _open_songs_folder(self):
+        """Open the current Songs folder in the file explorer."""
+        path = self._songs_folder
+        if path and os.path.isdir(path):
+            _open_in_file_manager(os.path.normpath(path))
+        else:
+            messagebox.showinfo('No folder', 'No Songs folder is selected yet.')
 
     def _pick_folder(self, first_run=False):
         while True:
