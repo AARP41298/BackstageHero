@@ -10,6 +10,7 @@
     {
      "type": "official",
      "youtube": "HyHNuVaZJ-k",
+     "youtube_url": "https://www.youtube.com/watch?v=HyHNuVaZJ-k",
      "title": "Official Music Video",
      "offset_ms": 12000,
      "submitted_by": "moocartoons sheet",
@@ -20,6 +21,7 @@
     {
      "type": "alternate",
      "youtube": "BdAXIj5QViw",
+     "youtube_url": "https://www.youtube.com/watch?v=BdAXIj5QViw",
      "title": "Live Performance",
      "offset_ms": 48500,
      "submitted_by": "moocartoons sheet",

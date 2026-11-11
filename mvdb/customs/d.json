@@ -10,6 +10,7 @@
     {
      "type": "meme",
      "youtube": "FxzBvqY5PP0",
+     "youtube_url": "https://www.youtube.com/watch?v=FxzBvqY5PP0",
      "title": "Film Sequence",
      "offset_ms": -5500,
      "submitted_by": "moocartoons sheet",
@@ -28,6 +29,7 @@
     {
      "type": "official",
      "youtube": "aGSKrC7dGcY",
+     "youtube_url": "https://www.youtube.com/watch?v=aGSKrC7dGcY",
      "title": "Official Music Video",
      "offset_ms": 7034,
      "submitted_by": "moocartoons sheet",
@@ -46,6 +48,7 @@
     {
      "type": "official",
      "youtube": "NUC2EQvdzmY",
+     "youtube_url": "https://www.youtube.com/watch?v=NUC2EQvdzmY",
      "title": "Official Music Video",
      "offset_ms": 6500,
      "submitted_by": "moocartoons sheet",

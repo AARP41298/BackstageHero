@@ -82,6 +82,7 @@ Video fields:
 |----------------|-------------------------------------------------------------|
 | `type`         | `official`, `alternate`, `fan` or `meme` (below)            |
 | `youtube`      | YouTube video ID (empty when only the description is known) |
+| `youtube_url`  | `https://www.youtube.com/watch?v=<youtube>`, to Ctrl+click while editing. Written from `youtube` on every save: change `youtube`, not this |
 | `title`        | video title or description                                  |
 | `offset_ms`    | `video_start_time`; 0 when `autoedit` is set (the edited video starts with the song) |
 | `autoedit`     | segments + edit log from [auto-edit](AUTOEDIT.md)           |

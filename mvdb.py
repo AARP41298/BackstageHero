@@ -202,12 +202,35 @@ def _write(path, data):
     os.replace(tmp, path)
 
 
+def watch_url(video_id):
+    return f'https://www.youtube.com/watch?v={video_id}' if video_id else ''
+
+
+def _with_url(video):
+    """The video with youtube_url (a clickable link, written right after
+    youtube) matching its youtube ID. youtube is the one that counts:
+    youtube_url is rewritten from it on every save."""
+    out = {}
+    for k, v in video.items():
+        if k == 'youtube_url':
+            continue
+        out[k] = v
+        if k == 'youtube' and v:
+            out['youtube_url'] = watch_url(v)
+    return out
+
+
 def save(db, path=None):
     """Write the given sources (only those: pass a subset to touch fewer files)."""
     path = path or db_dir()
     os.makedirs(path, exist_ok=True)
     for key, data in db.items():
         data['songs'].sort(key=lambda s: (norm(s.get('artist')), norm(s.get('title'))))
+        for s in data['songs']:
+            for v in s.get('videos', []):
+                fixed = _with_url(v)     # in place: callers may hold these dicts
+                v.clear()
+                v.update(fixed)
         folder = os.path.join(path, key)
         single = os.path.join(path, key + '.json')
         if key not in SPLIT_SOURCES and not os.path.isdir(folder):
