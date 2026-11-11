@@ -1,8 +1,10 @@
 """
 Merge missed_entries.json files sent by users into the database (mvdb/).
 
-    python tools/merge_missed.py missed_entries.json [more.json ...]
-    python tools/merge_missed.py --dry-run "S:\\Downloads\\missed_entries.json"
+    python tools/merge_missed.py missed_entries.json [more.json ...]   # report only
+    python tools/merge_missed.py --write missed_entries.json           # merge
+
+Without --write it's a dry run: it shows what would happen and writes nothing.
 
 For each entry it prints what happened:
 
@@ -43,7 +45,10 @@ def _describe(e):
 def main(argv=None):
     ap = argparse.ArgumentParser(description='Merge missed_entries.json files into mvdb/.')
     ap.add_argument('files', nargs='+', help='missed_entries.json files')
-    ap.add_argument('-n', '--dry-run', action='store_true', help="show, don't write")
+    ap.add_argument('-w', '--write', action='store_true',
+                    help='write the merge into mvdb/ (default: dry run, only report)')
+    ap.add_argument('-n', '--dry-run', action='store_true',
+                    help='only report (the default; overrides --write)')
     ap.add_argument('-q', '--quiet', action='store_true', help='only show new, filled, conflicts')
     args = ap.parse_args(argv)
 
@@ -67,8 +72,8 @@ def main(argv=None):
             print(f'  {MARK[status]} {status:8s} {key or "?":10s} {_describe(e)}')
 
     print(', '.join(f'{n} {k}' for k, n in totals.items()))
-    if args.dry_run:
-        print('dry run: nothing written')
+    if args.dry_run or not args.write:
+        print('dry run: nothing written (add --write to merge)')
     elif touched:
         mvdb.save({k: db[k] for k in sorted(touched)})
         print('wrote: ' + ', '.join(sorted(touched)))

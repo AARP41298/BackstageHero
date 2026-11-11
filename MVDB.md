@@ -159,8 +159,8 @@ How the file is built, its format and how merging works: [MISSED_ENTRIES.md](MIS
 To merge submissions:
 
 ```
-python tools/merge_missed.py --dry-run missed_entries.json   # see what it would do
-python tools/merge_missed.py missed_entries.json [more.json ...]
+python tools/merge_missed.py missed_entries.json           # dry run: report only
+python tools/merge_missed.py --write missed_entries.json [more.json ...]
 python mvdb.py            # counts per source
 ```
 

@@ -131,8 +131,8 @@ Before submitting, check by hand:
 ## Merging
 
 ```
-python tools/merge_missed.py --dry-run missed_entries.json   # report only
-python tools/merge_missed.py missed_entries.json [more.json ...]
+python tools/merge_missed.py missed_entries.json           # dry run: report only
+python tools/merge_missed.py --write missed_entries.json [more.json ...]
 ```
 
 (`python mvdb.py merge ...` does the same without the report.)
