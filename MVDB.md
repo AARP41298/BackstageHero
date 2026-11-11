@@ -117,7 +117,10 @@ next to the director's choice. Picking a type in the app overrides both.
 
 Each song is matched to its entry by CON ID; if that fails, by artist +
 title (the chart's own source first), and the CON ID gets linked to that
-entry. The **Video type** column shows the types the entry has (`official`,
+entry. Titles match loosely (case, punctuation, a leading "The", `feat.`
+and brackets are ignored), but version words in brackets or after " - "
+(remix, live, acoustic, demo, version, edit, cover, ...) must agree, so
+"19-2000" doesn't match "19-2000 (Soulchild Remix)". The **Video type** column shows the types the entry has (`official`,
 `official (no link)`, ...) or **No Entry**.
 
 When downloading:

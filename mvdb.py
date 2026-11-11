@@ -129,6 +129,31 @@ def norm(text):
     return re.sub(r'[^a-z0-9]+', '', t)
 
 
+# words in a title's brackets (or after " - ") that make it another recording:
+# "19-2000 (Soulchild Remix)" isn't "19-2000", "Run to the Hills (Original
+# Version)" isn't the Rock Band 1 cover. "(feat. ...)", "(Part 1)" don't count.
+_VERSION_WORDS = re.compile(
+    r'\b(remix|mix|live|acoustic|demo|unplugged|instrumental|version|edit|extended|'
+    r'cover|re-?record(?:ed|ing)?|reprise|orchestral|piano)\b')
+
+
+def version_tag(text):
+    """The version words of a title, e.g. {'remix'} for "19-2000 (Soulchild
+    Remix)"; empty for the plain song. Titles only match with the same tag."""
+    t = (text or '').lower()
+    extra = ' '.join(re.findall(r'[\(\[](.*?)[\)\]]', t))
+    m = re.search(r'\s-\s(.*)$', t)
+    if m:
+        extra += ' ' + m.group(1)
+    return frozenset(w.replace('-', '').replace('recorded', 'record').replace('recording', 'record')
+                     for w in _VERSION_WORDS.findall(extra))
+
+
+def same_title(a, b):
+    """Loose title match (norm) that still tells versions apart (version_tag)."""
+    return norm(a) == norm(b) and version_tag(a) == version_tag(b)
+
+
 # ---- storage --------------------------------------------------------------------
 
 def db_dir():
@@ -265,7 +290,8 @@ def find_song(db, con_id='', artist='', title='', source=None):
         return None
     for g in groups:
         for s in g['songs']:
-            if norm(s.get('title')) == t and (not a or norm(s.get('artist')) == a):
+            if norm(s.get('title')) == t and same_title(s.get('title'), title) \
+                    and (not a or norm(s.get('artist')) == a):
                 return s
     return None
 

@@ -37,15 +37,22 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_url": "http://www.mediafire.com/file/k05vqvc59m22v2y/Gorillaz_Pack.rar/file",
      "chart_source": "Gorillaz Pack"
-    },
+    }
+   ]
+  },
+  {
+   "con_id": "SheepQ_Gori_192000",
+   "artist": "Gorillaz",
+   "title": "19-2000",
+   "videos": [
     {
      "type": "official",
      "youtube": "WXR-bCF5dbM",
      "youtube_url": "https://www.youtube.com/watch?v=WXR-bCF5dbM",
-     "submitted_by": "AARP41298"
+     "submitted_by": "AARP41298",
+     "title": "Gorillaz - 19-2000 (Official Video)"
     }
-   ],
-   "con_id": "SheepQ_Gori_192000"
+   ]
   },
   {
    "artist": "Gorillaz",
