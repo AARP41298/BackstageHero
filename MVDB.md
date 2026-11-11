@@ -18,13 +18,22 @@ keys of Rock Band 3 Deluxe's
 | `rb3dlc.json`    | Rock Band 3 DLC                |
 | `ugc2.json`      | Rock Band Network              |
 | `c3customs.json` | C3 Customs                     |
-| `customs.json`   | other custom songs             |
+| `customs/a.json`, `b.json`, ... | other custom songs, one file per artist initial |
 | `gh3.json`, `ghwt.json`, ... | Guitar Hero games  |
 
 The full list is `SOURCES` in [`mvdb.py`](mvdb.py). For CON songs the source
 is the songs.dta `game_origin`, read by Nautilus (a build with `game_origin`
 in its `-backstagehero list` output); a `game_origin` that isn't in the list
 gets a file of its own.
+
+Sources with thousands of songs (`SPLIT_SOURCES` in `mvdb.py`, for now
+`customs`) are a folder with one file per artist initial instead:
+`mvdb/customs/g.json` has every Gorillaz song. The initial ignores accents
+and a leading "The" (`The Beatles` goes in `b.json`); artists starting with
+a digit go in `0.json`, anything else in `other.json`. Each file has the
+same format as a single source file. Any folder in `mvdb/` is read this way,
+and saving moves songs between files when an artist changes. To split
+another source, add it to `SPLIT_SOURCES` and run `python mvdb.py split`.
 
 ## Format
 
@@ -149,7 +158,8 @@ How the file is built, its format and how merging works: [MISSED_ENTRIES.md](MIS
 To merge submissions:
 
 ```
-python mvdb.py merge missed_entries.json [more.json ...]
+python tools/merge_missed.py --dry-run missed_entries.json   # see what it would do
+python tools/merge_missed.py missed_entries.json [more.json ...]
 python mvdb.py            # counts per source
 ```
 

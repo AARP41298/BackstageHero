@@ -1,0 +1,41 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Chelmico",
+   "title": "Easy Breezy",
+   "charter": "torqqes",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "76sNmqMzUuI",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "CSC June 2020"
+    }
+   ]
+  },
+  {
+   "artist": "Coldplay",
+   "title": "Paradise",
+   "charter": "Ruck Bogers 22",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "1G4isv_Fylg",
+     "title": "Official Music Video",
+     "offset_ms": -27000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "http://www.mediafire.com/file/266djgf65zzuurb/Coldplay_-_Paradise/file",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}

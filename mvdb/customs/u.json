@@ -1,0 +1,60 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Utada Hikaru",
+   "title": "Sanctuary",
+   "charter": "Gooba",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "rgCSgNakvlo",
+     "title": "Kingdom Hearts 2 Opening",
+     "offset_ms": 30000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1YN8tNM6l5-ZrHYq1XqDdQCXDoBU-sDsq",
+     "chart_source": "Kingdom Hearts Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Utada Hikaru",
+   "title": "SImple and Clean",
+   "charter": "Gooba",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "0nKizH5TV_g",
+     "title": "Kingdom Hearts Opening",
+     "offset_ms": 41000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1YN8tNM6l5-ZrHYq1XqDdQCXDoBU-sDsq",
+     "chart_source": "Kingdom Hearts Pack"
+    }
+   ]
+  },
+  {
+   "artist": "Utada Hikaru & Skrillex",
+   "title": "Face My Fears",
+   "charter": "Mintorment",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "PwsRQSkQc_A",
+     "title": "Kingdom Hearts 3 Opening",
+     "offset_ms": 18500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/18BAYlskJJWiwRaxgRTYwr1J-N1tcRseQ",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}

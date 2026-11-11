@@ -1,0 +1,130 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Taylor Swift",
+   "title": "Fearless",
+   "charter": "Amak11",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ptSjNWnzpjg",
+     "title": "Official Music Video",
+     "offset_ms": 8700,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Not available"
+    }
+   ]
+  },
+  {
+   "artist": "Team 10",
+   "title": "It's Everyday Bro",
+   "charter": "JaysonTM",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/0B6v9d_hMqZXRbUFaQnBmRDJhY2s",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Teenage Wrist",
+   "title": "Earth Is A Black Hole",
+   "charter": "Seven Chakras",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Czrv46nFT7I",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Krystal",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Tenacious D",
+   "title": "Master Exploder",
+   "charter": "XEntombmentX",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "80DtQD5BQ_A",
+     "title": "Movie Clip",
+     "offset_ms": 43250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=F0ijAT9y5gs",
+     "chart_source": "CSC Sept 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Travis $cott",
+   "title": "Sicko Mode (Feat. Drake)",
+   "charter": "st0rm",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "6ONRf7h3Mdk",
+     "title": "\"Official\" Video",
+     "offset_ms": -250,
+     "submitted_by": "moocartoons sheet",
+     "notes": "\"That\" version",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1mp-EgYUQpE84bZc_HIM2XfcNds89Mvw8/view",
+     "chart_source": "This One"
+    }
+   ]
+  },
+  {
+   "artist": "Trivium",
+   "title": "The Sin and the Sentence",
+   "charter": "Miscellany",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "RAoKcM54Q1Y",
+     "title": "Official Music Video",
+     "offset_ms": -17365,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1zewxj4n9rkRNz4CLfeR_9D5neJMhf5N_",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Two Door Cinima Club",
+   "title": "What You Know",
+   "charter": "Phyrexius",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": 1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1meXymOFz_bCfmgW2V4fr-DH-IT9JBwfs",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}

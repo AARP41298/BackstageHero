@@ -1,0 +1,59 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Ninja Sex Party",
+   "title": "Mansion Party",
+   "charter": "MercuryHg34",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "dNoafUU4Ikw",
+     "title": "Official Music Video",
+     "offset_ms": -2650,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/FancySkunk",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Cohrus"
+    }
+   ]
+  },
+  {
+   "artist": "NOMA",
+   "title": "8 Awesome Angles of Youtube",
+   "charter": "Plumato & Shikitashi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ysg0WZ_XmSU",
+     "title": "Original Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/0B3cd4Ad4P4Nidy1kNDBURGcwWWM/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "NOMA",
+   "title": "Brain Power",
+   "charter": "Aren Eternal",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "h-mUGj41hWA",
+     "title": "Lyric Video",
+     "offset_ms": 10250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=sAWyK-YVRRQ",
+     "chart_source": "Circuit Breaker"
+    }
+   ]
+  }
+ ]
+}

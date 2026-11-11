@@ -1,0 +1,170 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "M83",
+   "title": "Midnight City",
+   "charter": "XEntombmentX",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "JacobStone",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "Cricuit Breaker"
+    }
+   ]
+  },
+  {
+   "artist": "Macklemore & Ryan Lewis",
+   "title": "Can't Hold Us (feat. Ray Dalton)",
+   "charter": "Oktoberfest",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "2zNSgSzhBfM",
+     "title": "Official Music Video",
+     "offset_ms": 58250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1Cc2bWlmmqg0PRgboYFxQhH_TKWzzjVk0",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Madeon",
+   "title": "Pop Culture",
+   "charter": "Paturages",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "IxPbgnO81sQ",
+     "title": "Nathan Barnatt Dance Video",
+     "offset_ms": 29500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1FEnB1Fyko_Qk0Hg2U1EIDbGt282xORLD",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Major Lazer",
+   "title": "Lean On",
+   "charter": "Raspberriel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "YqeW9_5kURI",
+     "title": "Official Music Video",
+     "offset_ms": -4750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/153VCJ-M6ZaSA8EJ5LnatN-Nyl4Zds3K6/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Metric",
+   "title": "Black Sheep",
+   "charter": "Mr Deftino",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "y69gQtAdHKc",
+     "title": "Official Music Video (Film Ver.)",
+     "offset_ms": -16000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "From Scott Pilgrim Vs. The World",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1Ul0Rxii5W_c4b5rUCf4zWqOtHR22h4HU/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "M.I.A.",
+   "title": "Paper Planes",
+   "charter": "phatnugget150",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ewRjZoRtu0Y",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1yoICX7r1_8Y-osLA_38iMxBdaaEF7ggB",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Mick Gordon",
+   "title": "BFG Division",
+   "charter": "XEntombmentX",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "QHRuTYtSbJQ",
+     "title": "Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=HSvHFyAO4BE",
+     "chart_source": "CSC September 2018"
+    }
+   ]
+  },
+  {
+   "artist": "Mike Diva & Sick System",
+   "title": "Kazoo Kid-Trap Remix",
+   "charter": "Helvian",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "g-sgw9bPV4A",
+     "title": "Original Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Under file \"kazzokid\" (I renamed the artist in the .ini file)",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "http://www.mediafire.com/file/xzgy5xp4x8oxcr3/helvianalects.zip/file",
+     "chart_source": "Helvian's Drive"
+    }
+   ]
+  },
+  {
+   "artist": "Missy Elliot",
+   "title": "Lose Control (feat. Ciara & Fatman Scoop)",
+   "charter": "Jaded",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "Zo_QeYg1uf8",
+     "title": "Triangle Meme Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Why did I do this.",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=nPJAKqiEjU0",
+     "chart_source": "CSC March 2019"
+    }
+   ]
+  }
+ ]
+}

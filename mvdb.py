@@ -3,7 +3,9 @@ Music video database: which video goes with which chart, and how to sync it.
 
 One JSON file per song source in mvdb/, keyed like Rock Band 3 Deluxe's
 dx_locale_sources.dta (rb3dlc, ugc2, c3customs, gh3, ...), so a song's
-game_origin picks its file. See MVDB.md for the format.
+game_origin picks its file. Big sources (SPLIT_SOURCES, the thousands of
+custom songs) are a folder instead, one file per artist initial:
+mvdb/customs/g.json has every Gorillaz song. See MVDB.md for the format.
 
 Video types:
   official   the artist's official music video (or official lyric video)
@@ -26,6 +28,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 TYPES = ('official', 'alternate', 'fan', 'meme')
 # which type is used when you haven't picked one: a video marked
@@ -61,6 +64,10 @@ SOURCES = {
     'c3legacy': 'Legacy C3 Customs', 'ch': 'Clone Hero',
 }
 DEFAULT_SOURCE = 'customs'
+
+# sources stored as mvdb/<key>/<initial>.json instead of mvdb/<key>.json.
+# Any folder in mvdb/ is read this way; these are also written this way.
+SPLIT_SOURCES = {'customs'}
 
 # The original "Clone Hero Background Video Time Codes" sheet names sources
 # freely; this maps its spellings onto the keys above.
@@ -134,32 +141,92 @@ def _empty(source):
     return {'source': source, 'name': SOURCES.get(source, source), 'songs': []}
 
 
+def initial(artist):
+    """File name (without .json) of an artist in a split source: the first
+    letter, ignoring accents and a leading "The" ("The Beatles" -> b);
+    "0" for digits, "other" for anything else."""
+    a = unicodedata.normalize('NFKD', artist or '')
+    a = ''.join(c for c in a if not unicodedata.combining(c))
+    n = norm(a)
+    if not n:
+        return 'other'
+    return n[0] if n[0].isalpha() else '0'
+
+
+def _read(path):
+    with open(path, encoding='utf-8') as f:
+        return json.load(f)
+
+
 def load(path=None):
-    """{source_key: {'source','name','songs':[...]}} for every file in mvdb/."""
+    """{source_key: {'source','name','songs':[...]}} for every file in mvdb/
+    (a folder is one source split in several files)."""
     path = path or db_dir()
     out = {}
     if not os.path.isdir(path):
         return out
     for name in sorted(os.listdir(path)):
+        full = os.path.join(path, name)
+        if os.path.isdir(full):
+            group = out.setdefault(name, _empty(name))
+            for part in sorted(os.listdir(full)):
+                if not part.endswith('.json'):
+                    continue
+                try:
+                    data = _read(os.path.join(full, part))
+                    group['songs'].extend(data.get('songs', []))
+                    if data.get('name'):
+                        group['name'] = data['name']
+                except Exception as e:
+                    print(f'mvdb: skipping {name}/{part}: {e}')
+            continue
         if not name.endswith('.json'):
             continue
         try:
-            with open(os.path.join(path, name), encoding='utf-8') as f:
-                data = json.load(f)
-            out[data.get('source') or name[:-5]] = data
+            data = _read(full)
+            key = data.get('source') or name[:-5]
+            if key in out:      # a folder and a file for the same source
+                out[key]['songs'].extend(data.get('songs', []))
+            else:
+                out[key] = data
         except Exception as e:
             print(f'mvdb: skipping {name}: {e}')
     return out
 
 
+def _write(path, data):
+    tmp = path + '.tmp'
+    with open(tmp, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(data, f, indent=1, ensure_ascii=False)
+        f.write('\n')
+    os.replace(tmp, path)
+
+
 def save(db, path=None):
+    """Write the given sources (only those: pass a subset to touch fewer files)."""
     path = path or db_dir()
     os.makedirs(path, exist_ok=True)
     for key, data in db.items():
         data['songs'].sort(key=lambda s: (norm(s.get('artist')), norm(s.get('title'))))
-        with open(os.path.join(path, key + '.json'), 'w', encoding='utf-8', newline='\n') as f:
-            json.dump(data, f, indent=1, ensure_ascii=False)
-            f.write('\n')
+        folder = os.path.join(path, key)
+        single = os.path.join(path, key + '.json')
+        if key not in SPLIT_SOURCES and not os.path.isdir(folder):
+            _write(single, data)
+            continue
+        parts = {}
+        for s in data['songs']:
+            parts.setdefault(initial(s.get('artist')), []).append(s)
+        os.makedirs(folder, exist_ok=True)
+        for letter, songs in parts.items():
+            _write(os.path.join(folder, letter + '.json'),
+                   {'source': key, 'name': data.get('name') or SOURCES.get(key, key),
+                    'songs': songs})
+        # letters left without songs, and the old single file
+        for part in os.listdir(folder):
+            if part.endswith('.json') and part[:-5] not in parts:
+                os.remove(os.path.join(folder, part))
+        if os.path.exists(single):
+            os.remove(single)
 
 
 def find_song(db, con_id='', artist='', title='', source=None):
@@ -552,25 +619,98 @@ def write_missed(path, entries, submitted_by):
     return path
 
 
-def merge_submission(db, path):
-    """Merge a missed_entries.json into the database. Returns how many were new."""
-    with open(path, encoding='utf-8') as f:
-        data = json.load(f)
+# fields a submitted video can fill in on a video the database already has
+_FILL = ('title', 'offset_ms', 'autoedit', 'crop', 'reference_audio', 'pack', 'chart_source')
+
+
+def merge_entry(db, source, song, video):
+    """Merge one submitted video. Returns (status, source key, song entry):
+    'new'       added (to a new or an existing song)
+    'filled'    the database had this video; missing fields were filled in
+    'same'      the database already had it with the same data
+    'conflict'  the database has it with a different type/offset: kept as is
+    'invalid'   no YouTube ID, or no title / con_id"""
+    vid = youtube_id(video.get('youtube'))
+    if not vid or not (song.get('title') or song.get('con_id')):
+        return 'invalid', None, None
+    key = source_key(source)
+    # a con_id is the same song whatever source the entry says (a link edit
+    # and a render of one song can disagree), then the name in that source
+    s = find_song(db, song['con_id'], '', '', None) if song.get('con_id') else None
+    if s is not None:
+        key = _source_of(db, s) or key
+    elif key in db:
+        s = find_song(db, '', song.get('artist', ''), song.get('title', ''), key)
+    if s is None and key == DEFAULT_SOURCE:
+        # song folders always say "customs": the song may live in another source
+        s = find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', ''))
+        if s is not None:
+            key = _source_of(db, s) or key
+    if s is None:
+        group = db.setdefault(key, _empty(key))
+        s = {k: song[k] for k in ('con_id', 'artist', 'title', 'charter') if song.get(k)}
+        s['videos'] = []
+        group['songs'].append(s)
+    elif song.get('con_id') and not s.get('con_id'):
+        s['con_id'] = song['con_id']
+    video = dict(video, youtube=vid)
+    video['type'] = video.get('type') if video.get('type') in TYPES else 'official'
+    old = next((v for v in s['videos'] if v.get('youtube') == vid), None)
+    if old is None:
+        s['videos'].append(video)
+        return 'new', key, s
+    # renders (they carry the CON 'pack') are always recorded as official:
+    # the type of a video the database already has wins over that
+    if old.get('type', 'official') != video['type'] and not video.get('pack'):
+        return 'conflict', key, s
+    if video.get('autoedit') and not old.get('autoedit'):
+        # an auto-edited render replaces a plain offset
+        old['autoedit'] = video['autoedit']
+        old['offset_ms'] = video.get('offset_ms', 0)
+        filled = True
+    elif ('offset_ms' in old and 'offset_ms' in video and not old.get('autoedit')
+          and old['offset_ms'] != video['offset_ms']):
+        return 'conflict', key, s
+    else:
+        filled = False
+    for k in _FILL:
+        if k in video and k not in old:
+            old[k] = video[k]
+            filled = True
+    return ('filled' if filled else 'same'), key, s
+
+
+def merge_submission(db, path, report=None):
+    """Merge a missed_entries.json into the database. Returns how many videos
+    were new. report: a list to collect (status, source key, entry) in."""
+    data = _read(path)
+    if data.get('format') != 'backstagehero-mvdb-submission':
+        raise ValueError(f'{path}: not a missed entries file')
     n = 0
     for e in data.get('entries', []):
-        video = dict(e['video'])
-        video.setdefault('submitted_by', data.get('submitted_by', ''))
-        n += add(db, e.get('source'), e['song'], video)
+        video = dict(e.get('video') or {})
+        if not video.get('submitted_by') and data.get('submitted_by'):
+            video['submitted_by'] = data['submitted_by']
+        status, key, _ = merge_entry(db, e.get('source'), e.get('song') or {}, video)
+        n += status == 'new'
+        if report is not None:
+            report.append((status, key or e.get('source'), e))
     return n
 
 
 if __name__ == '__main__':
     # python mvdb.py merge missed_entries.json [more.json ...]
+    #   (tools/merge_missed.py does the same with a report and --dry-run)
     if len(sys.argv) >= 3 and sys.argv[1] == 'merge':
         db = load()
         total = sum(merge_submission(db, p) for p in sys.argv[2:])
         save(db)
         print(f'merged {total} new video(s)')
+    elif sys.argv[1:] == ['split']:
+        # rewrite every source in SPLIT_SOURCES as a folder
+        db = load()
+        save({k: db[k] for k in SPLIT_SOURCES if k in db})
+        print('split: ' + ', '.join(sorted(SPLIT_SOURCES)))
     else:
         db = load()
         for k, g in db.items():

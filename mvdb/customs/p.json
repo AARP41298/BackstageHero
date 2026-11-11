@@ -1,0 +1,57 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Pluffaduff",
+   "title": "Baby i'm Back III",
+   "charter": "Pluffaduff",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4JD4U9A_V30",
+     "title": "Original Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Pluffaduff",
+   "title": "Baby i'm Back IV",
+   "charter": "Pluffaduff",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Included in chart",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Properly synced included vid",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Psy",
+   "title": "Gangnam Style",
+   "charter": "JoeyD",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "9bZkp7q19f0",
+     "title": "Official Music Video",
+     "offset_ms": 2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=sAWyK-YVRRQ",
+     "chart_source": "Circuit Breaker"
+    }
+   ]
+  }
+ ]
+}

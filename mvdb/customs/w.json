@@ -1,0 +1,42 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "The Weather Girls",
+   "title": "It's Raining Men",
+   "charter": "Jaded",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "l5aZJBLAu1E",
+     "title": "Official Music Video",
+     "offset_ms": -20250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=MEMEMvo4vCE",
+     "chart_source": "CSC August 2018"
+    }
+   ]
+  },
+  {
+   "artist": "Wham!",
+   "title": "Wake Me Up Before You Go-Go",
+   "charter": "Paturages",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "pIgZ7gMze7A",
+     "title": "Official Music Video",
+     "offset_ms": -1500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=MEMEMvo4vCE",
+     "chart_source": "CSC August 2018"
+    }
+   ]
+  }
+ ]
+}

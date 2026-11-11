@@ -36,7 +36,8 @@ exe in `Nautilus\bin\Debug`). Its `list` output includes `game_origin`.
 | `autoedit.py` | auto-edit: aligns video to chart audio (chroma + Viterbi), segments, intro/outro rules (`_fix_edges`), edit log, ffmpeg render, FCP7 XML / auto-editor v3 export |
 | `aspectcrop.py` | finds letterbox/pillarbox bars over the whole video, snaps to a standard ratio |
 | `audiosync.py` | the older single-offset fingerprint sync |
-| `mvdb.py` + `mvdb/*.json` | music video database, one JSON per source (RB3DX `game_origin` keys); local edit layer `mvdb_local.json`; missed entries export / merge |
+| `mvdb.py` + `mvdb/*.json` | music video database, one JSON per source (RB3DX `game_origin` keys; big ones like `customs/` split per artist initial, `g.json` = Gorillaz); local edit layer `mvdb_local.json`; missed entries export / merge |
+| `tools/merge_missed.py` | merges users' `missed_entries.json` into `mvdb/` (`--dry-run` to see the report) |
 | `tools/import_sheet.py` | imports the community Time Codes sheet (HTML export keeps the links) |
 
 Data folder: `%LOCALAPPDATA%\BackstageHero\` (settings, `con_work\` cache of

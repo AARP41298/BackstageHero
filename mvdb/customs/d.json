@@ -1,0 +1,60 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Daft Punk",
+   "title": "Digital Love",
+   "charter": "Raspberriel",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "FxzBvqY5PP0",
+     "title": "Film Sequence",
+     "offset_ms": -5500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1_8jaCE8SvErNst-A16USCbtJ08GN43TO/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Depeche Mode",
+   "title": "Enjoy The Silence",
+   "charter": "BurpLeTurtle",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "aGSKrC7dGcY",
+     "title": "Official Music Video",
+     "offset_ms": 7034,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Bringdown",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1pT1hbziofgN7xiXiHju61kbpSJGYUs-Z/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "DJ Shadow",
+   "title": "Nobody Speak (feat. Run the Jewels)",
+   "charter": "Supradyke & iZenPenguin",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "NUC2EQvdzmY",
+     "title": "Official Music Video",
+     "offset_ms": 6500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Krystal",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://customsongscentral.com/august-2021-featurings/",
+     "chart_source": "CSC Aug 2021"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "The Outfield",
+   "title": "Your Love",
+   "charter": "InevitableEnd",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4N1iwQxiHrs",
+     "title": "Official Music Video",
+     "offset_ms": 32500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "Gloobnib#9551",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_source": "RB4 Recreation (FoF)"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Amon Amarth",
+   "title": "The Pursuit of Vikings",
+   "charter": "BurpLeTurtle",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "M-43pOqheMY",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1kt1wZt0sLIezNPr6dmsiAGF3NZqMiyUL/view",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}

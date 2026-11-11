@@ -16,7 +16,7 @@ see [MVDB.md](MVDB.md).
 
 Code: `gui.App._export_missed()` and `gui.App._local_videos()` collect the
 items, `mvdb.missed_entries()` filters them and `mvdb.write_missed()` writes
-the file. `mvdb.merge_submission()` / `python mvdb.py merge` takes it back in.
+the file. `tools/merge_missed.py` (`mvdb.merge_submission()`) takes it back in.
 
 ## Local files
 
@@ -131,22 +131,39 @@ Before submitting, check by hand:
 ## Merging
 
 ```
-python mvdb.py merge missed_entries.json [more.json ...]
+python tools/merge_missed.py --dry-run missed_entries.json   # report only
+python tools/merge_missed.py missed_entries.json [more.json ...]
 ```
 
-For each entry, `mvdb.add()`:
+(`python mvdb.py merge ...` does the same without the report.)
 
-1. maps `source` with `mvdb.source_key()` (unknown `game_origin` values get
-   their own file)
-2. finds the song in that source by `con_id`, else artist + title; creates it
-   if missing (keeping `con_id`, `artist`, `title`, `charter`)
-3. links the `con_id` if the existing song had none
-4. skips the video if the song already has one with the same `youtube` **and**
-   `offset_ms`; otherwise appends it
-5. fills `submitted_by` from the file header if the video lacks it
+For each entry, `mvdb.merge_entry()`:
 
-Then every touched source file is saved (sorted by artist, title). Review the
-diff before committing: merging trusts the file.
+1. finds the song by `con_id` in any source (a link edit and a render of the
+   same song can name different sources), else by artist + title in the
+   entry's `source` (mapped with `mvdb.source_key()`; unknown `game_origin`
+   values get their own file). An entry from a song folder (`customs`) that
+   isn't there is looked up by name in every source too
+2. creates the song if missing (keeping `con_id`, `artist`, `title`,
+   `charter`), or links the `con_id` if the existing song had none
+3. compares the video with the one the song has with the same YouTube ID:
+
+| result     | when                                                          |
+|------------|---------------------------------------------------------------|
+| `new`      | the song has no video with that ID: it's appended             |
+| `filled`   | it has it: fields it lacks (`title`, `offset_ms`, `autoedit`, `crop`, `pack`, ...) are copied in. An auto-edit replaces a plain offset |
+| `same`     | it has it with nothing new                                    |
+| `conflict` | it has it with another `type`, or another `offset_ms` (neither auto-edited): kept as is, fix by hand |
+| `invalid`  | no YouTube ID, or no title / `con_id`                         |
+
+   A render's `type` is always `official` (see above), so a render of a
+   video the database has with another type keeps that type instead of
+   being a conflict.
+4. fills `submitted_by` from the file header if the video lacks it
+
+The script prints one line per entry with its result and writes only the
+touched sources (sorted by artist, title; split sources into their letter
+files). Review `git diff mvdb/` before committing: merging trusts the file.
 
 ## Limitations
 
@@ -155,8 +172,8 @@ diff before committing: merging trusts the file.
   the new video next to the wrong one. Remove the wrong one by hand when
   merging.
 - **The same video can appear twice** in one submission (a link edit without
-  an offset and a render of it with one). Both pass the dedupe at merge, since
-  their `offset_ms` differ.
+  an offset and a render of it with one). Merging handles it: the render
+  fills in the offset / auto-edit of the linked video.
 - **CON IDs matched by name aren't submitted** (`con_id` edits). They're
   re-linked on every machine at scan time, so nothing is lost, but the
   database files don't learn them unless someone runs from source (which

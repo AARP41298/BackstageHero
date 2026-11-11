@@ -1,0 +1,114 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Lady Gaga",
+   "title": "G.U.Y.",
+   "charter": "gaebpls, Paturages",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ohs0a-QnFF4",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=n-OUi_xDQSQ",
+     "chart_source": "CSC April 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Little V",
+   "title": "Aggretsko Theme",
+   "charter": "HaloMillennium",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "fXTq-ENA98s",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/11nj9LJ5Pz8IyJcDZfFC7KtwMTnGzKVqK",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Little V",
+   "title": "Face My Fears",
+   "charter": "RightBrain",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "IAt3ekWPX0Q",
+     "title": "Official Mucic Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1MY0KnEWBDEF4rzhK2To31__Vk4yQIj1c/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Little V",
+   "title": "U Got That",
+   "charter": "Big Whoop Magazine",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "j8xoV-v1Yl0",
+     "title": "Official Music Video",
+     "offset_ms": -3000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/15brx_hgBuc8Nv5C0xD8sih-0vTrPwxMv",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "The Lonely Island",
+   "title": "Motherlover (feat. Justin Timberlake)",
+   "charter": "Grim Birthday",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "X0DeIqJm4vM",
+     "title": "Official Music Video",
+     "offset_ms": 13750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1M6BVM9DOn_MiTiC4yH2_LzAXqT6HJ3W7",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Louis Cole",
+   "title": "Mean It",
+   "charter": "JoeyD",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ly3EJbzRPjc",
+     "title": "Official Music Video",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1dtZ_noTYirWgus269_XvIJ4dFeAFm6Og",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}

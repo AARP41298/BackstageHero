@@ -1,0 +1,42 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Earl Scruggs",
+   "title": "Foggy Mountain Breakdown",
+   "charter": "Sygenysis",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "yQIJuu3N5EY",
+     "title": "Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1DeR6f1h8U_vjRGZQAeYmzL7SVjmP4RQw",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Eminem",
+   "title": "The Real Slim Shady",
+   "charter": "Big Whoop Magazine",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "eJO5HU_7_1w",
+     "title": "Official Music Video",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1WuOHm1e06Jk5UyKToE2qNoZVVZnrMCzR",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}

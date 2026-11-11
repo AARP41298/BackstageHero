@@ -1,0 +1,40 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Fatboy Slim",
+   "title": "Praise You",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ruAi4VBoBSM",
+     "title": "Official Music Video",
+     "offset_ms": -2500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1zmfg2iX1vjMnoecgpD12GTZ3ELCgmSll",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Fountains of Wayne",
+   "title": "Stacy's Mom",
+   "charter": "Neversoft",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "dZLfasMPOU4",
+     "title": "Official Music Video",
+     "offset_ms": -3500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "r/Nintendo113",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,166 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Seth Everman",
+   "title": "Music Genre: Video Game 2",
+   "charter": "???",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "P3MBQciFeHo",
+     "title": "Original Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "notes": "The chart I got didn't list the charter in the .ini",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "Shawn Wasabi",
+   "title": "Burnt Rice",
+   "charter": "CyclopsDragon",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "JE1Gvzxfm1E",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=6ENRHDRfI7Y",
+     "chart_source": "CSC June 2019"
+    }
+   ]
+  },
+  {
+   "artist": "Silvagunner",
+   "title": "Dedede Fusion Collab",
+   "charter": "LordMau5",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "_fez-6Ny0hY",
+     "title": "Unofficial Visual",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/11inSZm6X7ntoKuvb1ZLeiLSTekkVm8Ad",
+     "chart_source": "LordMau5's Drive"
+    }
+   ]
+  },
+  {
+   "artist": "Skid Row",
+   "title": "18 And Life",
+   "charter": "farottone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Ghd2bkIadG4",
+     "title": "Official Music Video",
+     "offset_ms": -3900,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1DXtdD-qfWvreQP091gaj52XP26KZ0aCi",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Skid Row",
+   "title": "I Remember You",
+   "charter": "clintilona",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "qjuEXKwnkLE",
+     "title": "Official Music Video",
+     "offset_ms": -3835,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI"
+    }
+   ]
+  },
+  {
+   "artist": "SOPHIE",
+   "title": "Ponyboy",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "uERIXLWeik0",
+     "title": "Official Music Video",
+     "offset_ms": -500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1Cw4Ot9isLHl84x6S0ypKupvJgirxrNmA/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sum 41",
+   "title": "Fat Lip",
+   "charter": "JaysonTM",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "CMX2lPum_pg",
+     "title": "Official Music Video",
+     "offset_ms": 18400,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "t1redmonkey#7540",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/10LI_lfZ2B4cZu4S5jzoiOz3SVfKehBnV",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Sumire Uesaka",
+   "title": "Pop Team Epic",
+   "charter": "Ghostbyob, Linos Melendi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Music Video (Vimeo Recording)",
+     "offset_ms": -4000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "url": "https://vimeo.com/269593336",
+     "chart_url": "https://jcharting.wixsite.com/jrockband",
+     "chart_source": "J-Rock Band Reboot"
+    }
+   ]
+  },
+  {
+   "artist": "Superorganism",
+   "title": "Night Time",
+   "charter": "MRFKontesSEO",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "EZhQEqIX07U",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1Qy0cQGGHhO_1fUFxre0Y4Jz7tTWFxYv2",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,43 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "The Yeah Yeah Yeahs",
+   "title": "Heads Will Role",
+   "charter": "Jaded",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "",
+     "title": "Official Music Video",
+     "offset_ms": -1750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=QorGdosedHE",
+     "chart_source": "CSC Oct 2018"
+    }
+   ]
+  },
+  {
+   "artist": "Yoshinori Nakamura",
+   "title": "The Most Muscular",
+   "charter": "Mintorment",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "LeYnK6fR2HU",
+     "title": "My Own Goshdarn Gameplay",
+     "offset_ms": 29000,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Why yes, I am overpromoting my GAMER SQUATS",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1OLHqdDOiZr78hqTxWBgNY_LvBK-jwmb5",
+     "chart_source": "Mintorment's Drive"
+    }
+   ]
+  }
+ ]
+}

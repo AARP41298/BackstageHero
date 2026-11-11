@@ -1,0 +1,198 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Kansas",
+   "title": "Carry on Wayward Son",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "P5ZJui3aPoQ",
+     "title": "Kansas - Carry on Wayward Son (Official Video)",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "cSLQDiXtorY",
+     "title": "South Park episode edited to Carry on Wayward Son",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "artist": "K/DA",
+   "title": "POP/STARS",
+   "charter": "JaysonTM",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "UOxkGD8qRB4",
+     "title": "Official Music Video",
+     "offset_ms": -2000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/18fWRby3YbQjaySiyaaX2UeqFYAUj1Y10",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Flamingo",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "zmEUpMF-HLE",
+     "title": "Fan Animation",
+     "offset_ms": 500,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1tboyOzjm7ofFURWgaMxLzu2VfJCnjb7s/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Lipslap",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4aQBkCrpWOg",
+     "title": "Official Music Video",
+     "offset_ms": 21750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/18638_3hyx7n7V_Qotdc_PVCm_l5zHa_N/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Only Acting",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "sepcj45774I",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1Tqf2o6LLSgWNVh-LbjzbYUE6ZBW7So_7/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "Kero Kero Bonito",
+   "title": "Trampoline",
+   "charter": "PrettyChillPhil",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "9Qmwsg2pyEc",
+     "title": "Official Music Video",
+     "offset_ms": -1250,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1u4sx9H0uT_F5cKKTeOrfKyYjquxHHA08",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "BUTTS TITS MONEY",
+   "charter": "Chezy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "LKS1XSiyGYQ",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=9hvmhVv3iYE",
+     "chart_source": "Anti Hero: Beach Ep"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "The Government Knows",
+   "charter": "Raspberriel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4zH9Zca1vRM",
+     "title": "Official Music Video",
+     "offset_ms": -7500,
+     "submitted_by": "moocartoons sheet",
+     "notes": "Video starts after extended instramental outro",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/1BdPucNy_VyYma8dCLXHRAsD5er3LsFxI/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "Overtime (Live Band Session)",
+   "charter": "GanonMetroid",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "GnEmD17kYsE",
+     "title": "Official Music Video",
+     "offset_ms": 0,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/file/d/19mTyePb6z-oCnNG4TBcboMDR6dfBDuer/view",
+     "chart_source": "Single"
+    }
+   ]
+  },
+  {
+   "artist": "KNOWER",
+   "title": "Time Travler",
+   "charter": "JoeyD",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "itRWssMSuvw",
+     "title": "Official Music Video",
+     "offset_ms": 23750,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://www.youtube.com/watch?v=sAWyK-YVRRQ",
+     "chart_source": "Circuit Breaker"
+    },
+    {
+     "type": "official",
+     "youtube": "yhtcG79kPNw",
+     "title": "Official Music Video",
+     "offset_ms": -1000,
+     "submitted_by": "moocartoons sheet",
+     "sync_credit": "@Moocartoons",
+     "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
+     "chart_url": "https://drive.google.com/drive/folders/1COKmQVxHgPwaOwQ1h544aHVc6lT5_Bwq",
+     "chart_source": "Single"
+    }
+   ]
+  }
+ ]
+}
