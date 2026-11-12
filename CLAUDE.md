@@ -58,6 +58,10 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
 - No Entry songs use the automatic search and never touch the database.
 - Exports keep the original download in the cache (export MP4 to check, then
   queue WebM); 🗑 clears one song, the footer button clears all.
+  The ▾ next to Start (`_DL_MODES`, saved as `download_mode`): Search &
+  Review, or Download → WebM / MP4 which renders each synced CON download
+  right away (unsynced ones stay for review). Select with links = chosen
+  type has a database link.
   WebM is queued (Add WebM to queue) and rendered with "Export N WebMs".
   "Shut down when done" (off on every start) shuts Windows down after the
   WebM batch, with a 60 s countdown that can be cancelled.

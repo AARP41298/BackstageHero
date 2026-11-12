@@ -54,6 +54,8 @@ CON songs don't render right away. After the download the song shows **Review do
 
 Exporting keeps the original download in the cache (in the app's data folder), so you can export a quick MP4 to check the result (auto-edit included) and then the WebM, without downloading again. **Add WebM to queue** collects songs and the green **Export N WebMs** button renders them all. **🗑 Clear cache** in the bottom bar deletes every kept download.
 
+The **▾** next to the start button picks what it does with CON songs: **Search & Review** (the above), **Download → WebM** or **Download → MP4** (each song is exported as soon as its download is ready, while the next ones download; a download that couldn't be synced stays for review instead). With **Shut down when done**, Download → WebM shuts down after the last export. **Select with links** selects the songs in view whose Video type has a database link, the ones downloaded without a YouTube search.
+
 Rendered videos have their black bars cropped (letterbox or pillarbox, snapped to a standard ratio such as 4:3, 16:9 or 2.35 Scope, so no picture is lost), keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading (or **🔍** / **⬇** on) a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident. Those videos show **⚠** in the Status column (song folders: no `backstagehero_source` in song.ini; CON videos: no BackstageHero tag, read in the background after the scan).
 
 ## Auto-edit

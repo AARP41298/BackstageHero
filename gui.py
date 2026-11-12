@@ -112,6 +112,13 @@ _ACTIONS = {
     'more':    ('@',    'Video links: search YouTube, open, set or fix the links'),
 }
 _ACTION_KEYS = tuple(_ACTIONS)
+
+# the ▾ next to Start: key -> (button label, export format after download, help)
+_DL_MODES = {
+    'review': ('Search & Review', '', 'stop for review (play, collage, then export)'),
+    'webm':   ('Download → WebM', 'webm', 'export each synced CON song to WebM'),
+    'mp4':    ('Download → MP4',  'mp4',  'export each synced CON song to MP4'),
+}
 _ACTION_COLS = tuple('act_' + k for k in _ACTION_KEYS)
 _ACTION_W = _fs(46)
 # the text actions need more room than the icons
@@ -205,6 +212,7 @@ class Song:
     # the finished video was made by BackstageHero: True / False, None = not
     # known yet (CON videos are checked in the background) or no video
     ours     : object = None
+    auto_export: str = ''      # 'webm' / 'mp4': export when the download is ready
 
     @property
     def video(self):
@@ -1451,11 +1459,19 @@ class App(ctk.CTk):
         _foot_font = _font(12)
         _foot_bold = _font(13, weight='bold')
 
+        selbox = ctk.CTkFrame(foot, fg_color='transparent')
+        selbox.grid(row=0, column=0, padx=(12, 4), pady=15)
         self._sel_btn = ctk.CTkButton(
-            foot, text='Select all', width=105, font=_foot_font,
+            selbox, text='Select all', width=105, font=_foot_font,
             fg_color=_BORDER, hover_color='#44445a', text_color=_TEXT,
             command=self._select_all_visible, **_fbtn)
-        self._sel_btn.grid(row=0, column=0, padx=(12, 4), pady=15)
+        self._sel_btn.pack(side='left')
+        # the songs ⬇ would download: their chosen type has a database link
+        self._sel_links_btn = ctk.CTkButton(
+            selbox, text='Select with links', width=125, font=_foot_font,
+            fg_color=_BORDER, hover_color='#44445a', text_color=_TEXT,
+            command=self._select_with_links, **_fbtn)
+        self._sel_links_btn.pack(side='left', padx=(8, 0))
 
         self._clr_btn = ctk.CTkButton(
             foot, text='Clear all', width=90, font=_foot_font,
@@ -1472,10 +1488,20 @@ class App(ctk.CTk):
             command=lambda *_: self._persist_setting('quality', self._quality_var.get()),
             font=_foot_font).grid(row=0, column=2, padx=4, pady=15)
 
+        # what Start does with CON songs: stop for review, or export right away
+        m = self._settings.get('download_mode', 'review')
+        self._dl_mode_var = tk.StringVar(value=m if m in _DL_MODES else 'review')
+        startbox = ctk.CTkFrame(foot, fg_color='transparent')
+        startbox.grid(row=0, column=3, padx=4, pady=15)
         self._start_btn = ctk.CTkButton(
-            foot, text='▶  Search & Download', width=175, font=_foot_bold,
-            command=self._start_download, **_fbtn)
-        self._start_btn.grid(row=0, column=3, padx=4, pady=15)
+            startbox, text='', width=200, font=_foot_bold,
+            corner_radius=7, height=34,
+            command=self._start_download)
+        self._start_btn.pack(side='left')
+        self._mode_btn = ctk.CTkButton(
+            startbox, text='▾', width=28, font=_foot_bold, corner_radius=7, height=34,
+            command=self._mode_menu)
+        self._mode_btn.pack(side='left', padx=(2, 0))
 
         self._resync_btn = ctk.CTkButton(
             foot, text='↺  Auto-sync', width=120, font=_foot_font,
@@ -2374,6 +2400,8 @@ class App(ctk.CTk):
         """Called after each render: once the WebM batch is done, count down."""
         if not (self._webm_batch and self._renders_idle()):
             return
+        if self._running:
+            return      # Download & export: more renders come with the downloads
         self._webm_batch = False
         if self._shutdown_var.get() and not self._running:
             ShutdownCountdown(self, seconds=60)
@@ -2420,6 +2448,32 @@ class App(ctk.CTk):
         for s in self._filtered:
             s.checked = not all_on
         self._refresh_tree()
+
+    def _select_with_links(self):
+        """Select only the visible songs whose chosen video type has a database
+        link (the ones downloaded without a YouTube search)."""
+        for s in self._filtered:
+            v = mvdb.chosen_video(s.mv)
+            s.checked = bool(v and v.get('youtube'))
+        self._refresh_tree()
+
+    def _mode_menu(self):
+        """▾ next to Start: what Start does after downloading CON songs."""
+        menu = tk.Menu(self, tearoff=0, bg=_SURFACE, fg=_TEXT, activebackground='#414160',
+                       activeforeground=_TEXT, selectcolor=_TEXT, font=_font(12))
+        for key, (label, _fmt, help_) in _DL_MODES.items():
+            menu.add_radiobutton(label=f'{label}   ·   {help_}', value=key,
+                                 variable=self._dl_mode_var,
+                                 command=self._on_mode_change)
+        b = self._start_btn
+        try:
+            menu.tk_popup(b.winfo_rootx(), b.winfo_rooty() - _fs(8) - 3 * _fs(26))
+        finally:
+            menu.grab_release()
+
+    def _on_mode_change(self):
+        self._persist_setting('download_mode', self._dl_mode_var.get())
+        self._update_buttons()
 
     def _clear_all(self):
         """Uncheck every song in the full library, regardless of current filter."""
@@ -2479,9 +2533,11 @@ class App(ctk.CTk):
         can_start  = n > 0 and not self._running
         can_resync = len(has_vid) > 0 and not self._running and self._sync_ready
 
+        label = _DL_MODES[self._dl_mode_var.get()][0]
         self._start_btn.configure(
-            text=f'▶  Search & Download ({n})' if n else '▶  Search & Download',
+            text=f'▶  {label} ({n})' if n else f'▶  {label}',
             state='normal' if can_start else 'disabled')
+        self._mode_btn.configure(state='normal' if not self._running else 'disabled')
         self._resync_btn.configure(
             state='normal' if can_resync else 'disabled')
         self._stop_btn.configure(
@@ -2533,6 +2589,11 @@ class App(ctk.CTk):
 
         if not self._confirm_batch(work, 'download'):
             return
+        fmt = _DL_MODES[self._dl_mode_var.get()][1]
+        for s in work:
+            s.auto_export = fmt if s.con else ''
+        if fmt and any(s.con for s in work):
+            self._webm_batch = self._webm_batch or fmt == 'webm'
         self._launch(work, replace=replace, resync=False)
 
     def _start_resync(self):
@@ -2698,6 +2759,7 @@ class App(ctk.CTk):
                     ('song_progress', s, i, total, text, frac)))
 
             s.dl_mode = 'auto'
+            fmt, s.auto_export = s.auto_export, ''    # only for this download
             prev_hit_network = result != 'skipped'
             if events:
                 # got pushed back this song, slow right down for a while
@@ -2722,7 +2784,7 @@ class App(ctk.CTk):
             if result == 'review':
                 done += 1
                 s.review = conpack.load_review(s.con, s.song_id)
-                self._queue.put(('song_review', s, i, total))
+                self._queue.put(('song_review', s, i, total, fmt))
             elif result == 'skipped':
                 skipped += 1
                 self._queue.put(('song_skipped', s, i, total))
@@ -2802,10 +2864,13 @@ class App(ctk.CTk):
             self._on_yt_title(vid, title)
 
         elif kind == 'song_review':
-            _, s, i, total = msg
+            _, s, i, total, fmt = msg
             synced = s.review and (s.review.get('matched') or s.review.get('autoedit'))
             s.status = _review_status(s.review) + ('' if synced else ' (not synced)')
             s.stag   = 'warn'
+            if fmt and s.review and synced and not s.rendering:
+                # Download & export: render now (one at a time, downloads go on)
+                self._queue_render(s, fmt)
             self._update_row(s)
             self._refresh_cache_size()
             self._progress.set((i + 1) / total)
@@ -2916,6 +2981,7 @@ class App(ctk.CTk):
             # Re-apply filter so has_video status reflects new downloads
             self._apply_filter()
             self._flush_pending_update()
+            self._maybe_shutdown()     # Download & export WebM: renders may be done
 
         elif kind == 'res_update':
             _, s, status_text = msg
