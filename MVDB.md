@@ -119,6 +119,10 @@ It replaces the database's, drops your Video type pick so the starred type is
 the one used, and is saved only in `mvdb_local.json`: Missed entries never
 include it.
 
+🗑 next to a link removes it (a bad link): a local `clear` edit that also
+drops your own link edit for that type, and the link that edit had replaced.
+Clears aren't submitted either.
+
 ## How BackstageHero uses it
 
 Each song is matched to its entry by CON ID; if that fails, by artist +

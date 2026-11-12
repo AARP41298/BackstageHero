@@ -1060,6 +1060,12 @@ class VideoLinksWindow(ctk.CTkToplevel):
                           hover_color='#414160' if vid else None,
                           command=lambda t=vtype, old=vid: self._edit(t, old)
                           ).grid(row=2 * r, column=3, sticky='e', **pad)
+            if vid:
+                ctk.CTkButton(self._rows, text='🗑', width=_fs(36), fg_color='#313244',
+                              hover_color='#8b2c3d',
+                              command=lambda t=vtype, old=vid: self._clear(t, old)
+                              ).grid(row=2 * r, column=4, sticky='e', padx=(0, 10),
+                                     pady=pad['pady'])
             details = [self._TYPE_HELP[vtype]]
             if vtype == mvdb.chosen_type(s.mv):
                 details.insert(0, '● in use')
@@ -1077,7 +1083,7 @@ class VideoLinksWindow(ctk.CTkToplevel):
                     details.append(f'by {credit}')
             ctk.CTkLabel(self._rows, text='   ·   '.join(details), font=_font(10),
                          text_color=_SUBTEXT, anchor='w'
-                         ).grid(row=2 * r + 1, column=2, columnspan=2, sticky='w', padx=10)
+                         ).grid(row=2 * r + 1, column=2, columnspan=3, sticky='w', padx=10)
 
     def _favorite(self, vtype):
         """☆ / ★: make a type the director's choice (the one used by default),
@@ -1089,6 +1095,28 @@ class VideoLinksWindow(ctk.CTkToplevel):
                           {'con_id': s.mv.get('con_id', ''), 'artist': s.mv.get('artist', ''),
                            'title': s.mv.get('title', '')}, vtype)
         s.mv.pop('chosen', None)
+        self._app._update_row(s)
+        self._build_rows()
+
+    def _song_ref(self):
+        s = self._s
+        return {'con_id': s.song_id if s.con else (s.mv or {}).get('con_id', ''),
+                'artist': (s.mv or {}).get('artist') or s.artist,
+                'title': (s.mv or {}).get('title') or s.title or s.label}
+
+    def _clear(self, vtype, old):
+        """🗑: remove a bad link of one type (saved on this PC)."""
+        if not messagebox.askyesno(
+                'Video links',
+                f'Remove the {vtype} link of {self._s.label}?\n\n'
+                f'https://www.youtube.com/watch?v={old}\n\n'
+                'Set link adds a new one.', parent=self):
+            return
+        s = self._s
+        ref = self._song_ref()
+        db = self._app._mvdb
+        mvdb.clear_link(db, self._app._mv_source(s), ref, vtype, old)
+        s.mv = mvdb.resolve(db, ref['con_id'], ref['artist'], ref['title'])
         self._app._update_row(s)
         self._build_rows()
 

@@ -49,7 +49,8 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   alternate > meme. The user's pick in the Video type menu overrides it.
   The ☆/★ in the @ window sets the user's own `directors_choice` (a local
   `favorite` edit, replaces the database's, clears the type pick); it is
-  never exported in Missed entries.
+  never exported in Missed entries. 🗑 in the @ window removes a bad link
+  (local `clear` edit, not exported either). One @ window at a time.
 - A song with a database link downloads that video, no YouTube search.
   🔍 Search again searches YouTube, skips the database links and never marks
   them as wrong. ⬇ Download always downloads the chosen type's link.

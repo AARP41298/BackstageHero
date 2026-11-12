@@ -414,6 +414,16 @@ def _apply(db, e):
         if best is not None:
             best['directors_choice'] = True
         return
+    if e['kind'] == 'clear':
+        # a bad link removed: the video of that type with that YouTube ID goes
+        s = (find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', ''),
+                       source if source in db else None)
+             or find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', '')))
+        if s is not None:
+            s['videos'] = [v for v in s.get('videos', [])
+                           if not (v.get('type', 'official') == e['type']
+                                   and v.get('youtube') == e['youtube'])]
+        return
     if e['kind'] == 'con_id':
         s = find_song(db, '', song.get('artist', ''), song.get('title', ''),
                       source if source in db else None)
@@ -537,10 +547,40 @@ def set_link(db, source, song, vtype, video_id, old=None):
          'type': vtype, 'youtube': video_id, 'old': old,
          'time': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')}
     edits = [x for x in load_local()
-             if not (x['kind'] == 'link' and x['type'] == vtype and x['song'] == e['song'])]
+             if not (x['kind'] == 'link' and x['type'] == vtype and x['song'] == e['song'])
+             and not (x['kind'] == 'clear' and x['type'] == vtype and x['song'] == e['song']
+                      and x['youtube'] == video_id)]
     edits.append(e)
     _save_local(edits)
     _apply(db, e)
+
+
+def clear_link(db, source, song, vtype, video_id):
+    """Remove a (bad) link of one type: saved in the local layer and applied to
+    `db`. Your own link edit for that type is dropped too, so Missed entries
+    no longer offers it. The clear itself isn't submitted."""
+    ref = song_ref(song.get('con_id', ''), song.get('artist', ''), song.get('title', ''))
+    src = source_key(source) if source else DEFAULT_SOURCE
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')
+    gone = [video_id]
+    edits = []
+    for x in load_local():
+        same = x['kind'] in ('link', 'clear') and x['type'] == vtype and x['song'] == ref
+        if same and x['kind'] == 'link':
+            # the link this edit had replaced would come back from the
+            # database on the next start: it was bad too
+            if x.get('old') and x['old'] not in gone:
+                gone.append(x['old'])
+            continue
+        if same and x['youtube'] in gone:
+            continue
+        edits.append(x)
+    new = [{'kind': 'clear', 'source': src, 'song': ref, 'type': vtype,
+            'youtube': vid, 'time': now} for vid in gone]
+    edits.extend(new)
+    _save_local(edits)
+    for e in new:
+        _apply(db, e)
 
 
 def link_edits():
