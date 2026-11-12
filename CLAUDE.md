@@ -65,6 +65,12 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   WebM is queued (Add WebM to queue) and rendered with "Export N WebMs".
   "Shut down when done" (off on every start) shuts Windows down after the
   WebM batch, with a 60 s countdown that can be cancelled.
+- WebM export settings (VP8 CRF 30, 8M max, 2-pass, keyframe 128,
+  `-deadline good -cpu-used 1`, Opus 128k) are the YARG wiki's recommended
+  ones: don't change them. Parallel WebM exports were benchmarked
+  (2026-11-12, i7-12700, 90 s 1080p clips): 3 jobs only ~1.4x faster than one
+  at a time, 2 jobs ~1.3x, since one libvpx export already uses a good part
+  of the CPU. Not built; a 90 s clip takes ~3 min, a full song ~8-9 min.
 - Renders crop black bars before the watermark. The crop ignores the last
   10 s (max 10% of the video): end screens, credits, closing curtains.
 - Auto-edit intro: the video's own pre-roll first; the silent count-in the
