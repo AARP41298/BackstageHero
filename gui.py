@@ -3,7 +3,6 @@
 
 import os
 import sys
-import glob
 import logging
 import random
 import re
@@ -170,9 +169,7 @@ def _validate_folder(path):
             'not a folder inside one of them.')
 
     # Check for any song.ini anywhere inside, or a packed CON/LIVE file (YARG)
-    found = next(
-        glob.iglob(os.path.join(glob.escape(path), '**', 'song.ini'),
-                   recursive=True), None)
+    found = next(conpack.find_song_inis(path), None)
     if not found and not conpack.find_con_files(path):
         return False, (
             'No songs found in that folder.\n\n'
@@ -269,9 +266,7 @@ def _scan_library(songs_folder, progress=None):
     """Return a list[Song] for the folder, sorted alphabetically.
     progress(count) is called periodically so the UI can show a live tally."""
     songs = []
-    for ini in glob.iglob(
-            os.path.join(glob.escape(songs_folder), '**', 'song.ini'),
-            recursive=True):
+    for ini in conpack.find_song_inis(songs_folder):
         folder = os.path.dirname(ini)
         artist, title, stored = scan_song(folder)
         label = build_query(artist, title) or os.path.basename(folder)

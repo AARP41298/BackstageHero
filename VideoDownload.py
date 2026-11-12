@@ -1132,7 +1132,7 @@ def main():
             print('\nNote: auto-sync is off (numpy unavailable); using the default offset.')
 
     print('\nScanning library and cleaning up any interrupted downloads...')
-    song_inis = list(glob.iglob(os.path.join(songs_folder, '**', 'song.ini'), recursive=True))
+    song_inis = list(conpack.find_song_inis(songs_folder))   # skips .yargignore folders
     for filename in song_inis:
         folder = os.path.dirname(filename)
         cleanup_temp_files(folder)

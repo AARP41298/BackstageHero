@@ -38,6 +38,8 @@ Songs that already have a video are skipped, so re-running after you add charts 
 
 It also works on packed Rock Band CON/LIVE files, the way [YARG](https://wiki.yarg.in/wiki/Backgrounds) reads background videos: one video per song, next to the CON, named after the song ID (shortname). For example `RB1\creep.webm` for the song `creep` inside `RB1\RB1_pack`. The CON itself is never touched, so instead of writing an offset, the video gets cut (or padded) so it starts with the song.
 
+A folder with a `.yargignore` file in it (any case) is skipped, the way YARG skips it with [the `.yargignore` change in AARP41298's YARG.Core](https://github.com/AARP41298/YARG.Core/tree/master-personal): its songs and CONs aren't listed, its sub-folders still are. This applies to Clone Hero song folders too.
+
 Reading the songs and the audio needs a build of [Nautilus](https://github.com/AARP41298/Nautilus/tree/master-backstage) with the `-backstagehero` command line (it lists the songs with their `game_origin` and decrypts the mogg). Point BackstageHero at `Nautilus.exe` the first time it finds a CON. The mogg tracks are mixed at -5 dB to match against the video.
 
 CON songs don't render right away. After the download the song shows **Review download** (or **Review download (auto-edit, N edits)** when the video had to be rebuilt, see [Auto-edit](#auto-edit)) and the Actions column gives you:

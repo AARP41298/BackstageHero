@@ -69,6 +69,9 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   Outro: the video's own ending first, then hold (<= 3 s) or reuse from the
   second half. Mid-song inserts are fine (Silent Running).
 - Only the checkbox selects a row.
+- `.yargignore` (any case, YARG.Core commit 639d812e on `master-personal`):
+  the folder's files (song.ini, CONs) are skipped, sub-folders still scanned.
+  All library scans go through `conpack.find_song_inis` / `find_con_files`.
 
 ## State at handoff (2026-11-11)
 

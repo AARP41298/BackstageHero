@@ -66,11 +66,44 @@ def is_con_file(path):
         return False
 
 
+# YARG (AARP41298's YARG.Core, "feat: .YARGignore file to skip folder"): a
+# folder with this file (any case) has its files skipped by the song scan,
+# its sub-folders are still scanned. BackstageHero lists songs the same way.
+YARG_IGNORE = '.yargignore'
+
+
+def yarg_ignored(files):
+    """True if a folder's file names include .yargignore (any case)."""
+    return any(f.lower() == YARG_IGNORE for f in files)
+
+
+def walk_songs(root, hidden=True):
+    """os.walk(root) without the files of folders YARG ignores (.yargignore):
+    yields (dirpath, files). hidden=False also skips folders starting with
+    '.', like glob's '**'."""
+    for dirpath, dirs, files in os.walk(root):
+        if not hidden:
+            dirs[:] = [d for d in dirs if not d.startswith('.')]
+        if yarg_ignored(files):
+            continue
+        yield dirpath, files
+
+
+def find_song_inis(root):
+    """Every song.ini under root (Clone Hero / YARG song folders), except in
+    folders with a .yargignore."""
+    for dirpath, files in walk_songs(root, hidden=False):
+        ini = next((f for f in files if f.lower() == 'song.ini'), None)
+        if ini:
+            yield os.path.join(dirpath, ini)
+
+
 def find_con_files(root):
     """CON/LIVE files under root. They have no extension, so only extension-less
-    files are opened to check the magic; song audio/charts are never touched."""
+    files are opened to check the magic; song audio/charts are never touched.
+    Folders with a .yargignore are skipped (not their sub-folders), like YARG."""
     found = []
-    for dirpath, _, files in os.walk(root):
+    for dirpath, files in walk_songs(root):
         for name in files:
             if os.path.splitext(name)[1]:
                 continue
