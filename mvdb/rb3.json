@@ -104,6 +104,78 @@
    "con_id": "iloverocknroll"
   },
   {
+   "con_id": "imagine",
+   "artist": "John Lennon",
+   "title": "Imagine",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "YkgkThdzX-8",
+     "youtube_url": "https://www.youtube.com/watch?v=YkgkThdzX-8",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -34661,
+     "pack": "RB3-Rock-Band-3-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "meenamora",
+   "artist": "Juanes",
+   "title": "Me Enamora",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "voxgN3Dhjuo",
+     "youtube_url": "https://www.youtube.com/watch?v=voxgN3Dhjuo",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -403,
+     "pack": "RB3-Rock-Band-3-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "oyemiamor",
+   "artist": "Maná",
+   "title": "Oye Mi Amor",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "h0p8yTqj8i4",
+     "youtube_url": "https://www.youtube.com/watch?v=h0p8yTqj8i4",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 245.811,
+        "vid_start": 13.026,
+        "vid_end": 258.802,
+        "speed": 0.9999
+       },
+       {
+        "ref_start": 245.811,
+        "ref_end": 269.222,
+        "vid_start": 260.967,
+        "vid_end": 284.224,
+        "speed": 0.9934
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:13.026 was cut (intro)",
+       "segment 4:18.802-4:20.967 was cut",
+       "segment 4:20.967-4:44.224 change speed by -0.66%",
+       "segment 4:44.224-4:59.390 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB3-Rock-Band-3-Export"
+    }
+   ]
+  },
+  {
    "artist": "Metric",
    "title": "Combat Baby",
    "charter": "Harmonix",
@@ -174,6 +246,12 @@
      "sync_credit": "t1redmonkey#7540",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
+    },
+    {
+     "type": "alternate",
+     "youtube": "DVarhSlAYwI",
+     "youtube_url": "https://www.youtube.com/watch?v=DVarhSlAYwI",
+     "submitted_by": "AARP41298"
     }
    ],
    "con_id": "livinginamerica"

@@ -1,0 +1,959 @@
+{
+ "source": "ugc_plus",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "con_id": "far_horsewithnoname",
+   "artist": "America",
+   "title": "A Horse With No Name",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "2OTc4ZOsSSI",
+     "youtube_url": "https://www.youtube.com/watch?v=2OTc4ZOsSSI",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "cUflPZav4JE",
+     "youtube_url": "https://www.youtube.com/watch?v=cUflPZav4JE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ACartoonHeroes",
+   "artist": "Aqua",
+   "title": "Cartoon Heroes",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Q_LPJllaogU",
+     "youtube_url": "https://www.youtube.com/watch?v=Q_LPJllaogU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o991651561_doiwannaknow_ar",
+   "artist": "Arctic Monkeys",
+   "title": "Do I Wanna Know?",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "bpOSxM0rNPM",
+     "youtube_url": "https://www.youtube.com/watch?v=bpOSxM0rNPM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "GodisawomanJIM",
+   "artist": "Ariana Grande",
+   "title": "god is a woman",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "kHLHSlExFis",
+     "youtube_url": "https://www.youtube.com/watch?v=kHLHSlExFis",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "heybrother",
+   "artist": "Avicii",
+   "title": "Hey Brother",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "6Cp6mKbRTQY",
+     "youtube_url": "https://www.youtube.com/watch?v=6Cp6mKbRTQY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "esp_avi_levels",
+   "artist": "Avicii",
+   "title": "Levels",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "_ovdm2yX4MA",
+     "youtube_url": "https://www.youtube.com/watch?v=_ovdm2yX4MA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "TheNights",
+   "artist": "Avicii",
+   "title": "The Nights",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "UtF6Jej8yb4",
+     "youtube_url": "https://www.youtube.com/watch?v=UtF6Jej8yb4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "WaitingforLove",
+   "artist": "Avicii",
+   "title": "Waiting for Love",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "cHHLHGNpCSA",
+     "youtube_url": "https://www.youtube.com/watch?v=cHHLHGNpCSA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ALWhenYoureGoneV2",
+   "artist": "Avril Lavigne",
+   "title": "When You're Gone",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "0G3_kG5FFfQ",
+     "youtube_url": "https://www.youtube.com/watch?v=0G3_kG5FFfQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "IjimeDameZettai1xv3",
+   "artist": "Babymetal",
+   "title": "Ijime, Dame, Zettai",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "nDqaTXqCN-Q",
+     "youtube_url": "https://www.youtube.com/watch?v=nDqaTXqCN-Q",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "dingo_everythingiwantedv0",
+   "artist": "Billie Eilish",
+   "title": "everything i wanted",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "EgBJmlPo8Xw",
+     "youtube_url": "https://www.youtube.com/watch?v=EgBJmlPo8Xw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "MeetMeHalfwaymagma",
+   "artist": "Black Eyed Peas",
+   "title": "Meet Me Halfway",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "I7HahVwYpwo",
+     "youtube_url": "https://www.youtube.com/watch?v=I7HahVwYpwo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "DduDuDduDu",
+   "artist": "Blackpink",
+   "title": "Ddu-Du Ddu-Du",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "IHNzOHi8sJs",
+     "youtube_url": "https://www.youtube.com/watch?v=IHNzOHi8sJs",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SheepQueen_SmalltownBoy_r",
+   "artist": "Bronski Beat",
+   "title": "Smalltown Boy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "88sARuFu-tc",
+     "youtube_url": "https://www.youtube.com/watch?v=88sARuFu-tc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "TheLazySong_PVH",
+   "artist": "Bruno Mars",
+   "title": "The Lazy Song",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "fLexgOxsZu0",
+     "youtube_url": "https://www.youtube.com/watch?v=fLexgOxsZu0",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "VKTRS",
+   "artist": "The Buggles",
+   "title": "Video Killed the Radio Star",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "W8r-tXRLazs",
+     "youtube_url": "https://www.youtube.com/watch?v=W8r-tXRLazs",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Redbone",
+   "artist": "Childish Gambino",
+   "title": "Redbone",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "ezbsbkqoRrs",
+     "youtube_url": "https://www.youtube.com/watch?v=ezbsbkqoRrs",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SheepQueen_HotlineBling_r",
+   "artist": "Drake",
+   "title": "Hotline Bling",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "uxpDa-c-4Mc",
+     "youtube_url": "https://www.youtube.com/watch?v=uxpDa-c-4Mc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o23600592",
+   "artist": "Dr. Dre ft. Snoop Dogg",
+   "title": "The Next Episode",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "QZXc39hT8t4",
+     "youtube_url": "https://www.youtube.com/watch?v=QZXc39hT8t4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "loseyourselfv2v19",
+   "artist": "Eminem",
+   "title": "Lose Yourself",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "xFYQQPAOz7Y",
+     "youtube_url": "https://www.youtube.com/watch?v=xFYQQPAOz7Y",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o498720680_lovethewayyouli",
+   "artist": "Eminem",
+   "title": "Love The Way You Lie (featuring Rihanna)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "uelHwf8o7_U",
+     "youtube_url": "https://www.youtube.com/watch?v=uelHwf8o7_U",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RapGodEminem",
+   "artist": "Eminem",
+   "title": "Rap God",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "XbGs_qK2PQA",
+     "youtube_url": "https://www.youtube.com/watch?v=XbGs_qK2PQA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "bp_stanv3",
+   "artist": "Eminem",
+   "title": "Stan (feat. Dido)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "aSLZFdqwh7E",
+     "youtube_url": "https://www.youtube.com/watch?v=aSLZFdqwh7E",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "gOMhN-hfMtY",
+     "youtube_url": "https://www.youtube.com/watch?v=gOMhN-hfMtY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "tillicollapseTRUCE",
+   "artist": "Eminem",
+   "title": "Till I Collapse (ft. Nate Dogg)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "3m_QN8P93IA",
+     "youtube_url": "https://www.youtube.com/watch?v=3m_QN8P93IA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "withoutme",
+   "artist": "Eminem",
+   "title": "Without Me",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "YVkUvmDQ3HY",
+     "youtube_url": "https://www.youtube.com/watch?v=YVkUvmDQ3HY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "GDesoleV3",
+   "artist": "Gorillaz",
+   "title": "Désolé",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ZLKZKmdZEjM",
+     "youtube_url": "https://www.youtube.com/watch?v=ZLKZKmdZEjM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "GFireFlies",
+   "artist": "Gorillaz",
+   "title": "Fire Flies",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "LCet4yrfp4o",
+     "youtube_url": "https://www.youtube.com/watch?v=LCet4yrfp4o",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "sots_melancholyhill_rb3cov5",
+   "artist": "Gorillaz",
+   "title": "On Melancholy Hill",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "04mfKJWDSzI",
+     "youtube_url": "https://www.youtube.com/watch?v=04mfKJWDSzI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ud_rhinestoneyes",
+   "artist": "Gorillaz",
+   "title": "Rhinestone Eyes",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "yYDmaexVHic",
+     "youtube_url": "https://www.youtube.com/watch?v=yYDmaexVHic",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "fan",
+     "youtube": "1-iPq3qWeQQ",
+     "youtube_url": "https://www.youtube.com/watch?v=1-iPq3qWeQQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "StrobeliteJIM",
+   "artist": "Gorillaz",
+   "title": "Strobelite (feat. Peven Everett)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "DAXjiVuzlPw",
+     "youtube_url": "https://www.youtube.com/watch?v=DAXjiVuzlPw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "BabyDontHurtLove",
+   "artist": "Haddaway",
+   "title": "What Is Love",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "HEXWRTEbj1I",
+     "youtube_url": "https://www.youtube.com/watch?v=HEXWRTEbj1I",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SomewhereOnlyWeKnowv4",
+   "artist": "Keane",
+   "title": "Somewhere Only We Know",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Oextk-If8HQ",
+     "youtube_url": "https://www.youtube.com/watch?v=Oextk-If8HQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "456456456",
+   "artist": "Kid Cudi feat. MGMT and Ratatat",
+   "title": "Pursuit of Happiness",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "7xzU9Qqdqww",
+     "youtube_url": "https://www.youtube.com/watch?v=7xzU9Qqdqww",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o412790795",
+   "artist": "Madonna",
+   "title": "Hung Up",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "EDwb9jOVRtU",
+     "youtube_url": "https://www.youtube.com/watch?v=EDwb9jOVRtU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "MM_TaintedLove_V1",
+   "artist": "Marilyn Manson",
+   "title": "Tainted Love",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "be5eF5SNKbE",
+     "youtube_url": "https://www.youtube.com/watch?v=be5eF5SNKbE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o405242176_goldgunsgirls_m",
+   "artist": "Metric",
+   "title": "Gold Guns Girls",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "FRtd8ArvH_s",
+     "youtube_url": "https://www.youtube.com/watch?v=FRtd8ArvH_s",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "far_billijean",
+   "artist": "Michael Jackson",
+   "title": "Billie Jean",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Zi_XLOBDo_Y",
+     "youtube_url": "https://www.youtube.com/watch?v=Zi_XLOBDo_Y",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "far_dirtydianav3v4",
+   "artist": "Michael Jackson",
+   "title": "Dirty Diana",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "yUi_S6YWjZw",
+     "youtube_url": "https://www.youtube.com/watch?v=yUi_S6YWjZw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "far_smoothcriminalv6",
+   "artist": "Michael Jackson",
+   "title": "Smooth Criminal",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "h_D3VFfhvs4",
+     "youtube_url": "https://www.youtube.com/watch?v=h_D3VFfhvs4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "far_thrillerv3",
+   "artist": "Michael Jackson",
+   "title": "Thriller",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4V90AmXnguw",
+     "youtube_url": "https://www.youtube.com/watch?v=4V90AmXnguw",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "sOnqjkJTMaA",
+     "youtube_url": "https://www.youtube.com/watch?v=sOnqjkJTMaA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Corona",
+   "artist": "Minutemen",
+   "title": "Corona",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "xNp6i1btPFU",
+     "youtube_url": "https://www.youtube.com/watch?v=xNp6i1btPFU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Byebyebeautiful",
+   "artist": "Nightwish",
+   "title": "Bye Bye Beautiful",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "hTdhXxxWREo",
+     "youtube_url": "https://www.youtube.com/watch?v=hTdhXxxWREo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "LifeGoesOn",
+   "artist": "Oliver Tree",
+   "title": "Life Goes On",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "8F2s8ivKXNY",
+     "youtube_url": "https://www.youtube.com/watch?v=8F2s8ivKXNY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SheepQueen_LaPluie",
+   "artist": "Orelsan",
+   "title": "La Pluie (ft. Stromae)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "37StRy0LEbI",
+     "youtube_url": "https://www.youtube.com/watch?v=37StRy0LEbI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Decode",
+   "artist": "Paramore",
+   "title": "Decode",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "RvnkAtWcKYg",
+     "youtube_url": "https://www.youtube.com/watch?v=RvnkAtWcKYg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "PurpleRainSingle_V1_rb3co",
+   "artist": "Prince",
+   "title": "Purple Rain (Single Version)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "TvnYmWpD_T8",
+     "youtube_url": "https://www.youtube.com/watch?v=TvnYmWpD_T8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "15Stepv#",
+   "artist": "Radiohead",
+   "title": "15 Step",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "mrzhjIYYB6E",
+     "youtube_url": "https://www.youtube.com/watch?v=mrzhjIYYB6E",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "official",
+     "youtube": "xpqk9MD6vLM",
+     "youtube_url": "https://www.youtube.com/watch?v=xpqk9MD6vLM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "JigFallInPlace",
+   "artist": "Radiohead",
+   "title": "Jigsaw Falling Into Place",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "GoLJJRIWCLU",
+     "youtube_url": "https://www.youtube.com/watch?v=GoLJJRIWCLU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RadioheadNoSurprises_rb3c",
+   "artist": "Radiohead",
+   "title": "No Surprises",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "u5CVsCnxyXg",
+     "youtube_url": "https://www.youtube.com/watch?v=u5CVsCnxyXg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o744850132_amerika_rammste",
+   "artist": "Rammstein",
+   "title": "Amerika",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Rr8ljRgcJNM",
+     "youtube_url": "https://www.youtube.com/watch?v=Rr8ljRgcJNM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "engel",
+   "artist": "Rammstein",
+   "title": "Engel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "x2rQzv8OWEY",
+     "youtube_url": "https://www.youtube.com/watch?v=x2rQzv8OWEY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o663150041_sonne_rammstein",
+   "artist": "Rammstein",
+   "title": "Sonne",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "StZcUAPRRac",
+     "youtube_url": "https://www.youtube.com/watch?v=StZcUAPRRac",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "tequiero",
+   "artist": "Rammstein",
+   "title": "Te Quiero Puta!",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "1f_5dnvh3d4",
+     "youtube_url": "https://www.youtube.com/watch?v=1f_5dnvh3d4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o291244726_sendmeanangel_r",
+   "artist": "Real Life",
+   "title": "Send Me an Angel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "0R6WIbx8ysE",
+     "youtube_url": "https://www.youtube.com/watch?v=0R6WIbx8ysE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o142481382",
+   "artist": "Selena Gomez & The Scene",
+   "title": "Love You Like A Love Song",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "EgT_us6AsDg",
+     "youtube_url": "https://www.youtube.com/watch?v=EgT_us6AsDg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o515644151_addicted_simple",
+   "artist": "Simple Plan",
+   "title": "Addicted",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "qvpNa5O-0-8",
+     "youtube_url": "https://www.youtube.com/watch?v=qvpNa5O-0-8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ImJustaKid",
+   "artist": "Simple Plan",
+   "title": "I'm Just a Kid",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "_GOR5gvQwDI",
+     "youtube_url": "https://www.youtube.com/watch?v=_GOR5gvQwDI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "HYKPerfectSPv4",
+   "artist": "Simple Plan",
+   "title": "Perfect",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "RUi54JTgL5s",
+     "youtube_url": "https://www.youtube.com/watch?v=RUi54JTgL5s",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "YouDontMeanAnything_rb3co",
+   "artist": "Simple Plan",
+   "title": "You Don't Mean Anything",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "H2M7zo8ZziE",
+     "youtube_url": "https://www.youtube.com/watch?v=H2M7zo8ZziE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o292761627_bangarangftsira",
+   "artist": "Skrillex",
+   "title": "Bangarang (ft. Sirah)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "YJVmu6yttiw",
+     "youtube_url": "https://www.youtube.com/watch?v=YJVmu6yttiw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Blackbetty",
+   "artist": "Spiderbait",
+   "title": "Black Betty",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "nU1VfYYKMDk",
+     "youtube_url": "https://www.youtube.com/watch?v=nU1VfYYKMDk",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o728977389",
+   "artist": "STARSET",
+   "title": "ECHO",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "6Vcpf1geVfg",
+     "youtube_url": "https://www.youtube.com/watch?v=6Vcpf1geVfg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "mydemons",
+   "artist": "Starset",
+   "title": "My Demons",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "nkll0StZJLA",
+     "youtube_url": "https://www.youtube.com/watch?v=nkll0StZJLA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o162431488_alorsondanse_st",
+   "artist": "Stromae",
+   "title": "Alors on danse",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "VHoT4N43jK8",
+     "youtube_url": "https://www.youtube.com/watch?v=VHoT4N43jK8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SheepQueen_Papaoutai_rb3c",
+   "artist": "Stromae",
+   "title": "Papaoutai",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "oiKj0Z_Xnjc",
+     "youtube_url": "https://www.youtube.com/watch?v=oiKj0Z_Xnjc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "lonelyday_v2",
+   "artist": "System of a Down",
+   "title": "Lonely Day",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "DnGdoEa1tPg",
+     "youtube_url": "https://www.youtube.com/watch?v=DnGdoEa1tPg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SoadProtectTheLand",
+   "artist": "System of a Down",
+   "title": "Protect The Land",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "XqmknZNg1yw",
+     "youtube_url": "https://www.youtube.com/watch?v=XqmknZNg1yw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SugarCCCv2",
+   "artist": "System of a Down",
+   "title": "Sugar",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "5vBGOrI6yBk",
+     "youtube_url": "https://www.youtube.com/watch?v=5vBGOrI6yBk",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "AlltheThingsSheSaid_V1_rb",
+   "artist": "t.A.T.u.",
+   "title": "All the Things She Said",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "8mGBaXPlri8",
+     "youtube_url": "https://www.youtube.com/watch?v=8mGBaXPlri8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SheepQueen_7thElement_rb3",
+   "artist": "Vitas",
+   "title": "The 7th Element",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "IwzUs1IMdyQ",
+     "youtube_url": "https://www.youtube.com/watch?v=IwzUs1IMdyQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ud_headswillroll",
+   "artist": "Yeah Yeah Yeahs",
+   "title": "Heads Will Roll",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "auzfTPp4moA",
+     "youtube_url": "https://www.youtube.com/watch?v=auzfTPp4moA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  }
+ ]
+}

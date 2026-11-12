@@ -1,0 +1,83 @@
+{
+ "source": "rb4_dlc",
+ "name": "Rock Band 4 DLC",
+ "songs": [
+  {
+   "con_id": "gimmechocolate",
+   "artist": "BABYMETAL",
+   "title": "Gimme Chocolate!!",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "WIKqgE4BwAY",
+     "youtube_url": "https://www.youtube.com/watch?v=WIKqgE4BwAY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "zombie",
+   "artist": "The Cranberries",
+   "title": "Zombie",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "6Ejga4kJUts",
+     "youtube_url": "https://www.youtube.com/watch?v=6Ejga4kJUts",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "95HqlWRFrAk",
+     "youtube_url": "https://www.youtube.com/watch?v=95HqlWRFrAk",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "applause",
+   "artist": "Lady Gaga",
+   "title": "Applause",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "pco91kroVgQ",
+     "youtube_url": "https://www.youtube.com/watch?v=pco91kroVgQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "partyrockanthem",
+   "artist": "LMFAO",
+   "title": "Party Rock Anthem (ft. Lauren Bennett & GoonRock)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "KQ6zr6kCPj8",
+     "youtube_url": "https://www.youtube.com/watch?v=KQ6zr6kCPj8",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "fan",
+     "youtube": "HdX139N0Jsw",
+     "youtube_url": "https://www.youtube.com/watch?v=HdX139N0Jsw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "blindinglights",
+   "artist": "The Weeknd",
+   "title": "Blinding Lights",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4NRXx6U8ABQ",
+     "youtube_url": "https://www.youtube.com/watch?v=4NRXx6U8ABQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  }
+ ]
+}

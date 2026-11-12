@@ -1,0 +1,129 @@
+{
+ "source": "rb1_dlc",
+ "name": "Rock Band 1/2 DLC",
+ "songs": [
+  {
+   "con_id": "adamssong",
+   "artist": "Blink-182",
+   "title": "Adam's Song",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "2MRdtXWcgIw",
+     "youtube_url": "https://www.youtube.com/watch?v=2MRdtXWcgIw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "down",
+   "artist": "Blink-182",
+   "title": "Down",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "XrTZT49u0kM",
+     "youtube_url": "https://www.youtube.com/watch?v=XrTZT49u0kM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "feelingthis",
+   "artist": "Blink-182",
+   "title": "Feeling This",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4kMZ23T9VHE",
+     "youtube_url": "https://www.youtube.com/watch?v=4kMZ23T9VHE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "firstdate",
+   "artist": "Blink-182",
+   "title": "First Date",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "vVy9Lgpg1m8",
+     "youtube_url": "https://www.youtube.com/watch?v=vVy9Lgpg1m8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "fortunateson2",
+   "artist": "Creedence Clearwater Revival",
+   "title": "Fortunate Son (Original Version)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ZWijx_AgPiA",
+     "youtube_url": "https://www.youtube.com/watch?v=ZWijx_AgPiA",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "We2Bn1I6Wpo",
+     "youtube_url": "https://www.youtube.com/watch?v=We2Bn1I6Wpo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "adioslepido",
+   "artist": "Juanes",
+   "title": "A Dios le Pido",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "kMIaYXxLnUA",
+     "youtube_url": "https://www.youtube.com/watch?v=kMIaYXxLnUA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "imgoneimgoing",
+   "artist": "Lesley Roy",
+   "title": "I'm Gone, I'm Going",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "u3CxrnjX9ng",
+     "youtube_url": "https://www.youtube.com/watch?v=u3CxrnjX9ng",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "theblackparade",
+   "artist": "My Chemical Romance",
+   "title": "Welcome to the Black Parade",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "RRKJiM9Njr8",
+     "youtube_url": "https://www.youtube.com/watch?v=RRKJiM9Njr8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "byob",
+   "artist": "System of a Down",
+   "title": "B.Y.O.B.",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "zUzd9KyIDrM",
+     "youtube_url": "https://www.youtube.com/watch?v=zUzd9KyIDrM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  }
+ ]
+}
