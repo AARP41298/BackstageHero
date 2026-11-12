@@ -164,7 +164,9 @@ def _save_settings(data):
 
 
 def _validate_folder(path):
-    """Returns (ok: bool, message: str)."""
+    """Quick checks only, returns (ok: bool, message: str). Whether the folder
+    has any songs is found by the library scan (a full walk, too slow for the
+    UI thread on big libraries)."""
     if not path or not os.path.isdir(path):
         return False, 'That path does not exist or is not a folder.'
 
@@ -174,17 +176,15 @@ def _validate_folder(path):
             'That looks like an individual song folder, not your Songs library.\n\n'
             'Please select the folder that contains all your song packs, '
             'not a folder inside one of them.')
-
-    # Check for any song.ini anywhere inside, or a packed CON/LIVE file (YARG)
-    found = next(conpack.find_song_inis(path), None)
-    if not found and not conpack.find_con_files(path):
-        return False, (
-            'No songs found in that folder.\n\n'
-            'Make sure you\'re selecting your Clone Hero / YARG Songs folder.\n'
-            'It should contain song folders with a song.ini file inside, '
-            'or Rock Band CON files.')
-
     return True, ''
+
+
+# shown when the library scan finds nothing
+_NO_SONGS_MSG = (
+    'No songs found in that folder.\n\n'
+    'Make sure you\'re selecting your Clone Hero / YARG Songs folder.\n'
+    'It should contain song folders with a song.ini file inside, '
+    'or Rock Band CON files.')
 
 
 @dataclass
@@ -273,11 +273,34 @@ def _review_tag(review):
     return 'done' if review.get('rendered') else 'warn'
 
 
-def _scan_library(songs_folder, progress=None):
-    """Return a list[Song] for the folder, sorted alphabetically.
-    progress(count) is called periodically so the UI can show a live tally."""
+class ScanCancelled(Exception):
+    pass
+
+
+def _scan_library(songs_folder, progress=None, stop=None):
+    """Return (list[Song] sorted alphabetically, CON files, CON errors).
+    progress(info) gets a dict with the running tally (stage, folders, songs,
+    cons, con_done, con_total, path), at most ~10 times a second.
+    stop: a threading.Event, set it to cancel (raises ScanCancelled)."""
     songs = []
-    for ini in conpack.find_song_inis(songs_folder):
+    info = {'stage': 'folders', 'folders': 0, 'songs': 0, 'cons': 0,
+            'con_done': 0, 'con_total': 0, 'path': ''}
+    last = [0.0]
+
+    def report(force=False):
+        if stop is not None and stop.is_set():
+            raise ScanCancelled()
+        now = time.monotonic()
+        if progress and (force or now - last[0] >= 0.1):
+            last[0] = now
+            progress(dict(info))
+
+    def on_folder(dirpath):
+        info['folders'] += 1
+        info['path'] = dirpath
+        report()
+
+    for ini in conpack.find_song_inis(songs_folder, on_folder=on_folder):
         folder = os.path.dirname(ini)
         artist, title, stored, source = scan_song(folder)
         label = build_query(artist, title) or os.path.basename(folder)
@@ -290,16 +313,31 @@ def _scan_library(songs_folder, progress=None):
             label=label, key=label.lower(),
             has_video=has_vid, res=res, artist=artist or '', title=title or '',
             ours=bool(source) if has_vid else None))
-        if progress and len(songs) % 50 == 0:
-            progress(len(songs))
+        info['songs'] = len(songs)
+        report()
 
     # packed Rock Band CONs: one row per song inside, listed through Nautilus
-    cons = conpack.find_con_files(songs_folder)
+    # second walk, same folders: only the path moves (folders stays the total)
+    info.update(stage='cons', path='')
+    report(True)
+
+    def on_con_folder(dirpath):
+        info['path'] = dirpath
+        report()
+    cons = conpack.find_con_files(songs_folder, on_folder=on_con_folder)
+    info.update(cons=len(cons), path='')
+    report(True)
     con_errors = {}
     if cons and conpack.nautilus_ready():
-        listing, con_errors = conpack.list_songs(
-            cons, progress=(lambda d, t: progress(f'reading CON files {d}/{t}'))
-            if progress else None)
+        info.update(stage='con_read', con_total=len(cons))
+        report(True)
+
+        def on_con(done, total):
+            info.update(con_done=done, con_total=total,
+                        path=cons[done] if done < len(cons) else '')
+            report()
+        listing, con_errors = conpack.list_songs(cons, progress=on_con)
+        info.update(con_done=len(cons), path='')
         for con, entries in listing.items():
             pack = os.path.basename(con)
             for e in entries:
@@ -872,6 +910,144 @@ class UpdateDialog(ctk.CTkToplevel):
                           fg_color='#313244', hover_color='#414160').pack(pady=(8, 0))
 
 
+class ScanWindow(ctk.CTkToplevel):
+    """Modal window shown while the library is scanned, so a big Songs folder
+    doesn't look like a freeze: what's being done, running counts, the folder
+    being read, elapsed time, and Cancel."""
+
+    _STAGES = {
+        'folders':  'Looking for song folders...',
+        'cons':     'Looking for Rock Band CON files...',
+        'con_read': 'Reading the CON files...',
+        'mvdb':     'Matching the music video database...',
+        'table':    'Filling the song list...',
+    }
+
+    def __init__(self, app, path, on_cancel):
+        super().__init__(app)
+        self._on_cancel = on_cancel
+        self._t0 = time.monotonic()
+        self._job = None
+        self._det = False
+        self.title('Scanning library')
+        self.configure(fg_color=_BG)
+        self.geometry(f'{_fs(480)}x{_fs(250)}')
+        self.resizable(False, False)
+        self.transient(app)
+        try:
+            ico = _asset_path('icon.ico')
+            if os.path.exists(ico):
+                self.iconbitmap(ico)
+        except Exception:
+            pass
+
+        shown = path if len(path) < 60 else '...' + path[-57:]
+        ctk.CTkLabel(self, text='Scanning your library', font=_font(15, weight='bold'),
+                     text_color=_TEXT).pack(padx=24, pady=(18, 0), anchor='w')
+        ctk.CTkLabel(self, text=shown, font=_font(10),
+                     text_color=_SUBTEXT).pack(padx=24, anchor='w')
+        self._stage = ctk.CTkLabel(self, text=self._STAGES['folders'],
+                                   font=_font(12), text_color=_TEXT)
+        self._stage.pack(padx=24, pady=(10, 0), anchor='w')
+        self._bar = ctk.CTkProgressBar(self, width=_fs(432), height=12,
+                                       progress_color=_BLUE)
+        self._bar.pack(padx=24, pady=(6, 0))
+        self._bar.configure(mode='indeterminate')
+        self._bar.start()
+        self._counts = ctk.CTkLabel(self, text='', font=_font(12),
+                                    text_color=_TEXT, justify='left')
+        self._counts.pack(padx=24, pady=(8, 0), anchor='w')
+        self._where = ctk.CTkLabel(self, text='', font=_font(10),
+                                   text_color=_SUBTEXT)
+        self._where.pack(padx=24, anchor='w')
+        row = ctk.CTkFrame(self, fg_color='transparent')
+        row.pack(fill='x', padx=24, pady=(8, 12), side='bottom')
+        self._time = ctk.CTkLabel(row, text='', font=_font(10), text_color=_SUBTEXT)
+        self._time.pack(side='left')
+        self._cancel_btn = ctk.CTkButton(row, text='Cancel', width=_fs(90),
+                                         fg_color='#313244', hover_color='#414160',
+                                         command=self._cancel)
+        self._cancel_btn.pack(side='right')
+
+        self.protocol('WM_DELETE_WINDOW', self._cancel)
+        self.bind('<Escape>', lambda e: self._cancel())
+        self.update_info({'stage': 'folders', 'folders': 0, 'songs': 0,
+                          'cons': 0, 'con_done': 0, 'con_total': 0, 'path': ''})
+        self.after(50, self._center)
+        self.after(60, self._grab)
+        self._tick()
+
+    def _grab(self):
+        try:
+            self.grab_set()
+        except tk.TclError:      # not viewable yet
+            self.after(60, self._grab)
+
+    def _center(self):
+        self.update_idletasks()
+        try:
+            m = self.master
+            x = m.winfo_x() + m.winfo_width() // 2 - self.winfo_width() // 2
+            y = m.winfo_y() + m.winfo_height() // 2 - self.winfo_height() // 2
+            self.geometry(f'+{max(0, x)}+{max(0, y)}')
+        except Exception:
+            pass
+
+    def _tick(self):
+        s = int(time.monotonic() - self._t0)
+        self._time.configure(text=f'{s // 60}:{s % 60:02d} elapsed')
+        self._job = self.after(1000, self._tick)
+
+    def update_info(self, info):
+        if not self.winfo_exists():
+            return
+        stage = info.get('stage', '')
+        text = self._STAGES.get(stage, '')
+        lines = [f'Folders scanned:  {info.get("folders", 0):,}',
+                 f'Songs found:  {info.get("songs", 0):,}']
+        if stage != 'folders':
+            lines.append(f'CON files found:  {info.get("cons", 0):,}')
+        if stage == 'con_read' and info.get('con_total'):
+            done, total = info.get('con_done', 0), info['con_total']
+            text = f'Reading the CON files...  {done:,} / {total:,}'
+            if not self._det:
+                self._det = True
+                self._bar.stop()
+                self._bar.configure(mode='determinate')
+            self._bar.set(done / total)
+        elif self._det:          # back to an open-ended stage
+            self._det = False
+            self._bar.configure(mode='indeterminate')
+            self._bar.start()
+        self._stage.configure(text=text)
+        self._counts.configure(text='\n'.join(lines))
+        p = info.get('path') or ''
+        if p:
+            p = os.path.normpath(p)
+            p = p if len(p) < 70 else '...' + p[-67:]
+        self._where.configure(text=p)
+        if stage in ('mvdb', 'table'):
+            self._cancel_btn.configure(state='disabled')
+
+    def _cancel(self):
+        if str(self._cancel_btn.cget('state')) == 'disabled':
+            return
+        self._cancel_btn.configure(state='disabled', text='Stopping...')
+        self._stage.configure(text='Stopping the scan...')
+        self._on_cancel()
+
+    def close(self):
+        if self._job:
+            self.after_cancel(self._job)
+            self._job = None
+        try:
+            self._bar.stop()
+            self.grab_release()
+        except Exception:
+            pass
+        self.destroy()
+
+
 class CollageViewer(ctk.CTkToplevel):
     """Gallery for checking a download: the collage first, then each frame used
     in it, in order. Left/Right (or A/D, mouse wheel) to move, Home/End to
@@ -1254,6 +1430,7 @@ class App(ctk.CTk):
         resolver_client.set_sharing(self._settings.get('share_matches', True))
         conpack.set_nautilus_path(self._settings.get('nautilus_path'))
         self._nautilus_asked = False     # ask for Nautilus.exe once per session
+        self._scan_win = None            # ScanWindow while a library scan runs
         self._action_hint  = ''
         self._render_jobs  : queue.Queue = queue.Queue()
         self._render_thread = None
@@ -1574,23 +1751,25 @@ class App(ctk.CTk):
 
     # ---- music video database ----------------------------------------------------
 
-    def _attach_mvdb(self, songs):
+    @staticmethod
+    def _match_mvdb(songs):
         """Find each song's database entry: CON songs by con_id, else (and
         song folders) by artist + title. Name matches of CON songs get their
-        con_id linked, saved in one go."""
+        con_id linked, saved in one go. Returns the loaded database. Runs on
+        the scan thread (touches only the new songs and a fresh database)."""
         try:
-            self._mvdb = mvdb.load_all()
+            db = mvdb.load_all()
         except Exception as e:
             log.warning('Could not load the music video database: %s', e)
-            self._mvdb = {}
-            return
+            return {}
         pending = []
         for s in songs:
-            s.mv = mvdb.resolve(self._mvdb, s.song_id if s.con else '',
+            s.mv = mvdb.resolve(db, s.song_id if s.con else '',
                                 s.artist, s.title, s.game_origin or None, pending)
         if pending:
             log.info('mvdb: linked %d con_id(s) by name', len(pending))
-            mvdb.remember_con_ids(self._mvdb, pending)
+            mvdb.remember_con_ids(db, pending)
+        return db
 
     # ---- "Open in browser" column ----------------------------------------------
 
@@ -1911,7 +2090,7 @@ class App(ctk.CTk):
 
             ok, msg = _validate_folder(path)
             if ok:
-                _save_songs_path(path)
+                # saved once the scan finds songs (_on_library_scanned)
                 self._load_library(path)
                 return
 
@@ -1919,9 +2098,9 @@ class App(ctk.CTk):
                                  '\n\nPlease try again.')
 
     def _load_library(self, path):
-        self._songs_folder = path
-        display = path if len(path) < 58 else '...' + path[-55:]
-        self._folder_lbl.configure(text=f'Songs:  {display}')
+        """Scan a Songs folder off the UI thread, with the ScanWindow showing
+        the progress. The current library (if any) stays until the new scan
+        finds songs."""
         self._status_lbl.configure(text='Scanning your library...')
 
         # Make sure the queue is being polled before the scan thread posts to it.
@@ -1929,12 +2108,52 @@ class App(ctk.CTk):
             self._polling = True
             self.after(200, self._poll_queue)
 
-        # Scan off the UI thread so the window stays responsive on big libraries.
+        stop = threading.Event()
+        self._scan_win = ScanWindow(self, path, on_cancel=stop.set)
+
         def _worker():
-            songs, cons, con_errors = _scan_library(
-                path, progress=lambda c: self._queue.put(('scan_progress', c)))
-            self._queue.put(('library_scanned', songs, cons, con_errors))
+            last = {}
+
+            def progress(info):
+                last.update(info)
+                self._queue.put(('scan_progress', info))
+            try:
+                songs, cons, con_errors = _scan_library(path, progress, stop)
+                db = None
+                if songs:
+                    progress(dict(last, stage='mvdb', path='', songs=len(songs)))
+                    db = self._match_mvdb(songs)
+                self._queue.put(('library_scanned', path, songs, cons, con_errors, db))
+            except ScanCancelled:
+                self._queue.put(('scan_failed', path, None))
+            except Exception as e:
+                log.exception('Library scan failed')
+                self._queue.put(('scan_failed', path, str(e)))
         threading.Thread(target=_worker, daemon=True).start()
+
+    def _close_scan_win(self):
+        win, self._scan_win = getattr(self, '_scan_win', None), None
+        if win is not None:
+            try:
+                win.close()
+            except Exception:
+                pass
+
+    def _on_scan_failed(self, path, error):
+        """Scan cancelled (error None) or failed: keep the library that was
+        loaded, or ask for a folder if there's none yet."""
+        self._close_scan_win()
+        if error:
+            messagebox.showerror('Scan failed',
+                                 f'Could not scan {path}:\n\n{error}')
+        if self._songs_folder:
+            n = len(self._songs)
+            self._status_lbl.configure(
+                text=f'Scan cancelled, {n} song{"s" if n != 1 else ""} '
+                     f'from the current folder' if error is None else
+                     'Scan failed, the current folder is still loaded')
+        else:
+            self._pick_folder(first_run=True)
 
     def _ask_nautilus(self, con_count):
         """CON files were found but Nautilus isn't set up. Returns True if the
@@ -1955,16 +2174,37 @@ class App(ctk.CTk):
         self._persist_setting('nautilus_path', path)
         return True
 
-    def _on_library_scanned(self, songs, cons=(), con_errors=None):
+    def _on_library_scanned(self, path, songs, cons=(), con_errors=None, db=None):
+        if not songs and not cons:
+            self._close_scan_win()
+            messagebox.showerror('Invalid Songs folder', _NO_SONGS_MSG +
+                                 '\n\nPlease try again.')
+            if self._songs_folder:
+                self._status_lbl.configure(
+                    text=f'{len(self._songs)} songs (current folder kept)')
+            else:
+                self._pick_folder(first_run=True)
+            return
         if cons and not conpack.nautilus_ready() and not self._nautilus_asked:
             self._nautilus_asked = True
+            self._close_scan_win()        # its grab would block the dialogs
             if self._ask_nautilus(len(cons)):
-                self._load_library(self._songs_folder)
+                self._load_library(path)
                 return
+        win = getattr(self, '_scan_win', None)
+        if win is not None and len(songs) > 500:
+            win.update_info({'stage': 'table', 'songs': len(songs),
+                             'cons': len(cons)})
+            win.update_idletasks()
+        self._songs_folder = path
+        _save_songs_path(path)
+        display = path if len(path) < 58 else '...' + path[-55:]
+        self._folder_lbl.configure(text=f'Songs:  {display}')
         self._songs = songs
-        self._attach_mvdb(songs)
+        self._mvdb = db if db is not None else {}
         self._refresh_cache_size()
         self._apply_filter()
+        self._close_scan_win()
         n = len(songs)
         if con_errors:
             log.warning('%d CON file(s) could not be read', len(con_errors))
@@ -2998,11 +3238,18 @@ class App(ctk.CTk):
                 self._offer_update(latest, asset, sha)
 
         elif kind == 'scan_progress':
-            what = msg[1] if isinstance(msg[1], str) else f'{msg[1]} songs'
-            self._status_lbl.configure(text=f'Scanning your library... {what}')
+            info = msg[1]
+            self._status_lbl.configure(
+                text=f'Scanning your library... {info.get("songs", 0):,} songs')
+            win = getattr(self, '_scan_win', None)
+            if win is not None:
+                win.update_info(info)
 
         elif kind == 'library_scanned':
             self._on_library_scanned(*msg[1:])
+
+        elif kind == 'scan_failed':
+            self._on_scan_failed(*msg[1:])
 
         elif kind == 'ytdlp_updated':
             _, ver = msg

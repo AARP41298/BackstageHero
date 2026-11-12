@@ -77,11 +77,14 @@ def yarg_ignored(files):
     return any(f.lower() == YARG_IGNORE for f in files)
 
 
-def walk_songs(root, hidden=True):
+def walk_songs(root, hidden=True, on_folder=None):
     """os.walk(root) without the files of folders YARG ignores (.yargignore):
     yields (dirpath, files). hidden=False also skips folders starting with
-    '.', like glob's '**'."""
+    '.', like glob's '**'. on_folder(dirpath) is called for every folder
+    visited (progress; it may raise to stop the walk)."""
     for dirpath, dirs, files in os.walk(root):
+        if on_folder:
+            on_folder(dirpath)
         if not hidden:
             dirs[:] = [d for d in dirs if not d.startswith('.')]
         if yarg_ignored(files):
@@ -89,21 +92,21 @@ def walk_songs(root, hidden=True):
         yield dirpath, files
 
 
-def find_song_inis(root):
+def find_song_inis(root, on_folder=None):
     """Every song.ini under root (Clone Hero / YARG song folders), except in
     folders with a .yargignore."""
-    for dirpath, files in walk_songs(root, hidden=False):
+    for dirpath, files in walk_songs(root, hidden=False, on_folder=on_folder):
         ini = next((f for f in files if f.lower() == 'song.ini'), None)
         if ini:
             yield os.path.join(dirpath, ini)
 
 
-def find_con_files(root):
+def find_con_files(root, on_folder=None):
     """CON/LIVE files under root. They have no extension, so only extension-less
     files are opened to check the magic; song audio/charts are never touched.
     Folders with a .yargignore are skipped (not their sub-folders), like YARG."""
     found = []
-    for dirpath, files in walk_songs(root):
+    for dirpath, files in walk_songs(root, on_folder=on_folder):
         for name in files:
             if os.path.splitext(name)[1]:
                 continue
@@ -183,7 +186,7 @@ def list_songs(cons, progress=None):
     work = tempfile.mkdtemp(prefix='bh_list_')
     try:
         for i, con in enumerate(cons):
-            if progress and i % 10 == 0:
+            if progress:
                 progress(i, len(cons))
             try:
                 st = os.stat(con)
@@ -216,8 +219,9 @@ def list_songs(cons, progress=None):
             dirty = True
     finally:
         shutil.rmtree(work, ignore_errors=True)
-    if dirty:
-        _save_cache(cache)
+        # also when progress() raised to cancel: keep what was listed so far
+        if dirty:
+            _save_cache(cache)
     return result, errors
 
 
