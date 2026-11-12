@@ -299,6 +299,24 @@ def is_ours(video):
     return bool(read_tag(video))
 
 
+def probe_video(video):
+    """(height like '720p' or '?', BackstageHero tag or '') of a video, with
+    one ffmpeg run: the library scan reads both for every CON video.
+    (None, None) if it couldn't be read."""
+    try:
+        r = subprocess.run(['ffmpeg', '-hide_banner', '-i', video],
+                           capture_output=True, text=True, timeout=15,
+                           encoding='utf-8', errors='replace', creationflags=NO_WINDOW)
+    except Exception:
+        return None, None
+    # the Video: stream line, so embedded cover art doesn't count
+    line = next((l for l in r.stderr.splitlines() if 'Video:' in l), '')
+    m = re.search(r'(\d{3,4})x(\d{3,4})', line or r.stderr)
+    res = f'{int(m.group(2))}p' if m else '?'
+    t = re.search(r'^\s*' + TAG_KEY + r'\s*:\s*(.+)$', r.stderr, re.IGNORECASE | re.MULTILINE)
+    return res, (t.group(1).strip() if t else '')
+
+
 WATERMARK_TEXT = 'BackstageHero'
 WATERMARK_SECONDS = 3
 

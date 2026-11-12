@@ -177,15 +177,16 @@ def _parse_chart(path):
 def read_metadata(folder):
     """Get artist/title for a song folder.
     Checks song.ini first, falls back to notes.chart, then the folder name."""
-    artist, title, _ = scan_song(folder)
+    artist, title, _, _ = scan_song(folder)
     return artist, title
 
 
 def scan_song(folder):
-    """(artist, title, stored_res) for a song folder in a single song.ini parse.
-    The library scan calls this once per song, so the file is only opened once
-    instead of once for the metadata and again for the resolution."""
-    res = None
+    """(artist, title, stored_res, source) for a song folder in a single
+    song.ini parse. source is backstagehero_source (the YouTube ID of a video
+    BackstageHero downloaded), None if it has none. The library scan calls this
+    once per song, so the file is only opened once."""
+    res = source = None
     ini = os.path.join(folder, 'song.ini')
     if os.path.exists(ini):
         try:
@@ -196,8 +197,9 @@ def scan_song(folder):
                     artist = (cp.get(sec, 'artist', fallback='') or '').strip()
                     title = (cp.get(sec, 'name', fallback='') or '').strip()
                     res = cp.get(sec, 'backstagehero_res', fallback='').strip() or None
+                    source = cp.get(sec, 'backstagehero_source', fallback='').strip() or None
                     if title:
-                        return (artist or None), title, res
+                        return (artist or None), title, res, source
                     break
         except Exception:
             pass
@@ -205,8 +207,8 @@ def scan_song(folder):
     if os.path.exists(chart):
         artist, title = _parse_chart(chart)
         if title:
-            return artist, title, res
-    return None, os.path.basename(folder), res
+            return artist, title, res, source
+    return None, os.path.basename(folder), res, source
 
 
 def build_query(artist, title):

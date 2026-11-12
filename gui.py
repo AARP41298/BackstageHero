@@ -202,6 +202,9 @@ class Song:
     dl_mode  : str  = 'auto'   # next download: 'auto' | 'db' (⬇) | 'search' (🔍)
     review   : object = None   # CON download waiting for review (conpack.load_review)
     rendering: str  = ''       # '' | 'queued' | 'running'
+    # the finished video was made by BackstageHero: True / False, None = not
+    # known yet (CON videos are checked in the background) or no video
+    ours     : object = None
 
     @property
     def video(self):
@@ -268,7 +271,7 @@ def _scan_library(songs_folder, progress=None):
     songs = []
     for ini in conpack.find_song_inis(songs_folder):
         folder = os.path.dirname(ini)
-        artist, title, stored = scan_song(folder)
+        artist, title, stored, source = scan_song(folder)
         label = build_query(artist, title) or os.path.basename(folder)
         has_vid = os.path.exists(os.path.join(folder, 'video.mp4'))
         res = '-'
@@ -277,7 +280,8 @@ def _scan_library(songs_folder, progress=None):
         songs.append(Song(
             filename=ini, folder=folder,
             label=label, key=label.lower(),
-            has_video=has_vid, res=res, artist=artist or '', title=title or ''))
+            has_video=has_vid, res=res, artist=artist or '', title=title or '',
+            ours=bool(source) if has_vid else None))
         if progress and len(songs) % 50 == 0:
             progress(len(songs))
 
@@ -1955,7 +1959,9 @@ class App(ctk.CTk):
         done = 0
         with ThreadPoolExecutor(max_workers=4) as pool:
             # CON songs: read the .webm directly, there's no song.ini to cache it in
-            futures = {(pool.submit(probe_video_height, s.video) if s.con
+            # CON songs: read the .webm directly (resolution and our tag in one
+            # ffmpeg run), there's no song.ini to cache it in
+            futures = {(pool.submit(conpack.probe_video, s.video) if s.con
                         else pool.submit(probe_resolution, s.folder)): s
                        for s in songs}
             for fut in as_completed(futures):
@@ -1963,7 +1969,12 @@ class App(ctk.CTk):
                     break
                 s = futures[fut]
                 try:
-                    s.res = fut.result() or '?'
+                    if s.con:
+                        res, tag = fut.result()
+                        s.res = res or '?'
+                        s.ours = None if tag is None else bool(tag)
+                    else:
+                        s.res = fut.result() or '?'
                 except Exception:
                     s.res = '?'
                 done += 1
@@ -2061,16 +2072,25 @@ class App(ctk.CTk):
             return {'play', 'search', 'more'} | dl
         return {'more'} | dl                 # video links work for every song
 
+    @staticmethod
+    def _foreign(s):
+        """The song has a finished video that BackstageHero didn't make."""
+        return s.has_video and s.ours is False
+
     def _row_values(self, s):
         chk         = '  ☑' if s.checked else '  ☐'
         status_text = s.status or ('✔' if s.has_video else '✗')
+        if self._foreign(s) and not status_text.startswith('⟳'):
+            # a video BackstageHero didn't make (downloaded or synced by hand)
+            status_text = '⚠  ' + (s.status or 'Not by BackstageHero')
         enabled = self._actions_of(s)
         icons = tuple(_ACTIONS[a][0] if a in enabled else '' for a in _ACTION_KEYS)
         return (chk, s.label, s.res or '-', status_text, mvdb.type_summary(s.mv),
                 self._yt_text(s)) + icons
 
     def _row_tags(self, s, row_tag):
-        stag = s.stag or ('dim' if s.has_video else 'error')
+        stag = s.stag or ('warn' if self._foreign(s) else
+                          'dim' if s.has_video else 'error')
         return (row_tag,) + ((stag,) if stag else ())
 
     def _refresh_tree(self):
@@ -2815,6 +2835,7 @@ class App(ctk.CTk):
             else:
                 s.review    = conpack.load_review(s.con, s.song_id)   # original kept
                 s.has_video = True
+                s.ours      = True
                 s.res       = probe_video_height(dest) or '?'
                 s.status    = f'✔  Rendered {os.path.splitext(dest)[1][1:].upper()}'
                 s.stag      = 'done'
@@ -2838,6 +2859,8 @@ class App(ctk.CTk):
             s.status    = '✔  Done (not synced, default cut)' if unsynced else '✔  Done'
             s.stag      = 'done'
             s.has_video = True
+            if not s.con:       # folder video downloaded now (backstagehero_source)
+                s.ours = True
             self._update_row(s)
             self._progress.set((i + 1) / total)
 
