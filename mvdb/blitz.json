@@ -18,7 +18,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band Blitz"
     }
-   ]
+   ],
+   "con_id": "oneweek"
   },
   {
    "artist": "Collective Soul",
@@ -36,7 +37,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band Blitz"
     }
-   ]
+   ],
+   "con_id": "shine"
   },
   {
    "artist": "Foster The People",
@@ -72,7 +74,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band Blitz"
     }
-   ]
+   ],
+   "con_id": "weareyoung"
   },
   {
    "artist": "Iron Maiden",
@@ -90,7 +93,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band Blitz"
     }
-   ]
+   ],
+   "con_id": "thewickerman"
   },
   {
    "artist": "Living Color",

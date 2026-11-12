@@ -36,7 +36,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4 DLC"
     }
-   ]
+   ],
+   "con_id": "comeoneileen2"
   },
   {
    "artist": "Earth, Wind & Fire",
@@ -54,7 +55,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4 DLC"
     }
-   ]
+   ],
+   "con_id": "september"
   },
   {
    "artist": "Kenny Loggins",
@@ -72,7 +74,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4 DLC"
     }
-   ]
+   ],
+   "con_id": "dangerzone"
   },
   {
    "artist": "Lorde",
@@ -90,7 +93,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4 DLC"
     }
-   ]
+   ],
+   "con_id": "royals"
   },
   {
    "artist": "Semisonic",
@@ -108,7 +112,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4 DLC"
     }
-   ]
+   ],
+   "con_id": "closingtime"
   },
   {
    "artist": "Toto",
@@ -126,7 +131,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4 DLC"
     }
-   ]
+   ],
+   "con_id": "africa"
   },
   {
    "artist": "Vanilla Ice",
@@ -144,7 +150,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4 DLC"
     }
-   ]
+   ],
+   "con_id": "iceicebaby"
   }
  ]
 }

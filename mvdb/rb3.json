@@ -18,7 +18,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "foolin"
   },
   {
    "artist": "Huey Lewis and The News",
@@ -37,7 +38,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "thepoweroflove"
   },
   {
    "artist": "Jimmy Eat World",
@@ -98,7 +100,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "iloverocknroll"
   },
   {
    "artist": "Metric",
@@ -116,7 +119,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "combatbaby"
   },
   {
    "artist": "The Ravonettes",
@@ -152,7 +156,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "bluebayou"
   },
   {
    "artist": "The Sounds",
@@ -170,7 +175,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "livinginamerica"
   },
   {
    "artist": "Tegan and Sara",
@@ -187,7 +193,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "thecon"
   },
   {
    "artist": "The Vines",
@@ -205,7 +212,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "getfree"
   },
   {
    "artist": "The White Stripes",
@@ -223,7 +231,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 3"
     }
-   ]
+   ],
+   "con_id": "thehardestbutton"
   }
  ]
 }

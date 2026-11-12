@@ -36,7 +36,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Guitar Hero: WoR"
     }
-   ]
+   ],
+   "con_id": "settingfire_ghwor"
   },
   {
    "artist": "SoundGarden",
@@ -54,7 +55,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Warriors of Rock"
     }
-   ]
+   ],
+   "con_id": "blackrain_ghwor"
   }
  ]
 }

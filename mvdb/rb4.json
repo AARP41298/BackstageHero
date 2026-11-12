@@ -18,7 +18,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4"
     }
-   ]
+   ],
+   "con_id": "24kmagic"
   },
   {
    "artist": "Bruno Mars",
@@ -36,7 +37,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4"
     }
-   ]
+   ],
+   "con_id": "treasure"
   },
   {
    "artist": "Capital Cities",
@@ -54,7 +56,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4"
     }
-   ]
+   ],
+   "con_id": "safeandsound"
   },
   {
    "artist": "Sia",
@@ -72,7 +75,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4"
     }
-   ]
+   ],
+   "con_id": "chandelier"
   },
   {
    "artist": "The Weeknd",
@@ -90,7 +94,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 4"
     }
-   ]
+   ],
+   "con_id": "starboy"
   }
  ]
 }

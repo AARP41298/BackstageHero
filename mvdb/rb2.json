@@ -211,7 +211,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
     }
-   ]
+   ],
+   "con_id": "diaryofjane"
   },
   {
    "artist": "Breaking Benjamin",
@@ -794,7 +795,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
     }
-   ]
+   ],
+   "con_id": "jeremy"
   },
   {
    "con_id": "testify",
