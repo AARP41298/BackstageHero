@@ -341,6 +341,9 @@ def _scan_library(songs_folder, progress=None, stop=None):
         for con, entries in listing.items():
             pack = os.path.basename(con)
             for e in entries:
+                if not e['artist'] and e.get('game_origin') == 'beatles':
+                    # The Beatles: Rock Band customs leave the artist out
+                    e = dict(e, artist='The Beatles')
                 label = (build_query(e['artist'], e['name']) or e['id']) + f'   [{pack}]'
                 has_vid = conpack.existing_video(con, e['id']) is not None
                 review = conpack.load_review(con, e['id'])
