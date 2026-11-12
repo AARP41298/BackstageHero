@@ -308,11 +308,14 @@ def _base_opts():
 
 
 # Vimeo: yt-dlp only gets videos with a logged-in session, so Vimeo links use
-# the vimeo.com cookies of a browser you're logged in with (the first of these
-# that works; Chrome-based browsers have to be closed for their cookies to be
-# read). Only Vimeo requests get the cookies, never YouTube.
+# vimeo.com cookies: vimeo_cookies.txt in the data folder (Netscape format,
+# exported with a "cookies.txt" browser extension while logged in), else a
+# browser's own (Firefox works; Chrome / Edge / Brave lock theirs with
+# app-bound encryption that yt-dlp can't read). The first that works is kept
+# for the session. Only Vimeo requests get the cookies, never YouTube.
 VIMEO_BROWSERS = ('firefox', 'edge', 'chrome', 'brave', 'opera', 'vivaldi')
-_vimeo_browser = []          # the browser that worked, once found
+VIMEO_COOKIES = os.path.join(updater.data_dir(), 'vimeo_cookies.txt')
+_vimeo_opts = []             # the options that worked, once found
 
 
 class _NoLog:
@@ -327,30 +330,33 @@ def _is_vimeo_url(url):
 
 
 def _site_opts(url):
-    """Extra yt-dlp options for url: the browser cookies for a Vimeo link."""
+    """Extra yt-dlp options for url: the cookies for a Vimeo link."""
     if not _is_vimeo_url(url):
         return {}
-    if not _vimeo_browser:
-        for browser in (None,) + VIMEO_BROWSERS:
+    if not _vimeo_opts:
+        tries = [('no cookies', {})]
+        if os.path.exists(VIMEO_COOKIES):
+            tries.append(('vimeo_cookies.txt', {'cookiefile': VIMEO_COOKIES}))
+        tries += [(b + ' cookies', {'cookiesfrombrowser': (b,)}) for b in VIMEO_BROWSERS]
+        for name, extra in tries:
             opts = _base_opts()
-            opts['logger'] = _NoLog()
-            if browser:
-                opts['cookiesfrombrowser'] = (browser,)
+            opts.update(extra, logger=_NoLog())
             try:
                 with yt_dlp.YoutubeDL(opts) as ydl:
                     ydl.extract_info(url, download=False, process=False)
             except Exception as e:
-                log.info('Vimeo with %s cookies: %s', browser or 'no', e)
+                log.info('Vimeo with %s: %s', name, e)
                 continue
-            _vimeo_browser.append(browser)
-            if browser:
-                print('  Vimeo: using your ' + browser + ' login')
+            _vimeo_opts.append(extra)
+            if extra:
+                print('  Vimeo: logged in with ' + name)
             break
         else:
-            raise Exception('Vimeo needs you to be logged in: log in to vimeo.com in '
-                            'Firefox (or Edge / Chrome, closed while downloading) '
-                            'and try again')
-    return {'cookiesfrombrowser': (_vimeo_browser[0],)} if _vimeo_browser[0] else {}
+            raise Exception(
+                'Vimeo needs a login: export your vimeo.com cookies (a "cookies.txt" '
+                'browser extension, while logged in) to ' + VIMEO_COOKIES +
+                ', or log in to vimeo.com in Firefox, and try again')
+    return dict(_vimeo_opts[0])
 
 
 def search_candidates(query, n=SEARCH_RESULTS):
