@@ -113,6 +113,12 @@ When you haven't picked a type in the Video type column, the video marked
 in this order: **fan > official > alternate > meme**. The column shows a ★
 next to the director's choice. Picking a type in the app overrides both.
 
+The ☆ / ★ in front of each type in the @ Video links window sets your own
+director's choice for the song (★ again clears it), like a favorite version.
+It replaces the database's, drops your Video type pick so the starred type is
+the one used, and is saved only in `mvdb_local.json`: Missed entries never
+include it.
+
 ## How BackstageHero uses it
 
 Each song is matched to its entry by CON ID; if that fails, by artist +

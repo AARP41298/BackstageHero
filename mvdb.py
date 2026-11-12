@@ -401,6 +401,19 @@ def _apply(db, e):
         if s is not None:
             s['chosen'] = e['type']
         return
+    if e['kind'] == 'favorite':
+        # your director's choice: replaces the database's (type None = none)
+        s = (find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', ''),
+                       source if source in db else None)
+             or find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', '')))
+        if s is None:
+            return
+        for v in s.get('videos', []):
+            v.pop('directors_choice', None)
+        best = _best([v for v in s.get('videos', []) if v.get('type', 'official') == e['type']])
+        if best is not None:
+            best['directors_choice'] = True
+        return
     if e['kind'] == 'con_id':
         s = find_song(db, '', song.get('artist', ''), song.get('title', ''),
                       source if source in db else None)
@@ -434,7 +447,8 @@ def _apply(db, e):
 def load_all():
     """The database with your local edits applied (what the app uses)."""
     db = load()
-    for e in load_local():
+    # favorites last: they mark a video the link edits may have just added
+    for e in sorted(load_local(), key=lambda e: e.get('kind') == 'favorite'):
         try:
             _apply(db, e)
         except Exception as ex:
@@ -552,6 +566,23 @@ def set_choice(db, source, song, vtype):
     _apply(db, e)
 
 
+def set_favorite(db, source, song, vtype):
+    """Make `vtype` the song's director's choice (None: no director's choice).
+    Like set_choice it's your preference, saved locally and never submitted.
+    It also drops your Video type pick, so the starred type is the one used."""
+    ref = song_ref(song.get('con_id', ''), song.get('artist', ''), song.get('title', ''))
+    e = {'kind': 'favorite', 'source': source_key(source) if source else DEFAULT_SOURCE,
+         'song': ref, 'type': vtype}
+    edits = [x for x in load_local()
+             if not (x['kind'] in ('favorite', 'choice') and x['song'] == ref)]
+    edits.append(e)
+    _save_local(edits)
+    _apply(db, e)
+    s = (find_song(db, ref.get('con_id', ''), ref.get('artist', ''), ref.get('title', ''))
+         or {})
+    s.pop('chosen', None)
+
+
 def _best(vids):
     """Of a type's videos: the director's choice, then a linked one, then any."""
     return sorted(vids, key=lambda v: (not v.get('directors_choice'),
@@ -653,6 +684,7 @@ def missed_entries(db, local, submitted_by):
                                 song.get('title', '')):
             continue
         video = dict(video, submitted_by=submitted_by)
+        video.pop('directors_choice', None)     # a local favorite, not shared
         out.append({'source': source_key(item.get('source')), 'song': song, 'video': video})
     return out
 

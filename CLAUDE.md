@@ -47,6 +47,9 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
 
 - Video type default: `directors_choice` video, else fan > official >
   alternate > meme. The user's pick in the Video type menu overrides it.
+  The ☆/★ in the @ window sets the user's own `directors_choice` (a local
+  `favorite` edit, replaces the database's, clears the type pick); it is
+  never exported in Missed entries.
 - A song with a database link downloads that video, no YouTube search.
   🔍 Search again searches YouTube, skips the database links and never marks
   them as wrong. ⬇ Download always downloads the chosen type's link.
@@ -76,7 +79,6 @@ kept-download cache + 🗑, black count-in and intro/outro rules,
 `directors_choice` + priority, @ icon, shut down when done.
 
 Open ideas, not done:
-- @ window: a ★ toggle to set `directors_choice` (and export it in missed entries).
 - Missed entries: carry the replaced link (`replaces`) so merging swaps it,
   and drop the duplicate when a link edit and a render are the same video.
 - Clone Hero song folders only get an offset in the app; auto-edit is CLI-only for them.

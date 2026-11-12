@@ -965,7 +965,7 @@ class VideoLinksWindow(ctk.CTkToplevel):
 
         self._rows = ctk.CTkFrame(self, fg_color=_SURFACE, corner_radius=8)
         self._rows.pack(fill='both', expand=True, padx=16, pady=10)
-        self._rows.grid_columnconfigure(1, weight=1)
+        self._rows.grid_columnconfigure(2, weight=1)
 
         foot = ctk.CTkFrame(self, fg_color='transparent')
         foot.pack(fill='x', padx=16, pady=(0, 12))
@@ -1005,10 +1005,19 @@ class VideoLinksWindow(ctk.CTkToplevel):
                                       f'    CON ID: {con}')
         for r, (vtype, v) in enumerate(mvdb.types_of(s.mv)):
             pad = dict(padx=10, pady=(10 if r == 0 else 4, 4))
+            vid = (v or {}).get('youtube') or ''
+            fav = v is not None and bool(v.get('directors_choice'))
+            star = ctk.CTkButton(
+                self._rows, text='★' if fav else '☆', width=_fs(28), height=_fs(28),
+                font=_font(16), fg_color='transparent', hover_color='#414160',
+                text_color='#f9e2af' if fav else _SUBTEXT,
+                text_color_disabled='#45475a',
+                state='normal' if (vid or fav) else 'disabled',
+                command=lambda t=vtype, f=fav: self._favorite(None if f else t))
+            star.grid(row=2 * r, column=0, sticky='w', padx=(10, 0), pady=pad['pady'])
             name = ctk.CTkLabel(self._rows, text=vtype.capitalize(), width=_fs(90),
                                 font=_font(13, weight='bold'), text_color=_TEXT, anchor='w')
-            name.grid(row=2 * r, column=0, sticky='w', **pad)
-            vid = (v or {}).get('youtube') or ''
+            name.grid(row=2 * r, column=1, sticky='w', padx=(4, 10), pady=pad['pady'])
             if vid:
                 url = 'https://www.youtube.com/watch?v=' + vid
                 text = url
@@ -1023,16 +1032,16 @@ class VideoLinksWindow(ctk.CTkToplevel):
                     text += ' (the database has this type, but not the video)'
                 link = ctk.CTkLabel(self._rows, text=text, text_color=_SUBTEXT,
                                     font=_font(12), anchor='w')
-            link.grid(row=2 * r, column=1, sticky='we', **pad)
+            link.grid(row=2 * r, column=2, sticky='we', **pad)
             ctk.CTkButton(self._rows, text='✎  Edit' if vid else '+  Set link', width=_fs(100),
                           fg_color='#313244' if vid else None,
                           hover_color='#414160' if vid else None,
                           command=lambda t=vtype, old=vid: self._edit(t, old)
-                          ).grid(row=2 * r, column=2, sticky='e', **pad)
+                          ).grid(row=2 * r, column=3, sticky='e', **pad)
             details = [self._TYPE_HELP[vtype]]
             if vtype == mvdb.chosen_type(s.mv):
                 details.insert(0, '● in use')
-            if v is not None and v.get('directors_choice'):
+            if fav:
                 details.insert(0, '★ director\'s choice')
             if v is not None:
                 if v.get('autoedit'):
@@ -1046,7 +1055,20 @@ class VideoLinksWindow(ctk.CTkToplevel):
                     details.append(f'by {credit}')
             ctk.CTkLabel(self._rows, text='   ·   '.join(details), font=_font(10),
                          text_color=_SUBTEXT, anchor='w'
-                         ).grid(row=2 * r + 1, column=1, columnspan=2, sticky='w', padx=10)
+                         ).grid(row=2 * r + 1, column=2, columnspan=2, sticky='w', padx=10)
+
+    def _favorite(self, vtype):
+        """☆ / ★: make a type the director's choice (the one used by default),
+        or clear it. Saved on this PC only, never in Missed entries."""
+        s = self._s
+        if s.mv is None:
+            return
+        mvdb.set_favorite(self._app._mvdb, self._app._mv_source(s),
+                          {'con_id': s.mv.get('con_id', ''), 'artist': s.mv.get('artist', ''),
+                           'title': s.mv.get('title', '')}, vtype)
+        s.mv.pop('chosen', None)
+        self._app._update_row(s)
+        self._build_rows()
 
     def _edit(self, vtype, old):
         dlg = ctk.CTkInputDialog(
