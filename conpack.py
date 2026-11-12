@@ -101,14 +101,29 @@ def find_song_inis(root, on_folder=None):
             yield os.path.join(dirpath, ini)
 
 
+# file types in a song library that are never CONs, so they're not opened.
+# CONs have no extension, but their names often have dots ("Mr. Nice Guy",
+# "(ft. Someone"), which splitext reads as one: anything else is checked.
+_NOT_CON_EXTS = frozenset((
+    '.ini', '.chart', '.mid', '.midi', '.sng', '.ogg', '.opus', '.mp3', '.wav',
+    '.flac', '.mogg', '.png', '.jpg', '.jpeg', '.bmp', '.gif', '.webp',
+    '.mp4', '.webm', '.mkv', '.avi', '.mov', '.m4a', '.txt', '.json', '.xml',
+    '.dta', '.milo_xbox', '.yargsong', '.yarg', '.db', '.bin', '.log',
+    '.zip', '.rar', '.7z', '.exe', '.dll', '.pdf', '.lnk', '.url', '.ico',
+    '.nfo', '.md', '.html', '.part', '.tmp', '.bak',
+))
+
+
 def find_con_files(root, on_folder=None):
-    """CON/LIVE files under root. They have no extension, so only extension-less
-    files are opened to check the magic; song audio/charts are never touched.
-    Folders with a .yargignore are skipped (not their sub-folders), like YARG."""
+    """CON/LIVE files under root. Files of known types (_NOT_CON_EXTS: song
+    audio, charts, videos...) are never opened; the rest get the 4-byte magic
+    check. Folders with a .yargignore are skipped (not their sub-folders),
+    like YARG."""
     found = []
     for dirpath, files in walk_songs(root, on_folder=on_folder):
         for name in files:
-            if os.path.splitext(name)[1]:
+            if name.startswith('.') or \
+                    os.path.splitext(name)[1].lower() in _NOT_CON_EXTS:
                 continue
             path = os.path.join(dirpath, name)
             if is_con_file(path):
