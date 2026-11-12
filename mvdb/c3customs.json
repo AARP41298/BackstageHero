@@ -971,13 +971,13 @@
    "videos": [
     {
      "type": "official",
-     "youtube": "",
+     "vimeo": "118617223",
+     "vimeo_url": "https://vimeo.com/118617223",
      "title": "Official Music Video (Rabbit Version)",
      "offset_ms": -4200,
      "submitted_by": "moocartoons sheet",
      "sync_credit": "t1redmonkey#7540",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
-     "url": "https://vimeo.com/118617223",
      "chart_url": "http://customscreators.com/index.php?/page/index.html/_/i-will-follow-you-into-the-r19213",
      "chart_source": "C3 Single"
     }
@@ -1225,13 +1225,13 @@
    "videos": [
     {
      "type": "official",
-     "youtube": "",
+     "vimeo": "17777371",
+     "vimeo_url": "https://vimeo.com/17777371",
      "title": "Official Music Video (Vimeo)",
      "offset_ms": 5000,
      "submitted_by": "moocartoons sheet",
      "sync_credit": "@Moocartoons",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
-     "url": "https://vimeo.com/17777371",
      "chart_url": "http://customscreators.com/index.php?/page/index.html/_/1234-r26390",
      "chart_source": "C3 Single"
     }

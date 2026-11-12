@@ -106,7 +106,7 @@ def main(path):
         offset = int(off) if m else None
         if offset is None and off:
             notes = (off + '. ' + notes).strip(' .') if notes else off
-        vid = mvdb.youtube_id(vurl)
+        vid = mvdb.link_id(vurl)
         extra = {}
         if vurl and not vid:
             extra['url'] = vurl          # Vimeo, Instagram, a Drive file...

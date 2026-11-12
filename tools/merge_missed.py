@@ -38,7 +38,7 @@ def _describe(e):
         extra.append(f"offset {video['offset_ms']} ms")
     if video.get('autoedit'):
         extra.append('auto-edit')
-    return (f"{name}  [{video.get('type', 'official')}] {video.get('youtube', '')}"
+    return (f"{name}  [{video.get('type', 'official')}] {mvdb.vid(video)}"
             + (f"  ({', '.join(extra)})" if extra else ''))
 
 

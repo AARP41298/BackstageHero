@@ -1213,7 +1213,7 @@ class VideoLinksWindow(ctk.CTkToplevel):
                                       f'    CON ID: {con}')
         for r, (vtype, v) in enumerate(mvdb.types_of(s.mv)):
             pad = dict(padx=10, pady=(10 if r == 0 else 4, 4))
-            vid = (v or {}).get('youtube') or ''
+            vid = mvdb.vid(v)
             fav = v is not None and bool(v.get('directors_choice'))
             star = ctk.CTkButton(
                 self._rows, text='★' if fav else '☆', width=_fs(28), height=_fs(28),
@@ -1227,7 +1227,7 @@ class VideoLinksWindow(ctk.CTkToplevel):
                                 font=_font(13, weight='bold'), text_color=_TEXT, anchor='w')
             name.grid(row=2 * r, column=1, sticky='w', padx=(4, 10), pady=pad['pady'])
             if vid:
-                url = 'https://www.youtube.com/watch?v=' + vid
+                url = mvdb.watch_url(vid)
                 text = url
                 if v.get('title'):
                     text += '   ·   ' + v['title']
@@ -1295,7 +1295,7 @@ class VideoLinksWindow(ctk.CTkToplevel):
         if not messagebox.askyesno(
                 'Video links',
                 f'Remove the {vtype} link of {self._s.label}?\n\n'
-                f'https://www.youtube.com/watch?v={old}\n\n'
+                f'{mvdb.watch_url(old)}\n\n'
                 'Set link adds a new one.', parent=self):
             return
         s = self._s
@@ -1309,13 +1309,13 @@ class VideoLinksWindow(ctk.CTkToplevel):
     def _edit(self, vtype, old):
         dlg = ctk.CTkInputDialog(
             title=f'{vtype.capitalize()} video',
-            text=f'YouTube link or video ID for the {vtype} video of\n{self._s.label}:')
+            text=f'YouTube or Vimeo link (or YouTube ID) for the {vtype} video of\n{self._s.label}:')
         raw = (dlg.get_input() or '').strip()
         if not raw:
             return
-        vid = mvdb.youtube_id(raw)
+        vid = mvdb.link_id(raw)
         if not vid:
-            messagebox.showerror('Video links', f'That isn\'t a YouTube link:\n{raw}', parent=self)
+            messagebox.showerror('Video links', f'That isn\'t a YouTube or Vimeo link:\n{raw}', parent=self)
             return
         if vid == old:
             return
@@ -1778,7 +1778,7 @@ class App(ctk.CTk):
 
     def _yt_text(self, s):
         v = mvdb.chosen_video(s.mv)
-        vid = (v or {}).get('youtube')
+        vid = mvdb.vid(v)
         if not vid:
             name = (f'{s.artist} - {s.title}' if s.artist and s.title
                     else s.title or s.label)
@@ -1786,16 +1786,16 @@ class App(ctk.CTk):
         title = self._yt_titles.get(vid)
         if title is None:
             self._want_title(vid)
-            return '↗  youtu.be/' + vid
-        return '↗  ' + (title or 'youtu.be/' + vid)
+            return '↗  ' + mvdb.short_url(vid)
+        return '↗  ' + (title or mvdb.short_url(vid))
 
     def _open_yt(self, s):
         import webbrowser
         from urllib.parse import quote_plus
         v = mvdb.chosen_video(s.mv)
-        vid = (v or {}).get('youtube')
+        vid = mvdb.vid(v)
         if vid:
-            webbrowser.open('https://www.youtube.com/watch?v=' + vid)
+            webbrowser.open(mvdb.watch_url(vid))
         else:
             # no video yet: search YouTube and open the links window to paste it
             q = (build_query(s.artist, s.title) or s.label) + ' official video'
@@ -1859,8 +1859,8 @@ class App(ctk.CTk):
                 vid = self._yt_jobs.get(timeout=2)
             except queue.Empty:
                 return
-            url = ('https://www.youtube.com/oembed?format=json&url='
-                   'https://www.youtube.com/watch?v=' + vid)
+            url = (('https://vimeo.com/api/oembed.json?url=' if mvdb.is_vimeo(vid) else
+                    'https://www.youtube.com/oembed?format=json&url=') + mvdb.watch_url(vid))
             try:
                 with urllib.request.urlopen(url, timeout=10) as r:
                     title = _json.load(r).get('title') or ''
@@ -1876,7 +1876,7 @@ class App(ctk.CTk):
         self._yt_titles[vid] = title
         for s in self._filtered:
             v = mvdb.chosen_video(s.mv)
-            if v and v.get('youtube') == vid:
+            if v and mvdb.vid(v) == vid:
                 self._update_row(s)
         if not self._yt_save_after:
             self._yt_save_after = self.after(3000, self._save_yt_titles)
@@ -1905,7 +1905,7 @@ class App(ctk.CTk):
                 continue
             v = links[t]
             label = ('●  ' if t == pick else '     ') + t + \
-                ('' if v.get('youtube') else '   (no link: automatic search)')
+                ('' if mvdb.vid(v) else '   (no link: automatic search)')
             if links[t].get('directors_choice'):
                 label += '   ★ director\'s choice'
             if t == mvdb.default_type(s.mv) and t != pick:
@@ -2334,7 +2334,7 @@ class App(ctk.CTk):
         if s.rendering:                      # rendering: everything locked
             return set()
         v = mvdb.chosen_video(s.mv)
-        dl = {'download'} if (v and v.get('youtube') and not self._is_pending(s)) else set()
+        dl = {'download'} if (v and mvdb.vid(v) and not self._is_pending(s)) else set()
         if s.review:                         # downloaded (review, or exported and kept)
             return {'play', 'collage', 'search', 'mp4', 'webm', 'clear', 'more'} | dl
         if s.con and s.has_video:            # finished video
@@ -2407,7 +2407,7 @@ class App(ctk.CTk):
         hint = ''
         if s and key == 'yt':
             v = mvdb.chosen_video(s.mv)
-            hint = ('Open the video in your browser' if v and v.get('youtube')
+            hint = ('Open the video in your browser' if v and mvdb.vid(v)
                     else 'Search YouTube in your browser and set the link')
         elif s and key == 'check':
             hint = 'Select'
@@ -2523,7 +2523,7 @@ class App(ctk.CTk):
         self._enqueue_downloads([s], replace=True)
 
     def _db_ids(self, s):
-        return {v.get('youtube') for v in (s.mv or {}).get('videos', []) if v.get('youtube')}
+        return {mvdb.vid(v) for v in (s.mv or {}).get('videos', []) if mvdb.vid(v)}
 
     def _mark_wrong(self, s, video_id):
         """Search again marks the current video wrong, but never a video the
@@ -2534,9 +2534,9 @@ class App(ctk.CTk):
     def _download_db(self, s):
         """⬇: download the chosen type's database video, replacing what's there."""
         v = mvdb.chosen_video(s.mv)
-        if not (v and v.get('youtube')):
+        if not (v and mvdb.vid(v)):
             return
-        what = f'the {mvdb.chosen_type(s.mv)} video (youtu.be/{v["youtube"]})'
+        what = f'the {mvdb.chosen_type(s.mv)} video ({mvdb.short_url(mvdb.vid(v))})'
         if s.review and not s.has_video:
             if not messagebox.askyesno(
                     'Download again?',
@@ -2697,7 +2697,7 @@ class App(ctk.CTk):
         link (the ones downloaded without a YouTube search)."""
         for s in self._filtered:
             v = mvdb.chosen_video(s.mv)
-            s.checked = bool(v and v.get('youtube'))
+            s.checked = bool(v and mvdb.vid(v))
         self._refresh_tree()
 
     def _mode_menu(self):
@@ -2764,7 +2764,7 @@ class App(ctk.CTk):
             if share and resolver_client.enabled():
                 ch  = resolver_client.chart_hash(song.folder)
                 vid = get_stored_source(song.folder)
-                if ch and vid:
+                if ch and vid and not mvdb.is_vimeo(vid):
                     artist, title = read_metadata(song.folder)
                     resolver_client.report(ch, vid, ms, 0.5, artist, title)
         SyncEditor(self, song, on_save=on_save)

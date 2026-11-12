@@ -120,6 +120,76 @@ def youtube_id(url):
     return url if re.fullmatch(r'[A-Za-z0-9_-]{11}', url or '') else ''
 
 
+# ---- video IDs ----------------------------------------------------------------
+# A video ID is a YouTube ID (11 characters) or 'vimeo:<number>', with
+# '/<hash>' for an unlisted Vimeo video ('vimeo:1246331223/abc123def').
+# In the JSON a YouTube video is "youtube": "<id>" and a Vimeo one is
+# "vimeo": "<number>[/<hash>]"; vid() / set_vid() hide the difference.
+VIMEO = 'vimeo:'
+
+
+def vimeo_id(url):
+    """'<number>' or '<number>/<hash>' of a Vimeo link, else ''."""
+    u = (url or '').strip()
+    if 'vimeo.com' not in u.lower():
+        return ''
+    m = re.search(r'vimeo\.com/(?:video/|.*?/)?(\d{5,})(?:/([0-9a-f]{6,}))?', u, re.I)
+    if not m:
+        return ''
+    h = m.group(2)
+    if not h:
+        q = re.search(r'[?&]h=([0-9a-f]{6,})', u, re.I)
+        h = q.group(1) if q else None
+    return m.group(1) + ('/' + h.lower() if h else '')
+
+
+def link_id(url):
+    """The video ID of a YouTube or Vimeo link (or of a bare YouTube ID /
+    a 'vimeo:' ID), '' if it's neither."""
+    u = (url or '').strip()
+    if u.startswith(VIMEO):
+        return u if re.fullmatch(r'vimeo:\d+(/[0-9a-f]+)?', u) else ''
+    v = vimeo_id(u)
+    return VIMEO + v if v else youtube_id(u)
+
+
+def is_vimeo(video_id):
+    return (video_id or '').startswith(VIMEO)
+
+
+def vid(video):
+    """The video ID of a video record, '' if it has no link."""
+    video = video or {}
+    if video.get('youtube'):
+        return video['youtube']
+    return VIMEO + video['vimeo'] if video.get('vimeo') else ''
+
+
+def set_vid(video, video_id):
+    """Set a video record's link (YouTube or Vimeo) in place. A link of the
+    same site keeps its place in the record."""
+    key = 'vimeo' if is_vimeo(video_id) else 'youtube'
+    val = video_id[len(VIMEO):] if key == 'vimeo' else video_id
+    items = list(video.items())
+    video.clear()
+    for k, v in items:
+        if k in ('youtube', 'vimeo'):
+            if val and key not in video:
+                video[key] = val          # where the old link was
+        elif k not in ('youtube_url', 'vimeo_url'):
+            video[k] = v
+    if val and key not in video:
+        video[key] = val
+    return video
+
+
+def short_url(video_id):
+    """youtu.be/<id> or vimeo.com/<id>, for showing a link."""
+    if is_vimeo(video_id):
+        return 'vimeo.com/' + video_id[len(VIMEO):]
+    return 'youtu.be/' + video_id if video_id else ''
+
+
 def norm(text):
     """Loose key for matching titles: lowercase, no punctuation/feat./brackets."""
     t = (text or '').lower()
@@ -228,20 +298,24 @@ def _write(path, data):
 
 
 def watch_url(video_id):
+    if is_vimeo(video_id):
+        return 'https://vimeo.com/' + video_id[len(VIMEO):]
     return f'https://www.youtube.com/watch?v={video_id}' if video_id else ''
 
 
 def _with_url(video):
-    """The video with youtube_url (a clickable link, written right after
-    youtube) matching its youtube ID. youtube is the one that counts:
-    youtube_url is rewritten from it on every save."""
+    """The video with youtube_url / vimeo_url (a clickable link, written right
+    after youtube / vimeo) matching its ID. The ID is the one that counts:
+    the url is rewritten from it on every save."""
     out = {}
     for k, v in video.items():
-        if k == 'youtube_url':
+        if k in ('youtube_url', 'vimeo_url'):
             continue
         out[k] = v
         if k == 'youtube' and v:
             out['youtube_url'] = watch_url(v)
+        if k == 'vimeo' and v:
+            out['vimeo_url'] = watch_url(VIMEO + v)
     return out
 
 
@@ -307,13 +381,13 @@ def videos_for(db, con_id='', artist='', title='', source=None, types=TYPES):
 
 def has_video(db, video_id, con_id='', artist='', title='', source=None):
     s = find_song(db, con_id, artist, title, source)
-    return bool(s) and any(v.get('youtube') == video_id for v in s.get('videos', []))
+    return bool(s) and any(vid(v) == video_id for v in s.get('videos', []))
 
 
 def make_video(video_id, vtype='official', title='', offset_ms=None, autoedit=None,
                crop=None, submitted_by='', notes='', **extra):
     """A video record. autoedit is an autoedit.plan() result with its 'log'."""
-    v = {'type': vtype if vtype in TYPES else 'official', 'youtube': video_id}
+    v = set_vid({'type': vtype if vtype in TYPES else 'official'}, video_id)
     if title:
         v['title'] = title
     if offset_ms is not None:
@@ -348,7 +422,7 @@ def add(db, source, song, video):
     elif song.get('con_id') and not s.get('con_id'):
         s['con_id'] = song['con_id']
     for old in s['videos']:
-        if old.get('youtube') == video.get('youtube') and \
+        if vid(old) == vid(video) and \
                 old.get('offset_ms') == video.get('offset_ms'):
             return False
     s['videos'].append(video)
@@ -422,7 +496,7 @@ def _apply(db, e):
         if s is not None:
             s['videos'] = [v for v in s.get('videos', [])
                            if not (v.get('type', 'official') == e['type']
-                                   and v.get('youtube') == e['youtube'])]
+                                   and vid(v) == e['youtube'])]
         return
     if e['kind'] == 'con_id':
         s = find_song(db, '', song.get('artist', ''), song.get('title', ''),
@@ -440,17 +514,17 @@ def _apply(db, e):
         s['videos'] = []
         group['songs'].append(s)
     vids = [v for v in s['videos'] if v.get('type', 'official') == e['type']]
-    target = next((v for v in vids if v.get('youtube') == e.get('old')), None) \
-        or next((v for v in vids if not v.get('youtube')), None) \
+    target = next((v for v in vids if vid(v) == e.get('old')), None) \
+        or next((v for v in vids if not vid(v)), None) \
         or (vids[0] if vids and e.get('old') is not None else None)
     if target is None:
         target = {'type': e['type']}
         s['videos'].append(target)
-    if target.get('youtube') and target['youtube'] != e['youtube']:
+    if vid(target) and vid(target) != e['youtube']:
         # a different video: the old sync data doesn't apply to it
         for k in ('offset_ms', 'autoedit', 'crop', 'title'):
             target.pop(k, None)
-    target['youtube'] = e['youtube']
+    set_vid(target, e['youtube'])
     target['edited'] = True
 
 
@@ -576,7 +650,7 @@ def clear_link(db, source, song, vtype, video_id):
             continue
         edits.append(x)
     new = [{'kind': 'clear', 'source': src, 'song': ref, 'type': vtype,
-            'youtube': vid, 'time': now} for vid in gone]
+            'youtube': v_id, 'time': now} for v_id in gone]
     edits.extend(new)
     _save_local(edits)
     for e in new:
@@ -626,7 +700,7 @@ def set_favorite(db, source, song, vtype):
 def _best(vids):
     """Of a type's videos: the director's choice, then a linked one, then any."""
     return sorted(vids, key=lambda v: (not v.get('directors_choice'),
-                                       not v.get('youtube')))[0] if vids else None
+                                       not vid(v)))[0] if vids else None
 
 
 def types_of(song):
@@ -646,7 +720,7 @@ def default_type(song):
         return None
     dc = [v for v in (song or {}).get('videos', []) if v.get('directors_choice')]
     if dc:
-        dc.sort(key=lambda v: not v.get('youtube'))
+        dc.sort(key=lambda v: not vid(v))
         return dc[0].get('type', 'official')
     return next(t for t in PRIORITY if t in have)
 
@@ -697,7 +771,7 @@ def type_summary(song):
         return 'No Entry'
     v = dict(types_of(song))[pick]
     text = pick + (' ★' if v.get('directors_choice') else '')
-    text += '' if v.get('youtube') else ' (no link)'
+    text += '' if vid(v) else ' (no link)'
     return text + ('*' if len(available_types(song)) > 1 else '')
 
 
@@ -708,7 +782,7 @@ def sort_key(song):
     if pick is None:
         return (2, 0)
     v = dict(types_of(song))[pick]
-    return (0 if v.get('youtube') else 1, PRIORITY.index(pick))
+    return (0 if vid(v) else 1, PRIORITY.index(pick))
 
 
 # ---- contributions -------------------------------------------------------------
@@ -719,8 +793,8 @@ def missed_entries(db, local, submitted_by):
     out = []
     for item in local:
         song, video = item['song'], item['video']
-        vid = video.get('youtube')
-        if not vid or has_video(db, vid, song.get('con_id', ''), song.get('artist', ''),
+        v_id = vid(video)
+        if not v_id or has_video(db, v_id, song.get('con_id', ''), song.get('artist', ''),
                                 song.get('title', '')):
             continue
         video = dict(video, submitted_by=submitted_by)
@@ -751,8 +825,8 @@ def merge_entry(db, source, song, video):
     'same'      the database already had it with the same data
     'conflict'  the database has it with a different type/offset: kept as is
     'invalid'   no YouTube ID, or no title / con_id"""
-    vid = youtube_id(video.get('youtube'))
-    if not vid or not (song.get('title') or song.get('con_id')):
+    v_id = link_id(vid(video))
+    if not v_id or not (song.get('title') or song.get('con_id')):
         return 'invalid', None, None
     key = source_key(source)
     # a con_id is the same song whatever source the entry says (a link edit
@@ -774,9 +848,9 @@ def merge_entry(db, source, song, video):
         group['songs'].append(s)
     elif song.get('con_id') and not s.get('con_id'):
         s['con_id'] = song['con_id']
-    video = dict(video, youtube=vid)
+    video = set_vid(dict(video), v_id)
     video['type'] = video.get('type') if video.get('type') in TYPES else 'official'
-    old = next((v for v in s['videos'] if v.get('youtube') == vid), None)
+    old = next((v for v in s['videos'] if vid(v) == v_id), None)
     if old is None:
         s['videos'].append(video)
         return 'new', key, s

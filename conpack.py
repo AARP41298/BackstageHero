@@ -672,7 +672,7 @@ def record_contribution(con, song_id, state, artist='', title='', source=''):
         import mvdb
         items = [i for i in load_contributions()
                  if not (i['song'].get('con_id') == song_id
-                         and i['video'].get('youtube') == state.get('video_id'))]
+                         and mvdb.vid(i['video']) == state.get('video_id'))]
         meta = _song_meta(con, song_id)
         song = {'con_id': song_id, 'artist': artist or meta.get('artist', ''),
                 'title': title or meta.get('name', '')}

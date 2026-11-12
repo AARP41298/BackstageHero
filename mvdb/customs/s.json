@@ -142,13 +142,13 @@
    "videos": [
     {
      "type": "official",
-     "youtube": "",
+     "vimeo": "269593336",
+     "vimeo_url": "https://vimeo.com/269593336",
      "title": "Music Video (Vimeo Recording)",
      "offset_ms": -4000,
      "submitted_by": "moocartoons sheet",
      "sync_credit": "@Moocartoons",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
-     "url": "https://vimeo.com/269593336",
      "chart_url": "https://jcharting.wixsite.com/jrockband",
      "chart_source": "J-Rock Band Reboot"
     }

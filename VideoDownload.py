@@ -280,8 +280,19 @@ def set_ini_values(folder, values):
 
 
 def video_id_of(url):
+    """The video ID of a watch URL: the YouTube ID, or 'vimeo:<number>' for
+    Vimeo (see mvdb.link_id)."""
+    if 'vimeo.com' in url and mvdb is not None:
+        return mvdb.link_id(url) or url
     m = re.search(r'[?&]v=([^&]+)', url)
     return m.group(1) if m else url
+
+
+def watch_url(video_id):
+    """The URL yt-dlp downloads a video ID (YouTube or 'vimeo:...') from."""
+    if mvdb is not None:
+        return mvdb.watch_url(video_id)
+    return 'https://www.youtube.com/watch?v=' + video_id
 
 
 def _base_opts():
@@ -294,6 +305,52 @@ def _base_opts():
     if YOUTUBE_CLIENTS:
         opts['extractor_args'] = {'youtube': {'player_client': YOUTUBE_CLIENTS}}
     return opts
+
+
+# Vimeo: yt-dlp only gets videos with a logged-in session, so Vimeo links use
+# the vimeo.com cookies of a browser you're logged in with (the first of these
+# that works; Chrome-based browsers have to be closed for their cookies to be
+# read). Only Vimeo requests get the cookies, never YouTube.
+VIMEO_BROWSERS = ('firefox', 'edge', 'chrome', 'brave', 'opera', 'vivaldi')
+_vimeo_browser = []          # the browser that worked, once found
+
+
+class _NoLog:
+    def debug(self, msg): pass
+    def info(self, msg): pass
+    def warning(self, msg): pass
+    def error(self, msg): pass
+
+
+def _is_vimeo_url(url):
+    return 'vimeo.com/' in (url or '')
+
+
+def _site_opts(url):
+    """Extra yt-dlp options for url: the browser cookies for a Vimeo link."""
+    if not _is_vimeo_url(url):
+        return {}
+    if not _vimeo_browser:
+        for browser in (None,) + VIMEO_BROWSERS:
+            opts = _base_opts()
+            opts['logger'] = _NoLog()
+            if browser:
+                opts['cookiesfrombrowser'] = (browser,)
+            try:
+                with yt_dlp.YoutubeDL(opts) as ydl:
+                    ydl.extract_info(url, download=False, process=False)
+            except Exception as e:
+                log.info('Vimeo with %s cookies: %s', browser or 'no', e)
+                continue
+            _vimeo_browser.append(browser)
+            if browser:
+                print('  Vimeo: using your ' + browser + ' login')
+            break
+        else:
+            raise Exception('Vimeo needs you to be logged in: log in to vimeo.com in '
+                            'Firefox (or Edge / Chrome, closed while downloading) '
+                            'and try again')
+    return {'cookiesfrombrowser': (_vimeo_browser[0],)} if _vimeo_browser[0] else {}
 
 
 def search_candidates(query, n=SEARCH_RESULTS):
@@ -339,6 +396,7 @@ def fetch_audio(folder, url):
     max_h = 0
     info = None
     try:
+        opts.update(_site_opts(url))
         with yt_dlp.YoutubeDL(opts) as ydl:
             info = ydl.extract_info(url, download=True)
         if info:
@@ -425,6 +483,7 @@ def download_video(folder, url, quality, info=None):
     cleanup_temp_files(folder)
     dl = os.path.join(folder, 'video.download.mp4')
     opts = _base_opts()
+    opts.update(_site_opts(url))
     opts.update({
         'outtmpl': dl,
         'format': quality,
@@ -594,7 +653,7 @@ def process_download(folder, song_name, quality, sync_ready, replace, mode='auto
     # known charts (not when a specific video or a fresh search was asked for)
     hit = resolver_client.resolve(ch) if mode == 'auto' else None
     if hit and hit.get('video_id'):
-        url = 'https://www.youtube.com/watch?v=' + hit['video_id']
+        url = watch_url(hit['video_id'])
         print('\nResolved (community-confirmed): ' + (build_query(artist, title) or song_name))
         try:
             _step(1, 1, 'Downloading')
@@ -693,7 +752,7 @@ def process_download(folder, song_name, quality, sync_ready, replace, mode='auto
     # only report confident fingerprint matches - no point voting on guesses.
     # the measured confidence goes with it so strong matches carry more weight
     # in the pool than borderline ones.
-    if matched:
+    if matched and not vid.startswith('vimeo:'):
         resolver_client.report(ch, vid, offset, conf or 1.0, artist, title)
 
 
@@ -757,7 +816,7 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
             _step(n, steps, 'Searching YouTube')
             candidates = _search()
         if mode == 'auto' and ids['good'] and ids['good'] not in bad:
-            good_url = 'https://www.youtube.com/watch?v=' + ids['good']
+            good_url = watch_url(ids['good'])
             candidates = [(good_url, 'previously approved video', None)] + \
                          [c for c in candidates if c[0] != good_url]
         if not candidates:
@@ -861,8 +920,8 @@ def _db_candidates(entry):
         return []
     out = []
     for vtype, v in mvdb.ordered_types(entry):     # your chosen type first
-        if v and v.get('youtube'):
-            out.append(('https://www.youtube.com/watch?v=' + v['youtube'],
+        if v and mvdb.vid(v):
+            out.append((watch_url(mvdb.vid(v)),
                         v.get('title') or f'database ({vtype})', None))
     return out
 
@@ -874,12 +933,12 @@ def _db_offset(entry, video_id):
         return None
     vids = entry.get('videos', [])
     for v in vids:
-        if v.get('youtube') == video_id and v.get('offset_ms') is not None \
+        if mvdb.vid(v) == video_id and v.get('offset_ms') is not None \
                 and not v.get('autoedit'):
             return v['offset_ms']
     pick = mvdb.chosen_type(entry)
     for v in vids:
-        if not v.get('youtube') and v.get('type', 'official') == pick \
+        if not mvdb.vid(v) and v.get('type', 'official') == pick \
                 and v.get('offset_ms') is not None:
             return v['offset_ms']
     return None
@@ -898,7 +957,7 @@ def process_resync(folder, song_name, sync_ready):
     source = get_stored_source(folder)
 
     if source:
-        url = f'https://www.youtube.com/watch?v={source}'
+        url = watch_url(source)
         print('\nRe-syncing: ' + build_query(artist, title) + '  (known source)')
         audio, _, _ = fetch_audio(folder, url)
         try:
