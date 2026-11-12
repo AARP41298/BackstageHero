@@ -945,6 +945,28 @@ class VideoLinksWindow(ctk.CTkToplevel):
         'meme':      'TV / movie / game clip or meme set to the song',
     }
 
+    _open = None    # only one at a time
+
+    @classmethod
+    def show(cls, app, song):
+        """Open the window for a song: the one already open comes to the front
+        if it's the same song, otherwise it's closed and replaced."""
+        win = cls._open
+        if win is not None:
+            try:
+                alive = bool(win.winfo_exists())
+            except Exception:
+                alive = False
+            if alive and win._s is song:
+                win.deiconify()
+                win.lift()
+                win.focus_force()
+                return win
+            if alive:
+                win.destroy()
+        cls._open = cls(app, song)
+        return cls._open
+
     def __init__(self, app, song):
         super().__init__(app)
         self._app, self._s = app, song
@@ -1543,7 +1565,7 @@ class App(ctk.CTk):
             # no video yet: search YouTube and open the links window to paste it
             q = (build_query(s.artist, s.title) or s.label) + ' official video'
             webbrowser.open('https://www.youtube.com/results?search_query=' + quote_plus(q))
-            VideoLinksWindow(self, s)
+            VideoLinksWindow.show(self, s)
         # highlight the clicked row for a moment
         iid = self._iid_of.get(id(s))
         if iid:
@@ -1655,7 +1677,7 @@ class App(ctk.CTk):
                 label += '   (default)'
             menu.add_command(label=label, command=lambda t=t: self._choose_type(s, t))
         menu.add_separator()
-        menu.add_command(label='@  Video links...', command=lambda: VideoLinksWindow(self, s))
+        menu.add_command(label='@  Video links...', command=lambda: VideoLinksWindow.show(self, s))
         try:
             menu.tk_popup(event.x_root, event.y_root)
         finally:
@@ -2144,7 +2166,7 @@ class App(ctk.CTk):
         elif key == 'webm':
             self._toggle_webm(s)
         elif key == 'more':
-            VideoLinksWindow(self, s)
+            VideoLinksWindow.show(self, s)
 
     def _show_collage(self, s):
         out_dir = os.path.join(conpack.work_dir(s.con, s.song_id), 'collage')
