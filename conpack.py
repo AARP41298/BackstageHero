@@ -394,6 +394,34 @@ def listen_mix(con, song_id, video, out):
     return info
 
 
+LEVEL_HOP = 0.025      # seconds per level reading
+
+
+def listen_levels(path, hop=LEVEL_HOP, rate=16000):
+    """Level meter data for a listen_mix file: an (n, 2) float array, one row
+    per `hop` seconds, RMS in dBFS of the left (CON) and right (video)
+    channels, floored at -90. None if it can't be read."""
+    import numpy as np
+    try:
+        r = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-i', path,
+                            '-map', '0:a:0', '-ac', '2', '-ar', str(rate),
+                            '-f', 's16le', '-'],
+                           capture_output=True, creationflags=NO_WINDOW)
+    except Exception:
+        return None
+    pcm = np.frombuffer(r.stdout, dtype='<i2')
+    if r.returncode != 0 or pcm.size < 4:
+        return None
+    step = max(1, int(rate * hop))
+    frames = pcm[:pcm.size - pcm.size % 2].reshape(-1, 2).astype(np.float32) / 32768.0
+    n = frames.shape[0] // step
+    if not n:
+        return None
+    blocks = frames[:n * step].reshape(n, step, 2)
+    rms = np.sqrt(np.mean(blocks * blocks, axis=1))
+    return np.maximum(20 * np.log10(np.maximum(rms, 1e-9)), -90.0)
+
+
 WATERMARK_TEXT = 'BackstageHero'
 WATERMARK_SECONDS = 3
 

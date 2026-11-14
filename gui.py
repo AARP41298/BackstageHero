@@ -837,6 +837,11 @@ class ListenWindow(ctk.CTkToplevel):
     _open = None    # only one at a time
     _BORDER_PX = 3
     _FRAME_COLOR = '#ffd400'   # a strong yellow, the theme's is too pale on black
+    # level meters: LED segments from _DB_MIN to 0 dBFS
+    _DB_MIN, _SEGMENTS = -48.0, 32
+    _METER_MS = 33
+    _FALL_DB = 0.9             # per tick (~27 dB/s), the rise is instant
+    _PEAK_HOLD = 1.0           # seconds
 
     @classmethod
     def show(cls, app, song):
@@ -864,6 +869,9 @@ class ListenWindow(ctk.CTkToplevel):
         self._tmp = os.path.join(tempfile.gettempdir(),
                                  f'bh_listen_{os.getpid()}_{id(self) & 0xffffff}.mkv')
         self._result = None        # (info, error) from the mixing thread
+        self._levels = None        # conpack.listen_levels() of the mix
+        self._shown = [self._DB_MIN, self._DB_MIN]    # meter readings (dB)
+        self._peaks = [[self._DB_MIN, 0.0], [self._DB_MIN, 0.0]]   # dB, held until
         self._embedded = mpvlib is not None
         self._stage_w, self._stage_h = _fs(720), _fs(405)
 
@@ -890,10 +898,15 @@ class ListenWindow(ctk.CTkToplevel):
                      font=_font(11), text_color=_SUBTEXT, anchor='w').pack(
             fill='x', padx=16)
 
-        # 16:9 stage; the yellow frame around the video shows its aspect
-        self._stage = tk.Frame(self, bg='#11111b', width=self._stage_w,
+        # level meters either side of the 16:9 stage; the yellow frame
+        # around the video shows its aspect
+        row = tk.Frame(self, bg=_BG, highlightthickness=0, bd=0)
+        row.pack(padx=16, pady=(8, 0))
+        self._meters = [self._make_meter(row, 'CON'), None]
+        self._stage = tk.Frame(row, bg='#11111b', width=self._stage_w,
                                height=self._stage_h, highlightthickness=0, bd=0)
-        self._stage.pack(padx=16, pady=(8, 0))
+        self._stage.pack(side='left', padx=_fs(6))
+        self._meters[1] = self._make_meter(row, 'VIDEO')
         self._stage.pack_propagate(False)
         self._frame = tk.Frame(self._stage, bg=self._FRAME_COLOR, highlightthickness=0, bd=0)
         self._video = tk.Frame(self._frame, bg='#000000', highlightthickness=0, bd=0)
@@ -933,6 +946,70 @@ class ListenWindow(ctk.CTkToplevel):
                                    '←/→: seek)', font=_font(10),
                          text_color=_SUBTEXT).pack(side='left')
 
+    # ---- level meters ----------------------------------------------------------
+
+    def _make_meter(self, parent, label):
+        """A vertical LED meter (canvas) with its label underneath."""
+        w, lbl_h, gap = _fs(28), _fs(18), 2
+        c = tk.Canvas(parent, width=w, height=self._stage_h, bg='#11111b',
+                      highlightthickness=0, bd=0)
+        c.pack(side='left')
+        c.create_text(w // 2, self._stage_h - lbl_h // 2, text=label, fill=_SUBTEXT,
+                      font=('Segoe UI', _fs(6), 'bold'))
+        top, bottom = 4, self._stage_h - lbl_h
+        seg_h = (bottom - top) / self._SEGMENTS
+        rng = -self._DB_MIN
+        rects, colors = [], []
+        for i in range(self._SEGMENTS):          # i = 0 is the bottom segment
+            db = self._DB_MIN + (i + 1) * rng / self._SEGMENTS
+            on = '#ff5c5c' if db > -3 else self._FRAME_COLOR if db > -12 else '#5fd35f'
+            y1 = bottom - i * seg_h
+            rects.append(c.create_rectangle(4, y1 - seg_h + gap, w - 4, y1,
+                                            fill='#262636', width=0))
+            colors.append(on)
+        return {'canvas': c, 'rects': rects, 'on': colors, 'lit': [False] * self._SEGMENTS}
+
+    def _segment(self, db):
+        """How many segments a level lights (0..SEGMENTS)."""
+        f = (db - self._DB_MIN) / -self._DB_MIN
+        return max(0, min(self._SEGMENTS, int(round(f * self._SEGMENTS))))
+
+    def _draw_meter(self, m, db, peak_db):
+        n, pk = self._segment(db), self._segment(peak_db) - 1
+        c = m['canvas']
+        for i, rect in enumerate(m['rects']):
+            lit = i < n or i == pk
+            if lit != m['lit'][i]:
+                m['lit'][i] = lit
+                c.itemconfigure(rect, fill=m['on'][i] if lit else '#262636')
+
+    def _meter_tick(self):
+        p = self._player
+        if not p or not self.winfo_exists():
+            return
+        lv = self._levels
+        try:
+            pos = p.time_pos
+            playing = not (p.pause or p.eof_reached)
+        except Exception:
+            pos, playing = None, False
+        now = time.monotonic()
+        for ch in (0, 1):
+            target = self._DB_MIN
+            if lv is not None and pos is not None and playing:
+                i = int(pos / conpack.LEVEL_HOP)
+                if 0 <= i < len(lv):
+                    target = float(lv[i, ch])
+            elif not playing:
+                target = self._shown[ch]                  # paused: hold
+            shown = max(target, self._shown[ch] - self._FALL_DB)
+            self._shown[ch] = shown
+            peak = self._peaks[ch]
+            if shown >= peak[0] or now > peak[1]:
+                peak[0], peak[1] = shown, now + self._PEAK_HOLD
+            self._draw_meter(self._meters[ch], shown, peak[0])
+        self.after(self._METER_MS, self._meter_tick)
+
     # ---- preparing the mix ---------------------------------------------------
 
     def _start(self):
@@ -950,6 +1027,8 @@ class ListenWindow(ctk.CTkToplevel):
             try:
                 info = conpack.listen_mix(self._s.con, self._s.song_id, self._s.video,
                                           self._tmp)
+                if self._embedded:     # the meters follow mpv's playback position
+                    self._levels = conpack.listen_levels(self._tmp)
                 self._result = (info, None)
             except Exception as e:
                 self._result = (None, str(e))
@@ -1015,7 +1094,8 @@ class ListenWindow(ctk.CTkToplevel):
             self._player.loadfile(self._tmp, 'replace')
             self._player.volume = 100
             self.after(300, self._tick)
-        except Exception as e:
+            self.after(300, self._meter_tick)
+        except Exception:
             self._teardown()
             self._embedded = False
             self._play_ffplay(info)
