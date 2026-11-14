@@ -870,6 +870,7 @@ class ListenWindow(ctk.CTkToplevel):
                                  f'bh_listen_{os.getpid()}_{id(self) & 0xffffff}.mkv')
         self._result = None        # (info, error) from the mixing thread
         self._levels = None        # conpack.listen_levels() of the mix
+        self._closed = False
         self._shown = [self._DB_MIN, self._DB_MIN]    # meter readings (dB)
         self._peaks = [[self._DB_MIN, 0.0], [self._DB_MIN, 0.0]]   # dB, held until
         self._embedded = mpvlib is not None
@@ -887,6 +888,7 @@ class ListenWindow(ctk.CTkToplevel):
             pass
         self._build()
         self.after(50, self._center)
+        _bring_to_front(self)
         self._start()
 
     def _build(self):
@@ -1036,7 +1038,7 @@ class ListenWindow(ctk.CTkToplevel):
         self.after(200, self._wait)
 
     def _wait(self):
-        if not self.winfo_exists():
+        if self._closed or not self.winfo_exists():
             return
         if self._result is None:
             self.after(200, self._wait)
@@ -1177,6 +1179,7 @@ class ListenWindow(ctk.CTkToplevel):
             self._player = None
 
     def _close(self):
+        self._closed = True
         self._teardown()
         if self._proc and self._proc.poll() is None:
             self._proc.terminate()
@@ -1187,7 +1190,7 @@ class ListenWindow(ctk.CTkToplevel):
         self._proc = None
         if ListenWindow._open is self:
             ListenWindow._open = None
-        self.destroy()
+        _close_toplevel(self)
         # the mixing thread may still be writing: delete once it's done
         threading.Thread(target=self._remove_tmp, daemon=True).start()
 
@@ -1437,7 +1440,45 @@ class ScanWindow(ctk.CTkToplevel):
             self.grab_release()
         except Exception:
             pass
-        self.destroy()
+        _close_toplevel(self)
+
+
+def _close_toplevel(win):
+    """Hide a CTkToplevel now and destroy it a moment later. On Windows
+    customtkinter re-shows a new toplevel ~15 ms after it's made (dark title
+    bar); destroying it before that raises 'bad window path name'. A
+    withdrawn window stays hidden through it."""
+    try:
+        win.grab_release()
+        win.withdraw()
+    except Exception:
+        pass
+
+    def _destroy():
+        try:
+            if win.winfo_exists():
+                win.destroy()
+        except Exception:
+            pass
+    try:
+        win.master.after(300, _destroy)
+    except Exception:
+        _destroy()
+
+
+def _bring_to_front(win):
+    """Raise a new toplevel above the main window once customtkinter has
+    shown it (it withdraws and re-shows new windows on Windows)."""
+    def _raise():
+        try:
+            if win.winfo_exists():
+                win.lift()
+                win.attributes('-topmost', True)
+                win.focus_force()
+                win.after(200, lambda: win.winfo_exists() and win.attributes('-topmost', False))
+        except Exception:
+            pass
+    win.after(150, _raise)
 
 
 class CollageViewer(ctk.CTkToplevel):
