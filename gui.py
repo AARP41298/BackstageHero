@@ -224,6 +224,96 @@ class Song:
         return os.path.join(self.folder, 'video.mp4')
 
 
+# ---- song table groups -------------------------------------------------------
+# A big library (hundreds of CONs in dozens of folders) is shown as collapsible
+# groups: folders (relative to the Songs folder) and CON packs (a CON with more
+# than one song). Single-song CONs and song folders are listed as songs inside
+# their folder. A folder holding just one sub-folder, or just one pack, is
+# merged with it into one row ("RB1 › RB1-Rock-Band-1-Export").
+
+_PACK_SUFFIX = re.compile(r'\s+\[[^\]]*\]$')    # "   [pack]" on CON song labels
+
+
+def _natural(name):
+    return [int(t) if t.isdigit() else t for t in re.split(r'(\d+)', name.lower())]
+
+
+def _new_group(kind, key, name, path):
+    return {'kind': kind, 'key': key, 'name': name, 'path': path,
+            'dirs': {}, 'packs': {}, 'songs': [], 'all': []}
+
+
+def _group_songs(songs, root, con_counts):
+    """Tree of groups for songs (kept in their order inside each group).
+    Returns the root node; its songs sit at the top level, ungrouped."""
+    top = _new_group('dir', ('d', ''), '', root)
+    rootn = os.path.normcase(os.path.abspath(root)) if root else ''
+    for s in songs:
+        if s.con:
+            d = os.path.dirname(s.con)
+            pack = s.con if con_counts.get(s.con, 0) > 1 else None
+        else:
+            d, pack = os.path.dirname(s.folder), None
+        rel = ''
+        if rootn:
+            try:
+                rel = os.path.relpath(os.path.abspath(d), root)
+            except ValueError:          # other drive
+                rel = ''
+            if rel == '.' or rel.startswith('..'):
+                rel = ''
+        node = top
+        path = root
+        for part in (rel.split(os.sep) if rel else []):
+            path = os.path.join(path, part)
+            key = ('d', os.path.normcase(path))
+            node = node['dirs'].setdefault(part.lower(), _new_group('dir', key, part, path))
+        if pack:
+            node = node['packs'].setdefault(
+                pack.lower(), _new_group('pack', ('p', os.path.normcase(pack)),
+                                         os.path.basename(pack), pack))
+        node['songs'].append(s)
+    _merge_groups(top)
+    _collect(top)
+    return top
+
+
+def _merge_groups(node):
+    for k, child in list(node['dirs'].items()):
+        _merge_groups(child)
+        while not child['songs']:
+            if len(child['dirs']) == 1 and not child['packs']:
+                inner = next(iter(child['dirs'].values()))
+            elif len(child['packs']) == 1 and not child['dirs']:
+                inner = next(iter(child['packs'].values()))
+            else:
+                break
+            inner = dict(inner, name=child['name'] + '  ›  ' + inner['name'])
+            child = inner
+        if child['kind'] == 'pack':     # a folder with just one pack: one row
+            del node['dirs'][k]
+            node['packs'][k] = child
+        else:
+            node['dirs'][k] = child
+
+
+def _subgroups(node):
+    """A group's folders and packs, together in name order (a merged
+    "RB1 › RB1-Rock-Band-1-Export" sorts as RB1, among the folders)."""
+    return sorted(list(node['dirs'].values()) + list(node['packs'].values()),
+                  key=lambda n: _natural(n['name']))
+
+
+def _collect(node):
+    """node['all'] = every song under the node, in display order."""
+    out = []
+    for g in _subgroups(node):
+        out += _collect(g)
+    out += node['songs']
+    node['all'] = out
+    return out
+
+
 def _open_in_file_manager(path):
     """Open a folder in the OS file manager (Windows/macOS/Linux)."""
     try:
@@ -1849,6 +1939,13 @@ class App(ctk.CTk):
         self._filtered    : list[Song]       = []
         self._iid_map     : dict[str, Song]  = {}
         self._iid_of      : dict[int, str]   = {}   # id(Song) -> tree iid (O(1) row updates)
+        self._groups      : dict             = _new_group('dir', ('d', ''), '', '')
+        self._expanded    : set              = set()   # keys of the open groups
+        self._group_of    : dict             = {}   # tree iid -> (group node, depth)
+        self._row_ctx     : dict             = {}   # id(Song) -> (depth, inside a pack)
+        self._song_groups : dict             = {}   # id(Song) -> group iids showing it
+        self._dirty_groups: set              = set()
+        self._groups_after = None
         self._sort_col    : str  = 'label'
         self._sort_asc    : bool = True
         self._filter_mode : str  = 'missing'
@@ -2046,6 +2143,8 @@ class App(ctk.CTk):
         self._tree.tag_configure('row_even', background='#272740')
         self._tree.tag_configure('row_odd',  background='#1e1e2e')
         self._tree.tag_configure('flash',    background='#45475a')   # clicked link
+        self._tree.tag_configure('group', background='#2f2f4a', foreground=_TEXT,
+                                 font=('Segoe UI', _fs(11), 'bold'))
         # ttk.Treeview can't draw per-column borders: two 1px lines placed over
         # the edges of the "Open in browser" column stand in for one
         self._yt_lines = [tk.Frame(self._tree, bg=_BLUE, width=1) for _ in range(2)]
@@ -2725,6 +2824,11 @@ class App(ctk.CTk):
         else:
             out.sort(key=lambda s: s.key, reverse=not self._sort_asc)
         self._filtered = out
+        counts = {}
+        for s in self._songs:              # pack = a CON with more than one song
+            if s.con:
+                counts[s.con] = counts.get(s.con, 0) + 1
+        self._groups = _group_songs(out, self._songs_folder, counts)
         self._refresh_tree()
 
     def _sort(self, col):
@@ -2786,29 +2890,132 @@ class App(ctk.CTk):
             status_text = '⚠  ' + (s.status or 'Not by BackstageHero')
         enabled = self._actions_of(s)
         icons = tuple(_ACTIONS[a][0] if a in enabled else '' for a in _ACTION_KEYS)
-        return (chk, s.label, s.res or '-', status_text, mvdb.type_summary(s.mv),
-                self._yt_text(s)) + icons
+        depth, in_pack = self._row_ctx.get(id(s), (0, False))
+        label = _PACK_SUFFIX.sub('', s.label) if in_pack else s.label
+        return (chk, self._INDENT * depth + label, s.res or '-', status_text,
+                mvdb.type_summary(s.mv), self._yt_text(s)) + icons
 
     def _row_tags(self, s, row_tag):
         stag = s.stag or ('warn' if self._foreign(s) else
                           'dim' if s.has_video else 'error')
         return (row_tag,) + ((stag,) if stag else ())
 
+    # ---- groups (folders / CON packs) -----------------------------------------
+
+    _INDENT = ' ' * 9     # a song lines up with its group's name (after "▸  📦  ")
+
+    def _group_open(self, node):
+        # a search opens every group, so the matches are in sight
+        return bool(self._search_var.get().strip()) or node['key'] in self._expanded
+
+    def _group_values(self, node, depth):
+        songs = node['all']
+        n = len(songs)
+        on = sum(1 for s in songs if s.checked)
+        chk = '  ☑' if on == n else '  ▣' if on else '  ☐'
+        vids = sum(1 for s in songs if s.has_video)
+        arrow = '▾' if self._group_open(node) else '▸'
+        icon = '📦' if node['kind'] == 'pack' else '📁'
+        busy = sum(1 for s in songs if self._is_pending(s) or s.rendering)
+        # short: the Resolution / Status columns are narrow on smaller windows
+        status = f'✔ {vids} / {n}' + (f'   ⟳ {busy}' if busy else '')
+        return ((chk, f'{self._INDENT * depth}{arrow}  {icon}  {node["name"]}   ({n})',
+                 '', status, '', '')
+                + ('',) * len(_ACTION_KEYS))
+
+    def _visible_rows(self):
+        """(kind, item, depth, in_pack, chain) for every row to show, from
+        self._groups; chain = the group iids above the row (filled in later)."""
+        rows = []
+
+        def walk(node, depth, in_pack):
+            if node is not self._groups:
+                rows.append(('group', node, depth - 1, False))
+                if not self._group_open(node):
+                    return
+            for g in _subgroups(node):
+                walk(g, depth + 1, g['kind'] == 'pack')
+            for s in node['songs']:
+                rows.append(('song', s, depth, in_pack))
+        walk(self._groups, 0, False)
+        return rows
+
     def _refresh_tree(self):
+        top = self._tree.yview()[0] if self._tree.get_children() else 0.0
         self._tree.delete(*self._tree.get_children())
         self._iid_map.clear()
         self._iid_of.clear()
-        for i, s in enumerate(self._filtered):
+        self._group_of.clear()
+        self._row_ctx.clear()
+        self._song_groups.clear()
+        stack = []                         # (depth, iid) of the open groups above
+        for i, (kind, item, depth, in_pack) in enumerate(self._visible_rows()):
             row_tag = 'row_even' if i % 2 == 0 else 'row_odd'
-            iid = self._tree.insert('', 'end', values=self._row_values(s),
-                                    tags=self._row_tags(s, row_tag))
-            self._iid_map[iid] = s
-            self._iid_of[id(s)] = iid
+            while stack and stack[-1][0] >= depth:
+                stack.pop()
+            chain = [g for _, g in stack]
+            if kind == 'group':
+                iid = self._tree.insert('', 'end', values=self._group_values(item, depth),
+                                        tags=(row_tag, 'group'))
+                self._group_of[iid] = (item, depth)
+                if not self._group_open(item):
+                    # songs in a closed group update this row while they run
+                    for s in item['all']:
+                        self._song_groups[id(s)] = chain + [iid]
+                stack.append((depth, iid))
+            else:
+                self._row_ctx[id(item)] = (depth, in_pack)
+                iid = self._tree.insert('', 'end', values=self._row_values(item),
+                                        tags=self._row_tags(item, row_tag))
+                self._iid_map[iid] = item
+                self._iid_of[id(item)] = iid
+                self._song_groups[id(item)] = chain
+        if top:
+            self._tree.yview_moveto(top)
         self._update_buttons()
         self.after_idle(self._place_yt_border)
 
+    def _refresh_groups_later(self, iids):
+        self._dirty_groups.update(iids)
+        if not self._groups_after:
+            self._groups_after = self.after(300, self._refresh_dirty_groups)
+
+    def _refresh_dirty_groups(self):
+        self._groups_after = None
+        dirty, self._dirty_groups = self._dirty_groups, set()
+        for iid in dirty:
+            g = self._group_of.get(iid)
+            if g and self._tree.exists(iid):
+                self._tree.item(iid, values=self._group_values(*g))
+
+    def _toggle_group(self, node):
+        if self._search_var.get().strip():
+            return                         # a search keeps every group open
+        self._expanded.symmetric_difference_update({node['key']})
+        self._refresh_tree()
+
+    def _set_all_groups(self, open_):
+        keys = set()
+
+        def walk(node):
+            for c in list(node['dirs'].values()) + list(node['packs'].values()):
+                keys.add(c['key'])
+                walk(c)
+        walk(self._groups)
+        self._expanded = keys if open_ else set()
+        self._refresh_tree()
+
+    def _check_group(self, node):
+        on = not all(s.checked for s in node['all'])
+        for s in node['all']:
+            s.checked = on
+        self._refresh_tree()
+
     def _update_row(self, s: Song):
-        """Refresh the single visible row for Song s (O(1) lookup)."""
+        """Refresh the single visible row for Song s (O(1) lookup), and the
+        group rows above it (their counts)."""
+        if self._song_groups.get(id(s)):
+            self._refresh_groups_later(self._song_groups[id(s)])
         iid = self._iid_of.get(id(s))
         if not iid:
             return   # not currently visible under the active filter
@@ -2834,7 +3041,34 @@ class App(ctk.CTk):
             key = name
         return s, key
 
+    def _group_at(self, event):
+        """((group node, depth), column name) of a group row under the mouse."""
+        g = self._group_of.get(self._tree.identify_row(event.y))
+        if not g:
+            return None, None
+        try:
+            col = self._tree['columns'][int(self._tree.identify_column(event.x)[1:]) - 1]
+        except (ValueError, IndexError):
+            col = None
+        return g, col
+
     def _on_tree_motion(self, event):
+        g, gcol = self._group_at(event)
+        if g:
+            node = g[0]
+            n = len(node['all'])
+            if gcol == 'check':
+                hint = f'Select the {n} song{"" if n == 1 else "s"} in {node["name"]}'
+            elif self._search_var.get().strip():
+                hint = 'Groups stay open while searching'
+            else:
+                hint = 'Collapse' if self._group_open(node) else 'Expand'
+            if str(self._tree.cget('cursor')) != 'hand2':
+                self._tree.configure(cursor='hand2')
+            if hint != self._action_hint:
+                self._action_hint = hint
+                self._status_lbl.configure(text=f'{node["path"]}   ·   {hint}')
+            return
         s, key = self._action_at(event)
         hint = ''
         if s and key == 'yt':
@@ -2874,6 +3108,13 @@ class App(ctk.CTk):
         if region == 'heading':
             return      # column-header command handles sort
         if region in ('cell', 'tree'):
+            g, gcol = self._group_at(event)
+            if g:
+                if gcol == 'check':
+                    self._check_group(g[0])
+                else:
+                    self._toggle_group(g[0])
+                return
             s, key = self._action_at(event)
             if not s:
                 return
@@ -3158,8 +3399,30 @@ class App(ctk.CTk):
             s.checked = False
         self._refresh_tree()
 
+    def _group_menu(self, node, event):
+        menu = tk.Menu(self, tearoff=0, bg=_SURFACE, fg=_TEXT,
+                       activebackground='#313244', activeforeground=_TEXT,
+                       relief='flat', borderwidth=1, activeborderwidth=0)
+        on = all(s.checked for s in node['all'])
+        menu.add_command(label=('Deselect' if on else 'Select') +
+                         f' the {len(node["all"])} songs',
+                         command=lambda: self._check_group(node))
+        menu.add_separator()
+        menu.add_command(label='Expand all groups', command=lambda: self._set_all_groups(True))
+        menu.add_command(label='Collapse all groups', command=lambda: self._set_all_groups(False))
+        menu.add_separator()
+        folder = node['path'] if node['kind'] == 'dir' else os.path.dirname(node['path'])
+        menu.add_command(label='Open folder', command=lambda: _open_in_file_manager(folder))
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
+
     def _on_tree_right_click(self, event):
         iid = self._tree.identify_row(event.y)
+        if iid in self._group_of:
+            self._group_menu(self._group_of[iid][0], event)
+            return
         if not iid or iid not in self._iid_map:
             return
         s = self._iid_map[iid]

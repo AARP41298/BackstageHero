@@ -79,6 +79,10 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   Outro: the video's own ending first, then hold (<= 3 s) or reuse from the
   second half. Mid-song inserts are fine (Silent Running).
 - Only the checkbox selects a row.
+- The song table groups by folder (relative to the Songs folder) and CON pack
+  (a CON with 2+ songs), collapsed by default; single-song CONs and song
+  folders are plain rows in their folder. A folder with just one pack or one
+  sub-folder merges into one row. A search opens every group.
 - `.yargignore` (any case, YARG.Core commit 639d812e on `master-personal`):
   the folder's files (song.ini, CONs) are skipped, sub-folders still scanned.
   All library scans go through `conpack.find_song_inis` / `find_con_files`.
