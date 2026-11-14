@@ -104,6 +104,7 @@ _MAUVE   = '#cba6f7'
 _ACTIONS = {
     'play':    ('▶',    'Play video in your default player'),
     'collage': ('👁',    'Show frame collage'),
+    'listen':  ('🎧',   'Check the sync: CON audio on the left, the video\'s audio on the right'),
     'search':  ('🔍',   'Wrong video: search YouTube again (skips the database link)'),
     'download': ('⬇',   'Download the video type picked in the Video type column (again)'),
     'mp4':     ('Export as MP4',     'Render to MP4 (fast) and approve this video'),
@@ -823,6 +824,314 @@ class SyncEditor(ctk.CTkToplevel):
         ph = self.master.winfo_y() + self.master.winfo_height() // 2
         w, h = self.winfo_width(), self.winfo_height()
         self.geometry(f'+{pw - w // 2}+{ph - h // 2}')
+
+
+class ListenWindow(ctk.CTkToplevel):
+    """The 🎧 action: plays a CON song's exported video with the chart audio
+    (from the CON, via Nautilus) panned left and the video's own audio panned
+    right, so a sync problem is heard as an echo between the ears.
+    The video sits in a yellow frame inside a 16:9 stage: renders crop the
+    black bars, so the frame shows the picture's real aspect ratio.
+    Plays embedded with libmpv; without it, in an ffplay window."""
+
+    _open = None    # only one at a time
+    _BORDER_PX = 3
+    _FRAME_COLOR = '#ffd400'   # a strong yellow, the theme's is too pale on black
+
+    @classmethod
+    def show(cls, app, song):
+        win = cls._open
+        if win is not None:
+            try:
+                alive = bool(win.winfo_exists())
+            except Exception:
+                alive = False
+            if alive and win._s is song:
+                win.deiconify()
+                win.lift()
+                win.focus_force()
+                return win
+            if alive:
+                win._close()
+        cls._open = cls(app, song)
+        return cls._open
+
+    def __init__(self, app, song):
+        super().__init__(app)
+        self._s = song
+        self._player = None
+        self._proc = None          # ffplay (no libmpv)
+        self._tmp = os.path.join(tempfile.gettempdir(),
+                                 f'bh_listen_{os.getpid()}_{id(self) & 0xffffff}.mkv')
+        self._result = None        # (info, error) from the mixing thread
+        self._embedded = mpvlib is not None
+        self._stage_w, self._stage_h = _fs(720), _fs(405)
+
+        self.title(f'Listen  ·  {song.label}')
+        self.configure(fg_color=_BG)
+        self.resizable(False, False)
+        self.protocol('WM_DELETE_WINDOW', self._close)
+        try:
+            ico = _asset_path('icon.ico')
+            if os.path.exists(ico):
+                self.after(200, lambda: self.iconbitmap(ico))
+        except Exception:
+            pass
+        self._build()
+        self.after(50, self._center)
+        self._start()
+
+    def _build(self):
+        head = ctk.CTkFrame(self, fg_color='transparent')
+        head.pack(fill='x', padx=16, pady=(14, 2))
+        ctk.CTkLabel(head, text=self._s.label, font=_font(15, weight='bold'),
+                     text_color=_TEXT, anchor='w').pack(side='left', fill='x', expand=True)
+        ctk.CTkLabel(self, text='🎧  Left: CON audio     ·     Right: the video\'s audio',
+                     font=_font(11), text_color=_SUBTEXT, anchor='w').pack(
+            fill='x', padx=16)
+
+        # 16:9 stage; the yellow frame around the video shows its aspect
+        self._stage = tk.Frame(self, bg='#11111b', width=self._stage_w,
+                               height=self._stage_h, highlightthickness=0, bd=0)
+        self._stage.pack(padx=16, pady=(8, 0))
+        self._stage.pack_propagate(False)
+        self._frame = tk.Frame(self._stage, bg=self._FRAME_COLOR, highlightthickness=0, bd=0)
+        self._video = tk.Frame(self._frame, bg='#000000', highlightthickness=0, bd=0)
+        self._msg = tk.Label(self._stage, text='Reading the song audio from the CON...',
+                             bg='#11111b', fg=_SUBTEXT, font=('Segoe UI', _fs(11)))
+        self._msg.place(relx=0.5, rely=0.5, anchor='center')
+
+        self._aspect_lbl = ctk.CTkLabel(self, text='', font=_font(11),
+                                        text_color=_YELLOW, anchor='w')
+        self._aspect_lbl.pack(fill='x', padx=16, pady=(6, 0))
+
+        bar = ctk.CTkFrame(self, fg_color='transparent')
+        bar.pack(fill='x', padx=16, pady=(6, 14))
+        _b = dict(height=28, corner_radius=6, fg_color='#2a2a3e',
+                  hover_color='#383858', text_color=_TEXT, font=_font(11))
+        self._play_btn = ctk.CTkButton(bar, text='⏸  Pause', width=_fs(90),
+                                       command=self._toggle_play, **_b)
+        self._play_btn.pack(side='left')
+        ctk.CTkButton(bar, text='↻', width=_fs(36), command=lambda: self._seek(0, True),
+                      **_b).pack(side='left', padx=(6, 0))
+        ctk.CTkButton(bar, text='-5s', width=_fs(44), command=lambda: self._seek(-5),
+                      **_b).pack(side='left', padx=(6, 0))
+        ctk.CTkButton(bar, text='+5s', width=_fs(44), command=lambda: self._seek(5),
+                      **_b).pack(side='left', padx=(6, 0))
+        self._time_lbl = ctk.CTkLabel(bar, text='', font=_font(11), text_color=_SUBTEXT,
+                                      width=_fs(110))
+        self._time_lbl.pack(side='right')
+        self._pos = ctk.CTkSlider(bar, from_=0, to=1, command=self._on_pos, height=16,
+                                  button_color=_BLUE, button_hover_color='#7aaef8',
+                                  progress_color=_BLUE)
+        self._pos.set(0)
+        self._pos.pack(side='left', fill='x', expand=True, padx=10)
+        if not self._embedded:
+            for w in bar.winfo_children():
+                w.pack_forget()
+            ctk.CTkLabel(bar, text='Plays in an ffplay window (space: pause, '
+                                   '←/→: seek)', font=_font(10),
+                         text_color=_SUBTEXT).pack(side='left')
+
+    # ---- preparing the mix ---------------------------------------------------
+
+    def _start(self):
+        if not conpack.nautilus_ready():
+            self._fail('Nautilus is needed to read the song audio from the CON.')
+            return
+        if not os.path.exists(self._s.video):
+            self._fail('The exported video is missing.')
+            return
+        if not (self._embedded or ffplayPath):
+            self._fail('No player: needs libmpv-2.dll (bundled in the exe) or ffplay.')
+            return
+
+        def _worker():
+            try:
+                info = conpack.listen_mix(self._s.con, self._s.song_id, self._s.video,
+                                          self._tmp)
+                self._result = (info, None)
+            except Exception as e:
+                self._result = (None, str(e))
+        threading.Thread(target=_worker, daemon=True).start()
+        self.after(200, self._wait)
+
+    def _wait(self):
+        if not self.winfo_exists():
+            return
+        if self._result is None:
+            self.after(200, self._wait)
+            return
+        info, err = self._result
+        if err:
+            self._fail(err)
+            return
+        self._show_aspect(info)
+        self._play(info)
+
+    def _fail(self, text):
+        if self._result is None:
+            self._result = (None, text)     # nothing left for the cleanup to wait on
+        self._msg.configure(text=text, fg=_RED, wraplength=self._stage_w - 40)
+        self._msg.place(relx=0.5, rely=0.5, anchor='center')
+
+    def _fit(self, info):
+        """(x, y, w, h) of the yellow frame on the stage: the video's aspect,
+        as big as fits, centred."""
+        b = self._BORDER_PX
+        sw, sh = self._stage_w - 2 * b, self._stage_h - 2 * b
+        vw, vh = info['w'] or 16, info['h'] or 9
+        scale = min(sw / vw, sh / vh)
+        w, h = int(vw * scale), int(vh * scale)
+        return (self._stage_w - w) // 2 - b, (self._stage_h - h) // 2 - b, w + 2 * b, h + 2 * b
+
+    def _show_aspect(self, info):
+        if info['w'] and info['h']:
+            r = info['w'] / info['h']
+            names = {16 / 9: '16:9', 4 / 3: '4:3', 21 / 9: '21:9', 2.39: '2.39:1',
+                     1.85: '1.85:1', 1.0: '1:1', 9 / 16: '9:16'}
+            near = min(names, key=lambda k: abs(k - r))
+            name = names[near] if abs(near - r) < 0.02 else f'{r:.2f}:1'
+            self._aspect_lbl.configure(
+                text=f'▭  Yellow frame: the video, {info["w"]}×{info["h"]} ({name})')
+
+    # ---- playback -------------------------------------------------------------
+
+    def _play(self, info):
+        self._msg.place_forget()
+        if not self._embedded:
+            self._play_ffplay(info)
+            return
+        x, y, w, h = self._fit(info)
+        b = self._BORDER_PX
+        self._frame.place(x=x, y=y, width=w, height=h)
+        self._video.place(x=b, y=b, width=w - 2 * b, height=h - 2 * b)
+        self.update_idletasks()
+        try:
+            self._player = mpvlib.MPV(
+                wid=str(int(self._video.winfo_id())), vo='gpu', osc=False,
+                keep_open='yes', log_handler=lambda *a: None,
+                force_media_title=f'{self._s.label} (BackstageHero listen)')
+            self._player.loadfile(self._tmp, 'replace')
+            self._player.volume = 100
+            self.after(300, self._tick)
+        except Exception as e:
+            self._teardown()
+            self._embedded = False
+            self._play_ffplay(info)
+
+    def _play_ffplay(self, info):
+        """No libmpv: ffplay draws the yellow frame with a pad filter."""
+        if not ffplayPath:
+            self._fail('Could not start the player.')
+            return
+        b = max(self._BORDER_PX, (info['h'] or 720) // 160)
+        x, y, w, h = self._fit(info)
+        si = subprocess.STARTUPINFO()
+        si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        si.wShowWindow = 4
+        self._proc = subprocess.Popen(
+            [ffplayPath, '-hide_banner', '-autoexit', '-x', str(w), '-y', str(h),
+             '-window_title', f'Listen: {self._s.label}',
+             '-vf', f'pad=iw+{2 * b}:ih+{2 * b}:{b}:{b}:color=0xFFD400', self._tmp],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=NO_WINDOW, startupinfo=si)
+        self._msg.configure(text='Playing in the ffplay window.')
+        self._msg.place(relx=0.5, rely=0.5, anchor='center')
+
+    def _tick(self):
+        p = self._player
+        if not p or not self.winfo_exists():
+            return
+        try:
+            pos, dur = p.time_pos, p.duration
+            if pos is not None and dur:
+                self._pos.set(pos / dur)
+                self._time_lbl.configure(text=f'{_mmss(pos)} / {_mmss(dur)}')
+            self._play_btn.configure(text='▶  Play' if p.pause or p.eof_reached
+                                     else '⏸  Pause')
+        except Exception:
+            pass
+        self.after(250, self._tick)
+
+    def _toggle_play(self):
+        p = self._player
+        if not p:
+            return
+        try:
+            if p.eof_reached:
+                p.seek(0, reference='absolute')
+                p.pause = False
+            else:
+                p.pause = not p.pause
+        except Exception:
+            pass
+
+    def _seek(self, t, absolute=False):
+        p = self._player
+        if not p:
+            return
+        try:
+            p.seek(t, reference='absolute' if absolute else 'relative')
+            if absolute:
+                p.pause = False
+        except Exception:
+            pass
+
+    def _on_pos(self, value):
+        p = self._player
+        if not p:
+            return
+        try:
+            if p.duration:
+                p.seek(value * p.duration, reference='absolute')
+        except Exception:
+            pass
+
+    def _teardown(self):
+        if self._player:
+            try:
+                self._player.terminate()
+            except Exception:
+                pass
+            self._player = None
+
+    def _close(self):
+        self._teardown()
+        if self._proc and self._proc.poll() is None:
+            self._proc.terminate()
+            try:
+                self._proc.wait(timeout=3)
+            except Exception:
+                pass
+        self._proc = None
+        if ListenWindow._open is self:
+            ListenWindow._open = None
+        self.destroy()
+        # the mixing thread may still be writing: delete once it's done
+        threading.Thread(target=self._remove_tmp, daemon=True).start()
+
+    def _remove_tmp(self):
+        for _ in range(600):
+            if self._result is not None:
+                break
+            time.sleep(0.5)
+        try:
+            os.remove(self._tmp)
+        except OSError:
+            pass
+
+    def _center(self):
+        self.update_idletasks()
+        m = self.master
+        x = m.winfo_x() + (m.winfo_width() - self.winfo_width()) // 2
+        y = m.winfo_y() + (m.winfo_height() - self.winfo_height()) // 2
+        self.geometry(f'+{max(0, x)}+{max(0, y)}')
+
+
+def _mmss(t):
+    t = int(t or 0)
+    return f'{t // 60}:{t % 60:02d}'
 
 
 class UpdateDialog(ctk.CTkToplevel):
@@ -2335,6 +2644,8 @@ class App(ctk.CTk):
             return set()
         v = mvdb.chosen_video(s.mv)
         dl = {'download'} if (v and mvdb.vid(v) and not self._is_pending(s)) else set()
+        if s.con and s.has_video:            # exported: 🎧 checks it against the CON audio
+            dl.add('listen')
         if s.review:                         # downloaded (review, or exported and kept)
             return {'play', 'collage', 'search', 'mp4', 'webm', 'clear', 'more'} | dl
         if s.con and s.has_video:            # finished video
@@ -2467,6 +2778,8 @@ class App(ctk.CTk):
                 _open_in_file_manager(path)     # opens files in the default player
         elif key == 'collage':
             self._show_collage(s)
+        elif key == 'listen':
+            ListenWindow.show(self, s)
         elif key == 'search':
             self._search_again(s)
         elif key == 'download':

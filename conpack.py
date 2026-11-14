@@ -336,6 +336,64 @@ def probe_video(video):
     return res, (t.group(1).strip() if t else '')
 
 
+def video_info(video):
+    """{'w', 'h', 'audio', 'duration'} of a video from one ffmpeg run:
+    picture size (0 if unknown), whether it has an audio stream, length in s."""
+    info = {'w': 0, 'h': 0, 'audio': False, 'duration': None}
+    try:
+        r = subprocess.run(['ffmpeg', '-hide_banner', '-i', video],
+                           capture_output=True, text=True, timeout=15,
+                           encoding='utf-8', errors='replace', creationflags=NO_WINDOW)
+    except Exception:
+        return info
+    line = next((l for l in r.stderr.splitlines() if 'Video:' in l), '')
+    m = re.search(r'(\d{2,5})x(\d{2,5})', line)
+    if m:
+        info['w'], info['h'] = int(m.group(1)), int(m.group(2))
+        # SAR other than 1:1 (anamorphic): the displayed width differs
+        d = re.search(r'DAR (\d+):(\d+)', line)
+        if d and int(d.group(2)):
+            info['w'] = round(info['h'] * int(d.group(1)) / int(d.group(2)))
+    info['audio'] = any('Audio:' in l for l in r.stderr.splitlines())
+    m = re.search(r'Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)', r.stderr)
+    if m:
+        info['duration'] = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + float(m.group(3))
+    return info
+
+
+def listen_mix(con, song_id, video, out):
+    """The 🎧 check: the exported video with the CON's song audio on the left
+    channel and the video's own audio on the right, both normalized, so you
+    hear whether they line up. The video stream is copied, so this only takes
+    as long as decrypting the mogg and mixing the audio. Written to out (.mkv).
+    Returns video_info(video)."""
+    info = video_info(video)
+    tmp = tempfile.mkdtemp(prefix='bh_listen_')
+    try:
+        prepare_song_audio(con, song_id, tmp)
+        ref = os.path.join(tmp, 'song.wav')
+        mono = 'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=mono,dynaudnorm'
+        if info['audio']:
+            graph = (f'[1:a]{mono},apad[l];[0:a]{mono},apad[r];'
+                     '[l][r]amerge=inputs=2,aformat=channel_layouts=stereo[a]')
+        else:      # no audio in the video: CON audio on the left, silence right
+            graph = f'[1:a]{mono},pan=stereo|FL=c0[a]'
+        length = max(info['duration'] or 0, _duration(ref) or 0) or None
+        cmd = (['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y',
+                '-i', video, '-i', ref, '-filter_complex', graph,
+                '-map', '0:v:0', '-map', '[a]', '-c:v', 'copy', '-c:a', 'pcm_s16le']
+               + (['-t', f'{length:.3f}'] if length else []) + [out])
+        r = subprocess.run(cmd, capture_output=True, text=True, errors='replace',
+                           creationflags=NO_WINDOW)
+        if r.returncode != 0 or not os.path.exists(out):
+            msg = r.stderr.strip().splitlines()
+            raise Exception('Could not mix the audio: ' + (msg[-1] if msg else
+                                                          f'exit code {r.returncode}'))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    return info
+
+
 WATERMARK_TEXT = 'BackstageHero'
 WATERMARK_SECONDS = 3
 
