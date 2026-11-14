@@ -314,6 +314,66 @@ def _collect(node):
     return out
 
 
+def _entry_menu(entry):
+    """Right-click Cut / Copy / Paste / Select all on a CTkEntry (or tk.Entry);
+    Tk has no context menu of its own."""
+    inner = getattr(entry, '_entry', entry)
+    menu = tk.Menu(inner, tearoff=0, bg=_SURFACE, fg=_TEXT,
+                   activebackground='#313244', activeforeground=_TEXT,
+                   relief='flat', borderwidth=1, activeborderwidth=0)
+    for label, ev in (('Cut', '<<Cut>>'), ('Copy', '<<Copy>>'), ('Paste', '<<Paste>>')):
+        menu.add_command(label=label, command=lambda e=ev: inner.event_generate(e))
+    menu.add_separator()
+    menu.add_command(label='Select all',
+                     command=lambda: (inner.select_range(0, 'end'), inner.icursor('end')))
+
+    def _popup(event):
+        inner.focus_set()
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
+    inner.bind('<Button-3>', _popup, add='+')
+
+
+class InputDialog(ctk.CTkInputDialog):
+    """CTkInputDialog with a right-click menu on the entry, and with
+    paste=True a "📋 Paste" button that pastes the clipboard and closes the
+    dialog as if Ok was pressed (for links copied from the browser)."""
+
+    def __init__(self, *args, paste=False, **kw):
+        self._paste = paste
+        super().__init__(*args, **kw)
+
+    def _create_widgets(self):
+        super()._create_widgets()
+        _entry_menu(self._entry)
+        if not self._paste:
+            return
+        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self._label.grid_configure(columnspan=3)
+        self._entry.grid_configure(columnspan=3)
+        btn = dict(width=100, border_width=0, fg_color=self._button_fg_color,
+                   hover_color=self._button_hover_color,
+                   text_color=self._button_text_color, font=self._font)
+        ctk.CTkButton(self, text='📋  Paste', command=self._paste_event, **btn).grid(
+            row=2, column=0, padx=(20, 5), pady=(0, 20), sticky='ew')
+        self._ok_button.grid_configure(column=1, padx=5)
+        self._cancel_button.grid_configure(column=2, padx=(5, 20))
+
+    def _paste_event(self):
+        try:
+            text = self.clipboard_get().strip()
+        except tk.TclError:          # empty clipboard, or not text
+            text = ''
+        if not text:
+            self._label.configure(text=self._text + '\n\nThe clipboard is empty.')
+            return
+        self._entry.delete(0, 'end')
+        self._entry.insert(0, text)
+        self._ok_event()
+
+
 def _open_in_file_manager(path):
     """Open a folder in the OS file manager (Windows/macOS/Linux)."""
     try:
@@ -1827,8 +1887,8 @@ class VideoLinksWindow(ctk.CTkToplevel):
         self._build_rows()
 
     def _edit(self, vtype, old):
-        dlg = ctk.CTkInputDialog(
-            title=f'{vtype.capitalize()} video',
+        dlg = InputDialog(
+            title=f'{vtype.capitalize()} video', paste=True,
             text=f'YouTube or Vimeo link (or YouTube ID) for the {vtype} video of\n{self._s.label}:')
         raw = (dlg.get_input() or '').strip()
         if not raw:
@@ -2071,6 +2131,7 @@ class App(ctk.CTk):
                               placeholder_text='Search artist or title...',
                               height=30)
         search.grid(row=0, column=4, padx=(4, 12), pady=10, sticky='ew')
+        _entry_menu(search)
         fbar.grid_columnconfigure(4, weight=2, minsize=200)
 
         # Treeview
@@ -2491,7 +2552,7 @@ class App(ctk.CTk):
     def _export_missed(self):
         name = self._settings.get('contributor_name', '')
         if not name:
-            dlg = ctk.CTkInputDialog(
+            dlg = InputDialog(
                 title='Missed entries',
                 text='Name to credit you with in the database\n'
                      '(GitHub / Discord / Reddit name):')
