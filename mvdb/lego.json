@@ -27,7 +27,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Lego Rock Band"
     }
-   ]
+   ],
+   "con_id": "song2"
   },
   {
    "artist": "Boys Like Girls",
@@ -45,7 +46,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Lego Rock Band"
     }
-   ]
+   ],
+   "con_id": "thunder"
   },
   {
    "artist": "Europe",
@@ -63,7 +65,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Lego Rock Band"
     }
-   ]
+   ],
+   "con_id": "thefinalcountdown"
   },
   {
    "artist": "Everlife",
@@ -81,7 +84,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Lego Rock Band"
     }
-   ]
+   ],
+   "con_id": "realwildchild"
   },
   {
    "artist": "The Primitives",
@@ -99,7 +103,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Lego Rock Band"
     }
-   ]
+   ],
+   "con_id": "crash"
   },
   {
    "artist": "Tom Petty",
@@ -117,7 +122,8 @@
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Lego Rock Band"
     }
-   ]
+   ],
+   "con_id": "freefallin"
   }
  ]
 }
