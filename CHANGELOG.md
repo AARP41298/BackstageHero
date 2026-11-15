@@ -1,0 +1,105 @@
+# Changelog
+
+## 2.3.0 (2026-11-15)
+
+### Rock Band CON packs (YARG)
+
+- Packed Rock Band CON/LIVE files are supported. Videos go next to the CON,
+  named after the song ID, the way YARG reads them. The CON itself is never
+  touched. Songs and audio are read with
+  [Nautilus](https://github.com/NemosNautilus/Nautilus) (a build with the
+  `-backstagehero` command line).
+- CON songs are reviewed before they are rendered: ▶ play, ▦ frame collage,
+  🔍 search again, ⬇ download the chosen video type, 🎧 hear the video against
+  the CON audio (level meters, yellow frame), MP4 / WebM export, 🗑 clear
+  cache and @ video links.
+- WebM export uses YARG's recommended settings (VP8 2-pass, keyframe every
+  128 frames, Opus 128k). **Add WebM to queue** and **Export N WebMs** render
+  them in a batch; **Shut down when done** turns the PC off after the batch,
+  with a 60 s countdown you can cancel.
+- The original download is kept in a cache, so you can export an MP4 to
+  check, then the WebM, without downloading again.
+- The **▾** next to Start picks the mode: Search & Review, Download → WebM or
+  Download → MP4 (each synced download is exported right away).
+- CON packs are re-listed when the Nautilus build changes; CON files with
+  dots in their names are found.
+
+### Auto-edit
+
+- When an offset isn't enough (a longer intro, a skit, a missing chorus, a
+  slightly different tempo), the video is mapped onto the song audio and
+  rebuilt: extra parts cut, missing parts filled with matching footage,
+  speed adjusted. Every edit is logged in plain words.
+- Intro and outro rules: the video's own pre-roll and ending come first; a
+  silent count-in the video can't cover stays black; otherwise the first or
+  last frame is held (up to 3 s) or footage is reused.
+- From the command line it works on any video/audio pair and exports a
+  Premiere/Resolve XML or an auto-editor timeline. See
+  [AUTOEDIT.md](AUTOEDIT.md).
+
+### Rendering
+
+- Black bars (letterbox or pillarbox) are cropped and snapped to a standard
+  ratio. The last 10 s of the video aren't measured, so end screens and
+  credits don't change the crop.
+- Rendered videos keep their audio track, get a small watermark for the first
+  3 seconds and are tagged as made by BackstageHero.
+- Videos BackstageHero didn't make show ⚠ in the Status column, and replacing
+  one asks twice.
+
+### Music video database
+
+- [mvdb/](mvdb/) lists which video goes with which chart, with four types:
+  official, alternate, fan and meme. It starts from the community Clone Hero
+  Background Video Time Codes sheet, with ~570 syncs, plus 101 new videos and
+  more than 200 entries linked to their CON song IDs.
+- A song with a database link downloads that video without searching
+  YouTube. The default type is the director's choice, else fan > official >
+  alternate > meme; the Video type column picks another.
+- The @ window lists a song's links: edit or set a link, ☆ set your own
+  director's choice, 🗑 remove a bad link, search on YouTube. Only one @ window
+  opens at a time.
+- **⇪ Missed entries** exports the links you set and the videos you rendered
+  to `missed_entries.json`, to send back to the database
+  ([MVDB.md](MVDB.md), [MISSED_ENTRIES.md](MISSED_ENTRIES.md)).
+- Vimeo links are supported (with `vimeo_cookies.txt` in the data folder).
+- Name matching tells versions of a song apart; The Beatles customs default
+  to The Beatles as the artist.
+
+### App
+
+- The song table groups songs by folder and CON pack, collapsed by default;
+  a search opens every group. Only the checkbox selects a row.
+- Folders with a `.yargignore` file are skipped, like YARG does.
+- A loading window shows while the library is scanned.
+- **Select with links** selects the songs whose video type has a database
+  link.
+- Open folder button next to Change folder; Show log button.
+- Link dialogs have a right-click menu and a Paste button.
+- Bigger fonts; eye icon for the collage action.
+- App updates are checked on the AARP41298 fork.
+
+### Fixes
+
+- Sync: only peaks beyond the drift window count as rivals.
+- WebM: 2-pass options apply to the video stream only.
+- yt-dlp updates that need a newer Python than the exe are skipped.
+- The Listen window opens in front; no Tcl error when a scan ends fast.
+- The build stops when a requirement is missing for the Python running it.
+
+## 2.2.0
+
+Smarter sync: rejects different cuts and looped-song false locks, reuses
+extractions, verifies updates.
+
+## 2.1.1
+
+Search prefers the requested resolution.
+
+## 2.1.0
+
+Embedded preview in the sync editor.
+
+## 2.0.0
+
+GUI, audio fingerprinting, community offsets, auto-updater.

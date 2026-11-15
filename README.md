@@ -40,7 +40,7 @@ It also works on packed Rock Band CON/LIVE files, the way [YARG](https://wiki.ya
 
 A folder with a `.yargignore` file in it (any case) is skipped, the way YARG skips it with [the `.yargignore` change in AARP41298's YARG.Core](https://github.com/AARP41298/YARG.Core/tree/master-personal): its songs and CONs aren't listed, its sub-folders still are. This applies to Clone Hero song folders too.
 
-Reading the songs and the audio needs a build of [Nautilus](https://github.com/AARP41298/Nautilus/tree/master-backstage) with the `-backstagehero` command line (it lists the songs with their `game_origin` and decrypts the mogg). Point BackstageHero at `Nautilus.exe` the first time it finds a CON. The mogg tracks are mixed at -5 dB to match against the video.
+Reading the songs and the audio needs a build of [Nautilus](https://github.com/NemosNautilus/Nautilus) ([AARP41298's fork, branch `master-backstage`](https://github.com/AARP41298/Nautilus/tree/master-backstage)) with the `-backstagehero` command line (it lists the songs with their `game_origin` and decrypts the mogg). Point BackstageHero at `Nautilus.exe` the first time it finds a CON. The mogg tracks are mixed at -5 dB to match against the video.
 
 CON songs don't render right away. After the download the song shows **Review download** (or **Review download (auto-edit, N edits)** when the video had to be rebuilt, see [Auto-edit](#auto-edit)) and the Actions column gives you:
 
@@ -73,6 +73,41 @@ segment 1:37.476-1:45.747 was cut
 at 0:18.608, the fragment 0:02.900-0:18.619 was inserted
 segment 0:00.000-1:37.476 change speed by -0.48%
 ```
+
+Examples (click to open):
+
+<details>
+<summary><b>Beck - E-Pro</b>: the music video is too short? It reuses footage that fits the song</summary>
+
+<br>
+
+The music video is shorter than the album track, so parts of the song
+aren't in it. A single offset would sync the start, then fall out of step
+at the first missing part and run out of video before the song ends.
+Auto-edit finds the parts of the song the video doesn't have and fills them
+by reusing (or looping) the video's footage of the same music from
+elsewhere in the video, so the picture stays in sync until the end.
+
+[▶ Watch the E-Pro example](assets/epro.mp4)
+
+</details>
+
+<details>
+<summary><b>Paramore - Decode</b>: no footage before the song starts? It adds black frames for a perfect sync</summary>
+
+<br>
+
+The chart starts with a silent count-in, but the video starts right on
+the first note, with no intro to spare. Starting the video right away
+would put it ahead of the song for the whole track. Auto-edit adds black
+frames at the beginning for exactly the length of the count-in, so the
+video's first frame lands on the song's first note. Where the chart audio
+already has music, it holds the first frame (up to 3 s) or reuses footage
+from the first half of the video instead of going black.
+
+[▶ Watch the Decode example](assets/decode.mp4)
+
+</details>
 
 From the command line it also works on any video/audio pair, and exports
 the edit as a Premiere/Resolve XML or an [auto-editor](https://github.com/WyattBlue/auto-editor)
@@ -161,5 +196,7 @@ Nautilus isn't bundled. CON support uses whatever `Nautilus.exe` you point it at
 ## Credits
 
 ffmpeg ([BtbN builds](https://github.com/BtbN/FFmpeg-Builds), GPLv3) and [yt-dlp](https://github.com/yt-dlp/yt-dlp) do the real work.
+
+Rock Band CON packs are read with [Nautilus](https://github.com/NemosNautilus/Nautilus) by NemosNautilus: listing the songs, `game_origin` and decrypting the audio all come from it.
 
 The music video database starts from the Clone Hero Background Video Time Codes sheet by moocartoons and its contributors. Song source keys follow [Rock Band 3 Deluxe](https://github.com/hmxmilohax/rock-band-3-deluxe). Auto-edit's terms and timeline export follow [auto-editor](https://github.com/WyattBlue/auto-editor).
