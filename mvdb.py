@@ -505,7 +505,10 @@ def _apply(db, e):
             return
         for v in s.get('videos', []):
             v.pop('directors_choice', None)
-        best = _best([v for v in s.get('videos', []) if v.get('type', 'official') == e['type']])
+        vids = [v for v in s.get('videos', []) if v.get('type', 'official') == e['type']]
+        # a type with several links: the starred one (older edits: the best)
+        best = next((v for v in vids if e.get('youtube') and vid(v) == e['youtube']), None) \
+            or _best(vids)
         if best is not None:
             best['directors_choice'] = True
         return
@@ -635,19 +638,29 @@ def remember_con_ids(db, links):
 
 
 def set_link(db, source, song, vtype, video_id, old=None):
-    """Set (or fix) the YouTube video of one type for a song: saved in the
-    local layer, applied to `db`, and offered by Missed entries."""
+    """Set (or fix) a YouTube video of one type for a song: saved in the
+    local layer, applied to `db`, and offered by Missed entries.
+    old: the link it replaces; None adds a link (fills the type's record
+    without one, else adds another video of that type: a song can have
+    several meme clips)."""
     e = {'kind': 'link', 'source': source_key(source) if source else DEFAULT_SOURCE,
          'song': song_ref(song.get('con_id', ''), song.get('artist', ''), song.get('title', '')),
          'type': vtype, 'youtube': video_id, 'old': old,
          'time': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')}
-    edits = [x for x in load_local()
-             if not (x['kind'] == 'link' and x['type'] == vtype and x['song'] == e['song'])
-             and not (x['kind'] == 'clear' and x['type'] == vtype and x['song'] == e['song']
-                      and x['youtube'] == video_id)]
+    edits = []
+    for x in load_local():
+        same = x['kind'] in ('link', 'clear') and x['type'] == vtype and x['song'] == e['song']
+        if same and x['kind'] == 'link' and old and x['youtube'] == old:
+            # your own earlier link replaced again: this edit takes its place
+            e['old'] = x.get('old')
+            continue
+        if same and x['youtube'] == video_id:
+            continue                  # the same link again / no longer cleared
+        edits.append(x)
     edits.append(e)
     _save_local(edits)
-    _apply(db, e)
+    # in this session the replaced link is still in db, whatever e['old'] says
+    _apply(db, dict(e, old=old))
 
 
 def clear_link(db, source, song, vtype, video_id):
@@ -661,7 +674,7 @@ def clear_link(db, source, song, vtype, video_id):
     edits = []
     for x in load_local():
         same = x['kind'] in ('link', 'clear') and x['type'] == vtype and x['song'] == ref
-        if same and x['kind'] == 'link':
+        if same and x['kind'] == 'link' and x['youtube'] == video_id:
             # the link this edit had replaced would come back from the
             # database on the next start: it was bad too
             if x.get('old') and x['old'] not in gone:
@@ -701,13 +714,16 @@ def set_choice(db, source, song, vtype):
     _apply(db, e)
 
 
-def set_favorite(db, source, song, vtype):
-    """Make `vtype` the song's director's choice (None: no director's choice).
+def set_favorite(db, source, song, vtype, video_id=None):
+    """Make `vtype` the song's director's choice (None: no director's choice);
+    video_id picks which of the type's videos when it has several.
     Like set_choice it's your preference, saved locally and never submitted.
     It also drops your Video type pick, so the starred type is the one used."""
     ref = song_ref(song.get('con_id', ''), song.get('artist', ''), song.get('title', ''))
     e = {'kind': 'favorite', 'source': source_key(source) if source else DEFAULT_SOURCE,
          'song': ref, 'type': vtype}
+    if vtype and video_id:
+        e['youtube'] = video_id
     edits = [x for x in load_local()
              if not (x['kind'] in ('favorite', 'choice') and x['song'] == ref)]
     edits.append(e)
@@ -722,6 +738,14 @@ def _best(vids):
     """Of a type's videos: the director's choice, then a linked one, then any."""
     return sorted(vids, key=lambda v: (not v.get('directors_choice'),
                                        not vid(v)))[0] if vids else None
+
+
+def videos_of(song, vtype):
+    """Every video record of one type (a song can have several meme clips),
+    the one used for the type first, then the database's order."""
+    vids = [v for v in (song or {}).get('videos', []) if v.get('type', 'official') == vtype]
+    best = _best(vids)
+    return sorted(vids, key=lambda v: v is not best)
 
 
 def types_of(song):

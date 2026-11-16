@@ -87,6 +87,10 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   (base) + mix_N.mp4; state has `mix` and `base_plan` (what contributions
   share). Thresholds were only checked on synthetic clips (Silent Running
   excerpts under another song), not on the real Shrek / Hot Wheels clips.
+- Several links per type (2026-11-16): `link` edits are per link (`old` =
+  the link replaced, null = add), `clear` drops only that link's edit,
+  `favorite` can carry `youtube` to star one of several. The @ window shows
+  them all; + Add is offered for `_MULTI` = ('meme',) only.
 - Only the checkbox selects a row.
 - The song table groups by folder (relative to the Songs folder) and CON pack
   (a CON with 2+ songs), collapsed by default; single-song CONs and song

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- A song can have several meme links: the @ window lists each one (✎ Edit,
+  🗑, ☆) and **+ Add meme link** adds another. The ☆ picks the meme used for
+  the meme type; auto-mix uses them all.
 - **auto-mix** in the Video type menu, for CON songs with 2+ video links:
   the official video is the base and the clips that use the song (a movie
   scene, a game intro) are put in wherever their audio fits the song, each

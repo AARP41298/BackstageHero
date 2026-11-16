@@ -138,7 +138,8 @@ gets linked). In the song list:
   they fit (order in **Auto-mix priority...**, meme on top by default).
 - **Open in browser** shows the YouTube title of that video and opens it.
 - **@** opens the song's video links: every type with its link, **Edit** for a
-  wrong one, **Set link** for a missing one, and **Search on YouTube**.
+  wrong one, **Set link** for a missing one, and **Search on YouTube**. Memes
+  can have several links (**+ Add meme link**), one per movie, show or game.
 
 Linked videos are tried before the YouTube search; when the audio sync can't
 measure an offset, the database's is used. No Entry songs just use the search.

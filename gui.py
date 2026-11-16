@@ -1713,6 +1713,9 @@ class VideoLinksWindow(ctk.CTkToplevel):
         'meme':      'TV / movie / game clip or meme set to the song',
     }
 
+    # types that can have several links (one clip per movie / show / game)
+    _MULTI = ('meme',)
+
     _open = None    # only one at a time
 
     @classmethod
@@ -1740,7 +1743,7 @@ class VideoLinksWindow(ctk.CTkToplevel):
         self._app, self._s = app, song
         self.title(f'Video links  ·  {song.label}')
         self.configure(fg_color=_BG)
-        self.geometry(f'{_fs(720)}x{_fs(470)}')
+        self.geometry(f'{_fs(720)}x{_fs(600)}')
         self.minsize(_fs(560), _fs(380))
 
         head = ctk.CTkFrame(self, fg_color='transparent')
@@ -1753,7 +1756,8 @@ class VideoLinksWindow(ctk.CTkToplevel):
                                   anchor='w', justify='left')
         self._info.pack(fill='x', padx=16)
 
-        self._rows = ctk.CTkFrame(self, fg_color=_SURFACE, corner_radius=8)
+        # scrolls: a song can have several meme links
+        self._rows = ctk.CTkScrollableFrame(self, fg_color=_SURFACE, corner_radius=8)
         self._rows.pack(fill='both', expand=True, padx=16, pady=10)
         self._rows.grid_columnconfigure(2, weight=1)
 
@@ -1793,8 +1797,26 @@ class VideoLinksWindow(ctk.CTkToplevel):
             con = s.mv.get('con_id') or '-'
             self._info.configure(text=f'Source: {mvdb.SOURCES.get(src, src)} ({src})'
                                       f'    CON ID: {con}')
-        for r, (vtype, v) in enumerate(mvdb.types_of(s.mv)):
-            pad = dict(padx=10, pady=(10 if r == 0 else 4, 4))
+        pick = mvdb.chosen_type(s.mv)
+        rows = []                    # (type, video or None, first of its type)
+        for vtype in mvdb.TYPES:
+            vids = mvdb.videos_of(s.mv, vtype)
+            if len(vids) > 1:        # several: the ones without a link add nothing
+                vids = [v for v in vids if mvdb.vid(v)] or vids[:1]
+            for k, v in enumerate(vids or [None]):
+                rows.append((vtype, v, k == 0))
+            if vtype in self._MULTI and any(mvdb.vid(v) for v in vids):
+                rows.append((vtype, 'add', False))
+        for r, (vtype, v, first) in enumerate(rows):
+            pad = dict(padx=10, pady=(10 if r == 0 else (8 if first else 2), 2 if v == 'add' else 4))
+            if v == 'add':
+                ctk.CTkButton(self._rows, text=f'+  Add {vtype} link', width=_fs(150),
+                              height=_fs(26), fg_color='transparent', border_width=1,
+                              border_color='#45475a', hover_color='#414160',
+                              text_color=_SUBTEXT,
+                              command=lambda t=vtype: self._edit(t, None, add=True)
+                              ).grid(row=2 * r, column=2, sticky='w', **pad)
+                continue
             vid = mvdb.vid(v)
             fav = v is not None and bool(v.get('directors_choice'))
             star = ctk.CTkButton(
@@ -1803,9 +1825,10 @@ class VideoLinksWindow(ctk.CTkToplevel):
                 text_color='#f9e2af' if fav else _SUBTEXT,
                 text_color_disabled='#45475a',
                 state='normal' if (vid or fav) else 'disabled',
-                command=lambda t=vtype, f=fav: self._favorite(None if f else t))
+                command=lambda t=vtype, f=fav, i=vid: self._favorite(None if f else t, i))
             star.grid(row=2 * r, column=0, sticky='w', padx=(10, 0), pady=pad['pady'])
-            name = ctk.CTkLabel(self._rows, text=vtype.capitalize(), width=_fs(90),
+            name = ctk.CTkLabel(self._rows, text=vtype.capitalize() if first else '',
+                                width=_fs(90),
                                 font=_font(13, weight='bold'), text_color=_TEXT, anchor='w')
             name.grid(row=2 * r, column=1, sticky='w', padx=(4, 10), pady=pad['pady'])
             if vid:
@@ -1834,8 +1857,10 @@ class VideoLinksWindow(ctk.CTkToplevel):
                               command=lambda t=vtype, old=vid: self._clear(t, old)
                               ).grid(row=2 * r, column=4, sticky='e', padx=(0, 10),
                                      pady=pad['pady'])
-            details = [self._TYPE_HELP[vtype]]
-            if vtype == mvdb.chosen_type(s.mv):
+            details = [self._TYPE_HELP[vtype]] if first else []
+            if pick == mvdb.AUTO_MIX and vid:
+                details.insert(0, '● in auto-mix')
+            elif vtype == pick and first:
                 details.insert(0, '● in use')
             if fav:
                 details.insert(0, '★ director\'s choice')
@@ -1849,19 +1874,21 @@ class VideoLinksWindow(ctk.CTkToplevel):
                 credit = v.get('sync_credit') or v.get('submitted_by')
                 if credit:
                     details.append(f'by {credit}')
-            ctk.CTkLabel(self._rows, text='   ·   '.join(details), font=_font(10),
-                         text_color=_SUBTEXT, anchor='w'
-                         ).grid(row=2 * r + 1, column=2, columnspan=3, sticky='w', padx=10)
+            if details:
+                ctk.CTkLabel(self._rows, text='   ·   '.join(details), font=_font(10),
+                             text_color=_SUBTEXT, anchor='w'
+                             ).grid(row=2 * r + 1, column=2, columnspan=3, sticky='w', padx=10)
 
-    def _favorite(self, vtype):
-        """☆ / ★: make a type the director's choice (the one used by default),
-        or clear it. Saved on this PC only, never in Missed entries."""
+    def _favorite(self, vtype, video_id=None):
+        """☆ / ★: make a video the director's choice (its type is the one used
+        by default, and of several links of a type, that one), or clear it.
+        Saved on this PC only, never in Missed entries."""
         s = self._s
         if s.mv is None:
             return
         mvdb.set_favorite(self._app._mvdb, self._app._mv_source(s),
                           {'con_id': s.mv.get('con_id', ''), 'artist': s.mv.get('artist', ''),
-                           'title': s.mv.get('title', '')}, vtype)
+                           'title': s.mv.get('title', '')}, vtype, video_id)
         s.mv.pop('chosen', None)
         self._app._update_row(s)
         self._build_rows()
@@ -1888,10 +1915,12 @@ class VideoLinksWindow(ctk.CTkToplevel):
         self._app._update_row(s)
         self._build_rows()
 
-    def _edit(self, vtype, old):
+    def _edit(self, vtype, old, add=False):
+        """✎ Edit / + Set link (replaces `old`), or + Add (another link of the type)."""
+        what = f'another {vtype} video' if add else f'the {vtype} video'
         dlg = InputDialog(
             title=f'{vtype.capitalize()} video', paste=True,
-            text=f'YouTube or Vimeo link (or YouTube ID) for the {vtype} video of\n{self._s.label}:')
+            text=f'YouTube or Vimeo link (or YouTube ID) for {what} of\n{self._s.label}:')
         raw = (dlg.get_input() or '').strip()
         if not raw:
             return
@@ -1902,6 +1931,10 @@ class VideoLinksWindow(ctk.CTkToplevel):
         if vid == old:
             return
         s = self._s
+        if any(mvdb.vid(v) == vid for v in mvdb.videos_of(s.mv, vtype)):
+            messagebox.showinfo('Video links', f'{s.label} already has that {vtype} link.',
+                                parent=self)
+            return
         ref = {'con_id': s.song_id if s.con else (s.mv or {}).get('con_id', ''),
                'artist': (s.mv or {}).get('artist') or s.artist,
                'title': (s.mv or {}).get('title') or s.title or s.label}

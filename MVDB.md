@@ -120,8 +120,14 @@ the one used, and is saved only in `mvdb_local.json`: Missed entries never
 include it.
 
 🗑 next to a link removes it (a bad link): a local `clear` edit that also
-drops your own link edit for that type, and the link that edit had replaced.
+drops your own link edit for that link, and the link that edit had replaced.
 Clears aren't submitted either.
+
+A song can have **several meme links** (one per movie, show or game that
+uses it). The @ window lists each one with its own ✎ Edit, 🗑 and ☆, and
+**+ Add meme link** adds another (a `link` edit with `"old": null`). The ☆ on
+one of them makes it the meme used when the Video type is `meme`; auto-mix
+uses them all.
 
 ### auto-mix
 
