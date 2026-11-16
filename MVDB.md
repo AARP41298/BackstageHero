@@ -123,6 +123,22 @@ include it.
 drops your own link edit for that type, and the link that edit had replaced.
 Clears aren't submitted either.
 
+### auto-mix
+
+A song with at least 2 linked videos also offers **auto-mix** in the Video
+type menu (CON songs). It isn't a video type, just a pick (saved like any
+other, `"type": "auto-mix"` in a local `choice` edit): every linked video is
+downloaded, the lowest one in the mix priority that follows the song is the
+base, and each higher one is put in wherever it fits the song audio. Meant for
+songs used in a movie, show or game where that clip is too short to carry the
+song: All Star in Shrek, Fuel in Hot Wheels Turbo Racing, A Thousand Miles in
+White Chicks. Add those clips as `meme` videos next to the official one; a
+song may have several videos of one type, auto-mix uses them all.
+
+The order is **meme > fan > alternate > official** (the meme on top, the
+official video as the base), changed in **Auto-mix priority...** in the same
+menu. See [AUTOEDIT.md](AUTOEDIT.md#auto-mix).
+
 ## How BackstageHero uses it
 
 Each song is matched to its entry by CON ID; if that fails, by artist +

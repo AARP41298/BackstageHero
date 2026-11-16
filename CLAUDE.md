@@ -78,6 +78,15 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   hold the first frame, longer reuses footage from the video's first half.
   Outro: the video's own ending first, then hold (<= 3 s) or reuse from the
   second half. Mid-song inserts are fine (Silent Running).
+- auto-mix (`mvdb.AUTO_MIX`, 2026-11-16): a Video type pick, not a video
+  type, shown for songs with 2+ linked videos (CON only; song folders show it
+  disabled). Downloads every link; base = lowest in `mvdb.MIX_PRIORITY`
+  that plans ok (default meme > fan > alternate > official, saved as
+  `mix_priority`, changed in Auto-mix priority...), higher ones put in where
+  they fit (`autoedit.overlay_pieces` / `mix`). Work dir keeps video.mp4
+  (base) + mix_N.mp4; state has `mix` and `base_plan` (what contributions
+  share). Thresholds were only checked on synthetic clips (Silent Running
+  excerpts under another song), not on the real Shrek / Hot Wheels clips.
 - Only the checkbox selects a row.
 - The song table groups by folder (relative to the Songs folder) and CON pack
   (a CON with 2+ songs), collapsed by default; single-song CONs and song

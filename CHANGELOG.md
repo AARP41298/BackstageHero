@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- **auto-mix** in the Video type menu, for CON songs with 2+ video links:
+  the official video is the base and the clips that use the song (a movie
+  scene, a game intro) are put in wherever their audio fits the song, each
+  part once. **Auto-mix priority...** sets the order (meme > fan > alternate
+  > official by default, the top one wins). Clips of another size are scaled
+  and padded into the base's frame. `autoedit.py --mix CLIP` does the same
+  from the command line (also for Clone Hero song folders).
+- Database: Shrek (All Star), Scooby-Doo (Wanted Dead or Alive), Hot Wheels
+  Turbo Racing (Fuel), White Chicks (A Thousand Miles) and The Longest Yard
+  (Thunderstruck), with the official videos they mix with.
+
 ## 2.3.0 (2026-11-15)
 
 ### Rock Band CON packs (YARG)

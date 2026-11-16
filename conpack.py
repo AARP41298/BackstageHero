@@ -533,12 +533,20 @@ def discard_work(con, song_id):
 # collage, search again, or render. state.json in its work_dir remembers which
 # video it is and the measured offset, so this survives a restart.
 
-def save_review(con, song_id, video_id, offset_ms, matched, title, autoedit=None):
+def save_review(con, song_id, video_id, offset_ms, matched, title, autoedit=None,
+                mix=None, base_plan=None):
     """autoedit: an autoedit.plan() result (with 'log') when the video needs
-    cuts/inserts/speed changes; render() then rebuilds it instead of offsetting."""
+    cuts/inserts/speed changes; render() then rebuilds it instead of offsetting.
+    Auto-mix: mix lists the videos the plan's segments use ('src' indexes it):
+    [{'video_id', 'file' (in the work dir), 'type', 'title'}], the first is
+    video.mp4, the base. base_plan is the base video's own plan (None when an
+    offset is enough), which is what gets shared with the database."""
     state = {'video_id': video_id, 'offset': offset_ms, 'matched': matched, 'title': title}
     if autoedit:
         state['autoedit'] = autoedit
+    if mix:
+        state['mix'] = mix
+        state['base_plan'] = base_plan
     with open(os.path.join(work_dir(con, song_id), 'state.json'), 'w', encoding='utf-8') as f:
         json.dump(state, f)
 
@@ -639,7 +647,14 @@ def render(con, song_id, fmt, version, progress=None):
     work = work_dir(con, song_id)
     crop = bars_crop(state, work)
     plan = state.get('autoedit')
-    if plan:
+    mix = state.get('mix')
+    if plan and mix:
+        files = [os.path.join(work, m['file']) for m in mix]
+        crops = [crop] + [mix_crop(state, work, m['file']) for m in mix[1:]]
+        tag = (f'v{version} source={state["video_id"]} automix='
+               f'{"+".join(m["video_id"] for m in mix[1:])} synced=yes')
+        encode_autoedit(files, plan, dest, fmt, work, tag, progress, crops)
+    elif plan:
         tag = (f'v{version} source={state["video_id"]} autoedit='
                f'{len(plan.get("log") or [])}edits synced=yes')
         encode_autoedit(state['raw'], plan, dest, fmt, work, tag, progress, crop)
@@ -705,12 +720,17 @@ def clear_all_cache():
 
 def encode_autoedit(src, plan, dest, fmt, work, tag='', progress=None, crop=''):
     """Render an auto-edit plan with the same codecs, watermark and tag as the
-    offset renders. The video's own audio is cut the same way and kept."""
+    offset renders. The video's own audio is cut the same way and kept.
+    Auto-mix: src and crop are lists (one per video, the base first); every
+    video is scaled into the base's (cropped) frame."""
     import autoedit
     segs = plan['segments']
     total = max(1.0, segs[-1]['ref_end'])
+    size = None
+    if isinstance(src, (list, tuple)):
+        size = autoedit.frame_size(src[0], crop[0] if crop else '')
     base = autoedit.build_cmd(src, segs, keep_audio=True, crop=crop,
-                              post=_watermark_filter())
+                              post=_watermark_filter(), size=size)
     tmp = dest + ('.part.mp4' if fmt == 'mp4' else '.part.webm')
     try:
         if fmt == 'mp4':
@@ -762,7 +782,9 @@ def record_contribution(con, song_id, state, artist='', title='', source=''):
         meta = _song_meta(con, song_id)
         song = {'con_id': song_id, 'artist': artist or meta.get('artist', ''),
                 'title': title or meta.get('name', '')}
-        plan = state.get('autoedit')
+        # a mix shares the base video with its own plan (the clips put in
+        # are database links already)
+        plan = state.get('base_plan') if state.get('mix') else state.get('autoedit')
         video = mvdb.make_video(state.get('video_id', ''), 'official',
                                 title=state.get('title', ''),
                                 offset_ms=0 if plan else state.get('offset'),
@@ -809,6 +831,28 @@ def bars_crop(state, work):
         return ''
     state['crop'], state['crop_v'] = crop, CROP_VERSION
     _update_state(work, crop=crop, crop_v=CROP_VERSION)
+    return crop
+
+
+def mix_crop(state, work, name):
+    """bars_crop for one of an auto-mix's other videos (a file in the work
+    dir), kept in state.json's mix_crops."""
+    crops = state.get('mix_crops') or {}
+    hit = crops.get(name)
+    if hit and hit.get('v') == CROP_VERSION:
+        return hit['crop']
+    crop = ''
+    try:
+        import aspectcrop
+        r = aspectcrop.analyze(os.path.join(work, name))
+        crop = aspectcrop.crop_filter(r.get('crop'))
+        print(f'Black bars ({name}): ' + r.get('info', ''))
+    except Exception as e:
+        print('Could not check for black bars: ' + str(e))
+        return ''
+    crops[name] = {'crop': crop, 'v': CROP_VERSION}
+    state['mix_crops'] = crops
+    _update_state(work, mix_crops=crops)
     return crop
 
 

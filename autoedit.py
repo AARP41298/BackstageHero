@@ -57,6 +57,14 @@ BAD_MATCH = 0.6            # path cost / typical cost above this -> wrong video
 ANCHOR_MIN = 8.0           # seconds; the first/last pieces this long are the song's body
 HOLD_MAX = 3.0             # seconds; edge gaps up to this hold a frame instead of reusing
 
+# auto-mix (see mix())
+MIX_GOOD = 0.6             # an overlay frame fits below this share of a random pairing's cost
+MIX_EXTEND = 0.8           # once a fit is found, its line runs on while below this
+MIX_MIN = 4.0              # seconds; shorter fits aren't put in
+MIX_SMOOTH = 2.0           # seconds of smoothing of the overlay's match cost
+MIX_MAX_SPEED_DEV = 0.08   # overlay pieces faster/slower than this don't fit
+MIX_SHORT = 1.0            # seconds; base pieces left shorter than this get absorbed
+
 
 # Audio and features
 
@@ -230,15 +238,41 @@ def _segments(path, pieces):
     return merged
 
 
-def plan(reference_audio, video_audio):
-    """Work out the edit. Returns a dict with 'segments', 'cost', 'ok', 'info'."""
-    ref_f, ref_e = _features(_decode(reference_audio))
+_REF_CACHE = {}
+
+
+def _ref_features(path):
+    """_features of the reference audio, kept while the file is unchanged:
+    auto-mix matches several videos against the same chart audio."""
+    try:
+        st = os.stat(path)
+        key = (os.path.abspath(path), st.st_mtime, st.st_size)
+    except OSError:
+        key = None
+    if key and key in _REF_CACHE:
+        return _REF_CACHE[key]
+    out = _features(_decode(path))
+    if key:
+        _REF_CACHE.clear()
+        _REF_CACHE[key] = out
+    return out
+
+
+def _analyze(reference_audio, video_audio):
+    """(cost matrix ref x video 0..1, reference energy, quiet reference frames)."""
+    ref_f, ref_e = _ref_features(reference_audio)
     vid_f, _ = _features(_decode(video_audio))
     cost = (1.0 - ref_f @ vid_f.T).astype(np.float32) * 0.5    # 0..1
 
     # silent reference frames (album intro/outro silence) match anything
     quiet = ref_e < ref_e.max() * 1e-4
     cost[quiet] = 0.2
+    return cost, ref_e, quiet
+
+
+def plan(reference_audio, video_audio):
+    """Work out the edit. Returns a dict with 'segments', 'cost', 'ok', 'info'."""
+    cost, ref_e, quiet = _analyze(reference_audio, video_audio)
 
     path, jumps = _viterbi(cost)
     segs = _segments(path, _fit_pieces(path, jumps))
@@ -382,9 +416,250 @@ def _fix_edges(segs, cost, ref_dur, vid_dur, loud=None):
     return out
 
 
+# Auto-mix
+#
+# A song with several linked videos (the official video, and a movie scene or
+# a game intro that uses the song) can mix them: the base video covers the
+# whole song (its normal plan), and each higher-priority video is put in
+# wherever its audio fits the chart audio, in its own order, each part of it
+# once. The clips that use a song are usually too short to carry it alone.
+
+def overlay_pieces(reference_audio, video_audio):
+    """Where a video fits the reference: segments (ref/vid times, speed,
+    'match' = cost relative to a random pairing) for every stretch of at
+    least MIX_MIN seconds that matches well, each part of the video used once
+    (where it fits best). [] when nothing fits (a wrong video)."""
+    cost, _, quiet = _analyze(reference_audio, video_audio)
+    n, m = cost.shape
+    if not (~quiet).any():
+        return []
+    med = max(1e-6, float(np.median(cost[~quiet][:, ::7])))
+    path, jumps = _viterbi(cost)
+    w = max(1, int(MIX_SMOOTH * FPS))
+    need = int(MIX_MIN * FPS)
+    cands = []
+    for sg in _segments(path, _fit_pieces(path, jumps)):
+        sp = sg['speed']
+        if abs(sp - 1) > MIX_MAX_SPEED_DEV:
+            continue
+        a = int(round(sg['ref_start'] * FPS))
+        b = min(n, int(round(sg['ref_end'] * FPS)))
+        if b - a < need:
+            continue
+        i = np.arange(a, b)
+        t = sg['vid_start'] + (i / FPS - sg['ref_start']) * sp
+        j = np.clip(np.round(t * FPS).astype(int), 0, m - 1)
+        c = cost[i, j] / med
+        c = np.convolve(np.pad(c, (w // 2, w - 1 - w // 2), mode='edge'),
+                        np.ones(w) / w, 'valid')
+        # silence inside a run (a break) doesn't end it, but doesn't count
+        good = (c < MIX_EXTEND) | quiet[i]
+        k = 0
+        while k < len(good):
+            if not good[k]:
+                k += 1
+                continue
+            e = k
+            while e < len(good) and good[e]:
+                e += 1
+            r0, r1 = k, e
+            while r0 < r1 and quiet[i[r0]]:
+                r0 += 1
+            while r1 > r0 and quiet[i[r1 - 1]]:
+                r1 -= 1
+            if (~quiet[i[r0:r1]]).sum() >= need:
+                p = _fit_line(cost, quiet, med, a + r0, a + r1,
+                              (sg['vid_start'] + ((a + r0) / FPS - sg['ref_start']) * sp) * FPS,
+                              sp)
+                if p:
+                    cands.append(p)
+            k = e
+    # each part of the video once, the longest fits first: a clip that has a
+    # chorus once isn't put in at every chorus of the song, and a continuous
+    # clip stays where it runs on
+    out = []
+    for p in sorted(cands, key=lambda p: (-(p['ref_end'] - p['ref_start']), p['match'])):
+        if all(min(p['vid_end'], q['vid_end']) - max(p['vid_start'], q['vid_start']) < 1.0
+               and min(p['ref_end'], q['ref_end']) - max(p['ref_start'], q['ref_start']) < 1.0
+               for q in out):
+            out.append(p)
+    return sorted(out, key=lambda p: p['ref_start'])
+
+
+def _line_rel(cost, quiet, med, r0, r1, v0, sp):
+    """Smoothed relative cost along the line ref frame r0 -> video frame v0
+    (fractional), speed sp, for ref frames [r0, r1); None if it leaves the video."""
+    n, m = cost.shape
+    i = np.arange(max(0, r0), min(n, r1))
+    if i.size < 2:
+        return None, i
+    j = np.round(v0 + (i - r0) * sp).astype(int)
+    ok = (j >= 0) & (j < m)
+    i, j = i[ok], j[ok]
+    if i.size < 2:
+        return None, i
+    c = cost[i, j] / med
+    w = max(1, int(MIX_SMOOTH * FPS))
+    c = np.convolve(np.pad(c, (w // 2, w - 1 - w // 2), mode='edge'), np.ones(w) / w, 'valid')
+    return c, i
+
+
+def _fit_line(cost, quiet, med, r0, r1, v0, sp):
+    """A candidate fit, refined (speed 1.0 or the fitted one, offset within
+    +-0.5 s) and extended both ways along its line while it still fits."""
+    by_speed = {}
+    for s in {round(float(sp), 4), 1.0}:
+        for dv in np.arange(-0.5 * FPS, 0.5 * FPS + 0.01, 0.5):
+            c, i = _line_rel(cost, quiet, med, r0, r1, v0 + dv, s)
+            if c is None:
+                continue
+            loud = ~quiet[i]
+            if not loud.any():
+                continue
+            score = float(c[loud].mean())
+            if s not in by_speed or score < by_speed[s][0]:
+                by_speed[s] = (score, v0 + dv, s)
+    # clips use the song as released: speed 1.0 unless another fits clearly
+    # better (the line fit's speed is easily off by a percent or two)
+    best = by_speed.get(1.0)
+    other = [b for s, b in by_speed.items() if s != 1.0]
+    if other and (best is None or other[0][0] < best[0] * 0.9):
+        best = other[0]
+    if best is None or best[0] >= MIX_GOOD:
+        return None
+    _, v0, sp = best
+    n, m = cost.shape
+    # extend: walk back / forward while the match holds
+    lo, hi = r0, r1
+    lo_lim = max(0, r0 - int(np.ceil(v0 / sp)) if sp else 0)
+    hi_lim = min(n, r1 + int((m - (v0 + (r1 - r0) * sp)) / sp))
+    c, i = _line_rel(cost, quiet, med, lo_lim, r0, v0 - (r0 - lo_lim) * sp, sp)
+    if c is not None:
+        good = (c < MIX_EXTEND) | quiet[i]
+        k = len(good)
+        while k > 0 and good[k - 1]:
+            k -= 1
+        lo = int(i[k]) if k < len(good) else r0
+    c, i = _line_rel(cost, quiet, med, r1, hi_lim, v0 + (r1 - r0) * sp, sp)
+    if c is not None:
+        good = (c < MIX_EXTEND) | quiet[i]
+        k = 0
+        while k < len(good) and good[k]:
+            k += 1
+        hi = int(i[k - 1]) + 1 if k else r1
+    while lo < hi and quiet[lo]:
+        lo += 1
+    while hi > lo and quiet[hi - 1]:
+        hi -= 1
+    c, i = _line_rel(cost, quiet, med, lo, hi, v0 + (lo - r0) * sp, sp)
+    if c is None:
+        return None
+    loud = ~quiet[i]
+    vs = (v0 + (lo - r0) * sp) / FPS
+    return {'ref_start': round(lo / FPS, 3), 'ref_end': round(hi / FPS, 3),
+            'vid_start': round(float(max(0.0, vs)), 3),
+            'vid_end': round(float(min(m / FPS, vs + (hi - lo) / FPS * sp)), 3),
+            'speed': round(float(sp), 4), 'match': round(float(c[loud].mean()), 3)}
+
+
+def _part(sg, r0, r1):
+    """The piece of a segment between reference times r0 and r1."""
+    sp = 0.0 if sg.get('hold') else sg['speed']
+    out = dict(sg)
+    out['vid_start'] = round(sg['vid_start'] + (r0 - sg['ref_start']) * sp, 3)
+    out['vid_end'] = round(sg['vid_start'] + (r1 - sg['ref_start']) * sp, 3)
+    out['ref_start'], out['ref_end'] = round(r0, 3), round(r1, 3)
+    return out
+
+
+def mix(base, layers):
+    """Put overlay pieces into a base plan.
+
+    base: plan()['segments'] of the base video (source 0), covering the song.
+    layers: [(src, pieces)] from the lowest priority to the highest, pieces
+        from overlay_pieces(); a later layer wins where they overlap.
+    Returns segments with 'src' (index of the video they come from)."""
+    tl = [dict(sg, src=sg.get('src', 0)) for sg in base]
+    if not tl:
+        return tl
+    start = tl[0]['ref_start']          # the count-in stays black
+    for src, pieces in layers:
+        for p in pieces:
+            p = dict(p, src=src)
+            if p['ref_start'] < start:
+                if p['ref_end'] - start < MIX_MIN:
+                    continue
+                p = _part(p, start, p['ref_end'])
+            out = []
+            for sg in tl:
+                if sg['ref_end'] <= p['ref_start'] or sg['ref_start'] >= p['ref_end']:
+                    out.append(sg)
+                    continue
+                if sg['ref_start'] < p['ref_start']:
+                    out.append(_part(sg, sg['ref_start'], p['ref_start']))
+                if sg['ref_end'] > p['ref_end']:
+                    out.append(_part(sg, p['ref_end'], sg['ref_end']))
+            out.append(p)
+            tl = sorted(out, key=lambda sg: sg['ref_start'])
+
+    # slivers left between inserts: the piece before plays on over them
+    k = 0
+    while k < len(tl) and len(tl) > 1:
+        sg = tl[k]
+        d = sg['ref_end'] - sg['ref_start']
+        if d >= MIX_SHORT:
+            k += 1
+            continue
+        prev = tl[k - 1] if k else None
+        nxt = tl[k + 1] if k + 1 < len(tl) else None
+        if prev is not None and not prev.get('hold'):
+            prev['vid_end'] = round(prev['vid_end'] + d * prev['speed'], 3)
+            prev['ref_end'] = sg['ref_end']
+        elif nxt is not None and not nxt.get('hold') \
+                and nxt['vid_start'] - d * nxt['speed'] >= 0:
+            nxt['vid_start'] = round(nxt['vid_start'] - d * nxt['speed'], 3)
+            nxt['ref_start'] = sg['ref_start']
+        else:
+            k += 1
+            continue
+        tl.pop(k)
+
+    # neighbours that are one continuous piece of the same video
+    merged = [tl[0]]
+    for sg in tl[1:]:
+        p = merged[-1]
+        if sg['src'] == p['src'] and not sg.get('hold') and not p.get('hold') \
+                and abs(sg['vid_start'] - p['vid_end']) < 0.25 \
+                and abs(sg['speed'] - p['speed']) < 0.03:
+            p['ref_end'], p['vid_end'] = sg['ref_end'], sg['vid_end']
+            continue
+        merged.append(sg)
+    for sg in merged:
+        if not sg.get('hold'):
+            span = max(1e-6, sg['ref_end'] - sg['ref_start'])
+            sg['speed'] = round((sg['vid_end'] - sg['vid_start']) / span, 4)
+    return merged
+
+
+def mix_log(segments, names):
+    """Edit log lines for a mix: which video plays where. names[src] says
+    what each video is ('official', 'meme: Shrek', ...)."""
+    out = []
+    for sg in segments:
+        src = sg.get('src', 0)
+        if not src:
+            continue
+        out.append({'action': 'mix', 'at': sg['ref_start'], 'src': src,
+                    'start': sg['vid_start'], 'end': sg['vid_end'],
+                    'text': f"{ts(sg['ref_start'])}-{ts(sg['ref_end'])}: {names[src]} "
+                            f"{ts(sg['vid_start'])}-{ts(sg['vid_end'])} put in"})
+    return out
+
+
 # Rendering
 
-def build_cmd(video, segments, audio=None, keep_audio=False, fps=30, crop='', post=''):
+def build_cmd(video, segments, audio=None, keep_audio=False, fps=30, crop='', post='',
+              size=None):
     """ffmpeg command (without codec/output args) that cuts/stretches `video`
     per `segments`. Output streams: [v], plus [a] when audio or keep_audio.
 
@@ -393,7 +668,13 @@ def build_cmd(video, segments, audio=None, keep_audio=False, fps=30, crop='', po
         handy to check the sync by ear or fix it later in an editor.
     crop: ffmpeg crop filter (see aspectcrop.crop_filter), applied per piece.
     post: extra video filters after the pieces are joined (e.g. a watermark).
+    Auto-mix: video is a list of files (a segment's 'src' picks one), crop a
+    list with one filter per file, and size (w, h) the frame every piece is
+    scaled and padded to.
     """
+    multi = isinstance(video, (list, tuple))
+    if multi and not size:
+        raise ValueError('a mix of videos needs a frame size')
     parts, vlabels, alabels, inputs = [], [], [], []
     for k, s in enumerate(segments):
         out_len = s['ref_end'] - s['ref_start']
@@ -405,15 +686,23 @@ def build_cmd(video, segments, audio=None, keep_audio=False, fps=30, crop='', po
             factor = out_len / src_len
         # each piece gets its own seeked input: one shared input with several
         # trims makes ffmpeg buffer every frame for the later pieces (OOM)
-        inputs += ['-ss', f"{s['vid_start']:.3f}", '-t', f"{src_len:.3f}", '-i', video]
-        pre = crop + ',' if crop else ''
+        src = s.get('src', 0) if multi else 0
+        path = video[src] if multi else video
+        c = (crop[src] if src < len(crop) else '') if isinstance(crop, (list, tuple)) else crop
+        inputs += ['-ss', f"{s['vid_start']:.3f}", '-t', f"{src_len:.3f}", '-i', path]
+        pre = c + ',' if c else ''
+        if size:
+            w, h = size
+            pre += (f'scale={w}:{h}:force_original_aspect_ratio=decrease,'
+                    f'pad={w}:{h}:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,format=yuv420p,')
         parts.append(f"[{k}:v]{pre}setpts=(PTS-STARTPTS)*{factor:.6f},fps={fps},"
                      f"tpad=stop_mode=clone:stop_duration={out_len:.3f},"
                      f"trim=duration={out_len:.3f},setpts=PTS-STARTPTS[v{k}]")
         vlabels.append(f'[v{k}]')
         if keep_audio and not audio:
             tempo = 1.0 if s.get('hold') else min(2.0, max(0.5, 1.0 / factor))
-            parts.append(f"[{k}:a]asetpts=PTS-STARTPTS,atempo={tempo:.6f},"
+            fmt = 'aformat=sample_rates=48000:channel_layouts=stereo,' if multi else ''
+            parts.append(f"[{k}:a]{fmt}asetpts=PTS-STARTPTS,atempo={tempo:.6f},"
                          f"apad,atrim=duration={out_len:.3f},asetpts=PTS-STARTPTS[a{k}]")
             alabels.append(f'[a{k}]')
     # the song may start before the video does (count-in): black until then
@@ -445,14 +734,14 @@ def build_cmd(video, segments, audio=None, keep_audio=False, fps=30, crop='', po
 
 
 def render(video, segments, dest, audio=None, fps=30, extra=None, crop='',
-           keep_audio=False, post=''):
+           keep_audio=False, post='', size=None):
     """Cut/stretch `video` per `segments` into `dest` (see build_cmd).
 
     extra: ffmpeg codec args, default libx264 crf 20 + AAC.
     The result already starts with the song, so its offset is 0.
     """
     cmd = build_cmd(video, segments, audio=audio, keep_audio=keep_audio, fps=fps,
-                    crop=crop, post=post)
+                    crop=crop, post=post, size=size)
     has_audio = bool(audio) or keep_audio
     cmd += extra or (['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20']
                      + (['-c:a', 'aac', '-b:a', '192k'] if has_audio else []))
@@ -602,6 +891,17 @@ def _probe_video(path):
             'duration': float(d.get('duration', 0) or 0)}
 
 
+def frame_size(video, crop=''):
+    """(width, height) of a video after an aspectcrop crop filter, even
+    numbers: the frame an auto-mix scales every video to."""
+    if crop:
+        w, h = (int(x) for x in crop.split('=', 1)[1].split(':')[:2])
+    else:
+        info = _probe_video(video)
+        w, h = info['width'], info['height']
+    return max(2, w - w % 2), max(2, h - h % 2)
+
+
 def export_v3(video, segments, dest, audio=None, fps=None):
     """auto-editor v3 timeline. Render it or convert it with auto-editor:
         auto-editor timeline.v3 -o out.mp4
@@ -723,6 +1023,9 @@ def main(argv=None):
     ap.add_argument('--json', help='write the plan + edit log to this JSON file')
     ap.add_argument('--v3', help='write an auto-editor v3 timeline')
     ap.add_argument('--xml', help='write a Final Cut Pro 7 / Premiere XML timeline')
+    ap.add_argument('--mix', action='append', default=[], metavar='CLIP',
+                    help='auto-mix: put this video in wherever it fits the audio (repeat it; '
+                         'later ones win where they overlap)')
     a = ap.parse_args(argv)
     if not a.output and not (a.plan or a.json or a.v3 or a.xml):
         ap.error('output is required unless --plan, --json, --v3 or --xml is given')
@@ -743,25 +1046,49 @@ def main(argv=None):
     if not p['ok']:
         print('match too weak, not rendering (wrong video?)')
         sys.exit(2)
+    videos = [a.video]
+    if a.mix:
+        layers = []
+        for k, clip in enumerate(a.mix, 1):
+            pieces = overlay_pieces(a.reference, clip)
+            print(f'mix {clip}: ' + (f'{len(pieces)} part(s) fit' if pieces else 'nothing fits'))
+            if pieces:
+                videos.append(clip)
+                layers.append((len(videos) - 1, pieces))
+        p['segments'] = mix(p['segments'], layers)
+        p['log'] = mix_log(p['segments'], [os.path.basename(v) for v in videos]) + p['log']
+        for e in p['log']:
+            if e['action'] == 'mix':
+                print('  ' + e['text'])
     if a.json:
         with open(a.json, 'w', encoding='utf-8') as f:
             json.dump(p, f, indent=1)
         print('wrote', a.json)
+    if len(videos) > 1 and (a.v3 or a.xml):
+        print('--v3 / --xml are not made for a mix (one video only)')
+        a.v3 = a.xml = None
     if a.v3:
         print('wrote', export_v3(a.video, p['segments'], a.v3, audio=a.reference))
     if a.xml:
         print('wrote', export_xml(a.video, p['segments'], a.xml, audio=a.reference))
     if a.plan or not a.output:
         return p
-    crop = ''
-    if a.crop:
-        import aspectcrop
-        c = aspectcrop.analyze(a.video, coverage=a.coverage)
-        print(c['info'])
-        crop = aspectcrop.crop_filter(c.get('crop'))
-        p['crop'] = crop
-    render(a.video, p['segments'], a.output, audio=a.reference if a.audio else None,
-           keep_audio=a.keep_audio, crop=crop)
+    crops = []
+    for v in videos:
+        crop = ''
+        if a.crop:
+            import aspectcrop
+            c = aspectcrop.analyze(v, coverage=a.coverage)
+            print(c['info'])
+            crop = aspectcrop.crop_filter(c.get('crop'))
+        crops.append(crop)
+    p['crop'] = crops[0]
+    if len(videos) > 1:
+        render(videos, p['segments'], a.output, audio=a.reference if a.audio else None,
+               keep_audio=a.keep_audio, crop=crops, size=frame_size(videos[0], crops[0]))
+    else:
+        render(a.video, p['segments'], a.output, audio=a.reference if a.audio else None,
+               keep_audio=a.keep_audio, crop=crops[0])
     print('wrote', a.output)
     return p
 

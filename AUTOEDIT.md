@@ -116,6 +116,45 @@ auto-editor timeline.v3 -o out.mp4
 auto-editor timeline.v3 --export resolve -o timeline.fcpxml
 ```
 
+## Auto-mix
+
+Some songs are best known from a movie, a show or a game (All Star in Shrek,
+Fuel in Hot Wheels Turbo Racing, A Thousand Miles in White Chicks), but the
+clip that uses the song is too short to cover it. Auto-mix keeps the official
+video as the base and puts the clip in wherever it fits:
+
+1. The base (the lowest video in the mix priority whose plan matches the song,
+   normally the official one) gets its normal plan, covering the whole song.
+2. Every other video is matched against the song audio the same way, but only
+   stretches of **4 s or more** that fit well (below 0.6 of a random pairing,
+   2 s smoothed) are kept. A fit is refined (speed 1.0 unless another fits
+   clearly better, offset within 0.5 s) and runs on along its line while the
+   match stays below 0.8, so a clip with dialogue over the song stays in one
+   piece. Each part of a clip is used **once**, the longest fits first: a
+   clip with one chorus isn't put in at every chorus of the song.
+3. The pieces are laid over the base, the highest priority on top. Base
+   pieces left shorter than 1 s between two inserts are covered by the piece
+   before. The count-in stays black.
+4. Each video is cropped (black bars) and scaled + padded into the base's
+   cropped frame, then everything is joined as one render.
+
+A video where nothing fits (a wrong link, a cover version) is left out.
+The edit log lists what was put in:
+
+```
+1:25.639-1:55.552: meme (youtu.be/P6antjcBFZ4) 0:00.000-0:29.874 put in
+```
+
+From the command line (`--mix` can be repeated, the later ones win):
+
+```
+python autoedit.py song.ogg official.webm out.mp4 --mix shrek.mp4 --keep-audio --crop
+```
+
+In the app it's the **auto-mix** pick in the Video type menu of a CON song
+with 2+ links; the review's ▶ plays the base video, Export as MP4 shows the
+mix. Only the base video's own plan goes into Missed entries.
+
 ## Aspect crop
 
 ```

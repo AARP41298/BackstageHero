@@ -78,6 +78,26 @@
    ]
   },
   {
+   "artist": "Metallica",
+   "title": "Fuel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "PvF9PAxe5Ng",
+     "youtube_url": "https://www.youtube.com/watch?v=PvF9PAxe5Ng",
+     "title": "Metallica - Fuel (Official Music Video)",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "yJXDis_9vCA",
+     "youtube_url": "https://www.youtube.com/watch?v=yJXDis_9vCA",
+     "title": "Hot Wheels Turbo Racing (Intro) PS1",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Metric",
    "title": "Black Sheep",
    "charter": "Mr Deftino",

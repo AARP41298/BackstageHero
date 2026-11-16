@@ -804,6 +804,12 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
             db_cands = [c for c in all_db if video_id_of(c[0]) not in bad]
         if entry:
             print('  Music video database: ' + mvdb.type_summary(entry))
+        if mode != 'search' and entry and mvdb.chosen_type(entry) == mvdb.AUTO_MIX:
+            if sync_ready and autoedit is not None:
+                _con_automix(con, song_id, entry, work, quality)
+                ok = True
+                return 'review'
+            print('  auto-mix needs the song audio, using one video instead')
 
         def _search():
             print('Looking on YouTube for: ' + query)
@@ -884,6 +890,104 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
         if not ok:
             shutil.rmtree(work, ignore_errors=True)
     return 'review'
+
+
+def _con_automix(con, song_id, entry, work, quality):
+    """auto-mix for a CON song: download every linked video, the lowest one in
+    the mix priority that matches the song audio is the base (covers the whole
+    song), each higher one is put in wherever it fits. Leaves video.mp4 (the
+    base), mix_<n>.mp4 and state.json in the work dir, waiting for review."""
+    vids = list(reversed(mvdb.mix_videos(entry)))      # base candidates first
+    m = re.search(r'height<=(\d+)', quality)
+    fmt = conpack.video_format(int(m.group(1)) if m else 720)
+    ref = os.path.join(work, 'song.wav')
+    print(f'auto-mix: {len(vids)} videos, ' + ' < '.join(
+        v.get('type', 'official') for v in vids) + ' (the last one on top)')
+    got = []
+    for k, v in enumerate(vids):
+        _step(3, 4, f'Downloading {k + 1}/{len(vids)}')
+        what = f"the {v.get('type', 'official')} video ({mvdb.short_url(mvdb.vid(v))})"
+        print('Downloading ' + what)
+        sub = os.path.join(work, f'mix{k}')
+        os.makedirs(sub, exist_ok=True)
+        try:
+            download_video(sub, watch_url(mvdb.vid(v)), fmt)
+        except BotDetected:
+            raise
+        except Exception as e:
+            print(f'  Could not download {what}, leaving it out ({e})')
+            continue
+        got.append((v, os.path.join(sub, 'video.mp4')))
+
+    _step(4, 4, 'Matching audio')
+    base, bplan = None, None
+    for k, (v, path) in enumerate(got):
+        try:
+            p = autoedit.plan(ref, path)
+        except Exception as e:
+            print(f"  {v.get('type', 'official')}: auto-edit failed ({e})")
+            continue
+        if p['ok']:
+            base, bplan = k, p
+            print(f"  Base: the {v.get('type', 'official')} video, " + p['info'])
+            break
+        print(f"  The {v.get('type', 'official')} video doesn't follow the song, "
+              'not using it as the base')
+    if base is None:
+        raise Exception('auto-mix: none of the linked videos matches the song audio')
+    used, layers = [got[base]], []
+    for v, path in got[base + 1:]:
+        try:
+            pieces = autoedit.overlay_pieces(ref, path)
+        except Exception as e:
+            pieces = []
+            print(f"  {v.get('type', 'official')}: could not match it ({e})")
+        print(f"  The {v.get('type', 'official')} video: " +
+              (f'{len(pieces)} part(s) fit the song' if pieces else 'no part fits the song'))
+        if pieces:
+            used.append((v, path))
+            layers.append((len(used) - 1, pieces))
+
+    files = []
+    for k, (v, path) in enumerate(used):
+        name = 'video.mp4' if k == 0 else f'mix_{k}.mp4'
+        os.replace(path, os.path.join(work, name))
+        files.append(name)
+    bv = used[0][0]
+    btitle = bv.get('title') or f"database ({bv.get('type', 'official')})"
+    bplan['log'] = autoedit.edit_log(bplan['segments'],
+                                     conpack._duration(os.path.join(work, 'video.mp4')))
+    single = not autoedit.needs_edit(bplan)
+    offset = autoedit.offset_ms(bplan) if single else 0
+    if layers:
+        names = [f"{v.get('type', 'official')} ({mvdb.short_url(mvdb.vid(v))})"
+                 for v, _ in used]
+        segs = autoedit.mix(bplan['segments'], layers)
+        plan = dict(bplan, segments=segs,
+                    log=autoedit.mix_log(segs, names) + bplan['log'])
+        mix = [{'video_id': mvdb.vid(v), 'file': f, 'type': v.get('type', 'official'),
+                'title': v.get('title', '')} for (v, _), f in zip(used, files)]
+        for e in plan['log']:
+            print('    ' + e['text'])
+        conpack.save_review(con, song_id, mvdb.vid(bv), offset, True, btitle,
+                            autoedit=plan, mix=mix, base_plan=None if single else bplan)
+        how = f'auto-mix of {len(used)} videos'
+    else:
+        # nothing else fits: the base alone, like a normal download
+        conpack.save_review(con, song_id, mvdb.vid(bv), offset, True, btitle,
+                            autoedit=None if single else bplan)
+        how = 'auto-mix: only the base video fits'
+    for name in os.listdir(work):
+        if name not in files + ['state.json']:
+            p = os.path.join(work, name)
+            if os.path.isdir(p):
+                shutil.rmtree(p, ignore_errors=True)
+            else:
+                try:
+                    os.remove(p)
+                except OSError:
+                    pass
+    print('  Downloaded, waiting for review (' + how + ')')
 
 
 def _plan_autoedit(work):

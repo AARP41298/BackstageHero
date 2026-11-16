@@ -3,6 +3,26 @@
  "name": "Custom Songs",
  "songs": [
   {
+   "artist": "AC/DC",
+   "title": "Thunderstruck",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "v2AC41dglnM",
+     "youtube_url": "https://www.youtube.com/watch?v=v2AC41dglnM",
+     "title": "AC/DC - Thunderstruck (Official Video)",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "pZRzu3znXE8",
+     "youtube_url": "https://www.youtube.com/watch?v=pZRzu3znXE8",
+     "title": "The Longest Yard",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Amon Amarth",
    "title": "The Pursuit of Vikings",
    "charter": "BurpLeTurtle",

@@ -1,0 +1,26 @@
+{
+ "source": "customs",
+ "name": "Custom Songs",
+ "songs": [
+  {
+   "artist": "Vanessa Carlton",
+   "title": "A Thousand Miles",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Cwkej79U3ek",
+     "youtube_url": "https://www.youtube.com/watch?v=Cwkej79U3ek",
+     "title": "Vanessa Carlton - A Thousand Miles",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "-RNG_tTXXcg",
+     "youtube_url": "https://www.youtube.com/watch?v=-RNG_tTXXcg",
+     "title": "White Chicks - Latrell scene",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  }
+ ]
+}

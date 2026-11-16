@@ -133,7 +133,9 @@ gets linked). In the song list:
 - **Video type** shows the type that will be used (official by default) with
   a `*` when there are other types, `(no link)` when the database only has
   the offset, or **No Entry**. Click it to pick another type; click the
-  header to sort.
+  header to sort. A CON song with 2+ links can pick **auto-mix**: the
+  official video with the movie / game clips that use the song put in where
+  they fit (order in **Auto-mix priority...**, meme on top by default).
 - **Open in browser** shows the YouTube title of that video and opens it.
 - **@** opens the song's video links: every type with its link, **Edit** for a
   wrong one, **Set link** for a missing one, and **Search on YouTube**.

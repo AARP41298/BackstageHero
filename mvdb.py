@@ -19,6 +19,11 @@ Video types:
 it the order is fan > official > alternate > meme. Picking a type in the app
 overrides both.
 
+auto-mix is not a video record but a pick: a song with 2+ linked videos can
+mix them. The lowest video in MIX_PRIORITY that matches the song is the base
+(it covers the whole song); every higher one is put in wherever it fits the
+chart audio (a movie scene, a game intro), the highest on top.
+
 Contributions: the app writes missed_entries.json with every video you synced
 that the database doesn't have yet; submit it and it gets merged in.
 """
@@ -34,6 +39,22 @@ TYPES = ('official', 'alternate', 'fan', 'meme')
 # which type is used when you haven't picked one: a video marked
 # "directors_choice": true first, then this order
 PRIORITY = ('fan', 'official', 'alternate', 'meme')
+
+# the Video type pick that mixes the song's linked videos (not a video type)
+AUTO_MIX = 'auto-mix'
+# auto-mix: first = on top (put in wherever it fits), last = the base video.
+# The app sets it from its settings (set_mix_priority).
+DEFAULT_MIX_PRIORITY = ('meme', 'fan', 'alternate', 'official')
+MIX_PRIORITY = list(DEFAULT_MIX_PRIORITY)
+
+
+def set_mix_priority(order):
+    """Use `order` (types, highest first) for auto-mix; unknown or missing
+    types are dropped / appended in the default order."""
+    order = [t for t in (order or []) if t in TYPES]
+    order = list(dict.fromkeys(order))
+    MIX_PRIORITY[:] = order + [t for t in DEFAULT_MIX_PRIORITY if t not in order]
+    return list(MIX_PRIORITY)
 
 # RB3DX source keys (dx_locale_sources.dta) plus the vanilla game_origin
 # values that file doesn't list.
@@ -738,27 +759,54 @@ def available_types(song):
     return [t for t, v in types_of(song) if v is not None]
 
 
+def mix_videos(song):
+    """auto-mix: the song's linked videos (each once), highest MIX_PRIORITY
+    first; within a type the director's choice first. The last one is the
+    base the others go into."""
+    seen, out = set(), []
+    for v in (song or {}).get('videos', []):
+        i = vid(v)
+        if i and i not in seen:
+            seen.add(i)
+            out.append(v)
+    rank = {t: k for k, t in enumerate(MIX_PRIORITY)}
+    return sorted(out, key=lambda v: (rank.get(v.get('type', 'official'), len(rank)),
+                                      not v.get('directors_choice')))
+
+
+def can_mix(song):
+    """auto-mix is offered when the song has at least 2 linked videos."""
+    return len(mix_videos(song)) >= 2
+
+
 def chosen_type(song):
-    """The type used for a song: your choice, else the default (director's
-    choice > fan > official > alternate > meme). None for No Entry."""
+    """The type used for a song: your choice (a type, or auto-mix when it has
+    2+ links), else the default (director's choice > fan > official >
+    alternate > meme). None for No Entry."""
     have = available_types(song)
     if not have:
         return None
     pick = (song or {}).get('chosen')
-    if pick in have:
+    if pick in have or (pick == AUTO_MIX and can_mix(song)):
         return pick
     return default_type(song)
 
 
 def chosen_video(song):
-    """The video record of the type in use (may have no 'youtube'), or None."""
+    """The video record of the type in use (may have no 'youtube'), or None.
+    For auto-mix: the one on top (highest priority)."""
     pick = chosen_type(song)
+    if pick == AUTO_MIX:
+        return mix_videos(song)[0]
     return dict(types_of(song))[pick] if pick else None
 
 
 def ordered_types(song):
-    """types_of() in download order: the chosen type, then PRIORITY order."""
+    """types_of() in download order: the chosen type, then PRIORITY order.
+    auto-mix (which song folders can't do) counts as the default type."""
     pick = chosen_type(song)
+    if pick == AUTO_MIX:
+        pick = default_type(song)
     items = types_of(song)
     return sorted(items, key=lambda tv: (tv[0] != pick, PRIORITY.index(tv[0])))
 
@@ -769,6 +817,8 @@ def type_summary(song):
     pick = chosen_type(song)
     if pick is None:
         return 'No Entry'
+    if pick == AUTO_MIX:
+        return f'{AUTO_MIX} ({len(mix_videos(song))} videos)'
     v = dict(types_of(song))[pick]
     text = pick + (' ★' if v.get('directors_choice') else '')
     text += '' if vid(v) else ' (no link)'
@@ -781,6 +831,8 @@ def sort_key(song):
     pick = chosen_type(song)
     if pick is None:
         return (2, 0)
+    if pick == AUTO_MIX:
+        return (0, -1)
     v = dict(types_of(song))[pick]
     return (0 if vid(v) else 1, PRIORITY.index(pick))
 

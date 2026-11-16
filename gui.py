@@ -406,6 +406,8 @@ def _review_status(review):
     if review.get('rendered'):
         return f'✔  {review["rendered"].upper()} exported  (original kept)'
     plan = review.get('autoedit')
+    if plan and review.get('mix'):
+        return f'◆  Review download (auto-mix, {len(review["mix"])} videos)'
     if plan:
         return f'◆  Review download (auto-edit, {len(plan.get("log") or [])} edits)'
     return '◆  Review download'
@@ -1910,6 +1912,90 @@ class VideoLinksWindow(ctk.CTkToplevel):
         self._build_rows()
 
 
+class MixPriorityWindow(ctk.CTkToplevel):
+    """Video type menu > Auto-mix priority: the order auto-mix layers a song's
+    videos in. The bottom type is the base that covers the song, each one
+    above is put in wherever it fits the song audio, the top one wins.
+    Saved in the settings (mix_priority)."""
+
+    _open = None
+
+    @classmethod
+    def show(cls, app):
+        win = cls._open
+        try:
+            alive = win is not None and bool(win.winfo_exists())
+        except Exception:
+            alive = False
+        if alive:
+            win.deiconify()
+            win.lift()
+            win.focus_force()
+            return win
+        cls._open = cls(app)
+        return cls._open
+
+    def __init__(self, app):
+        super().__init__(app)
+        self._app = app
+        self.title('Auto-mix priority')
+        self.configure(fg_color=_BG)
+        self.geometry(f'{_fs(470)}x{_fs(340)}')
+        self.resizable(False, False)
+        ctk.CTkLabel(self, text='Auto-mix priority', font=_font(15, weight='bold'),
+                     text_color=_TEXT, anchor='w').pack(fill='x', padx=16, pady=(14, 2))
+        ctk.CTkLabel(self, text='For songs with 2+ video links. The bottom one is the base '
+                                'and covers\nthe song; each one above is put in wherever it '
+                                'fits the song\naudio (a movie scene, a game intro). '
+                                'The top one wins.',
+                     font=_font(11), text_color=_SUBTEXT, justify='left',
+                     anchor='w').pack(fill='x', padx=16)
+        self._rows = ctk.CTkFrame(self, fg_color=_SURFACE, corner_radius=8)
+        self._rows.pack(fill='both', expand=True, padx=16, pady=10)
+        self._rows.grid_columnconfigure(1, weight=1)
+        foot = ctk.CTkFrame(self, fg_color='transparent')
+        foot.pack(fill='x', padx=16, pady=(0, 12))
+        ctk.CTkButton(foot, text='Reset', width=_fs(90), fg_color='#313244',
+                      hover_color='#414160',
+                      command=lambda: self._set(mvdb.DEFAULT_MIX_PRIORITY)).pack(side='left')
+        ctk.CTkButton(foot, text='Close', width=_fs(90), fg_color='#313244',
+                      hover_color='#414160', command=self.destroy).pack(side='right')
+        self._build()
+        self.bind('<Escape>', lambda e: self.destroy())
+        self.after(50, lambda: (self.lift(), self.focus_force()))
+
+    def _build(self):
+        for w in self._rows.winfo_children():
+            w.destroy()
+        order = list(mvdb.MIX_PRIORITY)
+        last = len(order) - 1
+        for k, t in enumerate(order):
+            pad = dict(pady=(10 if k == 0 else 3, 3))
+            ctk.CTkLabel(self._rows, text=f'{k + 1}.', font=_font(13), text_color=_SUBTEXT,
+                         width=_fs(28)).grid(row=k, column=0, padx=(10, 0), **pad)
+            note = '   on top' if k == 0 else '   base' if k == last else ''
+            ctk.CTkLabel(self._rows, text=t + note, font=_font(13), text_color=_TEXT,
+                         anchor='w').grid(row=k, column=1, sticky='w', padx=6, **pad)
+            for col, (txt, d) in enumerate((('▲', -1), ('▼', 1)), 2):
+                ok = 0 <= k + d <= last
+                ctk.CTkButton(self._rows, text=txt, width=_fs(34), height=_fs(28),
+                              fg_color='#313244', hover_color='#414160',
+                              state='normal' if ok else 'disabled',
+                              command=lambda k=k, d=d: self._move(k, d)
+                              ).grid(row=k, column=col, padx=(0, 10 if col == 3 else 4), **pad)
+
+    def _move(self, k, d):
+        order = list(mvdb.MIX_PRIORITY)
+        order[k], order[k + d] = order[k + d], order[k]
+        self._set(order)
+
+    def _set(self, order):
+        mvdb.set_mix_priority(order)
+        self._app._persist_setting('mix_priority', list(mvdb.MIX_PRIORITY))
+        self._build()
+        self._app._refresh_tree()
+
+
 class ShutdownCountdown(ctk.CTkToplevel):
     """Shown when the WebM exports finish with "Shut down when done" on:
     counts down, then shuts Windows down. Cancel stops it."""
@@ -2019,6 +2105,7 @@ class App(ctk.CTk):
         self._settings    = _load_settings()
         resolver_client.set_sharing(self._settings.get('share_matches', True))
         conpack.set_nautilus_path(self._settings.get('nautilus_path'))
+        mvdb.set_mix_priority(self._settings.get('mix_priority'))
         self._nautilus_asked = False     # ask for Nautilus.exe once per session
         self._scan_win = None            # ScanWindow while a library scan runs
         self._action_hint  = ''
@@ -2501,6 +2588,19 @@ class App(ctk.CTk):
             if t == mvdb.default_type(s.mv) and t != pick:
                 label += '   (default)'
             menu.add_command(label=label, command=lambda t=t: self._choose_type(s, t))
+        if mvdb.can_mix(s.mv):
+            vids = mvdb.mix_videos(s.mv)
+            order = ' over '.join(dict.fromkeys(v.get('type', 'official') for v in vids))
+            if s.con:
+                label = ('●  ' if pick == mvdb.AUTO_MIX else '     ') + mvdb.AUTO_MIX + \
+                    f'   ({len(vids)} videos: {order})'
+                menu.add_command(label=label,
+                                 command=lambda: self._choose_type(s, mvdb.AUTO_MIX))
+            else:
+                menu.add_command(label='     ' + mvdb.AUTO_MIX + '   (CON songs only)',
+                                 state='disabled')
+            menu.add_command(label='     Auto-mix priority...',
+                             command=lambda: MixPriorityWindow.show(self))
         menu.add_separator()
         menu.add_command(label='@  Video links...', command=lambda: VideoLinksWindow.show(self, s))
         try:
@@ -3139,12 +3239,14 @@ class App(ctk.CTk):
         elif s and key == 'check':
             hint = 'Select'
         elif s and key == 'vtype':
-            hint = ('Choose which video type to use' if len(mvdb.available_types(s.mv)) > 1
+            hint = ('Choose which video type to use'
+                    if len(mvdb.available_types(s.mv)) > 1 or mvdb.can_mix(s.mv)
                     else 'Video links')
         elif s and key and key in self._actions_of(s):
             hint = _ACTIONS[key][1]
             if key == 'play' and s.review and not s.has_video:
-                hint = 'Play the downloaded video (not cut yet)'
+                hint = ('Play the base video (not mixed yet: Export as MP4 shows the mix)'
+                        if s.review.get('mix') else 'Play the downloaded video (not cut yet)')
             if key == 'play' and s.has_video:
                 hint = 'Play the exported video'
             if key in ('mp4', 'webm') and s.review and s.review.get('rendered'):
@@ -3154,8 +3256,10 @@ class App(ctk.CTk):
             if key == 'webm' and s.webm_queued:
                 hint = 'Remove from the WebM queue'
             if key == 'download':
-                hint = f'Download the {mvdb.chosen_type(s.mv)} video from the database' + \
-                    (' again' if (s.has_video or s.review) else '')
+                hint = (f'Download the {len(mvdb.mix_videos(s.mv))} linked videos and '
+                        f'auto-mix them' if mvdb.chosen_type(s.mv) == mvdb.AUTO_MIX
+                        else f'Download the {mvdb.chosen_type(s.mv)} video from the database'
+                        ) + (' again' if (s.has_video or s.review) else '')
         cursor = 'hand2' if hint else ''
         if str(self._tree.cget('cursor')) != cursor:
             self._tree.configure(cursor=cursor)
@@ -3272,7 +3376,9 @@ class App(ctk.CTk):
         v = mvdb.chosen_video(s.mv)
         if not (v and mvdb.vid(v)):
             return
-        what = f'the {mvdb.chosen_type(s.mv)} video ({mvdb.short_url(mvdb.vid(v))})'
+        what = (f'the {len(mvdb.mix_videos(s.mv))} linked videos (auto-mix)'
+                if mvdb.chosen_type(s.mv) == mvdb.AUTO_MIX
+                else f'the {mvdb.chosen_type(s.mv)} video ({mvdb.short_url(mvdb.vid(v))})')
         if s.review and not s.has_video:
             if not messagebox.askyesno(
                     'Download again?',
