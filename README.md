@@ -52,7 +52,7 @@ CON songs don't render right away. After the download the song shows **Review do
 - **🗑** clear cache: delete the song's kept original download (see below)
 - **@** video links for the song (see [the music video database](#the-music-video-database))
 
-Exporting keeps the original download in the cache (in the app's data folder), so you can export a quick MP4 to check the result (auto-edit included) and then the WebM, without downloading again. **Add WebM to queue** collects songs and the green **Export N WebMs** button renders them all. **🗑 Clear cache** in the bottom bar deletes every kept download.
+Exporting keeps the original download in the cache (in the app's data folder), so you can export a quick MP4 to check the result (auto-edit included) and then the WebM, without downloading again. **Queue as MP4** / **Queue as WebM** put songs in the export queue and the green **▶ Start export** renders them one at a time; while it's on, songs queued later export too, and **⏸ Pause export** lets the current file finish and keeps the rest queued; **☰ Queue** lists what's queued and exporting (click a song to show it in the table). If the song already has the other format, queuing asks whether to replace it or keep both; the log (**Show log**) lists each export's size so you can compare MP4 and WebM. Closing the app while a video exports asks whether to quit now, after the current file or after the queue. **🗑 Clear cache** in the bottom bar deletes every kept download.
 
 The **▾** next to the start button picks what it does with CON songs: **Search & Review** (the above), **Download → WebM** or **Download → MP4** (each song is exported as soon as its download is ready, while the next ones download; a download that couldn't be synced stays for review instead). With **Shut down when done**, Download → WebM shuts down after the last export. **Select with links** selects the songs in view whose Video type has a database link, the ones downloaded without a YouTube search.
 
@@ -109,9 +109,11 @@ from the first half of the video instead of going black.
 
 </details>
 
-From the command line it also works on any video/audio pair, and exports
-the edit as a Premiere/Resolve XML or an [auto-editor](https://github.com/WyattBlue/auto-editor)
-timeline to fine tune by hand. `aspectcrop.py` does the black bar crop on
+When the auto-edit can't get a song right, **Editor** hands it to a video
+editor: pick Premiere Pro, DaVinci Resolve, Final Cut Pro, Shotcut or
+[auto-editor](https://github.com/WyattBlue/auto-editor) and it makes a
+folder with the video, the CON audio and the edit as a timeline, to finish
+by hand. From the command line it also works on any video/audio pair. `aspectcrop.py` does the black bar crop on
 its own. See [AUTOEDIT.md](AUTOEDIT.md).
 
 ## The music video database
@@ -135,7 +137,8 @@ gets linked). In the song list:
   the offset, or **No Entry**. Click it to pick another type; click the
   header to sort. A CON song with 2+ links can pick **auto-mix**: the
   official video with the movie / game clips that use the song put in where
-  they fit (order in **Auto-mix priority...**, meme on top by default).
+  they fit (meme on top by default; **Auto-mix priority...** orders the
+  song's videos, listed by their YouTube titles).
 - **Open in browser** shows the YouTube title of that video and opens it.
 - **@** opens the song's video links: every type with its link, **Edit** for a
   wrong one, **Set link** for a missing one, and **Search on YouTube**. Memes

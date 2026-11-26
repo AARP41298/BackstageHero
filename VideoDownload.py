@@ -910,12 +910,23 @@ def _con_automix(con, song_id, entry, work, quality):
         print('Downloading ' + what)
         sub = os.path.join(work, f'mix{k}')
         os.makedirs(sub, exist_ok=True)
-        try:
-            download_video(sub, watch_url(mvdb.vid(v)), fmt)
-        except BotDetected:
-            raise
-        except Exception as e:
-            print(f'  Could not download {what}, leaving it out ({e})')
+        # YouTube sometimes answers "not available" for a video that downloads
+        # fine a moment later: one more try before leaving it out of the mix
+        err = None
+        for attempt in range(2):
+            try:
+                download_video(sub, watch_url(mvdb.vid(v)), fmt)
+                err = None
+                break
+            except BotDetected:
+                raise
+            except Exception as e:
+                err = e
+                if attempt == 0:
+                    print(f'  Could not download {what} ({e}), trying again')
+                    time.sleep(5)
+        if err is not None:
+            print(f'  Could not download {what}, leaving it out ({err})')
             continue
         got.append((v, os.path.join(sub, 'video.mp4')))
 

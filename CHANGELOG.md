@@ -2,6 +2,58 @@
 
 ## Unreleased
 
+- The original Rock Band songs' **crowd** (the audience cheering and singing
+  along) is left out of the CON audio for the sync, the auto-edit, 🎧,
+  Preview and Editor: it isn't in any video and threw the matching off.
+  Kept downloads are re-checked with the new audio when exported or with
+  ↺ Auto-sync.
+- **Editor** next to Preview: for the songs the auto-edit can't get right,
+  asks the editor (Premiere Pro, DaVinci Resolve, Final Cut Pro, Shotcut or
+  auto-editor, the formats auto-editor's `--export` has) and a folder, then
+  makes a folder with the video (every video for an auto-mix), the CON audio
+  and the edit as a timeline, plus a HOW TO.txt. The videos' Opus audio is
+  converted to AAC so Premiere can import them, and the CON audio is a
+  normal stereo WAV laid out the way Premiere expects. Timelines of 29.97 fps
+  videos no longer drift (the rate was rounded to 30).
+- **Auto-mix priority...** is per song now: it lists only the song's linked
+  videos, each meme link on its own row with its YouTube title, and marks
+  the ones the downloaded mix couldn't use (not downloadable, or no part
+  fits). The order applies to the next ⬇ Download.
+- **☰ Queue**: click a song's format (WEBM / MP4) to switch it, with the
+  same replace / keep both questions. A song waiting for its turn keeps its
+  place; the one exporting can't be switched.
+- **Preview** next to Queue as MP4 / WebM: a quick 480p render of the edit
+  (about 10-20 s instead of minutes), played in the 🎧 window with the CON
+  audio on the left and the video's audio on the right. It's only for
+  checking the sync: nothing is exported next to the CON.
+- **Duplicates** filter: shows the songs that are in more than one place (a
+  CON and a song folder, two packs, a backup folder), and lists every copy
+  in the log.
+- Auto-edit fixes: when the video starts after the song (the chart's
+  count-in), the edit now starts later instead of slowing the whole video
+  down (Rap God was 3 s early at the start; ~40 cached songs had this). The
+  count-in's stick hits no longer count as music, so the count-in stays
+  black instead of reusing footage (The Real Slim Shady). The speed of each
+  piece ignores the count-in and the outro, so a video at the song's own
+  tempo isn't slowed a little (Quevedo, Ahora te Puedes Marchar).
+- **↺ Auto-sync** on CON songs with a kept download re-checks their
+  auto-edit (one at a time, the button stops it). Songs whose exported video
+  has an older edit go into the export queue as the same format: select all,
+  ↺ Auto-sync, then Start export. Exporting a kept download also re-runs an
+  outdated auto-edit first.
+- Export queue: **Queue as MP4** / **Queue as WebM** (MP4 no longer exports
+  right away). **Start export** renders the queue one at a time and keeps
+  going with songs queued later, **Pause export** stops after the current
+  file. **☰ Queue** lists what's queued and exporting. Folder / pack rows say what's exporting
+  or queued inside them, even when closed.
+- Queuing a song that already has a video of the other format (MP4 / WebM)
+  asks whether to replace it or keep both. The log shows each export's size,
+  MB per minute and render time, next to the other format's size.
+- Closing the app while a video exports asks: quit now, after the current
+  file, or after the queue.
+- **Expand all** / **Collapse all** buttons for the folder and pack groups.
+- 🎧 on every CON song: without a video it plays the CON audio.
+- Search ignores accents ("zoe" finds "Zoé").
 - A song can have several meme links: the @ window lists each one (✎ Edit,
   🗑, ☆) and **+ Add meme link** adds another. The ☆ picks the meme used for
   the meme type; auto-mix uses them all.

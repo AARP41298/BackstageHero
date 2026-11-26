@@ -142,8 +142,10 @@ White Chicks. Add those clips as `meme` videos next to the official one; a
 song may have several videos of one type, auto-mix uses them all.
 
 The order is **meme > fan > alternate > official** (the meme on top, the
-official video as the base), changed in **Auto-mix priority...** in the same
-menu. See [AUTOEDIT.md](AUTOEDIT.md#auto-mix).
+official video as the base). **Auto-mix priority...** in the same menu
+changes it for one song: it lists that song's linked videos (each meme link
+on its own row, with its YouTube title) to move up or down. That order is
+saved on your PC only, like the Video type pick. See [AUTOEDIT.md](AUTOEDIT.md#auto-mix).
 
 ## How BackstageHero uses it
 

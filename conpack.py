@@ -22,6 +22,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import threading
 
 import updater
 
@@ -263,11 +264,101 @@ def mogg_to_ogg(mogg, ogg):
     return _ogg_channels(data, start)
 
 
-def mix_reference(ogg, channels, out_wav):
+def _dta_tree(text):
+    """songs.dta parsed into nested lists ('quoted' and "string" atoms keep
+    their text, numbers stay strings); ';' comments dropped."""
+    tokens = re.findall(r'"(?:[^"\\]|\\.)*"|;[^\n]*|[()\[\]{}]|[^\s()\[\]{};"]+', text)
+    root, stack = [], []
+    cur = root
+    for t in tokens:
+        if t.startswith(';'):
+            continue
+        if t in '([{':
+            stack.append(cur)
+            cur.append([])
+            cur = cur[-1]
+        elif t in ')]}':
+            if stack:
+                cur = stack.pop()
+        else:
+            cur.append(t.strip('\'"') if t[:1] in '\'"' else t)
+    return root
+
+
+def _find_key(node, key):
+    """The first (key ...) list anywhere under node, or None."""
+    for item in node:
+        if isinstance(item, list):
+            if item and item[0] == key:
+                return item
+            hit = _find_key(item, key)
+            if hit is not None:
+                return hit
+    return None
+
+
+def _ints(node):
+    out = []
+    for x in node:
+        if isinstance(x, list):
+            out += _ints(x)
+        elif re.fullmatch(r'\d+', x):
+            out.append(int(x))
+    return out
+
+
+def crowd_channels_in(dta_text, song_id):
+    """The song's crowd_channels in a songs.dta (mogg channel numbers), [] if none."""
+    for entry in _dta_tree(dta_text):
+        if isinstance(entry, list) and entry and isinstance(entry[0], str) \
+                and entry[0].lower() == song_id.lower():
+            hit = _find_key(entry, 'crowd_channels')
+            return _ints(hit[1:]) if hit else []
+    return []
+
+
+_crowd_cache = {}
+
+
+def crowd_channels(con, song_id):
+    """The song's crowd channels (the audience cheering and singing along in
+    the original Rock Band songs), read from the CON's songs.dta through
+    Nautilus. They aren't in any video, so the sync and the edits leave them
+    out. [] when the song has none or the DTA can't be read."""
+    try:
+        st = os.stat(con)
+        key = (os.path.abspath(con).lower(), st.st_size, int(st.st_mtime))
+    except OSError:
+        return []
+    text = _crowd_cache.get(key)
+    if text is None:
+        tmp = tempfile.mkdtemp(prefix='bh_dta_')
+        try:
+            out = os.path.join(tmp, 'songs.dta')
+            _run_nautilus(['dta', con, out], out)
+            with open(out, 'rb') as f:
+                raw = f.read()
+            text = raw.decode('utf-8', errors='replace') if b'utf8' in raw[:4096].lower() \
+                or b'utf-8' in raw[:4096].lower() else raw.decode('latin-1')
+        except Exception as e:
+            print(f'  Crowd channels: could not read songs.dta ({e}), using every channel')
+            text = ''
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+        _crowd_cache[key] = text
+    try:
+        return crowd_channels_in(text, song_id)
+    except Exception:
+        return []
+
+
+def mix_reference(ogg, channels, out_wav, skip=()):
     """All tracks at -5 dB summed to mono, as float WAV so the sum can't clip.
-    This is what the fingerprinter compares the YouTube audio against."""
+    This is what the fingerprinter compares the YouTube audio against.
+    skip: channels left out (the crowd)."""
     channels = channels or 2
-    terms = '+'.join(f'{TRACK_GAIN:.4f}*c{i}' for i in range(channels))
+    keep = [i for i in range(channels) if i not in set(skip)] or list(range(channels))
+    terms = '+'.join(f'{TRACK_GAIN:.4f}*c{i}' for i in keep)
     subprocess.run(
         ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', ogg,
          '-af', f'pan=mono|c0={terms}', '-c:a', 'pcm_f32le', out_wav],
@@ -276,13 +367,17 @@ def mix_reference(ogg, channels, out_wav):
 
 
 def prepare_song_audio(con, song_id, folder):
-    """Decrypt the song's mogg via Nautilus and leave song.wav in folder."""
+    """Decrypt the song's mogg via Nautilus and leave song.wav in folder,
+    without the crowd channels (crowd_channels)."""
     mogg = os.path.join(folder, 'song.mogg')
     _run_nautilus(['extract', con, song_id, mogg], mogg)
     ogg = os.path.join(folder, 'song.ogg.tmp')
     try:
         channels = mogg_to_ogg(mogg, ogg)
-        mix_reference(ogg, channels, os.path.join(folder, 'song.wav'))
+        crowd = [c for c in crowd_channels(con, song_id) if c < (channels or 2)]
+        if crowd:
+            print(f'  Crowd channels {", ".join(map(str, crowd))} left out of the song audio')
+        mix_reference(ogg, channels, os.path.join(folder, 'song.wav'), skip=crowd)
     finally:
         for p in (mogg, ogg):
             if os.path.exists(p):
@@ -366,13 +461,28 @@ def listen_mix(con, song_id, video, out):
     channel and the video's own audio on the right, both normalized, so you
     hear whether they line up. The video stream is copied, so this only takes
     as long as decrypting the mogg and mixing the audio. Written to out (.mkv).
-    Returns video_info(video)."""
-    info = video_info(video)
+    Returns video_info(video).
+    video=None (the song has no video yet): just the CON audio, in both ears."""
+    info = video_info(video) if video else {'w': 0, 'h': 0, 'audio': False,
+                                             'duration': None}
     tmp = tempfile.mkdtemp(prefix='bh_listen_')
     try:
         prepare_song_audio(con, song_id, tmp)
         ref = os.path.join(tmp, 'song.wav')
         mono = 'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=mono,dynaudnorm'
+        if not video:
+            r = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y',
+                                '-i', ref, '-filter_complex',
+                                f'[0:a]{mono},pan=stereo|FL=c0|FR=c0[a]',
+                                '-map', '[a]', '-c:a', 'pcm_s16le', out],
+                               capture_output=True, text=True, errors='replace',
+                               creationflags=NO_WINDOW)
+            if r.returncode != 0 or not os.path.exists(out):
+                msg = r.stderr.strip().splitlines()
+                raise Exception('Could not read the audio: ' + (msg[-1] if msg else
+                                                               f'exit code {r.returncode}'))
+            info['duration'] = _duration(ref)
+            return info
         if info['audio']:
             graph = (f'[1:a]{mono},apad[l];[0:a]{mono},apad[r];'
                      '[l][r]amerge=inputs=2,aformat=channel_layouts=stereo[a]')
@@ -454,21 +564,68 @@ def _duration(path):
     return None
 
 
-def _run_ffmpeg(cmd, total_seconds, on_progress):
-    """Run ffmpeg, calling on_progress(0..1) from its -progress output."""
+_running_procs = set()      # ffmpeg renders in progress, for kill_renders()
+_preview_procs = set()      # Preview renders: not stopped by cancel_render()
+_cancel = threading.Event()  # cancel_render(): the running render stops
+
+
+class RenderCancelled(Exception):
+    """The running render was cancelled from the export queue."""
+
+
+def cancel_render():
+    """Stop the running render (✕ in the export queue). It raises
+    RenderCancelled, its .part file is removed and no later ffmpeg pass of
+    it starts (WebM pass 2). The render thread calls clear_cancel() before
+    the next one."""
+    _cancel.set()
+    for proc in list(_running_procs):
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
+
+def clear_cancel():
+    _cancel.clear()
+
+
+def kill_renders():
+    """Stop every running render (closing the app mid-export). The render
+    raises, and its .part file is removed."""
+    for proc in list(_running_procs | _preview_procs):
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
+
+def _run_ffmpeg(cmd, total_seconds, on_progress, export=True):
+    """Run ffmpeg, calling on_progress(0..1) from its -progress output.
+    export=False (Preview): the export queue's cancel doesn't touch it."""
+    procs = _running_procs if export else _preview_procs
+    if export and _cancel.is_set():
+        raise RenderCancelled()
     proc = subprocess.Popen(cmd[:1] + ['-progress', 'pipe:1', '-nostats'] + cmd[1:],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             text=True, errors='replace', creationflags=NO_WINDOW)
-    for line in proc.stdout:
-        if on_progress and total_seconds and line.startswith('out_time_us='):
-            try:
-                on_progress(int(line.split('=', 1)[1]) / 1e6 / total_seconds)
-            except ValueError:
-                pass   # 'N/A' before the first frame
-    err = proc.stderr.read()
-    if proc.wait() != 0:
+    procs.add(proc)
+    try:
+        for line in proc.stdout:
+            if on_progress and total_seconds and line.startswith('out_time_us='):
+                try:
+                    on_progress(int(line.split('=', 1)[1]) / 1e6 / total_seconds)
+                except ValueError:
+                    pass   # 'N/A' before the first frame
+        err = proc.stderr.read()
+        proc.wait()
+    finally:
+        procs.discard(proc)
+    if export and _cancel.is_set():
+        raise RenderCancelled()
+    if proc.returncode != 0:
         msg = err.strip().splitlines()
-        raise Exception('WebM encode failed: ' + (msg[-1] if msg else f'exit code {proc.returncode}'))
+        raise Exception('Encode failed: ' + (msg[-1] if msg else f'exit code {proc.returncode}'))
 
 
 def encode_synced_webm(src, offset_ms, dest, work, tag='', progress=None, crop=''):
@@ -543,7 +700,9 @@ def save_review(con, song_id, video_id, offset_ms, matched, title, autoedit=None
     offset is enough), which is what gets shared with the database."""
     state = {'video_id': video_id, 'offset': offset_ms, 'matched': matched, 'title': title}
     if autoedit:
+        import autoedit as ae
         state['autoedit'] = autoedit
+        state['plan_v'] = ae.PLAN_VERSION
     if mix:
         state['mix'] = mix
         state['base_plan'] = base_plan
@@ -634,20 +793,23 @@ def existing_video(con, song_id):
     return None
 
 
-def render(con, song_id, fmt, version, progress=None):
+def render(con, song_id, fmt, version, progress=None, keep_other=False):
     """Cut + encode the reviewed download next to the CON as <song id>.<fmt>
     ('webm' or 'mp4') and mark its YouTube ID good. The raw download stays in
     the cache (work_dir) so it can be exported again, e.g. a quick MP4 to check
     the auto-edit, then the WebM; clear_cache() removes it.
-    A previous video of the other format is removed so YARG has just one."""
+    A previous video of the other format is removed so YARG has just one,
+    unless keep_other (the user chose to keep both)."""
     state = load_review(con, song_id)
     if not state:
         raise Exception('no downloaded video to render')
     dest = video_path(con, song_id, fmt)
     work = work_dir(con, song_id)
     crop = bars_crop(state, work)
-    plan = state.get('autoedit')
     mix = state.get('mix')
+    if state.get('autoedit') and not mix:
+        _replan_if_old(con, song_id, state, work)
+    plan = state.get('autoedit')
     if plan and mix:
         files = [os.path.join(work, m['file']) for m in mix]
         crops = [crop] + [mix_crop(state, work, m['file']) for m in mix[1:]]
@@ -667,11 +829,328 @@ def render(con, song_id, fmt, version, progress=None):
             encode_synced_webm(state['raw'], state['offset'], dest, work, tag, progress, crop)
     record_contribution(con, song_id, state)
     other = video_path(con, song_id, 'mp4' if fmt == 'webm' else 'webm')
-    if os.path.exists(other):
+    if os.path.exists(other) and not keep_other:
         os.remove(other)
     mark_good(con, song_id, state['video_id'])
-    _update_state(work, rendered=fmt)
+    # the edit this export was made with (None: a plain offset), so a re-check
+    # knows whether the video next to the CON is outdated (export_outdated)
+    _update_state(work, rendered=fmt,
+                  rendered_segments=plan['segments'] if plan else None)
     return dest
+
+
+PREVIEW_HEIGHT = 480
+
+
+def preview_path(con, song_id):
+    return os.path.join(work_dir(con, song_id), 'preview.mkv')
+
+
+def render_preview(con, song_id, progress=None):
+    """A quick look at the edit before exporting: the same cut as render(),
+    at 480p with x264 ultrafast and no watermark, then the CON audio on the
+    left ear and the video's own audio on the right (listen_mix), so the
+    sync can be judged by eye and ear. Written to the work dir (preview.mkv),
+    never next to the CON: it isn't an export. Returns its path."""
+    import autoedit
+    state = load_review(con, song_id)
+    if not state:
+        raise Exception('no downloaded video to preview')
+    work = work_dir(con, song_id)
+    mix = state.get('mix')
+    if state.get('autoedit') and not mix:
+        _replan_if_old(con, song_id, state, work)
+    crop = bars_crop(state, work)
+    plan = state.get('autoedit')
+    scale = f'scale=-2:{PREVIEW_HEIGHT}'
+    fast = ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28',
+            '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k']
+    cut = os.path.join(work, 'preview_cut.mp4')
+    if plan:
+        src, size = state['raw'], None
+        if mix:
+            src = [os.path.join(work, m['file']) for m in mix]
+            crop = [crop] + [mix_crop(state, work, m['file']) for m in mix[1:]]
+            w, h = autoedit.frame_size(src[0], crop[0])
+            size = (max(2, round(w * PREVIEW_HEIGHT / h / 2) * 2), PREVIEW_HEIGHT)
+        cmd = autoedit.build_cmd(src, plan['segments'], keep_audio=True, crop=crop,
+                                 post='' if size else scale, size=size)
+        total = max(1.0, plan['segments'][-1]['ref_end'])
+    else:
+        offset = state.get('offset') or 0
+        pre, vf, af = [], [crop] if crop else [], []
+        if offset < 0:
+            pre = ['-ss', f'{-offset / 1000:.3f}']
+        elif offset > 0:
+            vf.append(f'tpad=start_duration={offset / 1000:.3f}:color=black')
+            af = ['-af', f'adelay={offset}:all=1']
+        vf.append(scale)
+        cmd = (['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y'] + pre
+               + ['-i', state['raw'], '-vf', ','.join(vf)] + af)
+        total = max(1.0, (_duration(state['raw']) or 1.0) + offset / 1000)
+    out = preview_path(con, song_id)
+    try:
+        _run_ffmpeg(cmd + fast + [cut], total,
+                    (lambda f: progress(0.9 * f)) if progress else None, export=False)
+        listen_mix(con, song_id, cut, out)
+    finally:
+        if os.path.exists(cut):
+            os.remove(cut)
+    if progress:
+        progress(1.0)
+    return out
+
+
+def editor_segments(state, song_len):
+    """The edit an export would make, as autoedit segments: the auto-edit
+    plan, or for a plain offset one piece (black first when the video starts
+    later, the video's start cut when it starts earlier)."""
+    plan = state.get('autoedit')
+    if plan and plan.get('segments'):
+        return plan['segments']
+    off = (state.get('offset') or 0) / 1000
+    ref0, vid0 = max(0.0, off), max(0.0, -off)
+    vlen = _duration(state['raw']) or song_len or 1.0
+    end = ref0 + max(0.1, vlen - vid0)
+    if song_len:
+        end = min(end, song_len)
+    end = max(end, ref0 + 0.1)
+    return [{'ref_start': round(ref0, 3), 'ref_end': round(end, 3), 'vid_start': round(vid0, 3),
+             'vid_end': round(vid0 + end - ref0, 3), 'speed': 1.0}]
+
+
+_EDITOR_VCODECS = ('h264', 'hevc')      # what every editor reads from an MP4
+_EDITOR_ACODECS = ('aac',)              # Premiere can't read Opus / Vorbis
+
+
+def _codecs(path):
+    """{'video': codec, 'audio': codec} of a file's first streams ('' if none)."""
+    out = {'video': '', 'audio': ''}
+    try:
+        r = subprocess.run(['ffprobe', '-v', 'error', '-show_entries',
+                            'stream=codec_type,codec_name', '-of', 'csv=p=0', path],
+                           capture_output=True, text=True, timeout=30, creationflags=NO_WINDOW)
+        for line in r.stdout.splitlines():
+            name, _, kind = line.strip().partition(',')
+            if kind in out and not out[kind]:
+                out[kind] = name
+    except Exception:
+        pass
+    return out
+
+
+def _editor_ok(c):
+    return c['video'] in _EDITOR_VCODECS and (not c['audio'] or c['audio'] in _EDITOR_ACODECS)
+
+
+def _editor_copy(src, dest):
+    """The download for an editor: yt-dlp's Opus audio becomes AAC (Premiere
+    can't import Opus) and a VP9 / AV1 video becomes H.264; streams that are
+    fine are copied as they are, so timing doesn't change. A copy already
+    there from an earlier export is kept when it is newer and editor-ready."""
+    if (os.path.exists(dest) and os.path.getmtime(dest) >= os.path.getmtime(src)
+            and _editor_ok(_codecs(dest))):
+        return
+    c = _codecs(src)
+    if _editor_ok(c):
+        shutil.copyfile(src, dest)
+        return
+    vcodec = (['-c:v', 'copy'] if c['video'] in _EDITOR_VCODECS else
+              ['-c:v', 'libx264', '-preset', 'fast', '-crf', '16', '-pix_fmt', 'yuv420p'])
+    acodec = ['-c:a', 'aac', '-b:a', '256k'] if c['audio'] else ['-an']
+    tmp = dest + '.tmp.mp4'
+    print(f'Editor copy: {os.path.basename(src)} ({c["video"]}/{c["audio"] or "no audio"}) '
+          f'-> {"H.264" if vcodec[1] != "copy" else c["video"]}/AAC')
+    try:
+        r = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', src,
+                            '-map', '0:v:0', '-map', '0:a:0?'] + vcodec + acodec
+                           + ['-movflags', '+faststart', tmp],
+                           capture_output=True, text=True, errors='replace',
+                           creationflags=NO_WINDOW)
+        if r.returncode != 0:
+            raise Exception('ffmpeg could not convert the video for the editor: '
+                            + (r.stderr.strip().splitlines() or ['?'])[-1])
+        os.replace(tmp, dest)
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+
+
+def _audio_layout(path):
+    """(codec, channels, sample rate) of a file's first audio stream."""
+    try:
+        r = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries',
+                            'stream=codec_name,channels,sample_rate', '-of', 'default=nw=1', path],
+                           capture_output=True, text=True, timeout=30, creationflags=NO_WINDOW)
+        d = dict(l.split('=', 1) for l in r.stdout.split() if '=' in l)
+        return d['codec_name'], int(d['channels']), int(d['sample_rate'])
+    except Exception:
+        return None
+
+
+def _editor_song_audio(con, song_id, dest):
+    """The CON audio for an editor: 16-bit 48 kHz stereo WAV (song.wav from
+    prepare_song_audio is the fingerprinter's mono float mix, which Premiere
+    doesn't load as the timeline expects), peak at -1 dB so nothing clips."""
+    tmp = tempfile.mkdtemp(prefix='bh_editor_')
+    try:
+        prepare_song_audio(con, song_id, tmp)
+        src = os.path.join(tmp, 'song.wav')
+        r = subprocess.run(['ffmpeg', '-hide_banner', '-i', src, '-af', 'volumedetect',
+                            '-f', 'null', os.devnull], capture_output=True, text=True,
+                           errors='replace', creationflags=NO_WINDOW)
+        m = re.search(r'max_volume:\s*(-?[\d.]+) dB', r.stderr)
+        gain = -1.0 - float(m.group(1)) if m else 0.0
+        r = subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', src,
+                            '-af', f'volume={gain:.2f}dB', '-ac', '2', '-ar', '48000',
+                            '-c:a', 'pcm_s16le', dest], capture_output=True, text=True,
+                           errors='replace', creationflags=NO_WINDOW)
+        if r.returncode != 0:
+            raise Exception('ffmpeg could not write song.wav: '
+                            + (r.stderr.strip().splitlines() or ['?'])[-1])
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def export_to_editor(con, song_id, fmt, folder, name, progress=None):
+    """Hand the song to a video editor for a manual FMV: folder gets a copy of
+    the kept download (and an auto-mix's other videos), the CON audio
+    (song.wav, the timeline's audio track) and the edit as a timeline in fmt
+    (an autoedit.EDITOR_FORMATS key), plus HOW TO.txt. The edit starts from
+    what an export would render. Returns the timeline's path."""
+    import autoedit
+    state = load_review(con, song_id)
+    if not state:
+        raise Exception('no downloaded video to export')
+    work = work_dir(con, song_id)
+    mix = state.get('mix')
+    if state.get('autoedit') and not mix:
+        _replan_if_old(con, song_id, state, work)
+    label, ext, how = autoedit.EDITOR_FORMATS[fmt]
+    os.makedirs(folder, exist_ok=True)
+    step = (lambda f: progress(f)) if progress else (lambda f: None)
+    files = [m['file'] for m in mix] if mix else ['video.mp4']
+    videos = []
+    for k, f in enumerate(files):
+        dest = os.path.join(folder, f)
+        src = os.path.join(work, f)
+        _editor_copy(src, dest)
+        videos.append(dest)
+        step(0.5 * (k + 1) / len(files))
+    audio = os.path.join(folder, 'song.wav')
+    _editor_song_audio(con, song_id, audio)     # always fresh (an old one may have the crowd)
+    step(0.9)
+    segs = editor_segments(state, _duration(audio))
+    safe = re.sub(r'[<>:"/\\|?*]+', '_', name).strip(' .') or song_id
+    timeline = autoedit.export_timeline(fmt, videos, segs, os.path.join(folder, safe + ext),
+                                        audio=audio, name=name)
+    crops = [bars_crop(state, work)]
+    if mix:
+        crops += [mix_crop(state, work, m['file']) for m in mix[1:]]
+    lines = [name, '', f'Open in {label}: {how}', '',
+             'The timeline starts from the edit BackstageHero would export:',
+             '  audio track: song.wav, the CON audio (the chart timing)',
+             '  video track: ' + ', '.join(files)
+             + (' (their own audio on A3/A4, linked, clips disabled: enable them to'
+                ' sync by ear)' if fmt in ('premiere', 'resolve') else
+                ' (their own audio left off)'), '']
+    plan = state.get('autoedit')
+    if plan and plan.get('log'):
+        lines += ['Auto-edit log:'] + ['  ' + e['text'] for e in plan['log']] + ['']
+    elif not plan:
+        lines += [f'One piece, offset {state.get("offset") or 0} ms.', '']
+    if any(crops):
+        lines += ['Black bars BackstageHero would crop (ffmpeg crop=w:h:x:y):']
+        lines += [f'  {f}: {c or "none"}' for f, c in zip(files, crops)] + ['']
+    lines += ['Frame holds are 1x clips from the held frame: freeze them if you like.', '',
+              'When done, export the video (YARG: WebM VP8 + Opus, or MP4) next to the CON as',
+              f'  {video_path(con, song_id, "webm")}',
+              'A video exported from an editor counts as not made by BackstageHero',
+              '(the app asks twice before replacing it).']
+    with open(os.path.join(folder, 'HOW TO.txt'), 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lines) + '\n')
+    step(1.0)
+    return timeline
+
+
+def _same_plan(a, b):
+    """True when two plans cut the video the same way (to 0.1 s / 0.2 % speed)."""
+    sa, sb = a.get('segments') or [], b.get('segments') or []
+    if len(sa) != len(sb):
+        return False
+    for x, y in zip(sa, sb):
+        if any(abs(x[k] - y[k]) > 0.1 for k in ('ref_start', 'ref_end', 'vid_start', 'vid_end')):
+            return False
+        if abs(x.get('speed', 1) - y.get('speed', 1)) > 0.002 or bool(x.get('hold')) != bool(y.get('hold')):
+            return False
+    return True
+
+
+def replan(con, song_id, state=None):
+    """Re-run the auto-edit of a kept download whose plan was made by an older
+    version of its rules (autoedit.PLAN_VERSION): the same version gives the
+    same plan. Updates state (and state.json). Returns (result, text):
+      'current'  the plan is up to date      'changed'  new plan saved
+      'same'     re-planned, same edit       'kept'     no confident match /
+      'skip'     no auto-edit plan, or an               failed: old plan kept
+                 auto-mix (not re-planned)"""
+    import autoedit
+    state = state if state is not None else load_review(con, song_id)
+    if not state or not state.get('autoedit'):
+        return 'skip', 'no auto-edit (plain offset)'
+    if state.get('mix'):
+        return 'skip', 'auto-mix (not re-planned)'
+    if state.get('plan_v', 1) >= autoedit.PLAN_VERSION:
+        return 'current', 'auto-edit up to date'
+    work = work_dir(con, song_id)
+    print('Auto-edit: plan made by an older version, re-planning')
+    tmp = tempfile.mkdtemp(prefix='bh_replan_')
+    try:
+        prepare_song_audio(con, song_id, tmp)
+        plan = autoedit.plan(os.path.join(tmp, 'song.wav'), state['raw'])
+        if not plan['ok']:
+            print('  Auto-edit: no confident match now, keeping the saved plan')
+            return 'kept', 'no confident match now, old edit kept'
+        plan['log'] = autoedit.edit_log(plan['segments'], _duration(state['raw']))
+        print('  Auto-edit: ' + plan['info'])
+        for e in plan['log']:
+            print('    ' + e['text'])
+        same = _same_plan(state['autoedit'], plan)
+        extra = {}
+        if state.get('rendered') and 'rendered_segments' not in state:
+            # exported before exports recorded their edit: it used this plan
+            extra['rendered_segments'] = state['rendered_segments'] = \
+                state['autoedit']['segments']
+        state['autoedit'], state['plan_v'] = plan, autoedit.PLAN_VERSION
+        _update_state(work, autoedit=plan, plan_v=autoedit.PLAN_VERSION, **extra)
+        return ('same', 'same edit') if same else ('changed', plan['info'])
+    except Exception as e:
+        print('  Auto-edit: re-plan failed (' + str(e) + '), keeping the saved plan')
+        return 'kept', f're-plan failed ({e})'
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def export_outdated(state):
+    """True when the song was exported with a different edit than its saved
+    plan now has (a re-check changed it). Unknown (an export older than this
+    record that was never re-planned) is False."""
+    if not state or not state.get('rendered') or 'rendered_segments' not in state:
+        return False
+    done = state.get('rendered_segments')
+    plan = state.get('autoedit')
+    if not done or not plan:
+        return bool(done) != bool(plan)
+    return not _same_plan({'segments': done}, plan)
+
+
+def _replan_if_old(con, song_id, state, work):
+    """Before an export: re-plan an outdated auto-edit (see replan). On any
+    failure the saved plan is used."""
+    try:
+        replan(con, song_id, state)
+    except Exception as e:
+        print('  Auto-edit: re-plan failed (' + str(e) + '), keeping the saved plan')
 
 
 def _update_state(work, **values):

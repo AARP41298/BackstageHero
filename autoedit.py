@@ -57,6 +57,15 @@ BAD_MATCH = 0.6            # path cost / typical cost above this -> wrong video
 ANCHOR_MIN = 8.0           # seconds; the first/last pieces this long are the song's body
 HOLD_MAX = 3.0             # seconds; edge gaps up to this hold a frame instead of reusing
 
+# Bump when plan() would give a different edit for the same audio: an export
+# re-plans downloads whose saved plan is older (conpack.render). Plans saved
+# without a version are 1.
+#   2: the count-in's stick hits no longer count as music (_music)
+#   3: a first line starting before the video starts later, not slower (_segments)
+#   4: lines ignore the frames off them (count-in, outro) when fitting the speed
+#   5: CON audio without the crowd channels (conpack.crowd_channels)
+PLAN_VERSION = 5
+
 # auto-mix (see mix())
 MIX_GOOD = 0.6             # an overlay frame fits below this share of a random pairing's cost
 MIX_EXTEND = 0.8           # once a fit is found, its line runs on while below this
@@ -188,12 +197,32 @@ def _fit_pieces(path, jumps):
     return pieces
 
 
+def _robust_line(xs, ys):
+    """Line through a piece of the path, ignoring the frames that are off it:
+    the count-in (the path waits on the video's first frame), an outro past
+    the video's end. A plain fit tilts toward them: Quevedo's constant -4.00 s
+    came out as speed 0.9976, 0.25 s off at the start and drifting again from
+    the middle. Refit on the frames within LINE_TOLERANCE of the line."""
+    slope, icpt = np.polyfit(xs, ys, 1)
+    tol = LINE_TOLERANCE * FPS
+    for _ in range(4):
+        keep = np.abs(ys - (slope * xs + icpt)) <= tol
+        if keep.sum() < max(3, len(xs) // 2):
+            break
+        s2, i2 = np.polyfit(xs[keep], ys[keep], 1)
+        done = abs(s2 - slope) < 1e-5 and abs(i2 - icpt) < 0.01
+        slope, icpt = s2, i2
+        if done:
+            break
+    return slope, icpt
+
+
 def _segments(path, pieces):
     segs = []
     for a, b in pieces:
         xs = np.arange(a, b)
         if b - a >= 3:
-            slope, icpt = np.polyfit(xs, path[a:b].astype(float), 1)
+            slope, icpt = _robust_line(xs, path[a:b].astype(float))
         else:
             slope, icpt = 1.0, float(path[a]) - a
         if not (1 - MAX_SPEED_DEV <= slope <= 1 + MAX_SPEED_DEV):
@@ -229,6 +258,16 @@ def _segments(path, pieces):
                 continue
         merged.append(s)
 
+    # the first line may start before the video does (the chart's count-in is
+    # longer than the video's pre-roll): start it later in the song, at the
+    # same speed. Clamping vid_start to 0 instead stretched it into a slowdown
+    # (Rap God: 3.2 s late became -0.87 % over the whole song, 3 s off at the start)
+    f = merged[0]
+    if f['vid_start'] < 0 and f['vid_end'] > 0:
+        sp = (f['vid_end'] - f['vid_start']) / max(1e-6, f['ref_end'] - f['ref_start'])
+        if sp > 0:
+            f['ref_start'] = min(f['ref_end'], f['ref_start'] - f['vid_start'] / sp)
+            f['vid_start'] = 0.0
     for s in merged:
         s['vid_start'] = max(0.0, s['vid_start'])
         s['speed'] = round((s['vid_end'] - s['vid_start']) /
@@ -276,9 +315,7 @@ def plan(reference_audio, video_audio):
 
     path, jumps = _viterbi(cost)
     segs = _segments(path, _fit_pieces(path, jumps))
-    # where the chart audio has music (the count-in before it is near silent)
-    loud = ref_e > max(np.median(ref_e) * 0.03, ref_e.max() * 1e-4)
-    segs = _fix_edges(segs, cost, len(path) / FPS, cost.shape[1] / FPS, loud)
+    segs = _fix_edges(segs, cost, len(path) / FPS, cost.shape[1] / FPS, _music(ref_e))
     for sg in segs:
         sg['match'] = _seg_cost(sg, cost)
     mean_cost = float(cost[np.arange(len(path)), path][~quiet].mean())
@@ -336,6 +373,23 @@ def _match_region(cost, r0, r1, v0, v1):
         sg['vid_start'] = round(sg['vid_start'] + v0 / FPS, 3)
         sg['vid_end'] = round(sg['vid_end'] + v0 / FPS, 3)
     return segs
+
+
+MUSIC_FLOOR = 0.008  # share of the song's median energy; see _music
+MUSIC_WINDOW = 1.0   # seconds
+
+
+def _music(ref_e):
+    """Frames where the chart audio has music. Loudness alone can't tell: a
+    count-in's hits peak at up to 0.13 of the median (The Real Slim Shady) and
+    a quiet guitar intro sits at 0.03 (Wanted Dead or Alive). But between the
+    hits a count-in drops to silence (<= 0.002), while music keeps sounding:
+    music is where the quietest fifth of the next second stays above MUSIC_FLOOR."""
+    w = max(1, int(round(MUSIC_WINDOW * FPS)))
+    e = np.concatenate([ref_e, np.zeros(w - 1, ref_e.dtype)])
+    floor = np.percentile(np.lib.stride_tricks.sliding_window_view(e, w), 20, axis=1)
+    lvl = max(float(np.median(ref_e)) * MUSIC_FLOOR, float(ref_e.max()) * 1e-4)
+    return floor > lvl
 
 
 def _hold(ref_start, ref_end, at):
@@ -878,6 +932,11 @@ def auto_editor_args(entries):
 
 
 # Timeline exports (to fine-tune the edit in an NLE)
+#
+# The same formats auto-editor's --export offers. Every export puts the chart
+# audio on the audio track and the edit's pieces of video on the video track
+# (the videos' own audio is left off / muted: the chart audio is what counts).
+# A frame hold becomes a 1x clip from that frame; a count-in is a gap (black).
 
 def _probe_video(path):
     out = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0',
@@ -886,8 +945,12 @@ def _probe_video(path):
                          creationflags=_NO_WINDOW).stdout
     d = dict(l.split('=', 1) for l in out.split() if '=' in l)
     num, den = (d.get('r_frame_rate', '30/1').split('/') + ['1'])[:2]
+    num, den = int(num or 30), max(1, int(den or 1))
+    fps = round(num / den) or 30
+    ntsc = den == 1001 and fps in (24, 30, 60)       # 23.976 / 29.97 / 59.94
     return {'width': int(d.get('width', 1920)), 'height': int(d.get('height', 1080)),
-            'fps': round(int(num) / max(1, int(den))) or 30,
+            'fps': fps, 'ntsc': ntsc,
+            'rate': (fps * 1000, 1001) if ntsc else (fps, 1),   # exact frame rate
             'duration': float(d.get('duration', 0) or 0)}
 
 
@@ -902,31 +965,79 @@ def frame_size(video, crop=''):
     return max(2, w - w % 2), max(2, h - h % 2)
 
 
+# key -> (menu label, file extension, what opens it)
+EDITOR_FORMATS = {
+    'premiere': ('Adobe Premiere Pro', '.xml',
+                 'File > Import, pick the .xml (Final Cut Pro 7 XML)'),
+    'resolve':  ('DaVinci Resolve', '.xml',
+                 'File > Import > Timeline, pick the .xml (Final Cut Pro 7 XML)'),
+    'final-cut-pro': ('Final Cut Pro', '.fcpxml', 'File > Import > XML, pick the .fcpxml'),
+    'shotcut':  ('Shotcut', '.mlt', 'File > Open, pick the .mlt'),
+    'v3':       ('auto-editor (v3 timeline)', '.v3',
+                 'auto-editor timeline.v3 -o out.mp4  (or --export <editor>)'),
+}
+
+
+def _clips(videos, segments, fps_exact):
+    """Each segment as frame numbers at the sequence rate:
+    (k, src index, start, end, source in, speed). Source in counts
+    speed-scaled frames, the way auto-editor writes it."""
+    out = []
+    for k, sg in enumerate(segments, 1):
+        sp = 1.0 if sg.get('hold') else max(1e-6, sg['speed'])
+        start = round(sg['ref_start'] * fps_exact)
+        end = max(start + 1, round(sg['ref_end'] * fps_exact))
+        src = min(sg.get('src', 0), len(videos) - 1)
+        out.append((k, src, start, end, round(sg['vid_start'] * fps_exact / sp), sp))
+    return out
+
+
+def _videos(video):
+    return [video] if isinstance(video, str) else list(video)
+
+
+def _timeline_info(videos, segments, audio, fps):
+    info = _probe_video(videos[0])
+    if fps:
+        info.update(fps=fps, ntsc=False, rate=(fps, 1))
+    num, den = info['rate']
+    exact = num / den
+    total = round(segments[-1]['ref_end'] * exact)
+    if audio:
+        total = max(total, round(_audio_duration(audio) * exact))
+    return info, exact, total
+
+
+def _audio_duration(path):
+    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+                          '-of', 'default=nw=1:nk=1', path], capture_output=True, text=True,
+                         creationflags=_NO_WINDOW).stdout
+    try:
+        return float(out.strip())
+    except ValueError:
+        return 0.0
+
+
 def export_v3(video, segments, dest, audio=None, fps=None):
     """auto-editor v3 timeline. Render it or convert it with auto-editor:
         auto-editor timeline.v3 -o out.mp4
         auto-editor timeline.v3 --export premiere -o timeline.xml
-    """
-    info = _probe_video(video)
-    fps = fps or info['fps']
-    v_clips, a_clips = [], []
-    for sg in segments:
-        if sg.get('hold'):
-            sg = dict(sg, speed=1.0)     # a frame hold: a 1x clip from that frame
-        start = round(sg['ref_start'] * fps)
-        dur = max(1, round(sg['ref_end'] * fps) - start)
-        clip = {'src': os.path.abspath(video), 'start': start, 'dur': dur,
-                # offset is in speed-scaled frames, like auto-editor writes it
-                'offset': round(sg['vid_start'] * fps / max(1e-6, sg['speed'])),
-                'stream': 0}
-        if abs(sg['speed'] - 1.0) > SPEED_EPS:
-            clip['effects'] = [f"speed:{sg['speed']:.4f}"]
+    video: one file, or the auto-mix's list (a segment's 'src' picks one)."""
+    videos = _videos(video)
+    info, exact, total = _timeline_info(videos, segments, audio, fps)
+    num, den = info['rate']
+    v_clips = []
+    for k, src, start, end, cin, sp in _clips(videos, segments, exact):
+        clip = {'src': os.path.abspath(videos[src]), 'start': start, 'dur': end - start,
+                'offset': cin, 'stream': 0}
+        if abs(sp - 1.0) > SPEED_EPS:
+            clip['effects'] = [f'speed:{sp:.4f}']
         v_clips.append(clip)
+    a_clips = []
     if audio:
-        total = round(segments[-1]['ref_end'] * fps)
         a_clips = [{'src': os.path.abspath(audio), 'start': 0, 'dur': total,
                     'offset': 0, 'stream': 0}]
-    tl = {'version': '3', 'timebase': f'{fps}/1', 'background': '#000',
+    tl = {'version': '3', 'timebase': f'{num}/{den}', 'background': '#000',
           'resolution': [info['width'], info['height']], 'samplerate': 48000,
           'layout': 'stereo', 'langs': ['und'] + (['und'] if audio else []),
           'c': [], 'v': [v_clips], 'a': [a_clips] if a_clips else [], 'sidecar': []}
@@ -943,68 +1054,297 @@ def _file_url(path):
     return 'file://localhost' + quote(p, safe='/:')
 
 
+def _audio_info(path):
+    """(channels, sample rate) of a file's first audio stream, (0, 0) if none."""
+    out = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'a:0',
+                          '-show_entries', 'stream=channels,sample_rate',
+                          '-of', 'default=nw=1', path], capture_output=True, text=True,
+                         creationflags=_NO_WINDOW).stdout
+    d = dict(l.split('=', 1) for l in out.split() if '=' in l)
+    try:
+        return int(d.get('channels', 0)), int(d.get('sample_rate', 0))
+    except ValueError:
+        return 0, 0
+
+
 def export_xml(video, segments, dest, audio=None, fps=None, name='BackstageHero autoedit'):
-    """Final Cut Pro 7 XML (xmeml v5), the format auto-editor's --export premiere
-    writes; Premiere Pro, DaVinci Resolve and Kdenlive import it. Speed changes
-    are Time Remap filters, the same way auto-editor writes them."""
+    """Final Cut Pro 7 XML (xmeml v5), written the way auto-editor's --export
+    premiere does; Premiere Pro and DaVinci Resolve import it. Speed changes
+    are Time Remap filters. Audio follows Premiere's layout: the sequence
+    declares its audio format and a stereo file is two "exploded" mono
+    tracks (left, right). A1/A2 = the chart audio; A3/A4 = the videos' own
+    audio, clips disabled (enable them to sync by ear).
+    video: one file, or the auto-mix's list (a segment's 'src' picks one)."""
     from xml.sax.saxutils import escape as esc
-    info = _probe_video(video)
-    fps = fps or info['fps']
-    rate = f'<rate><timebase>{fps}</timebase><ntsc>FALSE</ntsc></rate>'
-    total = round(segments[-1]['ref_end'] * fps)
-    vname = esc(os.path.basename(video))
-    vfile = (f'<file id="file-1"><name>{vname}</name><pathurl>{esc(_file_url(video))}</pathurl>'
-             f'{rate}<duration>{round(info["duration"] * fps)}</duration>'
-             f'<media><video><samplecharacteristics>{rate}<width>{info["width"]}</width>'
-             f'<height>{info["height"]}</height><pixelaspectratio>square</pixelaspectratio>'
-             f'</samplecharacteristics></video></media></file>')
-    clips = []
-    for k, sg in enumerate(segments, 1):
-        if sg.get('hold'):
-            sg = dict(sg, speed=1.0)     # a frame hold: a 1x clip from that frame
-        start = round(sg['ref_start'] * fps)
-        end = max(start + 1, round(sg['ref_end'] * fps))
-        sp = sg['speed']
-        # <in>/<out> count speed-scaled source frames (as auto-editor's fcp7 export)
-        cin = round(sg['vid_start'] * fps / sp)
-        cout = cin + (end - start)
-        filt = ''
-        if abs(sp - 1.0) > SPEED_EPS:
-            filt = ('<filter><effect><name>Time Remap</name><effectid>timeremap</effectid>'
-                    '<parameter authoringApp="PremierePro"><parameterid>variablespeed</parameterid>'
-                    '<name>variablespeed</name><valuemin>0</valuemin><valuemax>1</valuemax>'
-                    '<value>0</value></parameter>'
-                    '<parameter authoringApp="PremierePro"><parameterid>speed</parameterid>'
-                    f'<name>speed</name><valuemin>-100000</valuemin><valuemax>100000</valuemax>'
-                    f'<value>{sp * 100:.4f}</value></parameter>'
-                    '<parameter authoringApp="PremierePro"><parameterid>frameblending</parameterid>'
-                    '<name>frameblending</name><value>FALSE</value></parameter>'
-                    '</effect></filter>')
-        f = vfile if k == 1 else '<file id="file-1"/>'
-        clips.append(f'<clipitem id="clipitem-{k}"><name>{vname}</name><enabled>TRUE</enabled>'
-                     f'<start>{start}</start><end>{end}</end><in>{cin}</in><out>{cout}</out>'
-                     f'{f}{filt}</clipitem>')
-    atrack = ''
+    videos = _videos(video)
+    info, exact, total = _timeline_info(videos, segments, audio, fps)
+    ntsc = 'TRUE' if info['ntsc'] else 'FALSE'
+    rate = f'<rate><timebase>{info["fps"]}</timebase><ntsc>{ntsc}</ntsc></rate>'
+    tc = (f'<timecode><string>00:00:00:00</string><displayformat>NDF</displayformat>'
+          f'{rate}</timecode>')
+    vinfo = [info] + [_probe_video(v) for v in videos[1:]]
+    vaud = [_audio_info(v) for v in videos]
+    sr = 48000
+
+    def aud_media(ch, rate_hz):
+        return (f'<audio><samplecharacteristics><depth>16</depth><samplerate>{rate_hz}'
+                f'</samplerate></samplecharacteristics><channelcount>{ch}</channelcount></audio>')
+
+    written = set()
+
+    def vfile(src):
+        fid = f'file-{src + 1}'
+        if src in written:
+            return f'<file id="{fid}"/>'
+        written.add(src)
+        i = vinfo[src]
+        ch, hz = vaud[src]
+        return (f'<file id="{fid}"><name>{esc(os.path.basename(videos[src]))}</name>'
+                f'<pathurl>{esc(_file_url(videos[src]))}</pathurl>{rate}'
+                f'<duration>{round(i["duration"] * exact)}</duration>{tc}'
+                f'<media><video><samplecharacteristics>{rate}<width>{i["width"]}</width>'
+                f'<height>{i["height"]}</height><pixelaspectratio>square</pixelaspectratio>'
+                f'</samplecharacteristics></video>'
+                f'{aud_media(min(ch, 2), hz or sr) if ch else ""}</media></file>')
+
+    def remap(sp):
+        if abs(sp - 1.0) <= SPEED_EPS:
+            return ''
+        return ('<filter><effect><name>Time Remap</name><effectid>timeremap</effectid>'
+                '<parameter authoringApp="PremierePro"><parameterid>variablespeed</parameterid>'
+                '<name>variablespeed</name><valuemin>0</valuemin><valuemax>1</valuemax>'
+                '<value>0</value></parameter>'
+                '<parameter authoringApp="PremierePro"><parameterid>speed</parameterid>'
+                f'<name>speed</name><valuemin>-100000</valuemin><valuemax>100000</valuemax>'
+                f'<value>{sp * 100:.4f}</value></parameter>'
+                '<parameter authoringApp="PremierePro"><parameterid>frameblending</parameterid>'
+                '<name>frameblending</name><value>FALSE</value></parameter>'
+                '</effect></filter>')
+
+    pieces = _clips(videos, segments, exact)
+    n = len(pieces)
+    ids = iter(range(1, 10 ** 6))
+    vids = [next(ids) for _ in pieces]
+    # the videos' own audio: one clip per piece and channel, linked to its video clip
+    has_vaud = all(ch for ch, _ in vaud)
+    nch = 2 if has_vaud and min(ch for ch, _ in vaud) >= 2 else (1 if has_vaud else 0)
+    aids = [[next(ids) for _ in pieces] for _ in range(nch)]
+
+    def links(j):
+        out = (f'<link><linkclipref>clipitem-{vids[j]}</linkclipref><mediatype>video</mediatype>'
+               f'<trackindex>1</trackindex><clipindex>{j + 1}</clipindex></link>')
+        for c in range(nch):
+            out += (f'<link><linkclipref>clipitem-{aids[c][j]}</linkclipref>'
+                    f'<mediatype>audio</mediatype><trackindex>{c + 3 if audio else c + 1}'
+                    f'</trackindex><clipindex>{j + 1}</clipindex></link>')
+        return out
+
+    vclips = []
+    for j, (k, src, start, end, cin, sp) in enumerate(pieces):
+        vclips.append(f'<clipitem id="clipitem-{vids[j]}">'
+                      f'<name>{esc(os.path.basename(videos[src]))}</name>'
+                      f'<enabled>TRUE</enabled><start>{start}</start><end>{end}</end>'
+                      f'<in>{cin}</in><out>{cin + end - start}</out>{vfile(src)}'
+                      f'<compositemode>normal</compositemode>{remap(sp)}{links(j)}</clipitem>')
+
+    def atrack(c, count, items):
+        kind = 'Stereo' if count == 2 else 'Mono'
+        out = (f' outputchannelindex="{c + 1}"' if count == 2 else '')
+        return (f'<track currentExplodedTrackIndex="{c}" totalExplodedTrackCount="{count}" '
+                f'premiereTrackType="{kind}"{out}>{"".join(items)}'
+                f'<enabled>TRUE</enabled><locked>FALSE</locked></track>')
+
+    tracks = []
     if audio:
+        ach, ahz = _audio_info(audio)
+        ach = 2 if ach >= 2 else 1
         aname = esc(os.path.basename(audio))
-        atrack = (f'<audio><track><clipitem id="clipitem-a1"><name>{aname}</name>'
-                  f'<enabled>TRUE</enabled><start>0</start><end>{total}</end><in>0</in>'
-                  f'<out>{total}</out><file id="file-2"><name>{aname}</name>'
-                  f'<pathurl>{esc(_file_url(audio))}</pathurl>{rate}'
-                  f'<media><audio><samplecharacteristics><depth>16</depth>'
-                  f'<samplerate>48000</samplerate></samplecharacteristics>'
-                  f'<channelcount>2</channelcount></audio></media></file>'
-                  f'<sourcetrack><mediatype>audio</mediatype><trackindex>1</trackindex>'
-                  f'</sourcetrack></clipitem></track></audio>')
+        for c in range(ach):
+            f = (f'<file id="file-a"><name>{aname}</name>'
+                 f'<pathurl>{esc(_file_url(audio))}</pathurl>{rate}'
+                 f'<duration>{total}</duration>{tc}<media>{aud_media(ach, ahz or sr)}</media>'
+                 f'</file>' if c == 0 else '<file id="file-a"/>')
+            item = (f'<clipitem id="clipitem-{next(ids)}" premiereChannelType='
+                    f'"{"stereo" if ach == 2 else "mono"}"><name>{aname}</name>'
+                    f'<enabled>TRUE</enabled><start>0</start><end>{total}</end><in>0</in>'
+                    f'<out>{total}</out>{f}<sourcetrack><mediatype>audio</mediatype>'
+                    f'<trackindex>{c + 1}</trackindex></sourcetrack></clipitem>')
+            tracks.append(atrack(c, ach, [item]))
+    for c in range(nch):
+        items = []
+        for j, (k, src, start, end, cin, sp) in enumerate(pieces):
+            items.append(f'<clipitem id="clipitem-{aids[c][j]}" premiereChannelType='
+                         f'"{"stereo" if nch == 2 else "mono"}">'
+                         f'<name>{esc(os.path.basename(videos[src]))}</name>'
+                         f'<enabled>FALSE</enabled><start>{start}</start><end>{end}</end>'
+                         f'<in>{cin}</in><out>{cin + end - start}</out>'
+                         f'<file id="file-{src + 1}"/><sourcetrack><mediatype>audio</mediatype>'
+                         f'<trackindex>{c + 1}</trackindex></sourcetrack>{remap(sp)}'
+                         f'{links(j)}</clipitem>')
+        tracks.append(atrack(c, nch, items))
+    seq_audio = (f'<audio><numOutputChannels>2</numOutputChannels><format>'
+                 f'<samplecharacteristics><depth>16</depth><samplerate>{sr}</samplerate>'
+                 f'</samplecharacteristics></format>{"".join(tracks)}</audio>')
     xml = ('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE xmeml>\n<xmeml version="5">'
-           f'<sequence><name>{esc(name)}</name><duration>{total}</duration>{rate}'
+           f'<sequence explodedTracks="true"><name>{esc(name)}</name>'
+           f'<duration>{total}</duration>{rate}'
            f'<media><video><format><samplecharacteristics>{rate}<width>{info["width"]}</width>'
            f'<height>{info["height"]}</height><pixelaspectratio>square</pixelaspectratio>'
-           f'</samplecharacteristics></format><track>{"".join(clips)}</track></video>'
-           f'{atrack}</media></sequence></xmeml>\n')
+           f'</samplecharacteristics></format><track>{"".join(vclips)}</track></video>'
+           f'{seq_audio}</media></sequence></xmeml>\n')
     with open(dest, 'w', encoding='utf-8') as f:
         f.write(xml)
     return dest
+
+
+def export_fcpxml(video, segments, dest, audio=None, fps=None, name='BackstageHero autoedit'):
+    """Final Cut Pro X XML (FCPXML 1.9). The chart audio is the primary
+    storyline; the video pieces are connected clips above it (video only),
+    speed changes are timeMaps.
+    video: one file, or the auto-mix's list (a segment's 'src' picks one)."""
+    from xml.sax.saxutils import escape as esc, quoteattr as qa
+    videos = _videos(video)
+    info, exact, total = _timeline_info(videos, segments, audio, fps)
+    num, den = info['rate']
+
+    def t(frames):                           # frames at the sequence rate -> rational
+        return '0s' if not frames else f'{frames * den}/{num}s'
+
+    def url(p):
+        return 'file:///' + _file_url(p)[len('file://localhost/'):]
+
+    res = [f'<format id="r0" frameDuration="{t(1)}" width="{info["width"]}" '
+           f'height="{info["height"]}"/>']
+    for k, v in enumerate(videos):
+        dur = round(_probe_video(v)['duration'] * exact)
+        res.append(f'<asset id="v{k}" name={qa(os.path.basename(v))} start="0s" '
+                   f'duration="{t(dur)}" hasVideo="1" hasAudio="1" format="r0" '
+                   f'audioSources="1" audioChannels="2">'
+                   f'<media-rep kind="original-media" src={qa(url(v))}/></asset>')
+    if audio:
+        res.append(f'<asset id="a0" name={qa(os.path.basename(audio))} start="0s" '
+                   f'duration="{t(total)}" hasAudio="1" audioSources="1" audioChannels="2" '
+                   f'audioRate="48000"><media-rep kind="original-media" src={qa(url(audio))}/>'
+                   f'</asset>')
+    conn = []
+    for k, src, start, end, cin, sp in _clips(videos, segments, exact):
+        tmap = ''
+        src_in = cin
+        if abs(sp - 1.0) > SPEED_EPS:
+            # local clip time -> source time; source frames back at 1x
+            s0 = round(cin * sp)
+            s1 = round((cin + end - start) * sp)
+            tmap = (f'<timeMap><timept time="0s" value="{t(s0)}" interp="linear"/>'
+                    f'<timept time="{t(end - start)}" value="{t(s1)}" interp="linear"/></timeMap>')
+            src_in = 0
+        conn.append(f'<asset-clip ref="v{src}" lane="1" offset="{t(start)}" '
+                    f'start="{t(src_in)}" duration="{t(end - start)}" srcEnable="video" '
+                    f'name={qa(os.path.basename(videos[src]))}>{tmap}</asset-clip>')
+    if audio:
+        spine = (f'<asset-clip ref="a0" offset="0s" start="0s" duration="{t(total)}" '
+                 f'name={qa(os.path.basename(audio))}>{"".join(conn)}</asset-clip>')
+    else:
+        spine = f'<gap offset="0s" start="0s" duration="{t(total)}">{"".join(conn)}</gap>'
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE fcpxml>\n<fcpxml version="1.9">'
+           f'<resources>{"".join(res)}</resources><library><event name="BackstageHero">'
+           f'<project name={qa(name)}><sequence format="r0" duration="{t(total)}" tcStart="0s" '
+           f'tcFormat="NDF" audioLayout="stereo" audioRate="48k"><spine>{spine}</spine>'
+           f'</sequence></project></event></library></fcpxml>\n')
+    with open(dest, 'w', encoding='utf-8') as f:
+        f.write(xml)
+    return dest
+
+
+def export_mlt(video, segments, dest, audio=None, fps=None, name='BackstageHero autoedit'):
+    """Shotcut project (MLT XML). V1 has the video pieces (their own audio
+    muted), A1 the chart audio; speed changes are timewarp producers.
+    video: one file, or the auto-mix's list (a segment's 'src' picks one)."""
+    from xml.sax.saxutils import escape as esc, quoteattr as qa
+    videos = _videos(video)
+    info, exact, total = _timeline_info(videos, segments, audio, fps)
+    num, den = info['rate']
+    w, h = info['width'], info['height']
+
+    def prop(k, v):
+        return f'<property name="{k}">{esc(str(v))}</property>'
+
+    producers, ids = [], {}
+
+    def producer(src, sp):
+        key = (src, round(sp, 4))
+        if key not in ids:
+            pid = ids[key] = f'producer{len(ids)}'
+            path = os.path.abspath(videos[src]).replace('\\', '/')
+            if abs(sp - 1.0) > SPEED_EPS:
+                body = (prop('resource', f'{sp:.4f}:{path}') + prop('mlt_service', 'timewarp')
+                        + prop('warp_speed', f'{sp:.4f}') + prop('warp_resource', path)
+                        + prop('warp_pitch', 0))
+            else:
+                body = prop('resource', path) + prop('mlt_service', 'avformat-novalidate')
+            producers.append(f'<producer id="{pid}">{body}'
+                             + prop('shotcut:caption', os.path.basename(path)) + '</producer>')
+        return ids[key]
+
+    entries, at = [], 0
+    for k, src, start, end, cin, sp in _clips(videos, segments, exact):
+        if start > at:
+            entries.append(f'<blank length="{start - at}"/>')
+        pid = producer(src, sp)
+        entries.append(f'<entry producer="{pid}" in="{cin}" out="{cin + end - start - 1}"/>')
+        at = end
+    tracks = ['<track producer="background"/>', '<track producer="playlist0" hide="audio"/>']
+    trans = ['<transition id="transition0">' + prop('a_track', 0) + prop('b_track', 1)
+             + prop('mlt_service', 'mix') + prop('always_active', 1) + prop('sum', 1)
+             + '</transition>',
+             '<transition id="transition1">' + prop('a_track', 0) + prop('b_track', 1)
+             + prop('version', '0.1') + prop('mlt_service', 'frei0r.cairoblend')
+             + prop('threads', 0) + prop('disable', 1) + '</transition>']
+    apl = ''
+    if audio:
+        path = os.path.abspath(audio).replace('\\', '/')
+        producers.append('<producer id="audio0">' + prop('length', total)
+                         + prop('resource', path) + prop('mlt_service', 'avformat-novalidate')
+                         + prop('shotcut:caption', os.path.basename(path)) + '</producer>')
+        apl = ('<playlist id="playlist1">' + prop('shotcut:audio', 1)
+               + prop('shotcut:name', 'A1')
+               + f'<entry producer="audio0" in="0" out="{total - 1}"/></playlist>')
+        tracks.append('<track producer="playlist1" hide="video"/>')
+        trans.append('<transition id="transition2">' + prop('a_track', 0) + prop('b_track', 2)
+                     + prop('mlt_service', 'mix') + prop('always_active', 1) + prop('sum', 1)
+                     + '</transition>')
+    xml = ('<?xml version="1.0" encoding="utf-8"?>\n'
+           f'<mlt LC_NUMERIC="C" version="7.0.0" title={qa(name)} producer="main_bin">'
+           f'<profile description="{w}x{h} {num / den:.3f} fps" width="{w}" height="{h}" '
+           f'progressive="1" sample_aspect_num="1" sample_aspect_den="1" '
+           f'display_aspect_num="{w}" display_aspect_den="{h}" frame_rate_num="{num}" '
+           f'frame_rate_den="{den}" colorspace="709"/>'
+           '<playlist id="main_bin">' + prop('xml_retain', 1) + '</playlist>'
+           f'<producer id="black" in="0" out="{total - 1}">' + prop('length', total)
+           + prop('eof', 'pause') + prop('resource', '0') + prop('aspect_ratio', 1)
+           + prop('mlt_service', 'color') + prop('mlt_image_format', 'rgba')
+           + prop('set.test_audio', 0) + '</producer>'
+           f'<playlist id="background"><entry producer="black" in="0" out="{total - 1}"/>'
+           '</playlist>' + ''.join(producers)
+           + '<playlist id="playlist0">' + prop('shotcut:video', 1) + prop('shotcut:name', 'V1')
+           + ''.join(entries) + '</playlist>' + apl
+           + f'<tractor id="tractor0" title={qa(name)} in="0" out="{total - 1}">'
+           + prop('shotcut', 1) + ''.join(tracks) + ''.join(trans) + '</tractor></mlt>\n')
+    with open(dest, 'w', encoding='utf-8') as f:
+        f.write(xml)
+    return dest
+
+
+def export_timeline(fmt, video, segments, dest, audio=None, name='BackstageHero autoedit'):
+    """Write the edit for an editor; fmt is an EDITOR_FORMATS key."""
+    if fmt in ('premiere', 'resolve'):
+        return export_xml(video, segments, dest, audio=audio, name=name)
+    if fmt == 'final-cut-pro':
+        return export_fcpxml(video, segments, dest, audio=audio, name=name)
+    if fmt == 'shotcut':
+        return export_mlt(video, segments, dest, audio=audio, name=name)
+    if fmt == 'v3':
+        return export_v3(video, segments, dest, audio=audio)
+    raise ValueError(f'unknown editor format {fmt!r}')
 
 
 def main(argv=None):
@@ -1022,13 +1362,16 @@ def main(argv=None):
     ap.add_argument('--plan', action='store_true', help='only print the plan and log, do not render')
     ap.add_argument('--json', help='write the plan + edit log to this JSON file')
     ap.add_argument('--v3', help='write an auto-editor v3 timeline')
-    ap.add_argument('--xml', help='write a Final Cut Pro 7 / Premiere XML timeline')
+    ap.add_argument('--xml', help='write a Final Cut Pro 7 XML timeline (Premiere, Resolve)')
+    ap.add_argument('--fcpxml', help='write a Final Cut Pro X (FCPXML) timeline')
+    ap.add_argument('--mlt', help='write a Shotcut (MLT) project')
     ap.add_argument('--mix', action='append', default=[], metavar='CLIP',
                     help='auto-mix: put this video in wherever it fits the audio (repeat it; '
                          'later ones win where they overlap)')
     a = ap.parse_args(argv)
-    if not a.output and not (a.plan or a.json or a.v3 or a.xml):
-        ap.error('output is required unless --plan, --json, --v3 or --xml is given')
+    timelines = [(f, getattr(a, f)) for f in ('v3', 'xml', 'fcpxml', 'mlt') if getattr(a, f)]
+    if not a.output and not (a.plan or a.json or timelines):
+        ap.error('output is required unless --plan, --json, --v3, --xml, --fcpxml or --mlt is given')
 
     p = plan(a.reference, a.video_audio or a.video)
     print(p['info'])
@@ -1064,13 +1407,9 @@ def main(argv=None):
         with open(a.json, 'w', encoding='utf-8') as f:
             json.dump(p, f, indent=1)
         print('wrote', a.json)
-    if len(videos) > 1 and (a.v3 or a.xml):
-        print('--v3 / --xml are not made for a mix (one video only)')
-        a.v3 = a.xml = None
-    if a.v3:
-        print('wrote', export_v3(a.video, p['segments'], a.v3, audio=a.reference))
-    if a.xml:
-        print('wrote', export_xml(a.video, p['segments'], a.xml, audio=a.reference))
+    fmt = {'v3': 'v3', 'xml': 'premiere', 'fcpxml': 'final-cut-pro', 'mlt': 'shotcut'}
+    for f, dest in timelines:
+        print('wrote', export_timeline(fmt[f], videos, p['segments'], dest, audio=a.reference))
     if a.plan or not a.output:
         return p
     crops = []

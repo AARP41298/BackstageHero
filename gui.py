@@ -11,7 +11,9 @@ import tempfile
 import threading
 import queue
 import time
+import unicodedata
 from dataclasses import dataclass
+from functools import lru_cache
 
 import customtkinter as ctk
 import tkinter as tk
@@ -26,6 +28,7 @@ from VideoDownload import (
     probe_video_height, _read_ini_value as _ini_value,
 )
 import conpack
+import autoedit
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import updater
 import resolver_client
@@ -42,6 +45,31 @@ FONT_SCALE = 1.25
 
 def _fs(size):
     return int(round(size * FONT_SCALE))
+
+
+@lru_cache(maxsize=None)
+def _fold(text):
+    """Lower case without accents, for the search: 'Zoé' matches 'zoe'."""
+    nfkd = unicodedata.normalize('NFKD', text.casefold())
+    return ''.join(c for c in nfkd if not unicodedata.combining(c))
+
+
+_FEAT = re.compile(r'\b(featuring|feat|ft)\b')
+
+
+def _dup_key(s):
+    """Artist + title folded for the Duplicates filter: case, accents and
+    punctuation don't matter, and ft. / feat. / featuring are one word, so the
+    same song as a CON and as a song folder (or in two packs) matches. A
+    different guest is another recording (Maná's "(ft. Prince Royce)").
+    '' when there's no title."""
+    def norm(t):
+        t = _FEAT.sub('ft', _fold(t or ''))
+        return re.sub(r'[^0-9a-z]+', '', t)
+    title = norm(s.title)
+    if not title:
+        return ''
+    return norm(s.artist) + '|' + title
 
 
 def _font(size, **kw):
@@ -104,11 +132,20 @@ _MAUVE   = '#cba6f7'
 _ACTIONS = {
     'play':    ('▶',    'Play video in your default player'),
     'collage': ('👁',    'Show frame collage'),
-    'listen':  ('🎧',   'Check the sync: CON audio on the left, the video\'s audio on the right'),
+    'listen':  ('🎧',   'Listen to the CON audio; with a video, checks the sync: '
+                        'CON audio on the left, the video\'s audio on the right'),
     'search':  ('🔍',   'Wrong video: search YouTube again (skips the database link)'),
     'download': ('⬇',   'Download the video type picked in the Video type column (again)'),
-    'mp4':     ('Export as MP4',     'Render to MP4 (fast) and approve this video'),
-    'webm':    ('Add WebM to queue', 'Add to the WebM queue (smaller, slow): render them all with Export WebM(s)'),
+    'preview': ('Preview', 'Quick look at the edit (~15 s, 480p, not an export): '
+                           'opens in the 🎧 window, CON audio on the left, '
+                           'the video\'s audio on the right'),
+    'editor':  ('Editor', 'Export to a video editor to make the video by hand: asks the '
+                          'format (Premiere, Resolve, Final Cut Pro, Shotcut, auto-editor); '
+                          'the timeline starts from the auto-edit'),
+    'mp4':     ('Queue as MP4',  'Add to the export queue as MP4 (fast, approves this video); '
+                              'Start export renders the queue'),
+    'webm':    ('Queue as WebM', 'Add to the export queue as WebM (smaller, slow); '
+                              'Start export renders the queue'),
     'clear':   ('🗑',   'Clear cache: delete the kept original download'),
     'more':    ('@',    'Video links: search YouTube, open, set or fix the links'),
 }
@@ -123,7 +160,8 @@ _DL_MODES = {
 _ACTION_COLS = tuple('act_' + k for k in _ACTION_KEYS)
 _ACTION_W = _fs(46)
 # the text actions need more room than the icons
-_ACTION_WIDTHS = {k: _fs({'mp4': 110, 'webm': 140}.get(k, 46)) for k in _ACTION_KEYS}
+_ACTION_WIDTHS = {k: _fs({'preview': 80, 'editor': 70, 'mp4': 110, 'webm': 140}.get(k, 46))
+                  for k in _ACTION_KEYS}
 
 _SONGS_FILE = os.path.join(updater.data_dir(), 'songs_path.txt')
 
@@ -206,7 +244,9 @@ class Song:
     title    : str  = ''
     game_origin: str = ''   # songs.dta game_origin of CON songs (mvdb source)
     mv       : object = None   # music video database entry (mvdb), None = No Entry
-    webm_queued: bool = False  # waiting for "Export N WebM(s)"
+    queued   : str  = ''       # 'mp4' / 'webm': in the export queue
+    render_fmt: str = ''       # format of the render job while rendering is set
+    keep_other: bool = False   # the render keeps the other format's video (asked when queued)
     dl_mode  : str  = 'auto'   # next download: 'auto' | 'db' (⬇) | 'search' (🔍)
     review   : object = None   # CON download waiting for review (conpack.load_review)
     rendering: str  = ''       # '' | 'queued' | 'running'
@@ -996,26 +1036,29 @@ class ListenWindow(ctk.CTkToplevel):
     _PEAK_HOLD = 1.0           # seconds
 
     @classmethod
-    def show(cls, app, song):
+    def show(cls, app, song, mixed=None):
+        """mixed: a file that already has the CON audio left and the video's
+        audio right (Preview's preview.mkv): played as it is, kept on close."""
         win = cls._open
         if win is not None:
             try:
                 alive = bool(win.winfo_exists())
             except Exception:
                 alive = False
-            if alive and win._s is song:
+            if alive and win._s is song and win._mixed == mixed and not mixed:
                 win.deiconify()
                 win.lift()
                 win.focus_force()
                 return win
             if alive:
                 win._close()
-        cls._open = cls(app, song)
+        cls._open = cls(app, song, mixed)
         return cls._open
 
-    def __init__(self, app, song):
+    def __init__(self, app, song, mixed=None):
         super().__init__(app)
         self._s = song
+        self._mixed = mixed
         self._player = None
         self._proc = None          # ffplay (no libmpv)
         self._tmp = os.path.join(tempfile.gettempdir(),
@@ -1026,9 +1069,14 @@ class ListenWindow(ctk.CTkToplevel):
         self._shown = [self._DB_MIN, self._DB_MIN]    # meter readings (dB)
         self._peaks = [[self._DB_MIN, 0.0], [self._DB_MIN, 0.0]]   # dB, held until
         self._embedded = mpvlib is not None
+        # no finished video yet: play just the CON audio
+        self._audio_only = not mixed and not (
+            song.has_video and song.video and os.path.exists(song.video))
+        if mixed:
+            self._tmp = mixed
         self._stage_w, self._stage_h = _fs(720), _fs(405)
 
-        self.title(f'Listen  ·  {song.label}')
+        self.title(f'{"Preview" if mixed else "Listen"}  ·  {song.label}')
         self.configure(fg_color=_BG)
         self.resizable(False, False)
         self.protocol('WM_DELETE_WINDOW', self._close)
@@ -1048,7 +1096,11 @@ class ListenWindow(ctk.CTkToplevel):
         head.pack(fill='x', padx=16, pady=(14, 2))
         ctk.CTkLabel(head, text=self._s.label, font=_font(15, weight='bold'),
                      text_color=_TEXT, anchor='w').pack(side='left', fill='x', expand=True)
-        ctk.CTkLabel(self, text='🎧  Left: CON audio     ·     Right: the video\'s audio',
+        sub = ('🎧  CON audio only: the song has no video yet' if self._audio_only else
+               '🎧  Left: CON audio     ·     Right: the video\'s audio')
+        if self._mixed:
+            sub += '     ·     Preview of the edit (480p, not exported)'
+        ctk.CTkLabel(self, text=sub,
                      font=_font(11), text_color=_SUBTEXT, anchor='w').pack(
             fill='x', padx=16)
 
@@ -1150,7 +1202,9 @@ class ListenWindow(ctk.CTkToplevel):
         now = time.monotonic()
         for ch in (0, 1):
             target = self._DB_MIN
-            if lv is not None and pos is not None and playing:
+            if ch == 1 and self._audio_only:
+                pass                                      # no video audio
+            elif lv is not None and pos is not None and playing:
                 i = int(pos / conpack.LEVEL_HOP)
                 if 0 <= i < len(lv):
                     target = float(lv[i, ch])
@@ -1170,17 +1224,17 @@ class ListenWindow(ctk.CTkToplevel):
         if not conpack.nautilus_ready():
             self._fail('Nautilus is needed to read the song audio from the CON.')
             return
-        if not os.path.exists(self._s.video):
-            self._fail('The exported video is missing.')
-            return
         if not (self._embedded or ffplayPath):
             self._fail('No player: needs libmpv-2.dll (bundled in the exe) or ffplay.')
             return
+        video = None if self._audio_only else self._s.video
 
         def _worker():
             try:
-                info = conpack.listen_mix(self._s.con, self._s.song_id, self._s.video,
-                                          self._tmp)
+                if self._mixed:     # Preview: already mixed
+                    info = conpack.video_info(self._mixed)
+                else:
+                    info = conpack.listen_mix(self._s.con, self._s.song_id, video, self._tmp)
                 if self._embedded:     # the meters follow mpv's playback position
                     self._levels = conpack.listen_levels(self._tmp)
                 self._result = (info, None)
@@ -1237,8 +1291,12 @@ class ListenWindow(ctk.CTkToplevel):
             return
         x, y, w, h = self._fit(info)
         b = self._BORDER_PX
-        self._frame.place(x=x, y=y, width=w, height=h)
-        self._video.place(x=b, y=b, width=w - 2 * b, height=h - 2 * b)
+        if self._audio_only:      # nothing to show, mpv just plays the audio
+            self._msg.configure(text='♪  Playing the CON audio')
+            self._msg.place(relx=0.5, rely=0.5, anchor='center')
+        else:
+            self._frame.place(x=x, y=y, width=w, height=h)
+            self._video.place(x=b, y=b, width=w - 2 * b, height=h - 2 * b)
         self.update_idletasks()
         try:
             self._player = mpvlib.MPV(
@@ -1266,8 +1324,10 @@ class ListenWindow(ctk.CTkToplevel):
         si.wShowWindow = 4
         self._proc = subprocess.Popen(
             [ffplayPath, '-hide_banner', '-autoexit', '-x', str(w), '-y', str(h),
-             '-window_title', f'Listen: {self._s.label}',
-             '-vf', f'pad=iw+{2 * b}:ih+{2 * b}:{b}:{b}:color=0xFFD400', self._tmp],
+             '-window_title', f'Listen: {self._s.label}']
+            + ([] if self._audio_only else
+               ['-vf', f'pad=iw+{2 * b}:ih+{2 * b}:{b}:{b}:color=0xFFD400'])
+            + [self._tmp],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             creationflags=NO_WINDOW, startupinfo=si)
         self._msg.configure(text='Playing in the ffplay window.')
@@ -1347,6 +1407,8 @@ class ListenWindow(ctk.CTkToplevel):
         threading.Thread(target=self._remove_tmp, daemon=True).start()
 
     def _remove_tmp(self):
+        if self._mixed:
+            return              # Preview's file stays in the cache
         for _ in range(600):
             if self._result is not None:
                 break
@@ -1946,87 +2008,147 @@ class VideoLinksWindow(ctk.CTkToplevel):
 
 
 class MixPriorityWindow(ctk.CTkToplevel):
-    """Video type menu > Auto-mix priority: the order auto-mix layers a song's
-    videos in. The bottom type is the base that covers the song, each one
-    above is put in wherever it fits the song audio, the top one wins.
-    Saved in the settings (mix_priority)."""
+    """Video type menu > Auto-mix priority...: the order auto-mix layers one
+    song's linked videos in, one row per video (each meme link its own row)
+    with its YouTube title. The bottom one is the base that covers the song,
+    each one above is put in wherever it fits the song audio, the top one
+    wins. Saved as the song's local mix_order edit; Default order drops it
+    (type order: meme > fan > alternate > official). One window at a time."""
 
     _open = None
 
     @classmethod
-    def show(cls, app):
+    def show(cls, app, s):
         win = cls._open
         try:
             alive = win is not None and bool(win.winfo_exists())
         except Exception:
             alive = False
         if alive:
+            win._song = s
+            win._build()
             win.deiconify()
             win.lift()
             win.focus_force()
             return win
-        cls._open = cls(app)
+        cls._open = cls(app, s)
         return cls._open
 
-    def __init__(self, app):
+    @classmethod
+    def refresh(cls):
+        """A YouTube title arrived: redraw the open window."""
+        win = cls._open
+        try:
+            if win is not None and win.winfo_exists():
+                win._build()
+        except Exception:
+            pass
+
+    def __init__(self, app, s):
         super().__init__(app)
-        self._app = app
+        self._app, self._song = app, s
         self.title('Auto-mix priority')
         self.configure(fg_color=_BG)
-        self.geometry(f'{_fs(470)}x{_fs(340)}')
-        self.resizable(False, False)
-        ctk.CTkLabel(self, text='Auto-mix priority', font=_font(15, weight='bold'),
-                     text_color=_TEXT, anchor='w').pack(fill='x', padx=16, pady=(14, 2))
-        ctk.CTkLabel(self, text='For songs with 2+ video links. The bottom one is the base '
-                                'and covers\nthe song; each one above is put in wherever it '
-                                'fits the song\naudio (a movie scene, a game intro). '
-                                'The top one wins.',
+        self.geometry(f'{_fs(720)}x{_fs(380)}')
+        self.minsize(_fs(520), _fs(260))
+        self._head = ctk.CTkLabel(self, text='', font=_font(15, weight='bold'),
+                                  text_color=_TEXT, anchor='w')
+        self._head.pack(fill='x', padx=16, pady=(14, 2))
+        ctk.CTkLabel(self, text='The bottom video is the base and covers the song; each one '
+                                'above is put in\nwherever it fits the song audio (a movie '
+                                'scene, a game intro). The top one wins.\n'
+                                'Changes apply to the next \u2b07 Download.',
                      font=_font(11), text_color=_SUBTEXT, justify='left',
                      anchor='w').pack(fill='x', padx=16)
-        self._rows = ctk.CTkFrame(self, fg_color=_SURFACE, corner_radius=8)
+        self._rows = ctk.CTkScrollableFrame(self, fg_color=_SURFACE, corner_radius=8)
         self._rows.pack(fill='both', expand=True, padx=16, pady=10)
-        self._rows.grid_columnconfigure(1, weight=1)
+        self._rows.grid_columnconfigure(2, weight=1)
         foot = ctk.CTkFrame(self, fg_color='transparent')
         foot.pack(fill='x', padx=16, pady=(0, 12))
-        ctk.CTkButton(foot, text='Reset', width=_fs(90), fg_color='#313244',
-                      hover_color='#414160',
-                      command=lambda: self._set(mvdb.DEFAULT_MIX_PRIORITY)).pack(side='left')
+        ctk.CTkButton(foot, text='Default order', width=_fs(120), fg_color='#313244',
+                      hover_color='#414160', command=lambda: self._set(None)).pack(side='left')
         ctk.CTkButton(foot, text='Close', width=_fs(90), fg_color='#313244',
                       hover_color='#414160', command=self.destroy).pack(side='right')
         self._build()
         self.bind('<Escape>', lambda e: self.destroy())
         self.after(50, lambda: (self.lift(), self.focus_force()))
 
+    def _video_name(self, v):
+        """The video's YouTube title (fetched in the background), else the
+        database's title, else the short link."""
+        i = mvdb.vid(v)
+        title = self._app._yt_titles.get(i)
+        if title is None:
+            self._app._want_title(i)
+        own = v.get('title') or ''
+        if own.startswith('database ('):
+            own = ''
+        return title or own or mvdb.short_url(i)
+
+    def _in_mix(self):
+        """YouTube IDs the kept auto-mix download uses, or None without one."""
+        s = self._song
+        if not s.con:
+            return None
+        try:
+            st = conpack.load_review(s.con, s.song_id)
+        except Exception:
+            st = None
+        if not st or not st.get('mix'):
+            return None
+        return {m.get('video_id') for m in st['mix']}
+
     def _build(self):
         for w in self._rows.winfo_children():
             w.destroy()
-        order = list(mvdb.MIX_PRIORITY)
-        last = len(order) - 1
-        for k, t in enumerate(order):
-            pad = dict(pady=(10 if k == 0 else 3, 3))
+        s = self._song
+        self._head.configure(text='Auto-mix priority \u00b7 ' + (s.label or s.title or ''))
+        vids = mvdb.mix_videos(s.mv)
+        used = self._in_mix()
+        last = len(vids) - 1
+        wrap = _fs(400)
+        for k, v in enumerate(vids):
+            pad = dict(pady=(8 if k == 0 else 3, 3))
             ctk.CTkLabel(self._rows, text=f'{k + 1}.', font=_font(13), text_color=_SUBTEXT,
-                         width=_fs(28)).grid(row=k, column=0, padx=(10, 0), **pad)
-            note = '   on top' if k == 0 else '   base' if k == last else ''
-            ctk.CTkLabel(self._rows, text=t + note, font=_font(13), text_color=_TEXT,
-                         anchor='w').grid(row=k, column=1, sticky='w', padx=6, **pad)
-            for col, (txt, d) in enumerate((('▲', -1), ('▼', 1)), 2):
+                         width=_fs(28)).grid(row=k, column=0, padx=(8, 0), sticky='n', **pad)
+            ctk.CTkLabel(self._rows, text=v.get('type', 'official'),
+                         font=_font(13, weight='bold'), text_color=_TEXT, anchor='w',
+                         width=_fs(70)).grid(row=k, column=1, sticky='nw', padx=4, **pad)
+            notes = ['on top'] if k == 0 else ['base'] if k == last else []
+            if used is not None and mvdb.vid(v) not in used:
+                notes.append('not in the downloaded mix (could not be downloaded, '
+                             'or no part fits)')
+            cell = ctk.CTkFrame(self._rows, fg_color='transparent')
+            cell.grid(row=k, column=2, sticky='ew', padx=4, **pad)
+            name, link = self._video_name(v), mvdb.short_url(mvdb.vid(v))
+            ctk.CTkLabel(cell, text=name, font=_font(12), text_color=_TEXT,
+                         anchor='w', justify='left', wraplength=wrap).pack(fill='x')
+            ctk.CTkLabel(cell, text='  \u00b7  '.join(([] if name == link else [link]) + notes),
+                         font=_font(10), text_color=_SUBTEXT, anchor='w', justify='left',
+                         wraplength=wrap).pack(fill='x')
+            for col, (txt, d) in enumerate((('\u25b2', -1), ('\u25bc', 1)), 3):
                 ok = 0 <= k + d <= last
                 ctk.CTkButton(self._rows, text=txt, width=_fs(34), height=_fs(28),
                               fg_color='#313244', hover_color='#414160',
                               state='normal' if ok else 'disabled',
                               command=lambda k=k, d=d: self._move(k, d)
-                              ).grid(row=k, column=col, padx=(0, 10 if col == 3 else 4), **pad)
+                              ).grid(row=k, column=col, sticky='n',
+                                     padx=(0, 8 if col == 4 else 4), **pad)
 
     def _move(self, k, d):
-        order = list(mvdb.MIX_PRIORITY)
+        order = [mvdb.vid(v) for v in mvdb.mix_videos(self._song.mv)]
         order[k], order[k + d] = order[k + d], order[k]
         self._set(order)
 
     def _set(self, order):
-        mvdb.set_mix_priority(order)
-        self._app._persist_setting('mix_priority', list(mvdb.MIX_PRIORITY))
+        s, app = self._song, self._app
+        ref = {'con_id': s.song_id if s.con else (s.mv or {}).get('con_id', ''),
+               'artist': (s.mv or {}).get('artist') or s.artist,
+               'title': (s.mv or {}).get('title') or s.title or s.label}
+        mvdb.set_mix_order(app._mvdb, app._mv_source(s), ref, order)
+        s.mv = mvdb.resolve(app._mvdb, ref['con_id'], ref['artist'], ref['title'])
+        app._update_row(s)
         self._build()
-        self._app._refresh_tree()
 
 
 class ShutdownCountdown(ctk.CTkToplevel):
@@ -2041,7 +2163,7 @@ class ShutdownCountdown(ctk.CTkToplevel):
         self.geometry(f'{_fs(420)}x{_fs(170)}')
         self.resizable(False, False)
         self.attributes('-topmost', True)
-        ctk.CTkLabel(self, text='All WebM exports are done.', font=_font(14, weight='bold'),
+        ctk.CTkLabel(self, text='All exports are done.', font=_font(14, weight='bold'),
                      text_color=_TEXT).pack(pady=(18, 4))
         self._lbl = ctk.CTkLabel(self, text='', font=_font(13), text_color=_YELLOW)
         self._lbl.pack(pady=4)
@@ -2087,6 +2209,313 @@ class ShutdownCountdown(ctk.CTkToplevel):
         self.destroy()
 
 
+class QueueWindow(ctk.CTkToplevel):
+    """☰ Queue: what's rendering, waiting to render, and queued while the
+    export is paused, so nothing is hidden inside closed groups. A song's name shows it
+    in the table; ✕ takes it out of the queue."""
+
+    _open = None
+    _REFRESH_MS = 700
+
+    @classmethod
+    def show(cls, app):
+        win = cls._open
+        if win is not None and win.winfo_exists():
+            win.deiconify()
+            win.lift()
+            win.focus_force()
+            return win
+        cls._open = cls(app)
+        return cls._open
+
+    @classmethod
+    def refresh_open(cls):
+        win = cls._open
+        try:
+            if win is not None and win.winfo_exists():
+                win._refresh()
+        except Exception:
+            pass
+
+    def __init__(self, app):
+        super().__init__(app)
+        self._app = app
+        self._shown = None        # (song, state) of the rows, rebuilt only when it changes
+        self._status_lbls = []    # each row's status label, updated in place
+        self.title('Export queue')
+        self.configure(fg_color=_BG)
+        self.geometry(f'{_fs(560)}x{_fs(420)}')
+        self.minsize(_fs(420), _fs(240))
+        self.protocol('WM_DELETE_WINDOW', self._close)
+        self.bind('<Escape>', lambda e: self._close())
+        self._head = ctk.CTkLabel(self, text='', font=_font(13, weight='bold'),
+                                  text_color=_TEXT, anchor='w')
+        self._head.pack(fill='x', padx=14, pady=(12, 4))
+        self._list = ctk.CTkScrollableFrame(self, fg_color=_SURFACE, corner_radius=8)
+        self._list.pack(fill='both', expand=True, padx=12)
+        bar = ctk.CTkFrame(self, fg_color='transparent')
+        bar.pack(fill='x', padx=12, pady=10)
+        self._export_btn = ctk.CTkButton(
+            bar, text='▶  Start export', width=_fs(160), height=32,
+            fg_color='#2e7d4f', hover_color='#3a9a62', text_color='#ffffff',
+            command=app._toggle_export)
+        self._export_btn.pack(side='left')
+        ctk.CTkButton(bar, text='Close', width=_fs(90), height=32, fg_color=_BORDER,
+                      hover_color='#44445a', text_color=_TEXT,
+                      command=self._close).pack(side='right')
+        _bring_to_front(self)
+        self._refresh()
+        self._tick()
+
+    def _close(self):
+        QueueWindow._open = None
+        self.destroy()
+
+    def _tick(self):
+        if not self.winfo_exists():
+            return
+        self._refresh()
+        self.after(self._REFRESH_MS, self._tick)
+
+    def _rows(self):
+        running, waiting, staged = self._app._queue_lists()
+        rows = []
+        for s in running:
+            m = re.search(r'(\d+)%', s.status)
+            rows.append((s, f'⟳  {s.render_fmt.upper()} {m.group(1) + "%" if m else ""}',
+                         _BLUE, 'Cancelling' not in s.status))
+        for s in waiting:
+            rows.append((s, f'⏸  {s.render_fmt.upper()} next', _SUBTEXT, True))
+        for s in staged:
+            rows.append((s, f'○  {s.queued.upper()}', _TEXT, True))
+        return rows, len(running), len(waiting), len(staged)
+
+    def _refresh(self):
+        rows, running, waiting, staged = self._rows()
+        parts = []
+        if running:
+            parts.append(f'{running} exporting')
+        if waiting:
+            parts.append(f'{waiting} next')
+        if staged:
+            parts.append(f'{staged} queued' + ('' if self._app._exporting
+                                                else ', press Start export'))
+        head = ' · '.join(parts) if parts else 'The queue is empty'
+        if self._head.cget('text') != head:
+            self._head.configure(text=head)
+        look = self._app._export_btn_look()
+        if look != getattr(self, '_btn_look', None):
+            self._btn_look = look
+            self._export_btn.configure(**look)
+        # rebuild the rows only when songs come, go or change state: a new
+        # percentage just updates its label (rebuilding every tick blinks)
+        key = [(id(s), color, removable) for s, _, color, removable in rows]
+        if key == self._shown:
+            for lbl, (_, text, _, _) in zip(self._status_lbls, rows):
+                if lbl.cget('text') != text:
+                    lbl.configure(text=text)
+            return
+        self._shown = key
+        self._status_lbls = []
+        for w in self._list.winfo_children():
+            w.destroy()
+        if not rows:
+            ctk.CTkLabel(self._list, text='Use Queue as MP4 / Queue as WebM on a '
+                         'downloaded song.', font=_font(11), text_color=_SUBTEXT
+                         ).pack(pady=20)
+            return
+        for s, text, color, removable in rows:
+            row = ctk.CTkFrame(self._list, fg_color='transparent')
+            row.pack(fill='x', pady=1)
+            if s.rendering == 'running':
+                lbl = ctk.CTkLabel(row, text=text, width=_fs(110), anchor='w',
+                                   font=_font(11), text_color=color)
+            else:
+                # not started yet: a click switches WebM <-> MP4
+                lbl = ctk.CTkButton(row, text=text, width=_fs(110), height=24, anchor='w',
+                                    font=_font(11), text_color=color,
+                                    fg_color='transparent', hover_color='#313244',
+                                    command=lambda s=s: self._switch(s))
+            lbl.pack(side='left', padx=(6, 4))
+            self._status_lbls.append(lbl)
+            ctk.CTkButton(row, text='✕', width=_fs(28), height=24,
+                          fg_color='transparent', hover_color='#4a1a2a',
+                          text_color=_RED if removable else _BORDER,
+                          state='normal' if removable else 'disabled',
+                          command=lambda s=s: self._remove(s)).pack(side='right', padx=4)
+            name = ctk.CTkButton(row, text=s.label, anchor='w', height=24,
+                                 fg_color='transparent', hover_color='#313244',
+                                 text_color=_TEXT, font=_font(11),
+                                 command=lambda s=s: self._app._reveal(s))
+            name.pack(side='left', fill='x', expand=True)
+
+    def _switch(self, s):
+        self._app._switch_format(s, parent=self)
+        self._refresh()
+
+    def _remove(self, s):
+        if s.rendering == 'running' and not messagebox.askyesno(
+                'Export queue',
+                f'Cancel the {s.render_fmt.upper()} export of {s.label}?\n\n'
+                'What it rendered so far is lost; the download stays and can '
+                'be exported again.', parent=self):
+            return
+        self._app._unqueue(s)
+        self._refresh()
+
+
+class CloseWhileRendering(ctk.CTkToplevel):
+    """Closing the app while a video renders: quit now (the render is lost),
+    after the current file, after the whole queue, or don't quit."""
+
+    _open = None
+
+    @classmethod
+    def show(cls, app):
+        win = cls._open
+        if win is not None and win.winfo_exists():
+            win.lift()
+            win.focus_force()
+            return win
+        cls._open = cls(app)
+        return cls._open
+
+    def __init__(self, app):
+        super().__init__(app)
+        self._app = app
+        running, waiting, staged = app._queue_lists()
+        self.title('Exports in progress')
+        self.configure(fg_color=_BG)
+        self.resizable(False, False)
+        self.transient(app)
+        self.protocol('WM_DELETE_WINDOW', self._close)
+        self.bind('<Escape>', lambda e: self._close())
+
+        ctk.CTkLabel(self, text='A video is still exporting', font=_font(15, weight='bold'),
+                     text_color=_TEXT, anchor='w').pack(fill='x', padx=18, pady=(16, 4))
+        lines = [f'{s.label}  ·  {s.status.lstrip("⟳ ").strip()}' for s in running]
+        if waiting:
+            lines.append(f'{len(waiting)} more in the queue')
+        if staged:
+            lines.append(f'{len(staged)} queued but not started (export paused): '
+                         'they won\'t export')
+        if app._running:
+            lines.append('Downloads are running too')
+        ctk.CTkLabel(self, text='\n'.join(lines), font=_font(12), text_color=_SUBTEXT,
+                     justify='left', anchor='w', wraplength=_fs(440)).pack(
+            fill='x', padx=18, pady=(0, 12))
+
+        _b = dict(height=34, width=_fs(440), corner_radius=7, font=_font(12), anchor='w')
+        ctk.CTkButton(self, text='⏹   Quit now  (the current export is lost)',
+                      fg_color='#4a1a2a', hover_color='#6a2a3e', text_color=_RED,
+                      command=lambda: self._pick('now'), **_b).pack(padx=18, pady=3)
+        if waiting:
+            ctk.CTkButton(self, text='⏭   Quit after the current file',
+                          fg_color='#313244', hover_color='#414160', text_color=_TEXT,
+                          command=lambda: self._pick('file'), **_b).pack(padx=18, pady=3)
+        n = len(running) + len(waiting)
+        ctk.CTkButton(self, text=f'✔   Quit after the queue  ({n} file{"" if n == 1 else "s"})'
+                      if waiting else '✔   Quit when it finishes',
+                      fg_color='#2e7d4f', hover_color='#3a9a62', text_color='#ffffff',
+                      command=lambda: self._pick('queue'), **_b).pack(padx=18, pady=3)
+        cancel = 'Don\'t quit' if app._quit_after else 'Cancel'
+        ctk.CTkButton(self, text=cancel, fg_color='transparent', hover_color='#30304a',
+                      text_color=_SUBTEXT, border_color=_BORDER, border_width=1,
+                      command=lambda: self._pick(''), **_b).pack(padx=18, pady=(3, 16))
+        self.after(50, self._center)
+        _bring_to_front(self)
+        self.grab_set()
+
+    def _center(self):
+        self.update_idletasks()
+        a = self._app
+        x = a.winfo_rootx() + (a.winfo_width() - self.winfo_width()) // 2
+        y = a.winfo_rooty() + (a.winfo_height() - self.winfo_height()) // 3
+        self.geometry(f'+{max(0, x)}+{max(0, y)}')
+
+    def _close(self):
+        CloseWhileRendering._open = None
+        try:
+            self.grab_release()
+        except Exception:
+            pass
+        self.destroy()
+
+    def _pick(self, when):
+        self._close()
+        if when or self._app._quit_after:      # '' = Cancel / Don't quit
+            self._app._set_quit_after(when)
+
+
+class EditorExportWindow(ctk.CTkToplevel):
+    """Editor: which video editor the song's edit goes to (the formats
+    auto-editor's --export offers); the last one used is green."""
+
+    _open = None
+
+    @classmethod
+    def show(cls, app, song):
+        win = cls._open
+        if win is not None and win.winfo_exists():
+            win._close()
+        cls._open = cls(app, song)
+        return cls._open
+
+    def __init__(self, app, song):
+        super().__init__(app)
+        self._app, self._song = app, song
+        self.title('Export to editor')
+        self.configure(fg_color=_BG)
+        self.resizable(False, False)
+        self.transient(app)
+        self.protocol('WM_DELETE_WINDOW', self._close)
+        self.bind('<Escape>', lambda e: self._close())
+
+        ctk.CTkLabel(self, text='Export to editor', font=_font(15, weight='bold'),
+                     text_color=_TEXT, anchor='w').pack(fill='x', padx=18, pady=(16, 2))
+        mix = (song.review or {}).get('mix')
+        what = f'its {len(mix)} videos (auto-mix)' if mix else 'the downloaded video'
+        ctk.CTkLabel(self, text=f'{song.label}\n\nMakes a folder with {what}, the CON audio '
+                                'and the edit as a timeline, to make the video by hand. '
+                                'Which editor?',
+                     font=_font(12), text_color=_SUBTEXT, justify='left', anchor='w',
+                     wraplength=_fs(440)).pack(fill='x', padx=18, pady=(0, 12))
+        last = app._settings.get('editor_format') or 'premiere'
+        _b = dict(height=34, width=_fs(440), corner_radius=7, font=_font(12), anchor='w')
+        for key, (label, ext, _how) in autoedit.EDITOR_FORMATS.items():
+            hot = key == last
+            ctk.CTkButton(self, text=f'{label}   ({ext})',
+                          fg_color='#2e7d4f' if hot else '#313244',
+                          hover_color='#3a9a62' if hot else '#414160',
+                          text_color='#ffffff' if hot else _TEXT,
+                          command=lambda k=key: self._pick(k), **_b).pack(padx=18, pady=3)
+        ctk.CTkButton(self, text='Cancel', fg_color='transparent', hover_color='#30304a',
+                      text_color=_SUBTEXT, border_color=_BORDER, border_width=1,
+                      command=self._close, **_b).pack(padx=18, pady=(3, 16))
+        self.after(50, self._center)
+        _bring_to_front(self)
+        self.grab_set()
+
+    def _center(self):
+        self.update_idletasks()
+        a = self._app
+        x = a.winfo_rootx() + (a.winfo_width() - self.winfo_width()) // 2
+        y = a.winfo_rooty() + (a.winfo_height() - self.winfo_height()) // 3
+        self.geometry(f'+{max(0, x)}+{max(0, y)}')
+
+    def _close(self):
+        EditorExportWindow._open = None
+        try:
+            self.grab_release()
+        except Exception:
+            pass
+        self.destroy()
+
+    def _pick(self, fmt):
+        self._close()
+        self._app._export_to_editor(self._song, fmt)
+
+
 class App(ctk.CTk):
 
     def __init__(self):
@@ -2114,7 +2543,7 @@ class App(ctk.CTk):
         self._yt_save_after = None
         self._load_yt_titles()
         self._cache_bytes = 0
-        self._webm_batch = False
+        self._export_batch = False
         self._filtered    : list[Song]       = []
         self._iid_map     : dict[str, Song]  = {}
         self._iid_of      : dict[int, str]   = {}   # id(Song) -> tree iid (O(1) row updates)
@@ -2144,6 +2573,16 @@ class App(ctk.CTk):
         self._action_hint  = ''
         self._render_jobs  : queue.Queue = queue.Queue()
         self._render_thread = None
+        self._hold_renders = False       # quitting after the current render
+        self._previewing   : set = set() # id() of songs with a Preview rendering
+        self._to_editor    : set = set() # id() of songs being exported to an editor
+        self._replan_jobs  : list = []   # CON songs waiting for an auto-edit re-check
+        self._replan_lock  = threading.Lock()
+        self._replan_alive = False       # the re-check thread is running
+        self._replan_stop  = threading.Event()
+        self._exporting    = False       # Start export on: queued songs render
+        self._quitting     = False       # Quit now: renders are being killed
+        self._quit_after   = ''          # '' | 'file' | 'queue' (closing while rendering)
         self._pending      : list = []   # (song, replace, resync) waiting for the download thread
         self._dl_lock      = threading.Lock()
         self._dl_alive     = False
@@ -2153,6 +2592,7 @@ class App(ctk.CTk):
             and audiosync.is_available())
 
         self._build_ui()
+        self.protocol('WM_DELETE_WINDOW', self._on_close)
         # Poll the queue from the start so update/ping results are handled even
         # before a library is loaded.
         self._polling = True
@@ -2237,12 +2677,33 @@ class App(ctk.CTk):
             command=lambda: self._set_filter('has'), **_btn)
         self._btn_has.grid(row=0, column=1, padx=4, pady=10)
 
+        abox = ctk.CTkFrame(fbar, fg_color='transparent')
+        abox.grid(row=0, column=2, padx=4, pady=10)
         self._btn_all = ctk.CTkButton(
-            fbar, text='All',
+            abox, text='All',
             fg_color=_SURFACE, text_color=_TEXT,
             border_color=_BORDER, border_width=1, hover_color='#30304a',
             command=lambda: self._set_filter('all'), **_btn)
-        self._btn_all.grid(row=0, column=2, padx=4, pady=10)
+        self._btn_all.pack(side='left')
+        # the same song (artist + title) in more than one place: see _dup_key
+        self._btn_dups = ctk.CTkButton(
+            abox, text='Duplicates',
+            fg_color=_SURFACE, text_color=_TEXT,
+            border_color=_BORDER, border_width=1, hover_color='#30304a',
+            command=lambda: self._set_filter('dups'), **_btn)
+        self._btn_dups.pack(side='left', padx=(8, 0))
+
+        # open / close every folder and CON pack group (in the spacer column)
+        gbox = ctk.CTkFrame(fbar, fg_color='transparent')
+        gbox.grid(row=0, column=3, padx=4, pady=10, sticky='e')
+        _gbtn = dict(height=30, width=110, font=_font(12), corner_radius=6,
+                     fg_color=_SURFACE, text_color=_TEXT, border_color=_BORDER,
+                     border_width=1, hover_color='#30304a')
+        ctk.CTkButton(gbox, text='▾  Expand all',
+                      command=lambda: self._set_all_groups(True), **_gbtn).pack(side='left')
+        ctk.CTkButton(gbox, text='▸  Collapse all',
+                      command=lambda: self._set_all_groups(False),
+                      **_gbtn).pack(side='left', padx=(6, 0))
 
         # Search expands with the window, minimum 200px, no fixed width
         self._search_var = tk.StringVar()
@@ -2291,7 +2752,8 @@ class App(ctk.CTk):
                            anchor='w',      command=lambda: self._sort('label'))
         self._tree.heading('res',    text='Resolution  ↕',
                            anchor='center', command=lambda: self._sort('res'))
-        self._tree.heading('status', text='Status', anchor='w')
+        self._tree.heading('status', text='Status  ↕', anchor='w',
+                           command=lambda: self._sort('status'))
         self._tree.heading('vtype',  text='Video type  ↕', anchor='w',
                            command=lambda: self._sort('vtype'))
         self._tree.heading('yt',     text='Open in browser', anchor='w')
@@ -2325,6 +2787,9 @@ class App(ctk.CTk):
         self._tree.tag_configure('row_odd',  background='#1e1e2e')
         self._tree.tag_configure('flash',    background='#45475a')   # clicked link
         self._tree.tag_configure('group', background='#2f2f4a', foreground=_TEXT,
+                                 font=('Segoe UI', _fs(11), 'bold'))
+        # a group with songs exporting or in the export queue
+        self._tree.tag_configure('group_busy', background='#2f2f4a', foreground=_BLUE,
                                  font=('Segoe UI', _fs(11), 'bold'))
         # ttk.Treeview can't draw per-column borders: two 1px lines placed over
         # the edges of the "Open in browser" column stand in for one
@@ -2422,13 +2887,21 @@ class App(ctk.CTk):
             command=self._export_missed, **_fbtn)
         self._missed_btn.grid(row=0, column=7, padx=4, pady=15)
 
-        # renders every song queued with the WebM action
-        self._webm_btn = ctk.CTkButton(
-            foot, text='Export 0 WebMs', width=150, font=_foot_bold,
+        # renders every song put in the queue with Queue as MP4 / WebM;
+        # ☰ Queue lists what's queued and rendering, also inside closed groups
+        qbox = ctk.CTkFrame(foot, fg_color='transparent')
+        qbox.grid(row=0, column=8, padx=4, pady=15)
+        self._export_btn = ctk.CTkButton(
+            qbox, text='▶  Start export', width=160, font=_foot_bold,
             fg_color='#2e7d4f', hover_color='#3a9a62', text_color='#ffffff',
-            text_color_disabled='#9fb8a8', state='disabled',
-            command=self._export_webms, **_fbtn)
-        self._webm_btn.grid(row=0, column=8, padx=4, pady=15)
+            text_color_disabled='#9fb8a8',
+            command=self._toggle_export, **_fbtn)
+        self._export_btn.pack(side='left')
+        self._queue_btn = ctk.CTkButton(
+            qbox, text='☰  Queue', width=100, font=_foot_font,
+            fg_color='#313244', hover_color='#414160', text_color=_TEXT,
+            command=lambda: QueueWindow.show(self), **_fbtn)
+        self._queue_btn.pack(side='left', padx=(6, 0))
 
         # off on every start on purpose: a shutdown should never come from an
         # old setting
@@ -2584,6 +3057,7 @@ class App(ctk.CTk):
 
     def _on_yt_title(self, vid, title):
         self._yt_titles[vid] = title
+        MixPriorityWindow.refresh()
         for s in self._filtered:
             v = mvdb.chosen_video(s.mv)
             if v and mvdb.vid(v) == vid:
@@ -2633,7 +3107,7 @@ class App(ctk.CTk):
                 menu.add_command(label='     ' + mvdb.AUTO_MIX + '   (CON songs only)',
                                  state='disabled')
             menu.add_command(label='     Auto-mix priority...',
-                             command=lambda: MixPriorityWindow.show(self))
+                             command=lambda: MixPriorityWindow.show(self, s))
         menu.add_separator()
         menu.add_command(label='@  Video links...', command=lambda: VideoLinksWindow.show(self, s))
         try:
@@ -2949,8 +3423,10 @@ class App(ctk.CTk):
         """Background thread: probe resolutions for unprobed videos, a few in
         parallel (ffmpeg is the bottleneck, so this is ~Nx faster on first scan)."""
         done = 0
-        with ThreadPoolExecutor(max_workers=4) as pool:
-            # CON songs: read the .webm directly, there's no song.ini to cache it in
+        # not a with block: closing the app must drop the probes still waiting,
+        # or Python waits for all of them before it exits
+        pool = ThreadPoolExecutor(max_workers=4)
+        try:
             # CON songs: read the .webm directly (resolution and our tag in one
             # ffmpeg run), there's no song.ini to cache it in
             futures = {(pool.submit(conpack.probe_video, s.video) if s.con
@@ -2974,6 +3450,9 @@ class App(ctk.CTk):
                 self._queue.put(('res_update', s,
                                  f'{total_songs} songs found, reading resolutions ({remaining} left)...'
                                  if remaining else f'{total_songs} songs found'))
+        finally:
+            stopping = self._stop_evt.is_set()
+            pool.shutdown(wait=not stopping, cancel_futures=stopping)
 
     def _set_filter(self, mode):
         self._filter_mode = mode
@@ -2985,7 +3464,37 @@ class App(ctk.CTk):
         self._btn_missing.configure(**(_active if mode == 'missing' else _inactive))
         self._btn_has.configure(    **(_active if mode == 'has'     else _inactive))
         self._btn_all.configure(    **(_active if mode == 'all'     else _inactive))
+        self._btn_dups.configure(   **(_active if mode == 'dups'    else _inactive))
         self._apply_filter()
+        if mode == 'dups':
+            self._report_duplicates()
+
+    def _duplicate_groups(self):
+        """{_dup_key: [songs]} for songs found in more than one place."""
+        groups = {}
+        for s in self._songs:
+            k = _dup_key(s)
+            if k:
+                groups.setdefault(k, []).append(s)
+        return {k: v for k, v in groups.items() if len(v) > 1}
+
+    def _report_duplicates(self):
+        """Duplicates filter: count in the status line, every copy in the log."""
+        groups = self._duplicate_groups()
+        if not groups:
+            self._status_lbl.configure(text='No duplicated songs')
+            return
+        n = sum(len(v) for v in groups.values())
+        lines = [f'Duplicated songs: {len(groups)} songs in {n} places']
+        for songs in sorted(groups.values(), key=lambda v: v[0].key):
+            lines.append(f'  {songs[0].artist or "?"} - {songs[0].title or songs[0].label}')
+            for s in songs:
+                where = f'{s.con}  (song {s.song_id})' if s.con else s.folder
+                vid = 'video' if s.has_video else 'no video'
+                lines.append(f'      {where}  [{vid}]')
+        log.info('\n'.join(lines))
+        self._status_lbl.configure(
+            text=f'{len(groups)} songs in {n} places (list in the log)')
 
     def _debounced_filter(self):
         """Coalesce rapid keystrokes so a big library isn't re-filtered on every
@@ -2999,13 +3508,17 @@ class App(ctk.CTk):
 
     def _apply_filter(self):
         self._search_after = None
-        term = self._search_var.get().lower()
+        term = _fold(self._search_var.get().strip())
         mode = self._filter_mode
         out  = []
+        dups = set()
+        if mode == 'dups':
+            dups = {id(s) for v in self._duplicate_groups().values() for s in v}
         for s in self._songs:
             if mode == 'missing' and s.has_video:     continue
             if mode == 'has'     and not s.has_video: continue
-            if term and term not in s.key:            continue
+            if mode == 'dups'    and id(s) not in dups: continue
+            if term and term not in _fold(s.key):     continue
             out.append(s)
         # Sort
         if self._sort_col == 'res':
@@ -3015,6 +3528,8 @@ class App(ctk.CTk):
             out.sort(key=_res_key, reverse=not self._sort_asc)
         elif self._sort_col == 'vtype':
             out.sort(key=lambda s: (mvdb.sort_key(s.mv), s.key), reverse=not self._sort_asc)
+        elif self._sort_col == 'status':
+            out.sort(key=self._status_key, reverse=not self._sort_asc)
         else:
             out.sort(key=lambda s: s.key, reverse=not self._sort_asc)
         self._filtered = out
@@ -3036,6 +3551,8 @@ class App(ctk.CTk):
             text=f'Song / Artist  {up if col == "label" else "↕"}')
         self._tree.heading('res',
             text=f'Resolution  {up if col == "res" else "↕"}')
+        self._tree.heading('status',
+            text=f'Status  {up if col == "status" else "↕"}')
         self._tree.heading('vtype',
             text=f'Video type  {up if col == "vtype" else "↕"}')
         self._apply_filter()
@@ -3063,10 +3580,15 @@ class App(ctk.CTk):
             return set()
         v = mvdb.chosen_video(s.mv)
         dl = {'download'} if (v and mvdb.vid(v) and not self._is_pending(s)) else set()
-        if s.con and s.has_video:            # exported: 🎧 checks it against the CON audio
+        if s.con:                            # 🎧 the CON audio (against the video, if any)
             dl.add('listen')
         if s.review:                         # downloaded (review, or exported and kept)
-            return {'play', 'collage', 'search', 'mp4', 'webm', 'clear', 'more'} | dl
+            acts = {'play', 'collage', 'search', 'mp4', 'webm', 'clear', 'more'} | dl
+            if id(s) not in self._previewing:
+                acts.add('preview')
+            if id(s) not in self._to_editor:
+                acts.add('editor')
+            return acts
         if s.con and s.has_video:            # finished video
             return {'play', 'search', 'more'} | dl
         return {'more'} | dl                 # video links work for every song
@@ -3076,12 +3598,26 @@ class App(ctk.CTk):
         """The song has a finished video that BackstageHero didn't make."""
         return s.has_video and s.ours is False
 
-    def _row_values(self, s):
-        chk         = '  ☑' if s.checked else '  ☐'
+    def _status_text(self, s):
         status_text = s.status or ('✔' if s.has_video else '✗')
         if self._foreign(s) and not status_text.startswith('⟳'):
             # a video BackstageHero didn't make (downloaded or synced by hand)
             status_text = '⚠  ' + (s.status or 'Not by BackstageHero')
+        return status_text
+
+    # Status sort order (by the leading icon): working, waiting, queued,
+    # pending, to review, not by BackstageHero, errors / no video, done
+    _STATUS_ORDER = '⟳⏳⏸○◆⚠✗✔'
+
+    def _status_key(self, s):
+        text = self._status_text(s)
+        rank = self._STATUS_ORDER.find(text[:1])
+        return (rank if rank >= 0 else len(self._STATUS_ORDER),
+                text.lower(), s.key)
+
+    def _row_values(self, s):
+        chk         = '  ☑' if s.checked else '  ☐'
+        status_text = self._status_text(s)
         enabled = self._actions_of(s)
         icons = tuple(_ACTIONS[a][0] if a in enabled else '' for a in _ACTION_KEYS)
         depth, in_pack = self._row_ctx.get(id(s), (0, False))
@@ -3110,12 +3646,28 @@ class App(ctk.CTk):
         vids = sum(1 for s in songs if s.has_video)
         arrow = '▾' if self._group_open(node) else '▸'
         icon = '📦' if node['kind'] == 'pack' else '📁'
-        busy = sum(1 for s in songs if self._is_pending(s) or s.rendering)
-        # short: the Resolution / Status columns are narrow on smaller windows
-        status = f'✔ {vids} / {n}' + (f'   ⟳ {busy}' if busy else '')
-        return ((chk, f'{self._INDENT * depth}{arrow}  {icon}  {node["name"]}   ({n})',
+        # what's going on inside, in words: the group row's bold font has no
+        # ⟳ / ⏸ glyphs, and a closed group would hide it otherwise
+        act = self._group_activity(songs)
+        status = f'✔ {vids} / {n}'
+        return ((chk, f'{self._INDENT * depth}{arrow}  {icon}  {node["name"]}   ({n})'
+                 + (f'      ·  {act}' if act else ''),
                  '', status, '', '')
                 + ('',) * len(_ACTION_KEYS))
+
+    def _group_tags(self, node, row_tag):
+        busy = any(s.rendering or s.queued for s in node['all'])
+        return (row_tag, 'group_busy' if busy else 'group')
+
+    def _group_activity(self, songs):
+        """'exporting 1 · 2 queued · downloading 1' for a group row."""
+        exp = sum(1 for s in songs if s.rendering)
+        staged = sum(1 for s in songs if s.queued and not s.rendering)
+        dl = sum(1 for s in songs if not s.rendering and self._is_pending(s))
+        parts = ([f'exporting {exp}'] if exp else []) + \
+                ([f'{staged} in queue'] if staged else []) + \
+                ([f'downloading {dl}'] if dl else [])
+        return '  ·  '.join(parts)
 
     def _visible_rows(self):
         """(kind, item, depth, in_pack, chain) for every row to show, from
@@ -3150,7 +3702,7 @@ class App(ctk.CTk):
             chain = [g for _, g in stack]
             if kind == 'group':
                 iid = self._tree.insert('', 'end', values=self._group_values(item, depth),
-                                        tags=(row_tag, 'group'))
+                                        tags=self._group_tags(item, row_tag))
                 self._group_of[iid] = (item, depth)
                 if not self._group_open(item):
                     # songs in a closed group update this row while they run
@@ -3180,7 +3732,10 @@ class App(ctk.CTk):
         for iid in dirty:
             g = self._group_of.get(iid)
             if g and self._tree.exists(iid):
-                self._tree.item(iid, values=self._group_values(*g))
+                row_tag = next((t for t in self._tree.item(iid, 'tags')
+                                if t in ('row_even', 'row_odd')), 'row_odd')
+                self._tree.item(iid, values=self._group_values(*g),
+                                tags=self._group_tags(g[0], row_tag))
 
     def _toggle_group(self, node):
         if self._search_var.get().strip():
@@ -3278,7 +3833,7 @@ class App(ctk.CTk):
         elif s and key and key in self._actions_of(s):
             hint = _ACTIONS[key][1]
             if key == 'play' and s.review and not s.has_video:
-                hint = ('Play the base video (not mixed yet: Export as MP4 shows the mix)'
+                hint = ('Play the base video (not mixed yet: an MP4 export shows the mix)'
                         if s.review.get('mix') else 'Play the downloaded video (not cut yet)')
             if key == 'play' and s.has_video:
                 hint = 'Play the exported video'
@@ -3286,8 +3841,8 @@ class App(ctk.CTk):
                 hint += ' (again, from the kept original)'
             if key == 'clear' and s.review and not s.review.get('rendered'):
                 hint = 'Clear cache: discard this download (not exported yet)'
-            if key == 'webm' and s.webm_queued:
-                hint = 'Remove from the WebM queue'
+            if key in ('mp4', 'webm') and s.queued == key:
+                hint = 'Remove from the export queue'
             if key == 'download':
                 hint = (f'Download the {len(mvdb.mix_videos(s.mv))} linked videos and '
                         f'auto-mix them' if mvdb.chosen_type(s.mv) == mvdb.AUTO_MIX
@@ -3346,12 +3901,68 @@ class App(ctk.CTk):
             self._download_db(s)
         elif key == 'clear':
             self._clear_cache(s)
-        elif key == 'mp4':
-            self._queue_render(s, key)
-        elif key == 'webm':
-            self._toggle_webm(s)
+        elif key in ('mp4', 'webm'):
+            self._toggle_queue(s, key)
+        elif key == 'preview':
+            self._preview(s)
+        elif key == 'editor':
+            EditorExportWindow.show(self, s)
         elif key == 'more':
             VideoLinksWindow.show(self, s)
+
+    def _preview(self, s):
+        """Preview: a fast 480p render of the edit (conpack.render_preview),
+        right away on its own thread, not through the export queue, then
+        opened in the default player. Nothing is written next to the CON."""
+        win = ListenWindow._open
+        try:
+            if win is not None and win.winfo_exists() and win._mixed:
+                win._close()     # its player holds preview.mkv open (Windows lock)
+        except Exception:
+            pass
+        self._previewing.add(id(s))
+        s.status, s.stag = '⟳  Preview 0%', 'busy'
+        self._update_row(s)
+
+        def _worker():
+            try:
+                path = conpack.render_preview(
+                    s.con, s.song_id,
+                    progress=lambda f: self._queue.put(('preview_progress', s, f)))
+                self._queue.put(('preview_done', s, path, None))
+            except Exception as e:
+                log.exception('Preview failed for %s', s.label)
+                self._queue.put(('preview_done', s, None, str(e)))
+        threading.Thread(target=_worker, daemon=True).start()
+
+    def _export_to_editor(self, s, fmt):
+        """Editor: after EditorExportWindow picked the format, ask the folder
+        and write the edit folder there (conpack.export_to_editor) on its own
+        thread: a copy of the download, the CON audio, the timeline."""
+        start = self._settings.get('editor_folder') or ''
+        if not os.path.isdir(start):
+            start = os.path.join(os.path.expanduser('~'), 'Videos')
+        parent = filedialog.askdirectory(
+            title='Export to editor: where to put the edit folder', initialdir=start,
+            mustexist=True)
+        if not parent:
+            return
+        self._persist_setting('editor_folder', parent)
+        self._persist_setting('editor_format', fmt)
+        name = re.sub(r'[<>:"/\\|?*]+', '_', s.label).strip(' .') or s.song_id
+        folder = os.path.join(os.path.normpath(parent), f'{name} (edit)')
+        self._to_editor.add(id(s))
+        s.status, s.stag = '⟳  To editor...', 'busy'
+        self._update_row(s)
+
+        def _worker():
+            try:
+                path = conpack.export_to_editor(s.con, s.song_id, fmt, folder, s.label)
+                self._queue.put(('editor_done', s, path, None))
+            except Exception as e:
+                log.exception('Export to editor failed for %s', s.label)
+                self._queue.put(('editor_done', s, None, str(e)))
+        threading.Thread(target=_worker, daemon=True).start()
 
     def _show_collage(self, s):
         out_dir = os.path.join(conpack.work_dir(s.con, s.song_id), 'collage')
@@ -3377,7 +3988,7 @@ class App(ctk.CTk):
             self._mark_wrong(s, s.review['video_id'])
             conpack.discard_work(s.con, s.song_id)
             s.review = None
-            s.webm_queued = False
+            s.queued = ''
             s.dl_mode = 'search'
             self._enqueue_downloads([s], replace=True)
             return
@@ -3391,7 +4002,7 @@ class App(ctk.CTk):
         if s.review:
             conpack.clear_cache(s.con, s.song_id)
             s.review = None
-            s.webm_queued = False
+            s.queued = ''
         s.dl_mode = 'search'
         self._enqueue_downloads([s], replace=True)
 
@@ -3420,7 +4031,7 @@ class App(ctk.CTk):
                 return
             conpack.discard_work(s.con, s.song_id)
             s.review = None
-            s.webm_queued = False
+            s.queued = ''
         elif s.has_video:
             # same checks as Re-download: protects videos BackstageHero didn't make
             if not self._confirm_redownload([s]):
@@ -3428,7 +4039,7 @@ class App(ctk.CTk):
             if s.review:
                 conpack.clear_cache(s.con, s.song_id)
                 s.review = None
-                s.webm_queued = False
+                s.queued = ''
         s.dl_mode = 'db'
         self._enqueue_downloads([s], replace=True)
 
@@ -3447,7 +4058,7 @@ class App(ctk.CTk):
             return
         conpack.clear_cache(s.con, s.song_id)
         s.review = None
-        s.webm_queued = False
+        s.queued = ''
         s.status, s.stag = '', ''
         self._update_row(s)
         self._update_buttons()
@@ -3469,7 +4080,7 @@ class App(ctk.CTk):
         conpack.clear_all_cache()
         for s in cached:
             s.review = None
-            s.webm_queued = False
+            s.queued = ''
             s.status, s.stag = '', ''
             self._update_row(s)
         self._update_buttons()
@@ -3484,52 +4095,248 @@ class App(ctk.CTk):
             self._queue.put(('cache_size', n))
         threading.Thread(target=_worker, daemon=True).start()
 
-    def _toggle_webm(self, s):
-        """WebM renders are slow (2-pass VP8): queue them and export them all
-        at once with the green button."""
-        s.webm_queued = not s.webm_queued
-        if s.webm_queued:
-            s.status, s.stag = '⏸  In WebM queue', 'dim'
+    # ---- export queue ---------------------------------------------------------
+    # Queue as MP4 / Queue as WebM put a song in the export queue (s.queued).
+    # Start export turns exporting on: the queue goes to the render thread
+    # (s.rendering), one at a time, and songs queued later follow right away.
+    # Pause export lets the running file finish and keeps the rest queued.
+
+    def _toggle_queue(self, s, fmt):
+        """Add the song to the export queue as fmt; the same format again
+        takes it out, the other one switches the format."""
+        s.queued = '' if s.queued == fmt else fmt
+        if s.queued:
+            keep = self._ask_keep_other(s, fmt)
+            if keep is None:
+                s.queued = ''              # cancelled: not queued
+                return
+            s.keep_other = keep
+        if s.queued and self._exporting and s.review:
+            self._export_batch = True
+            self._queue_render(s, fmt)     # exporting: straight to the renders
+            return
+        if s.queued:
+            s.status, s.stag = f'⏸  In queue ({fmt.upper()})', 'dim'
         else:
             s.status, s.stag = _review_status(s.review), _review_tag(s.review)
         self._update_row(s)
         self._update_buttons()
+        QueueWindow.refresh_open()
 
-    def _export_webms(self):
-        queued = [s for s in self._songs if s.webm_queued and s.review and not s.rendering]
-        for s in queued:
-            s.webm_queued = False
-            self._queue_render(s, 'webm')
-        if queued:
-            self._webm_batch = True
+    def _switch_format(self, s, parent=None):
+        """☰ Queue: a click on a queued song's format switches it WebM <-> MP4,
+        with the same replace / keep both questions as queuing it. A song
+        waiting for its turn keeps its place (the render thread reads
+        render_fmt when it gets there). The running one can't switch."""
+        if s.rendering == 'queued':
+            cur = s.render_fmt
+        elif s.queued and not s.rendering:
+            cur = s.queued
+        else:
+            return
+        new = 'mp4' if cur == 'webm' else 'webm'
+        keep = self._ask_keep_other(s, new, parent)
+        if keep is None:
+            return
+        s.keep_other = keep
+        if s.rendering == 'queued':
+            s.render_fmt = new
+            s.status, s.stag = f'⏸  Queued for {new.upper()}', 'dim'
+        else:
+            s.queued = new
+            s.status, s.stag = f'⏸  In queue ({new.upper()})', 'dim'
+        self._update_row(s)
         self._update_buttons()
 
-    # ---- shut down when the WebM exports finish ------------------------------
+    def _ask_keep_other(self, s, fmt, parent=None):
+        """The song already has a video of the other format next to the CON:
+        replace it (False), keep both (True) or don't queue (None).
+        A video of the same format is overwritten, so that asks first too.
+        parent: the window the questions show over (default the app)."""
+        parent = parent or self
+        def _size(p):
+            try:
+                return f' ({_fmt_size(os.path.getsize(p))})'
+            except OSError:
+                return ''
+
+        def _a(f):
+            return 'an' if f == 'mp4' else 'a'
+
+        same = conpack.video_path(s.con, s.song_id, fmt)
+        if os.path.exists(same):
+            foreign = ('\n\nIt wasn\'t made by BackstageHero (downloaded or edited by '
+                       'hand).' if not conpack.is_ours(same) else '')
+            if not messagebox.askyesno(
+                    f'Export the {fmt.upper()} again?',
+                    f'{s.label}\n\nThis song already has {_a(fmt)} {fmt.upper()}'
+                    f'{_size(same)}.{foreign}\n\nExport it again and replace it?',
+                    icon='warning' if foreign else 'question', parent=parent):
+                return None
+        other = 'mp4' if fmt == 'webm' else 'webm'
+        path = conpack.video_path(s.con, s.song_id, other)
+        if not os.path.exists(path):
+            return False
+        size = _size(path)
+        ans = messagebox.askyesnocancel(
+            f'Replace the {other.upper()}?',
+            f'{s.label}\n\nThis song already has {_a(other)} {other.upper()}{size}.\n\n'
+            f'Yes: replace it with the new {fmt.upper()}\n'
+            f'No: keep both (the log shows both sizes)\n'
+            'Cancel: don\'t queue', icon='question', parent=parent)
+        return None if ans is None else not ans
+
+    def _toggle_export(self):
+        """▶ Start export / ⏸ Pause export."""
+        if self._exporting:
+            self._pause_export()
+        else:
+            self._start_export()
+
+    def _start_export(self):
+        self._exporting = True
+        queued = [s for s in self._songs if s.queued and s.review and not s.rendering]
+        for s in queued:
+            self._queue_render(s, s.queued)
+        self._export_batch = True
+        self._update_buttons()
+
+    def _pause_export(self):
+        """The running render finishes; the ones waiting go back to the queue."""
+        self._exporting = False
+        for s in self._songs:
+            if s.rendering == 'queued':
+                s.rendering = ''          # the render thread skips the stale job
+                s.queued = s.render_fmt
+                s.status, s.stag = f'⏸  In queue ({s.queued.upper()})', 'dim'
+                self._update_row(s)
+        self._update_buttons()
+
+    def _unqueue(self, s):
+        """Take a song out of the queue: queued while paused, or waiting
+        for its turn to render. A running render is cancelled: ffmpeg is
+        stopped, its partial file removed, the kept download stays."""
+        if s.rendering == 'running':
+            conpack.cancel_render()     # render_done (cancelled) resets the row
+            s.status, s.stag = '⟳  Cancelling export…', 'busy'
+            self._update_row(s)
+            return
+        s.queued = ''
+        s.rendering = ''          # the render thread skips the stale job
+        s.status, s.stag = _review_status(s.review), _review_tag(s.review)
+        self._update_row(s)
+        self._update_buttons()
+
+    def _export_btn_look(self):
+        """Text and colours of the Start / Pause export buttons."""
+        if self._exporting:
+            return dict(text='⏸  Pause export', fg_color='#313244', hover_color='#414160')
+        nq = len(self._queue_lists()[2])
+        return dict(text=f'▶  Start export ({nq})' if nq else '▶  Start export',
+                    fg_color='#2e7d4f', hover_color='#3a9a62')
+
+    def _queue_lists(self):
+        """(running, waiting to render, queued while not exporting) songs."""
+        running = [s for s in self._songs if s.rendering == 'running']
+        waiting = [s for s in self._songs if s.rendering == 'queued']
+        staged = [s for s in self._songs if s.queued and not s.rendering]
+        return running, waiting, staged
+
+    def _reveal(self, s):
+        """Show a song in the table: clear a search/filter hiding it, open its
+        groups, scroll to it and flash it."""
+        if not any(x is s for x in self._filtered):
+            self._search_var.set('')
+            self._set_filter('all')
+        keys = set()
+
+        def walk(node):
+            for c in list(node['dirs'].values()) + list(node['packs'].values()):
+                if any(x is s for x in c['all']):
+                    keys.add(c['key'])
+                    walk(c)
+        walk(self._groups)
+        self._expanded |= keys
+        self._refresh_tree()
+        iid = self._iid_of.get(id(s))
+        if iid:
+            self._tree.see(iid)
+            tags = tuple(t for t in self._tree.item(iid, 'tags') if t != 'flash')
+            self._tree.item(iid, tags=tags + ('flash',))
+            self.after(900, lambda: self._tree.exists(iid) and self._tree.item(
+                iid, tags=tuple(t for t in self._tree.item(iid, 'tags') if t != 'flash')))
+
+    # ---- shut down when the exports finish ------------------------------------
 
     def _on_shutdown_toggle(self):
         if self._shutdown_var.get():
             self._status_lbl.configure(
-                text='The PC will shut down when the WebM exports finish (60 s to cancel)')
+                text='The PC will shut down when the exports finish (60 s to cancel)')
 
     def _renders_idle(self):
-        return not any(s.rendering for s in self._songs) and self._render_jobs.empty()
+        return not any(s.rendering for s in self._songs)
 
     def _maybe_shutdown(self):
-        """Called after each render: once the WebM batch is done, count down."""
-        if not (self._webm_batch and self._renders_idle()):
+        """Called after each render: once the export batch is done, count down."""
+        if not (self._export_batch and self._renders_idle()):
             return
         if self._running:
             return      # Download & export: more renders come with the downloads
-        self._webm_batch = False
+        self._export_batch = False
         if self._shutdown_var.get() and not self._running:
             ShutdownCountdown(self, seconds=60)
 
+    # ---- closing while exporting ---------------------------------------------
+
+    def _on_close(self):
+        """The window's ✕: while a video renders, ask what to do with it."""
+        if self._renders_idle():
+            self._quit()
+            return
+        CloseWhileRendering.show(self)
+
+    def _set_quit_after(self, when):
+        """'now', 'file' (after the running render), 'queue' (after every
+        queued render) or '' (don't quit)."""
+        if when == 'now':
+            self._quit()
+            return
+        self._quit_after = when
+        self._hold_renders = when == 'file'
+        if when == 'file':
+            text = 'Closing when the current export finishes'
+        elif when == 'queue':
+            text = 'Closing when the export queue finishes'
+        else:
+            text = 'Ready'
+        self._status_lbl.configure(text=text)
+        if self._renders_idle() and when and not (when == 'queue' and self._running):
+            self._quit()
+        elif (not when and any(s.rendering == 'queued' for s in self._songs)
+              and not (self._render_thread and self._render_thread.is_alive())):
+            # the render thread stopped for "after this file": start it again
+            self._render_thread = threading.Thread(target=self._render_worker, daemon=True)
+            self._render_thread.start()
+
+    def _quit(self):
+        """Close now: a render still running is stopped and its partial file
+        removed (the kept download stays, it can be exported again)."""
+        self._hold_renders = True
+        self._quitting = True
+        conpack.kill_renders()
+        t = self._render_thread
+        if t and t.is_alive():
+            t.join(timeout=3)     # lets the render remove its .part file
+        self.destroy()
+
     def _queue_render(self, s, fmt):
-        s.webm_queued = False
+        s.queued = ''
         s.rendering = 'queued'
+        s.render_fmt = fmt
         s.status, s.stag = f'⏸  Queued for {fmt.upper()}', 'dim'
         self._update_row(s)
         self._render_jobs.put((s, fmt))
+        self._update_buttons()
         if not self._render_thread or not self._render_thread.is_alive():
             self._render_thread = threading.Thread(target=self._render_worker, daemon=True)
             self._render_thread.start()
@@ -3538,20 +4345,66 @@ class App(ctk.CTk):
         """Renders one video at a time (encoding is CPU heavy), while downloads
         keep going on their own thread."""
         while True:
+            if self._hold_renders:       # quitting after the current file
+                return
             try:
                 s, fmt = self._render_jobs.get(timeout=1)
             except queue.Empty:
                 return
+            if s.rendering != 'queued':
+                continue                 # taken out of the queue (or already done)
+            fmt = s.render_fmt           # ☰ Queue may have switched it meanwhile
+            conpack.clear_cancel()
+            s.rendering = 'running'
             self._queue.put(('render_progress', s, f'Rendering {fmt.upper()}', 0.0))
+            other_fmt = 'mp4' if fmt == 'webm' else 'webm'
+            other = conpack.video_path(s.con, s.song_id, other_fmt)
+            try:
+                other_size = os.path.getsize(other)
+            except OSError:
+                other_size = None
+            t0 = time.monotonic()
             try:
                 dest = conpack.render(
                     s.con, s.song_id, fmt, __version__,
                     progress=lambda f, s=s, fmt=fmt: self._queue.put(
-                        ('render_progress', s, f'Rendering {fmt.upper()}', f)))
+                        ('render_progress', s, f'Rendering {fmt.upper()}', f)),
+                    keep_other=s.keep_other)
+                self._log_render_size(s, fmt, dest, time.monotonic() - t0,
+                                      other_fmt, other_size, s.keep_other)
                 self._queue.put(('render_done', s, dest, None))
+            except conpack.RenderCancelled:
+                if self._quitting:
+                    return
+                log.info('Export cancelled: %s', s.label)
+                self._queue.put(('render_done', s, None, ''))   # '' = cancelled
             except Exception as e:
+                if self._quitting:
+                    return               # Quit now killed it: not a failure
                 log.exception('Render failed for %s', s.label)
                 self._queue.put(('render_done', s, None, str(e)))
+
+    @staticmethod
+    def _log_render_size(s, fmt, dest, secs, other_fmt, other_size, kept):
+        """Log line to compare formats: size, MB per minute of video, render
+        time, and the other format's size (kept next to it, or replaced)."""
+        try:
+            size = os.path.getsize(dest)
+            length = conpack._duration(dest) or 0
+            per_min = (f', {size / 1048576 / (length / 60):.1f} MB/min'
+                       if length else '')
+            mins = (f'{int(length // 60)}:{int(length % 60):02d} long'
+                    if length else 'length unknown')
+            line = (f'Exported {fmt.upper()}: {s.label}  ·  {_fmt_size(size)} '
+                    f'({mins}{per_min}), took {int(secs // 60)}m {int(secs % 60):02d}s')
+            if other_size is not None:
+                line += (f'  ·  {"kept" if kept else "replaced"} the {other_fmt.upper()}: '
+                         f'{_fmt_size(other_size)} ({fmt.upper()} is '
+                         f'{size / other_size * 100:.0f}% of it)' if other_size
+                         else '')
+            log.info(line)
+        except Exception as e:
+            log.info('Exported %s: %s (size not read: %s)', fmt.upper(), s.label, e)
 
     def _toggle_all(self):
         """Click on the checkbox column header: select/deselect all visible."""
@@ -3670,16 +4523,23 @@ class App(ctk.CTk):
         checked    = [s for s in self._songs if s.checked]
         n          = len(checked)
         has_vid    = [s for s in checked if s.has_video and not s.con]
+        kept       = [s for s in checked if s.con and s.review and s.review.get('autoedit')]
         can_start  = n > 0 and not self._running
-        can_resync = len(has_vid) > 0 and not self._running and self._sync_ready
+        can_resync = self._sync_ready and (
+            (has_vid and not self._running) or (kept and not self._replan_alive))
 
         label = _DL_MODES[self._dl_mode_var.get()][0]
         self._start_btn.configure(
             text=f'▶  {label} ({n})' if n else f'▶  {label}',
             state='normal' if can_start else 'disabled')
         self._mode_btn.configure(state='normal' if not self._running else 'disabled')
-        self._resync_btn.configure(
-            state='normal' if can_resync else 'disabled')
+        if self._replan_alive:
+            left = len(self._replan_jobs)
+            self._resync_btn.configure(
+                text=f'■  Stop ({left + 1})', state='normal')
+        else:
+            self._resync_btn.configure(
+                text='↺  Auto-sync', state='normal' if can_resync else 'disabled')
         self._stop_btn.configure(
             state='normal' if self._running else 'disabled')
 
@@ -3687,9 +4547,13 @@ class App(ctk.CTk):
             text=f'🗑  Clear cache ({_fmt_size(self._cache_bytes)})' if self._cache_bytes
             else '🗑  Clear cache',
             state='normal' if self._cache_bytes else 'disabled')
-        nq = sum(1 for s in self._songs if s.webm_queued)
-        self._webm_btn.configure(text=f'Export {nq} WebM{"" if nq == 1 else "s"}',
-                                 state='normal' if nq else 'disabled')
+        running, waiting, staged = self._queue_lists()
+        nq = len(staged)
+        self._export_btn.configure(**self._export_btn_look())
+        busy = len(running) + len(waiting)
+        self._queue_btn.configure(
+            text=f'☰  Queue ({busy + nq})' if busy + nq else '☰  Queue')
+        QueueWindow.refresh_open()
 
         all_vis_on = bool(self._filtered) and all(s.checked for s in self._filtered)
         self._sel_btn.configure(
@@ -3733,19 +4597,97 @@ class App(ctk.CTk):
         for s in work:
             s.auto_export = fmt if s.con else ''
         if fmt and any(s.con for s in work):
-            self._webm_batch = self._webm_batch or fmt == 'webm'
+            self._export_batch = self._export_batch or fmt == 'webm'
         self._launch(work, replace=replace, resync=False)
 
     def _start_resync(self):
-        if self._running:
+        """↺ Auto-sync: song folders get their offset measured again; CON songs
+        with a kept download get their auto-edit re-checked (_start_replan).
+        While the re-check runs, the button stops it."""
+        if self._replan_alive:
+            self._replan_stop.set()
+            self._status_lbl.configure(text='Stopping the re-check after the current song...')
             return
-        # CON videos have the sync baked into the cut; re-download to redo them
-        work = [s for s in self._songs if s.checked and s.has_video and not s.con]
-        if not work:
+        checked = [s for s in self._songs if s.checked]
+        work = [s for s in checked if s.has_video and not s.con] if not self._running else []
+        cons = [s for s in checked if s.con and s.review and s.review.get('autoedit')]
+        if not work and not cons:
             return
-        if not self._confirm_batch(work, 'auto-sync'):
+        if not self._confirm_batch(work + cons, 'auto-sync'):
             return
-        self._launch(work, replace=False, resync=True)
+        if work:
+            self._launch(work, replace=False, resync=True)
+        if cons:
+            self._start_replan(cons)
+
+    # ---- auto-edit re-check (↺ Auto-sync on CON songs) ------------------------
+    # CON videos have the sync baked into the cut, so re-syncing them means
+    # running the auto-edit again on the kept download (conpack.replan; only
+    # plans older than autoedit.PLAN_VERSION change). A song whose edit
+    # changed and that was exported goes into the export queue as the same
+    # format; Start export renders them. One song at a time, like the renders.
+
+    def _start_replan(self, songs):
+        songs = [s for s in songs if not s.rendering]
+        for s in songs:
+            s.status, s.stag = '○  Re-check auto-edit', 'dim'
+            self._update_row(s)
+        with self._replan_lock:
+            known = {id(x) for x in self._replan_jobs}
+            self._replan_jobs.extend(s for s in songs if id(s) not in known)
+            if self._replan_alive:
+                return
+            self._replan_alive = True
+        self._replan_stop.clear()
+        self._replan_counts = {}
+        self._update_buttons()
+        threading.Thread(target=self._replan_worker, daemon=True).start()
+
+    def _replan_worker(self):
+        i = 0
+        while True:
+            with self._replan_lock:
+                if not self._replan_jobs or self._replan_stop.is_set():
+                    left = list(self._replan_jobs)
+                    self._replan_jobs.clear()
+                    self._replan_alive = False
+                    break
+                s = self._replan_jobs.pop(0)
+                total = i + 1 + len(self._replan_jobs)
+            self._queue.put(('replan_start', s, i, total))
+            fmt = ''
+            if s.rendering:
+                result, text = 'skip', 'exporting'
+            else:
+                try:
+                    result, text = conpack.replan(s.con, s.song_id)
+                except Exception as e:
+                    log.exception('Auto-edit re-check failed for %s', s.label)
+                    result, text = 'kept', str(e)
+                review = conpack.load_review(s.con, s.song_id) or {}
+                if result in ('changed', 'same', 'current') and conpack.export_outdated(review):
+                    # the exported video has an older edit: export it again as
+                    # the same format, if it's still the one BackstageHero made
+                    if result != 'changed':
+                        result, text = 'changed', 'exported with an older edit'
+                    done = review.get('rendered')
+                    path = conpack.video_path(s.con, s.song_id, done)
+                    fmt = done if os.path.exists(path) and conpack.is_ours(path) else ''
+            self._queue.put(('replan_done', s, i, total, result, text, fmt))
+            i += 1
+        self._queue.put(('replan_finished', left))
+
+    def _queue_fixed(self, s, fmt):
+        """A re-checked song whose edit changed: into the export queue as fmt.
+        A video of the other format kept next to it on purpose stays."""
+        other = conpack.video_path(s.con, s.song_id, 'mp4' if fmt == 'webm' else 'webm')
+        s.keep_other = os.path.exists(other)
+        if self._exporting:
+            self._export_batch = True
+            self._queue_render(s, fmt)
+            return
+        s.queued = fmt
+        s.status, s.stag = f'⏸  In queue ({fmt.upper()}), edit fixed', 'dim'
 
     @staticmethod
     def _made_by_us(s):
@@ -4010,6 +4952,7 @@ class App(ctk.CTk):
             s.stag   = 'warn'
             if fmt and s.review and synced and not s.rendering:
                 # Download & export: render now (one at a time, downloads go on)
+                s.keep_other = False
                 self._queue_render(s, fmt)
             self._update_row(s)
             self._refresh_cache_size()
@@ -4035,7 +4978,10 @@ class App(ctk.CTk):
         elif kind == 'render_done':
             _, s, dest, err = msg
             s.rendering = ''
-            if err:
+            if err == '':            # cancelled from the export queue
+                s.queued = ''
+                s.status, s.stag = _review_status(s.review), _review_tag(s.review)
+            elif err:
                 s.status, s.stag = f'✗  Render failed: {err[:30]}', 'error'
             else:
                 s.review    = conpack.load_review(s.con, s.song_id)   # original kept
@@ -4046,7 +4992,92 @@ class App(ctk.CTk):
                 s.stag      = 'done'
             self._update_row(s)
             self._refresh_cache_size()
+            self._update_buttons()
+            if self._quit_after == 'file' or (self._quit_after == 'queue'
+                                              and self._renders_idle() and not self._running):
+                self._quit()
+                return
             self._maybe_shutdown()
+
+        elif kind == 'preview_progress':
+            _, s, frac = msg
+            if not s.rendering:
+                s.status, s.stag = f'⟳  Preview {int(frac * 100)}%', 'busy'
+                self._update_row(s)
+
+        elif kind == 'preview_done':
+            _, s, path, err = msg
+            self._previewing.discard(id(s))
+            s.review = conpack.load_review(s.con, s.song_id)   # may be re-planned
+            if not s.rendering and not s.queued:
+                s.status, s.stag = _review_status(s.review), _review_tag(s.review)
+            if err:
+                s.status, s.stag = f'✗  Preview failed: {err[:30]}', 'error'
+            elif path and os.path.exists(path):
+                ListenWindow.show(self, s, mixed=path)   # the 🎧 side-by-side check
+            self._update_row(s)
+
+        elif kind == 'editor_done':
+            _, s, path, err = msg
+            self._to_editor.discard(id(s))
+            s.review = conpack.load_review(s.con, s.song_id)   # may be re-planned
+            if not s.rendering and not s.queued:
+                s.status, s.stag = _review_status(s.review), _review_tag(s.review)
+            if err:
+                s.status, s.stag = f'✗  To editor failed: {err[:30]}', 'error'
+            elif path:
+                print(f'Export to editor: {s.label} -> {path}')
+                _open_in_file_manager(os.path.dirname(path))
+            self._update_row(s)
+
+        elif kind == 'replan_start':
+            _, s, i, total = msg
+            s.status, s.stag = '⟳  Re-checking auto-edit...', 'busy'
+            self._update_row(s)
+            self._update_buttons()
+            self._status_lbl.configure(text=f'Re-check {i + 1} / {total}   {s.label}')
+
+        elif kind == 'replan_done':
+            _, s, i, total, result, text, fmt = msg
+            self._replan_counts[result] = self._replan_counts.get(result, 0) + 1
+            if not s.rendering:
+                s.review = conpack.load_review(s.con, s.song_id)
+                s.status, s.stag = _review_status(s.review), _review_tag(s.review)
+                if result == 'changed':
+                    log.info('Auto-edit fixed: %s  ·  %s', s.label, text)
+                    if fmt:
+                        self._queue_fixed(s, fmt)
+                    elif s.review and s.review.get('rendered'):
+                        # the video next to the CON isn't ours (or is gone)
+                        s.status, s.stag = '◆  Edit fixed, export it again', 'warn'
+                    else:
+                        s.status, s.stag = s.status + ', edit fixed', 'warn'
+                elif result == 'kept':
+                    log.info('Auto-edit re-check: %s  ·  %s', s.label, text)
+                    s.status, s.stag = f'✗  Re-check: {text[:30]}', 'error'
+                self._update_row(s)
+            self._update_buttons()
+
+        elif kind == 'replan_finished':
+            _, left = msg
+            for s in left:
+                if not s.rendering:
+                    s.status, s.stag = _review_status(s.review), _review_tag(s.review)
+                    self._update_row(s)
+            c = self._replan_counts
+            parts = [f'{c["changed"]} fixed' if c.get('changed') else '',
+                     f'{c["same"]} same' if c.get('same') else '',
+                     f'{c["current"]} up to date' if c.get('current') else '',
+                     f'{c["kept"]} failed (log)' if c.get('kept') else '',
+                     f'{c["skip"]} skipped' if c.get('skip') else '',
+                     f'{len(left)} not checked' if left else '']
+            summary = ', '.join(p for p in parts if p) or 'nothing to do'
+            queued = sum(1 for s in self._songs if s.queued and 'edit fixed' in s.status)
+            if queued and not self._exporting:
+                summary += f'. {queued} in the export queue: Start export'
+            log.info('Auto-edit re-check: %s', summary)
+            self._status_lbl.configure(text='Re-check ' + ('stopped: ' if left else 'done: ') + summary)
+            self._update_buttons()
 
         elif kind == 'song_progress':
             # step inside the current song: '3/5 Matching audio (video 2/3)'
@@ -4121,6 +5152,9 @@ class App(ctk.CTk):
             # Re-apply filter so has_video status reflects new downloads
             self._apply_filter()
             self._flush_pending_update()
+            if self._quit_after == 'queue' and self._renders_idle():
+                self._quit()
+                return
             self._maybe_shutdown()     # Download & export WebM: renders may be done
 
         elif kind == 'res_update':

@@ -28,12 +28,20 @@ Both need Python 3.11+, numpy and ffmpeg/ffprobe on the PATH.
    the video's own pre-roll / ending, with no jump. Rock Band and Guitar Hero
    charts start with a count-in: when the video's intro is long enough it
    covers it. What it can't cover stays black while the chart audio is
-   silent (what the big offsets in the time codes sheet do); from where the
-   music starts, up to 3 s hold the first frame and longer parts reuse
+   silent (what the big offsets in the time codes sheet do). The count-in's
+   stick hits aren't music: music is where the sound doesn't drop to silence
+   within a second (the quietest fifth of it stays above 0.8 % of the song's
+   median energy), so a quiet guitar intro counts and the clicks don't. From
+   where the music starts, up to 3 s hold the first frame and longer parts reuse
    footage from the video's first half. At the end, where the video runs
    out, up to 3 s hold the last frame and longer gaps reuse footage from
    the video's second half.
 5. ffmpeg trims, re-times and joins the pieces.
+
+The plan is made at download and saved with the kept download. When the
+rules change (`autoedit.PLAN_VERSION`), exporting a kept download again
+re-plans it first, so a fix reaches songs downloaded before it (auto-mixes
+keep their saved plan).
 
 What each difference turns into:
 
@@ -63,7 +71,9 @@ python autoedit.py ALBUM VIDEO [OUTPUT] [options]
 | `--crop`            | crop black bars to a standard aspect ratio (see below)              |
 | `--coverage 0.9`    | with `--crop`: share of frames that must stay whole (default 1.0)   |
 | `--json FILE`       | save the plan + edit log as JSON (what the database stores)         |
-| `--xml FILE`        | Final Cut Pro 7 XML timeline (Premiere, Resolve, Kdenlive)          |
+| `--xml FILE`        | Final Cut Pro 7 XML timeline (Premiere Pro, DaVinci Resolve)        |
+| `--fcpxml FILE`     | Final Cut Pro X timeline (FCPXML 1.9)                               |
+| `--mlt FILE`        | Shotcut project (MLT XML)                                           |
 | `--v3 FILE`         | auto-editor v3 timeline                                              |
 | `--video-audio FILE`| use this file as the video's audio (when the video file has none)   |
 
@@ -104,9 +114,20 @@ The cuts and speed changes are also printed as auto-editor options.
 
 `--xml` writes the same Final Cut Pro 7 XML that auto-editor's
 `--export premiere` makes: one clip per segment on V1, speed changes as
-Time Remap filters, and the album audio on A1 so you can see and hear where
-it drifts. Import it in Premiere Pro (File > Import), DaVinci Resolve
-(File > Import > Timeline) or Kdenlive.
+Time Remap filters, and the album audio on A1/A2 so you can see and hear
+where it drifts (Premiere's layout: a stereo file is two linked mono
+tracks). The video's own audio is on A3/A4, linked to its clips and
+disabled; enable it to sync by ear. Import it in Premiere Pro
+(File > Import) or DaVinci Resolve (File > Import > Timeline).
+
+`--fcpxml` is for Final Cut Pro (the album audio is the primary storyline,
+the video pieces are connected clips above it, speed changes are timeMaps),
+`--mlt` is a Shotcut project (V1 the video with its own audio muted, A1 the
+album audio, speed changes as timewarp producers).
+
+All of them work with `--mix` (each piece points at its own video), and
+29.97 / 23.976 / 59.94 fps videos keep their exact rate, so the timeline
+doesn't drift. A frame hold is a 1x clip that starts on the held frame.
 
 `--v3` writes an [auto-editor](https://github.com/WyattBlue/auto-editor)
 v3 timeline, which auto-editor can render or convert to other editors:
@@ -115,6 +136,16 @@ v3 timeline, which auto-editor can render or convert to other editors:
 auto-editor timeline.v3 -o out.mp4
 auto-editor timeline.v3 --export resolve -o timeline.fcpxml
 ```
+
+In the app, **Editor** on a CON song with a kept download does the same:
+it asks the editor (Premiere Pro, DaVinci Resolve, Final Cut Pro, Shotcut
+or auto-editor), then a folder, and makes `<song> (edit)` there with a copy
+of the video(s) (Opus audio converted to AAC, which Premiere can import;
+the picture is copied as it is), the CON audio as `song.wav`, the timeline and a
+`HOW TO.txt` (how to open it, the edit log, the black bars an export would
+crop, where to save the finished video). For the songs the auto-edit can't
+get right, to make the video by hand. A video exported from an editor
+counts as not made by BackstageHero.
 
 ## Auto-mix
 
@@ -152,7 +183,8 @@ python autoedit.py song.ogg official.webm out.mp4 --mix shrek.mp4 --keep-audio -
 ```
 
 In the app it's the **auto-mix** pick in the Video type menu of a CON song
-with 2+ links; the review's ▶ plays the base video, Export as MP4 shows the
+with 2+ links (**Auto-mix priority...** orders that song's videos; a video
+that couldn't be downloaded or where nothing fits is marked there); the review's ▶ plays the base video, an MP4 export shows the
 mix. Only the base video's own plan goes into Missed entries.
 
 ## Aspect crop
@@ -179,7 +211,9 @@ quality.
 ## In BackstageHero
 
 For songs in Rock Band CON packs, the auto-edit runs after every download,
-using the song audio Nautilus decrypts. If the video needs more than a single
+using the song audio Nautilus decrypts, without the crowd channels (the
+audience in the original Rock Band songs, listed as `crowd_channels` in
+songs.dta: no video has it). If the video needs more than a single
 offset, the song shows **Review download (auto-edit, N edits)**, and the MP4 /
 WebM renders rebuild the video from the plan (same codecs, watermark and tag
 as the normal renders, with the video's own audio cut the same way). If it
