@@ -1,7 +1,21 @@
 # Changelog
 
-## Unreleased
+## 2.4.0 (2026-11-26)
 
+- **🔍 Search again** and the **frame collage** are gone: every video link
+  is set by hand in the @ window now. Videos marked wrong before are still
+  skipped by the search.
+- **👁** is now the Preview button. It's hidden once the song is exported
+  with that edit.
+- 🎧 is red while a song has no exported video and green once it has one.
+- The actions are in a new order: @, ⬇, ▶, 👁, Editor, Queue as MP4,
+  Queue as WebM, 🎧, 🗑.
+- **Auto-mix priority...** has a checkbox per video to leave it out of the
+  mix (at least two stay on).
+- When an auto-mix's videos changed since the download (one added, removed,
+  turned off or moved), 👁 Preview offers to make the mix again and previews
+  it when it's ready. Making a mix again (also with ⬇) only downloads the
+  videos it doesn't have yet.
 - The original Rock Band songs' **crowd** (the audience cheering and singing
   along) is left out of the CON audio for the sync, the auto-edit, 🎧,
   Preview and Editor: it isn't in any video and threw the matching off.
