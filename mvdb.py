@@ -23,7 +23,8 @@ auto-mix is not a video record but a pick: a song with 2+ linked videos can
 mix them. The lowest video in MIX_PRIORITY that matches the song is the base
 (it covers the whole song); every higher one is put in wherever it fits the
 chart audio (a movie scene, a game intro), the highest on top. A song's own
-order (Auto-mix priority in the app, a local mix_order edit) overrides it.
+order (Auto-mix priority in the app, a local mix_order edit) overrides it,
+and a video turned off there (its 'off' list) is left out of the mix.
 
 Contributions: the app writes missed_entries.json with every video you synced
 that the database doesn't have yet; submit it and it gets merged in.
@@ -503,6 +504,7 @@ def _apply(db, e):
              or find_song(db, song.get('con_id', ''), song.get('artist', ''), song.get('title', '')))
         if s is not None:
             s['mix_order'] = list(e.get('order') or [])
+            s['mix_off'] = list(e.get('off') or [])
         return
     if e['kind'] == 'favorite':
         # your director's choice: replaces the database's (type None = none)
@@ -722,24 +724,28 @@ def set_choice(db, source, song, vtype):
     _apply(db, e)
 
 
-def set_mix_order(db, source, song, order):
+def set_mix_order(db, source, song, order, off=()):
     """auto-mix order of one song's videos (YouTube IDs, on top first, the
     last is the base); None goes back to the type order (MIX_PRIORITY).
+    off: YouTube IDs left out of the mix (turned off in Auto-mix priority).
     Your preference, saved locally and never submitted."""
     ref = song_ref(song.get('con_id', ''), song.get('artist', ''), song.get('title', ''))
     edits = [x for x in load_local()
              if not (x['kind'] == 'mix_order' and x['song'] == ref)]
     e = {'kind': 'mix_order', 'source': source_key(source) if source else DEFAULT_SOURCE,
          'song': ref, 'order': list(order or [])}
-    if order:
+    if off:
+        e['off'] = list(off)
+    if order or off:
         edits.append(e)
     _save_local(edits)
-    if order:
+    if order or off:
         _apply(db, e)
     else:
         s = find_song(db, ref.get('con_id', ''), ref.get('artist', ''), ref.get('title', ''))
         if s is not None:
             s.pop('mix_order', None)
+            s.pop('mix_off', None)
 
 
 def set_favorite(db, source, song, vtype, video_id=None):
@@ -812,11 +818,22 @@ def available_types(song):
 
 
 def mix_videos(song):
-    """auto-mix: the song's linked videos (each once), on top first, the
-    last one is the base the others go into. The song's own order
-    (mix_order) when you set one; videos it doesn't list (linked later) go
-    in by type. Otherwise highest MIX_PRIORITY first, within a type the
-    director's choice first."""
+    """auto-mix: the song's linked videos that are on (each once), on top
+    first, the last one is the base the others go into. See mix_all()."""
+    off = set((song or {}).get('mix_off') or [])
+    return [v for v in mix_all(song) if vid(v) not in off]
+
+
+def mix_off(song):
+    """YouTube IDs turned off for the song's auto-mix."""
+    return set((song or {}).get('mix_off') or [])
+
+
+def mix_all(song):
+    """Every linked video (each once) in auto-mix order, the turned-off ones
+    included. The song's own order (mix_order) when you set one; videos it
+    doesn't list (linked later) go in by type. Otherwise highest
+    MIX_PRIORITY first, within a type the director's choice first."""
     seen, out = set(), []
     for v in (song or {}).get('videos', []):
         i = vid(v)

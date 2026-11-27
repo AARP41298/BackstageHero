@@ -137,7 +137,9 @@ gets linked). In the song list:
   header to sort. A CON song with 2+ links can pick **auto-mix**: the
   official video with the movie / game clips that use the song put in where
   they fit (meme on top by default; **Auto-mix priority...** orders the
-  song's videos, listed by their YouTube titles).
+  song's videos, listed by their YouTube titles, and its checkboxes leave a
+  video out of the mix). When the mix's videos changed since the download,
+  **👁** offers to make the mix again (only new videos are downloaded).
 - **Open in browser** shows the YouTube title of that video and opens it.
 - **@** opens the song's video links: every type with its link, **Edit** for a
   wrong one, **Set link** for a missing one, and **Search on YouTube**. Memes

@@ -183,8 +183,9 @@ python autoedit.py song.ogg official.webm out.mp4 --mix shrek.mp4 --keep-audio -
 ```
 
 In the app it's the **auto-mix** pick in the Video type menu of a CON song
-with 2+ links (**Auto-mix priority...** orders that song's videos; a video
-that couldn't be downloaded or where nothing fits is marked there); the review's ▶ plays the base video, an MP4 export shows the
+with 2+ links (**Auto-mix priority...** orders that song's videos and can
+leave one out; a video that couldn't be downloaded or where nothing fits is
+marked there; 👁 Preview offers to redo the mix when its videos changed); the review's ▶ plays the base video, an MP4 export shows the
 mix. Only the base video's own plan goes into Missed entries.
 
 ## Aspect crop

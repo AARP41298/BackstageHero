@@ -772,6 +772,18 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
 
     ids = conpack.video_ids(con, song_id)
     bad = set(ids['bad'])
+    # an auto-mix reuses the videos it already has instead of downloading them again
+    stash, reuse = conpack.stash_downloads(con, song_id)
+    try:
+        return _con_download(con, song_id, artist, title, quality, sync_ready, mode,
+                             ids, bad, reuse)
+    finally:
+        if stash:
+            shutil.rmtree(stash, ignore_errors=True)
+
+
+def _con_download(con, song_id, artist, title, quality, sync_ready, mode, ids, bad,
+                  reuse):
     work = conpack.work_folder(con, song_id)
     steps = 4 if sync_ready else 2
     n = 0
@@ -800,7 +812,7 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
             print('  Music video database: ' + mvdb.type_summary(entry))
         if entry and mvdb.chosen_type(entry) == mvdb.AUTO_MIX:
             if sync_ready and autoedit is not None:
-                _con_automix(con, song_id, entry, work, quality)
+                _con_automix(con, song_id, entry, work, quality, reuse)
                 ok = True
                 return 'review'
             print('  auto-mix needs the song audio, using one video instead')
@@ -884,11 +896,15 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
     return 'review'
 
 
-def _con_automix(con, song_id, entry, work, quality):
-    """auto-mix for a CON song: download every linked video, the lowest one in
-    the mix priority that matches the song audio is the base (covers the whole
-    song), each higher one is put in wherever it fits. Leaves video.mp4 (the
-    base), mix_<n>.mp4 and state.json in the work dir, waiting for review."""
+def _con_automix(con, song_id, entry, work, quality, reuse=None):
+    """auto-mix for a CON song: download every linked video that is on, the
+    lowest one in the mix priority that matches the song audio is the base
+    (covers the whole song), each higher one is put in wherever it fits.
+    Leaves video.mp4 (the base), mix_<n>.mp4 and state.json in the work dir,
+    waiting for review. reuse: {youtube id: path} of videos the previous
+    download already has (stash_downloads), moved in instead of downloading."""
+    reuse = reuse or {}
+    links = [mvdb.vid(v) for v in mvdb.mix_videos(entry)]
     vids = list(reversed(mvdb.mix_videos(entry)))      # base candidates first
     m = re.search(r'height<=(\d+)', quality)
     fmt = conpack.video_format(int(m.group(1)) if m else 720)
@@ -902,6 +918,15 @@ def _con_automix(con, song_id, entry, work, quality):
         print('Downloading ' + what)
         sub = os.path.join(work, f'mix{k}')
         os.makedirs(sub, exist_ok=True)
+        kept = reuse.get(mvdb.vid(v))
+        if kept and os.path.isfile(kept):
+            try:
+                os.replace(kept, os.path.join(sub, 'video.mp4'))
+                print('  Already downloaded, reusing it')
+                got.append((v, os.path.join(sub, 'video.mp4')))
+                continue
+            except OSError:
+                pass
         # YouTube sometimes answers "not available" for a video that downloads
         # fine a moment later: one more try before leaving it out of the mix
         err = None
@@ -973,12 +998,13 @@ def _con_automix(con, song_id, entry, work, quality):
         for e in plan['log']:
             print('    ' + e['text'])
         conpack.save_review(con, song_id, mvdb.vid(bv), offset, True, btitle,
-                            autoedit=plan, mix=mix, base_plan=None if single else bplan)
+                            autoedit=plan, mix=mix, base_plan=None if single else bplan,
+                            mix_links=links)
         how = f'auto-mix of {len(used)} videos'
     else:
         # nothing else fits: the base alone, like a normal download
         conpack.save_review(con, song_id, mvdb.vid(bv), offset, True, btitle,
-                            autoedit=None if single else bplan)
+                            autoedit=None if single else bplan, mix_links=links)
         how = 'auto-mix: only the base video fits'
     for name in os.listdir(work):
         if name not in files + ['state.json']:

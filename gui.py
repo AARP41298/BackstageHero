@@ -252,6 +252,7 @@ class Song:
     # known yet (CON videos are checked in the background) or no video
     ours     : object = None
     auto_export: str = ''      # 'webm' / 'mp4': export when the download is ready
+    preview_after: bool = False  # 👁 Preview once the (re-mix) download is ready
 
     @property
     def video(self):
@@ -1943,8 +1944,10 @@ class MixPriorityWindow(ctk.CTkToplevel):
     song's linked videos in, one row per video (each meme link its own row)
     with its YouTube title. The bottom one is the base that covers the song,
     each one above is put in wherever it fits the song audio, the top one
-    wins. Saved as the song's local mix_order edit; Default order drops it
-    (type order: meme > fan > alternate > official). One window at a time."""
+    wins. The checkbox turns a video off (left out of the mix; at least two
+    stay on). Saved as the song's local mix_order edit (order + off);
+    Default order drops the order (type order: meme > fan > alternate >
+    official) and keeps the ones turned off. One window at a time."""
 
     _open = None
 
@@ -1987,17 +1990,21 @@ class MixPriorityWindow(ctk.CTkToplevel):
         self._head.pack(fill='x', padx=16, pady=(14, 2))
         ctk.CTkLabel(self, text='The bottom video is the base and covers the song; each one '
                                 'above is put in\nwherever it fits the song audio (a movie '
-                                'scene, a game intro). The top one wins.\n'
-                                'Changes apply to the next \u2b07 Download.',
+                                'scene, a game intro). The top one wins. Untick a video '
+                                'to leave it out.\n'
+                                'Changes apply to the next \u2b07 Download (\U0001f441 Preview '
+                                'offers to update the mix).',
                      font=_font(11), text_color=_SUBTEXT, justify='left',
                      anchor='w').pack(fill='x', padx=16)
         self._rows = ctk.CTkScrollableFrame(self, fg_color=_SURFACE, corner_radius=8)
         self._rows.pack(fill='both', expand=True, padx=16, pady=10)
-        self._rows.grid_columnconfigure(2, weight=1)
+        self._rows.grid_columnconfigure(3, weight=1)
         foot = ctk.CTkFrame(self, fg_color='transparent')
         foot.pack(fill='x', padx=16, pady=(0, 12))
         ctk.CTkButton(foot, text='Default order', width=_fs(120), fg_color='#313244',
-                      hover_color='#414160', command=lambda: self._set(None)).pack(side='left')
+                      hover_color='#414160',
+                      command=lambda: self._set(None, mvdb.mix_off(self._song.mv))
+                      ).pack(side='left')
         ctk.CTkButton(foot, text='Close', width=_fs(90), fg_color='#313244',
                       hover_color='#414160', command=self.destroy).pack(side='right')
         self._build()
@@ -2034,49 +2041,73 @@ class MixPriorityWindow(ctk.CTkToplevel):
             w.destroy()
         s = self._song
         self._head.configure(text='Auto-mix priority \u00b7 ' + (s.label or s.title or ''))
-        vids = mvdb.mix_videos(s.mv)
+        vids = mvdb.mix_all(s.mv)
+        on = [mvdb.vid(v) for v in mvdb.mix_videos(s.mv)]
+        off = mvdb.mix_off(s.mv)
         used = self._in_mix()
         last = len(vids) - 1
-        wrap = _fs(400)
+        wrap = _fs(380)
         for k, v in enumerate(vids):
+            i = mvdb.vid(v)
+            active = i not in off
             pad = dict(pady=(8 if k == 0 else 3, 3))
-            ctk.CTkLabel(self._rows, text=f'{k + 1}.', font=_font(13), text_color=_SUBTEXT,
-                         width=_fs(28)).grid(row=k, column=0, padx=(8, 0), sticky='n', **pad)
+            fg = _TEXT if active else _SUBTEXT
+            box = ctk.CTkCheckBox(self._rows, text='', width=_fs(24),
+                                  checkbox_width=_fs(18), checkbox_height=_fs(18),
+                                  command=lambda i=i: self._toggle(i))
+            if active:
+                box.select()
+            if active and len(on) <= 2:
+                box.configure(state='disabled')     # auto-mix needs two videos
+            box.grid(row=k, column=0, padx=(8, 0), sticky='n', **pad)
+            ctk.CTkLabel(self._rows, text=f'{on.index(i) + 1}.' if active else '',
+                         font=_font(13), text_color=_SUBTEXT,
+                         width=_fs(28)).grid(row=k, column=1, sticky='n', **pad)
             ctk.CTkLabel(self._rows, text=v.get('type', 'official'),
-                         font=_font(13, weight='bold'), text_color=_TEXT, anchor='w',
-                         width=_fs(70)).grid(row=k, column=1, sticky='nw', padx=4, **pad)
-            notes = ['on top'] if k == 0 else ['base'] if k == last else []
-            if used is not None and mvdb.vid(v) not in used:
-                notes.append('not in the downloaded mix (could not be downloaded, '
-                             'or no part fits)')
+                         font=_font(13, weight='bold'), text_color=fg, anchor='w',
+                         width=_fs(70)).grid(row=k, column=2, sticky='nw', padx=4, **pad)
+            if not active:
+                notes = ['off: left out of the mix']
+            else:
+                notes = ['on top'] if i == on[0] else ['base'] if i == on[-1] else []
+                if used is not None and i not in used:
+                    notes.append('not in the downloaded mix (could not be downloaded, '
+                                 'no part fits, or added since)')
             cell = ctk.CTkFrame(self._rows, fg_color='transparent')
-            cell.grid(row=k, column=2, sticky='ew', padx=4, **pad)
-            name, link = self._video_name(v), mvdb.short_url(mvdb.vid(v))
-            ctk.CTkLabel(cell, text=name, font=_font(12), text_color=_TEXT,
+            cell.grid(row=k, column=3, sticky='ew', padx=4, **pad)
+            name, link = self._video_name(v), mvdb.short_url(i)
+            ctk.CTkLabel(cell, text=name, font=_font(12), text_color=fg,
                          anchor='w', justify='left', wraplength=wrap).pack(fill='x')
             ctk.CTkLabel(cell, text='  \u00b7  '.join(([] if name == link else [link]) + notes),
                          font=_font(10), text_color=_SUBTEXT, anchor='w', justify='left',
                          wraplength=wrap).pack(fill='x')
-            for col, (txt, d) in enumerate((('\u25b2', -1), ('\u25bc', 1)), 3):
+            for col, (txt, d) in enumerate((('\u25b2', -1), ('\u25bc', 1)), 4):
                 ok = 0 <= k + d <= last
                 ctk.CTkButton(self._rows, text=txt, width=_fs(34), height=_fs(28),
                               fg_color='#313244', hover_color='#414160',
                               state='normal' if ok else 'disabled',
                               command=lambda k=k, d=d: self._move(k, d)
                               ).grid(row=k, column=col, sticky='n',
-                                     padx=(0, 8 if col == 4 else 4), **pad)
+                                     padx=(0, 8 if col == 5 else 4), **pad)
 
     def _move(self, k, d):
-        order = [mvdb.vid(v) for v in mvdb.mix_videos(self._song.mv)]
+        order = [mvdb.vid(v) for v in mvdb.mix_all(self._song.mv)]
         order[k], order[k + d] = order[k + d], order[k]
-        self._set(order)
+        self._set(order, mvdb.mix_off(self._song.mv))
 
-    def _set(self, order):
+    def _toggle(self, i):
+        """Checkbox: turn one video off (left out of the mix) or back on."""
+        off = mvdb.mix_off(self._song.mv) ^ {i}
+        order = (self._song.mv or {}).get('mix_order') or None
+        self._set(order, [mvdb.vid(v) for v in mvdb.mix_all(self._song.mv)
+                          if mvdb.vid(v) in off])
+
+    def _set(self, order, off=()):
         s, app = self._song, self._app
         ref = {'con_id': s.song_id if s.con else (s.mv or {}).get('con_id', ''),
                'artist': (s.mv or {}).get('artist') or s.artist,
                'title': (s.mv or {}).get('title') or s.title or s.label}
-        mvdb.set_mix_order(app._mvdb, app._mv_source(s), ref, order)
+        mvdb.set_mix_order(app._mvdb, app._mv_source(s), ref, order, off)
         s.mv = mvdb.resolve(app._mvdb, ref['con_id'], ref['artist'], ref['title'])
         app._update_row(s)
         self._build()
@@ -3837,10 +3868,40 @@ class App(ctk.CTk):
         elif key == 'more':
             VideoLinksWindow.show(self, s)
 
+    def _mix_outdated(self, s):
+        """The song is set to auto-mix but its kept download was made from
+        other videos (one added, removed, turned off or moved since), or isn't
+        an auto-mix at all."""
+        if not (s.con and s.review and mvdb.chosen_type(s.mv) == mvdb.AUTO_MIX):
+            return False
+        now = [mvdb.vid(v) for v in mvdb.mix_videos(s.mv)]
+        if 'mix_links' in s.review:
+            return s.review['mix_links'] != now
+        if s.review.get('mix'):          # made before mix_links was saved
+            return {m.get('video_id') for m in s.review['mix']} != set(now)
+        return True
+
     def _preview(self, s):
         """Preview: a fast 480p render of the edit (conpack.render_preview),
         right away on its own thread, not through the export queue, then
-        opened in the default player. Nothing is written next to the CON."""
+        opened in the default player. Nothing is written next to the CON.
+        When the auto-mix's videos changed since the download, offers to
+        make the mix again first (videos it already has aren't downloaded
+        again) and previews it when it's ready."""
+        if self._mix_outdated(s):
+            ans = messagebox.askyesnocancel(
+                'Auto-mix changed',
+                f'{s.label}\n\nThe auto-mix videos changed since this mix was made '
+                '(a video added, removed, turned off or moved).\n\n'
+                'Yes: make the mix again, then preview it (only new videos are '
+                'downloaded)\n'
+                'No: preview the mix you have\n'
+                'Cancel: do nothing')
+            if ans is None:
+                return
+            if ans:
+                self._remix(s, preview=True)
+                return
         win = ListenWindow._open
         try:
             if win is not None and win.winfo_exists() and win._mixed:
@@ -3891,6 +3952,15 @@ class App(ctk.CTk):
                 self._queue.put(('editor_done', s, None, str(e)))
         threading.Thread(target=_worker, daemon=True).start()
 
+    def _remix(self, s, preview=False):
+        """Make a song's auto-mix again from its current videos: a ⬇ download
+        that keeps the work dir, so the download reuses the videos it has."""
+        s.review = None
+        s.queued = ''
+        s.dl_mode = 'db'
+        s.preview_after = preview
+        self._enqueue_downloads([s], replace=True)
+
     def _download_db(self, s):
         """⬇: download the chosen type's database video, replacing what's there."""
         v = mvdb.chosen_video(s.mv)
@@ -3905,7 +3975,8 @@ class App(ctk.CTk):
                     f'{s.label}\n\nDiscard the downloaded video waiting for review and '
                     f'download {what} instead?'):
                 return
-            conpack.discard_work(s.con, s.song_id)
+            if mvdb.chosen_type(s.mv) != mvdb.AUTO_MIX:   # a re-mix reuses its videos
+                conpack.discard_work(s.con, s.song_id)
             s.review = None
             s.queued = ''
         elif s.has_video:
@@ -3913,7 +3984,8 @@ class App(ctk.CTk):
             if not self._confirm_redownload([s]):
                 return
             if s.review:
-                conpack.clear_cache(s.con, s.song_id)
+                if mvdb.chosen_type(s.mv) != mvdb.AUTO_MIX:
+                    conpack.clear_cache(s.con, s.song_id)
                 s.review = None
                 s.queued = ''
         s.dl_mode = 'db'
@@ -4718,6 +4790,7 @@ class App(ctk.CTk):
 
             s.dl_mode = 'auto'
             fmt, s.auto_export = s.auto_export, ''    # only for this download
+            then_preview, s.preview_after = s.preview_after, False
             prev_hit_network = result != 'skipped'
             if events:
                 # got pushed back this song, slow right down for a while
@@ -4742,7 +4815,7 @@ class App(ctk.CTk):
             if result == 'review':
                 done += 1
                 s.review = conpack.load_review(s.con, s.song_id)
-                self._queue.put(('song_review', s, i, total, fmt))
+                self._queue.put(('song_review', s, i, total, fmt, then_preview))
             elif result == 'skipped':
                 skipped += 1
                 self._queue.put(('song_skipped', s, i, total))
@@ -4822,7 +4895,7 @@ class App(ctk.CTk):
             self._on_yt_title(vid, title)
 
         elif kind == 'song_review':
-            _, s, i, total, fmt = msg
+            _, s, i, total, fmt, then_preview = msg
             synced = s.review and (s.review.get('matched') or s.review.get('autoedit'))
             s.status = _review_status(s.review) + ('' if synced else ' (not synced)')
             s.stag   = 'warn'
@@ -4833,6 +4906,8 @@ class App(ctk.CTk):
             self._update_row(s)
             self._refresh_cache_size()
             self._progress.set((i + 1) / total)
+            if then_preview and s.review and id(s) not in self._previewing:
+                self._preview(s)
 
         elif kind == 'render_progress':
             _, s, text, frac = msg

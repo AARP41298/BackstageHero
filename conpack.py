@@ -685,6 +685,31 @@ def discard_work(con, song_id):
     shutil.rmtree(work_dir(con, song_id), ignore_errors=True)
 
 
+def stash_downloads(con, song_id):
+    """Before a new download wipes the work dir: move the kept download(s)
+    aside so an auto-mix can reuse them instead of downloading them again.
+    Returns (stash dir or None, {youtube id: path}); remove the stash after."""
+    state = load_review(con, song_id)
+    if not state:
+        return None, {}
+    work = work_dir(con, song_id)
+    files = [(m.get('video_id'), m.get('file')) for m in state.get('mix') or []]         or [(state.get('video_id'), 'video.mp4')]
+    stash = os.path.normpath(work) + '.reuse'
+    shutil.rmtree(stash, ignore_errors=True)
+    found = {}
+    for vid, name in files:
+        src = os.path.join(work, name or '')
+        if not (vid and name and os.path.isfile(src)) or vid in found:
+            continue
+        os.makedirs(stash, exist_ok=True)
+        dest = os.path.join(stash, vid + '.mp4')
+        try:
+            os.replace(src, dest)
+            found[vid] = dest
+        except OSError:
+            pass
+    return (stash if found else None), found
+
 
 # ---- downloads waiting for review ------------------------------------------
 # After downloading, a CON song waits for the user: play it, preview it
@@ -692,14 +717,18 @@ def discard_work(con, song_id):
 # video it is and the measured offset, so this survives a restart.
 
 def save_review(con, song_id, video_id, offset_ms, matched, title, autoedit=None,
-                mix=None, base_plan=None):
+                mix=None, base_plan=None, mix_links=None):
     """autoedit: an autoedit.plan() result (with 'log') when the video needs
     cuts/inserts/speed changes; render() then rebuilds it instead of offsetting.
     Auto-mix: mix lists the videos the plan's segments use ('src' indexes it):
     [{'video_id', 'file' (in the work dir), 'type', 'title'}], the first is
     video.mp4, the base. base_plan is the base video's own plan (None when an
-    offset is enough), which is what gets shared with the database."""
+    offset is enough), which is what gets shared with the database.
+    mix_links: every video the auto-mix was made from (on top first), used
+    or not, so the app can tell when the song's links changed since."""
     state = {'video_id': video_id, 'offset': offset_ms, 'matched': matched, 'title': title}
+    if mix_links is not None:
+        state['mix_links'] = list(mix_links)
     if autoedit:
         import autoedit as ae
         state['autoedit'] = autoedit

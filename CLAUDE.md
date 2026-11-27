@@ -145,7 +145,18 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   `_want_title`), ▲▼ save a local `mix_order` edit (YouTube IDs, never
   exported; videos linked later go in by type, before the first lower
   type); Default order drops it. Rows the kept mix doesn't use say so.
-  Takes effect on the next ⬇ Download. A failed mix download is tried
+  The checkbox (2026-11-26) turns a video off: `off` in the same edit,
+  `mvdb.mix_videos` leaves it out, `mix_all` lists every one; at least two
+  stay on (otherwise `can_mix` would hide the window). Default order keeps
+  `off`. Takes effect on the next ⬇ Download. The download saves
+  `mix_links` (the videos the mix was made from, used or not); 👁 Preview
+  on an auto-mix song whose links changed (`_mix_outdated`; older states
+  compare the `mix` ids) asks: make the mix again then preview
+  (`_remix`, `preview_after`), preview the old one, or cancel. A re-mix
+  (and ⬇ on an auto-mix song) keeps the work dir: `conpack.stash_downloads`
+  moves the kept files to `<work>.reuse` and `_con_automix(reuse=)` moves
+  them back instead of downloading (videos that failed or didn't fit were
+  deleted, so they download again). A failed mix download is tried
   twice (YouTube gave Scooby-Doo `uen_1bL_TXc` a passing "not available";
   it downloads and 4 parts fit Wanted Dead or Alive). Work dir keeps video.mp4
   (base) + mix_N.mp4; state has `mix` and `base_plan` (what contributions
