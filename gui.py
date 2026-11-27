@@ -2756,11 +2756,16 @@ class App(ctk.CTk):
         # ttk.Treeview can't draw per-column borders: two 1px lines placed over
         # the edges of the "Open in browser" column stand in for one
         self._yt_lines = [tk.Frame(self._tree, bg=_BLUE, width=1) for _ in range(2)]
+        # nor colour one cell: 🎧 is a label placed over its cell, red until the
+        # song has an exported video, green after (_place_listen_marks)
+        self._listen_marks: list = []
+        self._marks_job = None
 
         vsb = ttk.Scrollbar(tree_outer, orient='vertical',
                             style='BH.Vertical.TScrollbar',
                             command=self._tree.yview)
-        self._tree.configure(yscrollcommand=vsb.set)
+        self._tree.configure(
+            yscrollcommand=lambda *a: (vsb.set(*a), self._schedule_marks()))
         self._tree.grid(row=0, column=0, sticky='nsew')
         vsb.grid(row=0, column=1, sticky='ns')
         self._tree.bind('<Button-1>', self._on_tree_click)
@@ -2974,6 +2979,64 @@ class App(ctk.CTk):
             self._yt_lines[1].place(x=x + w - 1, y=0, width=1, height=h)
         except Exception:
             pass
+        self._schedule_marks()
+
+    def _schedule_marks(self):
+        if self._marks_job is None:
+            self._marks_job = self.after_idle(self._place_listen_marks)
+
+    _ROW_BG = {'flash': '#45475a', 'row_even': '#272740', 'row_odd': '#1e1e2e'}
+
+    def _place_listen_marks(self):
+        """Put a coloured 🎧 over the 🎧 cell of every visible row that has it:
+        red without an exported video, green with one."""
+        self._marks_job = None
+        tree, used = self._tree, 0
+        try:
+            h, y = tree.winfo_height(), 0
+            while y < h:
+                iid = tree.identify_row(y)
+                if not iid:
+                    y += 4
+                    continue
+                row = tree.bbox(iid)
+                y = (row[1] + row[3] + 1) if row else y + 4
+                s = self._iid_map.get(iid)
+                if not (s and 'listen' in self._actions_of(s)):
+                    continue
+                box = tree.bbox(iid, 'act_listen')
+                if not box:
+                    continue
+                tags = tree.item(iid, 'tags')
+                bg = next((self._ROW_BG[t] for t in ('flash', 'row_even', 'row_odd')
+                           if t in tags), _BG)
+                if used == len(self._listen_marks):
+                    self._listen_marks.append(self._new_mark())
+                lbl = self._listen_marks[used]
+                used += 1
+                lbl.configure(fg=_GREEN if s.has_video else _RED, bg=bg)
+                lbl.place(x=box[0], y=box[1], width=box[2], height=box[3])
+        except Exception:
+            log.debug('placing the 🎧 marks failed', exc_info=True)
+        for lbl in self._listen_marks[used:]:
+            lbl.place_forget()
+
+    def _new_mark(self):
+        """One 🎧 label; the mouse goes through it to the table (hint, click,
+        right click, wheel)."""
+        lbl = tk.Label(self._tree, text=_ACTIONS['listen'][0], font=('Segoe UI', _fs(11)),
+                       bd=0, padx=0, pady=0, cursor='hand2')
+
+        def fwd(seq):
+            def _go(e):
+                kw = dict(x=lbl.winfo_x() + e.x, y=lbl.winfo_y() + e.y)
+                if seq == '<MouseWheel>':
+                    kw['delta'] = e.delta
+                self._tree.event_generate(seq, **kw)
+            return _go
+        for seq in ('<Motion>', '<Button-1>', '<Button-3>', '<MouseWheel>'):
+            lbl.bind(seq, fwd(seq))
+        return lbl
 
     # YouTube titles: fetched in the background with oEmbed (no API key, one
     # small request per video) and cached in the data dir
@@ -3546,7 +3609,7 @@ class App(ctk.CTk):
             dl.add('listen')
         if s.review:                         # downloaded (review, or exported and kept)
             acts = {'play', 'mp4', 'webm', 'clear', 'more'} | dl
-            if id(s) not in self._previewing:
+            if id(s) not in self._previewing and not self._export_current(s):
                 acts.add('preview')
             if id(s) not in self._to_editor:
                 acts.add('editor')
@@ -3554,6 +3617,18 @@ class App(ctk.CTk):
         if s.con and s.has_video:            # finished video
             return {'play', 'more'} | dl
         return {'more'} | dl                 # video links work for every song
+
+    def _export_current(self, s):
+        """The video next to the CON was exported from this download with the
+        edit it has now, so a 👁 Preview would show nothing new."""
+        st = s.review
+        if not (s.con and st and st.get('rendered') and s.has_video):
+            return False
+        if conpack.export_outdated(st) or self._mix_outdated(s):
+            return False
+        if st.get('autoedit') and 'rendered_segments' not in st:
+            return False                     # exported before the edit was recorded
+        return True
 
     @staticmethod
     def _foreign(s):
@@ -3735,6 +3810,7 @@ class App(ctk.CTk):
                          if t in ('row_even', 'row_odd')), 'row_odd')
         self._tree.item(iid, values=self._row_values(s),
                         tags=self._row_tags(s, row_tag))
+        self._schedule_marks()
 
     def _action_at(self, event):
         """(song, action key) under the mouse, or (song, None) / (None, None)."""
@@ -3799,6 +3875,9 @@ class App(ctk.CTk):
                         if s.review.get('mix') else 'Play the downloaded video (not cut yet)')
             if key == 'play' and s.has_video:
                 hint = 'Play the exported video'
+            if key == 'listen' and s.con:
+                hint += ('  (green: has an exported video)' if s.has_video
+                         else '  (red: no exported video yet)')
             if key in ('mp4', 'webm') and s.review and s.review.get('rendered'):
                 hint += ' (again, from the kept original)'
             if key == 'clear' and s.review and not s.review.get('rendered'):

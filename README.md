@@ -46,7 +46,8 @@ CON songs don't render right away. After the download the song shows **Review do
 
 - **▶** play the downloaded video in your default player
 - **⬇** download the video type picked in the Video type column from the database, or download it again (also for songs that already have a video, after confirming)
-- **👁** preview: a quick 480p render of the edit (not an export), played in the 🎧 window with the CON audio on the left and the video's audio on the right
+- **👁** preview: a quick 480p render of the edit (not an export), played in the 🎧 window with the CON audio on the left and the video's audio on the right. Hidden once the song is exported with that edit
+- **🎧** listen: red while the song has no exported video, green once it has one
 - **MP4** / **WebM** render the synced video next to the CON and mark the YouTube video as good. WebM uses YARG's recommended settings (VP8 2-pass, keyframe every 128 frames, Opus 128k) and is much smaller, but takes a few times longer than MP4
 - **🗑** clear cache: delete the song's kept original download (see below)
 - **@** video links for the song (see [the music video database](#the-music-video-database))

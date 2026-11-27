@@ -91,7 +91,14 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   "Shut down when done" (off on every start) shuts Windows down after the
   export batch, with a 60 s countdown that can be cancelled.
 - Search ignores accents and case (`_fold`). 🎧 shows on every CON song:
-  without a video it plays just the CON audio.
+  without a video it plays just the CON audio. It's red until the song has
+  an exported video, green after (2026-11-26): Treeview can't colour one
+  cell, so `_place_listen_marks` puts a tk.Label over each visible 🎧 cell
+  (row background copied, mouse events forwarded to the tree), redone after
+  idle on scroll, row updates, refresh and column resize.
+- 👁 Preview is hidden when the export already has this edit
+  (`_export_current`: rendered, video next to the CON, not
+  `export_outdated`, auto-mix not `_mix_outdated`).
 - WebM export settings (VP8 CRF 30, 8M max, 2-pass, keyframe 128,
   `-deadline good -cpu-used 1`, Opus 128k) are the YARG wiki's recommended
   ones: don't change them. Parallel WebM exports were benchmarked
