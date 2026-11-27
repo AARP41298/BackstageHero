@@ -690,17 +690,14 @@ def process_download(folder, song_name, quality, sync_ready, replace, mode='auto
 
     entry = _db_entry('', artist, title)
     all_db = _db_candidates(entry)
-    db_cands = all_db[:1] if mode == 'db' else [] if mode == 'search' else all_db
+    db_cands = all_db[:1] if mode == 'db' else all_db
     if db_cands:
         # a video the music video database links for this song: no search
         print('  Music video database: ' + mvdb.type_summary(entry))
         print('Using the music video database link: ' + db_cands[0][0])
         candidates = db_cands
     else:
-        skip = {c[0] for c in all_db} if mode == 'search' else set()
-        old = get_stored_source(folder) if mode == 'search' else None
-        candidates = [c for c in search_candidates(query)
-                      if c[0] not in skip and video_id_of(c[0]) != old]
+        candidates = search_candidates(query)
         if not candidates:
             raise Exception('no search results')
     # the format string caps at height<=N; pass N so selection prefers a source
@@ -791,20 +788,17 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
         origin = conpack._song_meta(con, song_id).get('game_origin')
         entry = _db_entry(song_id, artist, title, origin)
         all_db = _db_candidates(entry)
-        db_ids = {video_id_of(c[0]) for c in all_db}
         if mode == 'db':
             # the Download action: exactly the chosen type's video, even if it
             # was marked wrong before (choosing it again un-marks it)
             db_cands = all_db[:1]
             for c in db_cands:
                 conpack.unmark_bad(con, song_id, video_id_of(c[0]))
-        elif mode == 'search':
-            db_cands = []          # Search again: the YouTube search only
         else:
             db_cands = [c for c in all_db if video_id_of(c[0]) not in bad]
         if entry:
             print('  Music video database: ' + mvdb.type_summary(entry))
-        if mode != 'search' and entry and mvdb.chosen_type(entry) == mvdb.AUTO_MIX:
+        if entry and mvdb.chosen_type(entry) == mvdb.AUTO_MIX:
             if sync_ready and autoedit is not None:
                 _con_automix(con, song_id, entry, work, quality)
                 ok = True
@@ -813,11 +807,9 @@ def process_con_download(con, song_id, artist, title, quality, sync_ready, repla
 
         def _search():
             print('Looking on YouTube for: ' + query)
-            # pull extra results to make up for the ones already marked bad;
-            # a forced search also leaves the database links out
-            skip = bad | (db_ids if mode == 'search' else set())
-            return [c for c in search_candidates(query, SEARCH_RESULTS + len(skip))
-                    if video_id_of(c[0]) not in skip]
+            # pull extra results to make up for the ones already marked bad
+            return [c for c in search_candidates(query, SEARCH_RESULTS + len(bad))
+                    if video_id_of(c[0]) not in bad]
 
         if db_cands:
             # a video the database links for this song: use it, no search
@@ -1401,9 +1393,8 @@ def run_song_with_backoff(folder, song_name, quality, sync_ready, replace, resyn
     CON instead of a song folder; returns 'unsynced' if it fell back to the
     default offset.
     progress(text, fraction) gets the current step, e.g. ('4/5 Downloading 45%', 0.69).
-    mode: 'auto' (database link if there is one, else search), 'db' (only the
-    database video of the chosen type) or 'search' (YouTube search, skipping the
-    database links)."""
+    mode: 'auto' (database link if there is one, else search) or 'db' (only the
+    database video of the chosen type)."""
     global _progress_cb
     _progress_cb = progress
     try:

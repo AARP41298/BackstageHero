@@ -52,8 +52,10 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
   never exported in Missed entries. 🗑 in the @ window removes a bad link
   (local `clear` edit, not exported either). One @ window at a time.
 - A song with a database link downloads that video, no YouTube search.
-  🔍 Search again searches YouTube, skips the database links and never marks
-  them as wrong. ⬇ Download always downloads the chosen type's link.
+  ⬇ Download always downloads the chosen type's link. Links are added by
+  hand in the @ window: the 🔍 Search again action and the ▦/👁 frame
+  collage were removed (2026-11-26); 👁 is now the Preview button. Old
+  `bad` ids in con_videos.json are still skipped by the search.
   Replacing a finished video not made by BackstageHero asks twice.
 - No Entry songs use the automatic search and never touch the database.
 - Exports keep the original download in the cache (export MP4 to check, then
@@ -187,7 +189,7 @@ downloads, `mvdb_local.json`, `contributions.json`, `youtube_titles.json`).
 Everything below is committed, but was only tested with py_compile and
 headless unit checks by Claude (the user ran the GUI and confirmed the icons,
 the database links and E-Pro's auto-edit): WebM queue, Export as MP4 / Add
-WebM to queue labels, 🔍 / ⬇ actions, database links used without searching,
+WebM to queue labels, ⬇ action, database links used without searching,
 kept-download cache + 🗑, black count-in and intro/outro rules,
 `directors_choice` + priority, @ icon, shut down when done.
 

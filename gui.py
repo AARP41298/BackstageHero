@@ -130,13 +130,10 @@ _MAUVE   = '#cba6f7'
 # Actions column for CON songs: key -> (icon, hover hint), one narrow tree
 # column per icon so a click can tell which one was hit.
 _ACTIONS = {
-    'play':    ('▶',    'Play video in your default player'),
-    'collage': ('👁',    'Show frame collage'),
-    'listen':  ('🎧',   'Listen to the CON audio; with a video, checks the sync: '
-                        'CON audio on the left, the video\'s audio on the right'),
-    'search':  ('🔍',   'Wrong video: search YouTube again (skips the database link)'),
+    'more':    ('@',    'Video links: search YouTube, open, set or fix the links'),
     'download': ('⬇',   'Download the video type picked in the Video type column (again)'),
-    'preview': ('Preview', 'Quick look at the edit (~15 s, 480p, not an export): '
+    'play':    ('▶',    'Play video in your default player'),
+    'preview': ('👁',    'Preview: quick look at the edit (~15 s, 480p, not an export): '
                            'opens in the 🎧 window, CON audio on the left, '
                            'the video\'s audio on the right'),
     'editor':  ('Editor', 'Export to a video editor to make the video by hand: asks the '
@@ -146,21 +143,22 @@ _ACTIONS = {
                               'Start export renders the queue'),
     'webm':    ('Queue as WebM', 'Add to the export queue as WebM (smaller, slow); '
                               'Start export renders the queue'),
+    'listen':  ('🎧',   'Listen to the CON audio; with a video, checks the sync: '
+                        'CON audio on the left, the video\'s audio on the right'),
     'clear':   ('🗑',   'Clear cache: delete the kept original download'),
-    'more':    ('@',    'Video links: search YouTube, open, set or fix the links'),
 }
 _ACTION_KEYS = tuple(_ACTIONS)
 
 # the ▾ next to Start: key -> (button label, export format after download, help)
 _DL_MODES = {
-    'review': ('Search & Review', '', 'stop for review (play, collage, then export)'),
+    'review': ('Search & Review', '', 'stop for review (play, preview, then export)'),
     'webm':   ('Download → WebM', 'webm', 'export each synced CON song to WebM'),
     'mp4':    ('Download → MP4',  'mp4',  'export each synced CON song to MP4'),
 }
 _ACTION_COLS = tuple('act_' + k for k in _ACTION_KEYS)
 _ACTION_W = _fs(46)
 # the text actions need more room than the icons
-_ACTION_WIDTHS = {k: _fs({'preview': 80, 'editor': 70, 'mp4': 110, 'webm': 140}.get(k, 46))
+_ACTION_WIDTHS = {k: _fs({'editor': 70, 'mp4': 110, 'webm': 140}.get(k, 46))
                   for k in _ACTION_KEYS}
 
 _SONGS_FILE = os.path.join(updater.data_dir(), 'songs_path.txt')
@@ -247,7 +245,7 @@ class Song:
     queued   : str  = ''       # 'mp4' / 'webm': in the export queue
     render_fmt: str = ''       # format of the render job while rendering is set
     keep_other: bool = False   # the render keeps the other format's video (asked when queued)
-    dl_mode  : str  = 'auto'   # next download: 'auto' | 'db' (⬇) | 'search' (🔍)
+    dl_mode  : str  = 'auto'   # next download: 'auto' | 'db' (⬇)
     review   : object = None   # CON download waiting for review (conpack.load_review)
     rendering: str  = ''       # '' | 'queued' | 'running'
     # the finished video was made by BackstageHero: True / False, None = not
@@ -1693,73 +1691,6 @@ def _bring_to_front(win):
         except Exception:
             pass
     win.after(150, _raise)
-
-
-class CollageViewer(ctk.CTkToplevel):
-    """Gallery for checking a download: the collage first, then each frame used
-    in it, in order. Left/Right (or A/D, mouse wheel) to move, Home/End to
-    jump, Esc to close."""
-
-    def __init__(self, parent, title, collage, frames):
-        super().__init__(parent)
-        from PIL import Image
-        self._Image = Image
-        self.title(f'Collage  ·  {title}')
-        self.configure(fg_color=_BG)
-        self.geometry('1100x760')
-        self.minsize(480, 360)
-        # (path, caption)
-        self._items = [(collage, f'Collage  ·  {len(frames)} frames')] + [
-            (p, f'Frame {k}/{len(frames)}  ·  {int(t // 60)}:{t % 60:05.2f}')
-            for k, (p, t) in enumerate(frames, 1)]
-        self._idx = 0
-        self._photo = None
-
-        self._img = tk.Label(self, bg=_BG, bd=0)
-        self._img.pack(fill='both', expand=True, padx=8, pady=(8, 0))
-        bar = ctk.CTkFrame(self, fg_color='transparent')
-        bar.pack(fill='x', padx=8, pady=8)
-        ctk.CTkButton(bar, text='◀', width=44, command=lambda: self._go(-1)).pack(side='left')
-        ctk.CTkButton(bar, text='▶', width=44, command=lambda: self._go(1)).pack(side='left', padx=(6, 0))
-        self._cap = ctk.CTkLabel(bar, text='', text_color=_TEXT)
-        self._cap.pack(side='left', padx=12)
-        ctk.CTkLabel(bar, text='← →  browse    Home/End  first/last    Esc  close',
-                     text_color=_SUBTEXT).pack(side='right')
-
-        for key, step in (('<Left>', -1), ('<Right>', 1), ('<a>', -1), ('<d>', 1),
-                          ('<Prior>', -1), ('<Next>', 1)):
-            self.bind(key, lambda e, st=step: self._go(st))
-        self.bind('<Home>', lambda e: self._jump(0))
-        self.bind('<End>', lambda e: self._jump(len(self._items) - 1))
-        self.bind('<Escape>', lambda e: self.destroy())
-        self.bind('<MouseWheel>', lambda e: self._go(-1 if e.delta > 0 else 1))
-        self._img.bind('<Configure>', lambda e: self._show())
-        self.after(50, self._focus)
-
-    def _focus(self):
-        self.lift()
-        self.focus_force()
-
-    def _go(self, step):
-        self._jump((self._idx + step) % len(self._items))
-
-    def _jump(self, idx):
-        self._idx = idx
-        self._show()
-
-    def _show(self):
-        from PIL import ImageTk
-        path, caption = self._items[self._idx]
-        w = max(50, self._img.winfo_width())
-        h = max(50, self._img.winfo_height())
-        try:
-            im = self._Image.open(path)
-            im.thumbnail((w, h), self._Image.LANCZOS)
-            self._photo = ImageTk.PhotoImage(im)
-            self._img.configure(image=self._photo)
-        except Exception as e:
-            self._img.configure(image='', text=str(e), fg=_RED)
-        self._cap.configure(text=f'{self._idx + 1}/{len(self._items)}   {caption}')
 
 
 class VideoLinksWindow(ctk.CTkToplevel):
@@ -3583,14 +3514,14 @@ class App(ctk.CTk):
         if s.con:                            # 🎧 the CON audio (against the video, if any)
             dl.add('listen')
         if s.review:                         # downloaded (review, or exported and kept)
-            acts = {'play', 'collage', 'search', 'mp4', 'webm', 'clear', 'more'} | dl
+            acts = {'play', 'mp4', 'webm', 'clear', 'more'} | dl
             if id(s) not in self._previewing:
                 acts.add('preview')
             if id(s) not in self._to_editor:
                 acts.add('editor')
             return acts
         if s.con and s.has_video:            # finished video
-            return {'play', 'search', 'more'} | dl
+            return {'play', 'more'} | dl
         return {'more'} | dl                 # video links work for every song
 
     @staticmethod
@@ -3891,12 +3822,8 @@ class App(ctk.CTk):
             path = s.video if s.has_video else s.review['raw']
             if os.path.exists(path):
                 _open_in_file_manager(path)     # opens files in the default player
-        elif key == 'collage':
-            self._show_collage(s)
         elif key == 'listen':
             ListenWindow.show(self, s)
-        elif key == 'search':
-            self._search_again(s)
         elif key == 'download':
             self._download_db(s)
         elif key == 'clear':
@@ -3963,57 +3890,6 @@ class App(ctk.CTk):
                 log.exception('Export to editor failed for %s', s.label)
                 self._queue.put(('editor_done', s, None, str(e)))
         threading.Thread(target=_worker, daemon=True).start()
-
-    def _show_collage(self, s):
-        out_dir = os.path.join(conpack.work_dir(s.con, s.song_id), 'collage')
-        s.status, s.stag = '⟳  Making collage...', 'busy'
-        self._update_row(s)
-
-        def _worker():
-            try:
-                result = conpack.make_collage(s.review['raw'], out_dir)
-                self._queue.put(('collage_ready', s, result, None))
-            except Exception as e:
-                self._queue.put(('collage_ready', s, None, str(e)))
-        threading.Thread(target=_worker, daemon=True).start()
-
-    def _search_again(self, s):
-        """Mark the current YouTube video bad and look for a different one."""
-        if s.review and not s.has_video:
-            if not messagebox.askyesno(
-                    'Search again?',
-                    f'{s.label}\n\nMark this video as wrong and search YouTube again?\n'
-                    '(it will be skipped in future searches)'):
-                return
-            self._mark_wrong(s, s.review['video_id'])
-            conpack.discard_work(s.con, s.song_id)
-            s.review = None
-            s.queued = ''
-            s.dl_mode = 'search'
-            self._enqueue_downloads([s], replace=True)
-            return
-        # finished video: same checks as Re-download (protects hand-made videos)
-        if not self._confirm_redownload([s]):
-            return
-        tag = conpack.read_tag(s.video) or ''
-        m = re.search(r'source=(\S+)', tag)
-        if m:
-            self._mark_wrong(s, m.group(1))
-        if s.review:
-            conpack.clear_cache(s.con, s.song_id)
-            s.review = None
-            s.queued = ''
-        s.dl_mode = 'search'
-        self._enqueue_downloads([s], replace=True)
-
-    def _db_ids(self, s):
-        return {mvdb.vid(v) for v in (s.mv or {}).get('videos', []) if mvdb.vid(v)}
-
-    def _mark_wrong(self, s, video_id):
-        """Search again marks the current video wrong, but never a video the
-        database links for the song: that one is skipped for this search only."""
-        if video_id and video_id not in self._db_ids(s):
-            conpack.mark_bad(s.con, s.song_id, video_id)
 
     def _download_db(self, s):
         """⬇: download the chosen type's database video, replacing what's there."""
@@ -4760,7 +4636,7 @@ class App(ctk.CTk):
 
     def _enqueue_downloads(self, targets, replace, resync=False):
         """Queue songs for the download thread; starts it if it isn't running.
-        Songs added mid-run (e.g. 'search again') join the end of the queue."""
+        Songs added mid-run (e.g. ⬇ Download) join the end of the queue."""
         if not targets:
             return
         for s in targets:
@@ -4957,16 +4833,6 @@ class App(ctk.CTk):
             self._update_row(s)
             self._refresh_cache_size()
             self._progress.set((i + 1) / total)
-
-        elif kind == 'collage_ready':
-            _, s, result, err = msg
-            s.status = _review_status(s.review)
-            s.stag   = _review_tag(s.review)
-            self._update_row(s)
-            if err:
-                messagebox.showerror('Collage', f'Could not make the collage:\n\n{err}')
-            else:
-                CollageViewer(self, s.label, *result)
 
         elif kind == 'render_progress':
             _, s, text, frac = msg

@@ -685,9 +685,10 @@ def discard_work(con, song_id):
     shutil.rmtree(work_dir(con, song_id), ignore_errors=True)
 
 
+
 # ---- downloads waiting for review ------------------------------------------
-# After downloading, a CON song waits for the user: play it, look at the
-# collage, search again, or render. state.json in its work_dir remembers which
+# After downloading, a CON song waits for the user: play it, preview it
+# or render. state.json in its work_dir remembers which
 # video it is and the measured offset, so this survives a restart.
 
 def save_review(con, song_id, video_id, offset_ms, matched, title, autoedit=None,
@@ -726,8 +727,9 @@ def load_review(con, song_id):
 
 
 # ---- good / bad YouTube IDs per song -----------------------------------------
-# Rendering marks the video as good; "search again" marks it bad so the next
-# search skips it. Kept in the app's data dir, keyed by CON path + song id.
+# Rendering marks the video as good; ids marked bad by older versions (the
+# removed "search again") are still skipped by the search. Kept in the app's
+# data dir, keyed by CON path + song id.
 
 _IDS_FILE = os.path.join(updater.data_dir(), 'con_videos.json')
 
@@ -758,18 +760,6 @@ def mark_good(con, song_id, video_id):
     e = data.setdefault(_song_key(con, song_id), {})
     e['good'] = video_id
     e['bad'] = [b for b in e.get('bad', []) if b != video_id]
-    _save_ids(data)
-
-
-def mark_bad(con, song_id, video_id):
-    if not video_id:
-        return
-    data = _load_ids()
-    e = data.setdefault(_song_key(con, song_id), {})
-    if e.get('good') == video_id:
-        e['good'] = None
-    if video_id not in e.setdefault('bad', []):
-        e['bad'].append(video_id)
     _save_ids(data)
 
 
@@ -1368,40 +1358,3 @@ def encode_synced_mp4(src, offset_ms, dest, tag='', progress=None, crop=''):
     finally:
         if os.path.exists(tmp):
             os.remove(tmp)
-
-
-# ---- collage (port of video_collage.py, frames grabbed with ffmpeg) --------------
-
-COLLAGE_COLS = 4
-COLLAGE_ROWS = 6
-
-
-def make_collage(video, out_dir, cols=COLLAGE_COLS, rows=COLLAGE_ROWS):
-    """Grid of evenly spaced frames, skipping the very first and last (same
-    spacing as video_collage.py). Returns (collage_path, [(frame_path, secs)])."""
-    from PIL import Image
-    dur = _duration(video)
-    if not dur:
-        raise Exception('could not read the video length')
-    os.makedirs(out_dir, exist_ok=True)
-    n = cols * rows
-    times = [dur * (k + 1) / (n + 1) for k in range(n)]
-    frames = []
-    for k, t in enumerate(times, 1):
-        path = os.path.join(out_dir, f'frame_{k:02d}.jpg')
-        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{t:.3f}', '-i', video,
-                        '-frames:v', '1', '-q:v', '3', path],
-                       creationflags=NO_WINDOW, stdout=subprocess.DEVNULL,
-                       stderr=subprocess.DEVNULL)
-        if os.path.exists(path):
-            frames.append((path, t))
-    if not frames:
-        raise Exception('could not grab any frames')
-    first = Image.open(frames[0][0])
-    w, h = first.size
-    collage = Image.new('RGB', (w * cols, h * rows))
-    for i, (path, _) in enumerate(frames):
-        collage.paste(Image.open(path), ((i % cols) * w, (i // cols) * h))
-    out = os.path.join(out_dir, 'collage.jpg')
-    collage.save(out, quality=88)
-    return out, frames

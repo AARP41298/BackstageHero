@@ -45,9 +45,8 @@ Reading the songs and the audio needs a build of [Nautilus](https://github.com/N
 CON songs don't render right away. After the download the song shows **Review download** (or **Review download (auto-edit, N edits)** when the video had to be rebuilt, see [Auto-edit](#auto-edit)) and the Actions column gives you:
 
 - **▶** play the downloaded video in your default player
-- **▦** frame collage: a 4×6 grid of frames across the video, then each frame on its own (←/→, A/D, Page Up/Down or the mouse wheel to browse, Esc to close). Handy for spotting album-cover uploads
-- **🔍** search again: marks that YouTube video as wrong and searches YouTube again without it (a video the [music video database](#the-music-video-database) links for the song is skipped for that search, but never marked wrong)
 - **⬇** download the video type picked in the Video type column from the database, or download it again (also for songs that already have a video, after confirming)
+- **👁** preview: a quick 480p render of the edit (not an export), played in the 🎧 window with the CON audio on the left and the video's audio on the right
 - **MP4** / **WebM** render the synced video next to the CON and mark the YouTube video as good. WebM uses YARG's recommended settings (VP8 2-pass, keyframe every 128 frames, Opus 128k) and is much smaller, but takes a few times longer than MP4
 - **🗑** clear cache: delete the song's kept original download (see below)
 - **@** video links for the song (see [the music video database](#the-music-video-database))
@@ -56,7 +55,7 @@ Exporting keeps the original download in the cache (in the app's data folder), s
 
 The **▾** next to the start button picks what it does with CON songs: **Search & Review** (the above), **Download → WebM** or **Download → MP4** (each song is exported as soon as its download is ready, while the next ones download; a download that couldn't be synced stays for review instead). With **Shut down when done**, Download → WebM shuts down after the last export. **Select with links** selects the songs in view whose Video type has a database link, the ones downloaded without a YouTube search.
 
-Rendered videos have their black bars cropped (letterbox or pillarbox, snapped to a standard ratio such as 4:3, 16:9 or 2.35 Scope, so no picture is lost), keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading (or **🔍** / **⬇** on) a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident. Those videos show **⚠** in the Status column (song folders: no `backstagehero_source` in song.ini; CON videos: no BackstageHero tag, read in the background after the scan).
+Rendered videos have their black bars cropped (letterbox or pillarbox, snapped to a standard ratio such as 4:3, 16:9 or 2.35 Scope, so no picture is lost), keep their audio track (for fixing by hand later), get a small BackstageHero watermark for the first 3 seconds, and are tagged in their metadata. Re-downloading (or **⬇** on) a video that wasn't made by BackstageHero asks twice, so videos you synced by hand don't get replaced by accident. Those videos show **⚠** in the Status column (song folders: no `backstagehero_source` in song.ini; CON videos: no BackstageHero tag, read in the background after the scan).
 
 ## Auto-edit
 
