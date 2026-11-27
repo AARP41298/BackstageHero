@@ -3,6 +3,19 @@
  "name": "Rock Band 4 DLC",
  "songs": [
   {
+   "con_id": "rescueme2",
+   "artist": "30 Seconds to Mars",
+   "title": "Rescue Me",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "yEWb6bsd5lo",
+     "youtube_url": "https://www.youtube.com/watch?v=yEWb6bsd5lo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "con_id": "gimmechocolate",
    "artist": "BABYMETAL",
    "title": "Gimme Chocolate!!",
@@ -11,6 +24,19 @@
      "type": "official",
      "youtube": "WIKqgE4BwAY",
      "youtube_url": "https://www.youtube.com/watch?v=WIKqgE4BwAY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "anthempart2",
+   "artist": "blink-182",
+   "title": "Anthem Part Two",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "j7rHJTHWNew",
+     "youtube_url": "https://www.youtube.com/watch?v=j7rHJTHWNew",
      "submitted_by": "AARP41298"
     }
    ]
@@ -62,6 +88,19 @@
      "type": "fan",
      "youtube": "HdX139N0Jsw",
      "youtube_url": "https://www.youtube.com/watch?v=HdX139N0Jsw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "karmapolice",
+   "artist": "Radiohead",
+   "title": "Karma Police",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "1uYWYWPc9HU",
+     "youtube_url": "https://www.youtube.com/watch?v=1uYWYWPc9HU",
      "submitted_by": "AARP41298"
     }
    ]

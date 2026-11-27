@@ -1,0 +1,35 @@
+{
+ "source": "rb2_dlc",
+ "name": "rb2_dlc",
+ "songs": [
+  {
+   "con_id": "o68804768_intntalofeatamri",
+   "artist": "3BallMTY",
+   "title": "Inténtalo (feat. América Sierra & El Bebeto)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "LRYNWfJzfVE",
+     "youtube_url": "https://www.youtube.com/watch?v=LRYNWfJzfVE",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -10688,
+     "pack": "3BallMTY - Inténtalo_rb2con"
+    }
+   ]
+  },
+  {
+   "con_id": "giveiteway",
+   "artist": "Red Hot Chili Peppers",
+   "title": "Give It Away",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Mr_uHJPUlO8",
+     "youtube_url": "https://www.youtube.com/watch?v=Mr_uHJPUlO8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  }
+ ]
+}

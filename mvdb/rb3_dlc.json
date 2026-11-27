@@ -1,0 +1,230 @@
+{
+ "source": "rb3_dlc",
+ "name": "rb3_dlc",
+ "songs": [
+  {
+   "con_id": "always",
+   "artist": "Blink-182",
+   "title": "Always",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "CvtJVku_mJw",
+     "youtube_url": "https://www.youtube.com/watch?v=CvtJVku_mJw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "staytogetherforthekids",
+   "artist": "Blink-182",
+   "title": "Stay Together for the Kids",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "k1BFHYtZlAU",
+     "youtube_url": "https://www.youtube.com/watch?v=k1BFHYtZlAU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "upallnight",
+   "artist": "Blink-182",
+   "title": "Up All Night",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "YpYhGdrknlA",
+     "youtube_url": "https://www.youtube.com/watch?v=YpYhGdrknlA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "wanteddeadoralive2",
+   "artist": "Bon Jovi",
+   "title": "Wanted Dead or Alive (RB3 version)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "SRvCvsRp5ho",
+     "youtube_url": "https://www.youtube.com/watch?v=SRvCvsRp5ho",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 20.409,
+        "vid_start": 0.0,
+        "vid_end": 18.449,
+        "speed": 0.904
+       },
+       {
+        "ref_start": 20.409,
+        "ref_end": 240.609,
+        "vid_start": 5.307,
+        "vid_end": 225.298,
+        "speed": 0.9991
+       },
+       {
+        "ref_start": 240.609,
+        "ref_end": 257.317,
+        "vid_start": 115.312,
+        "vid_end": 132.276,
+        "speed": 1.0153
+       },
+       {
+        "ref_start": 257.317,
+        "ref_end": 273.224,
+        "vid_start": 112.886,
+        "vid_end": 129.224,
+        "speed": 1.0271
+       },
+       {
+        "ref_start": 273.224,
+        "ref_end": 307.539,
+        "vid_start": 220.321,
+        "vid_end": 252.985,
+        "speed": 0.9519
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:18.449 change speed by -9.60%",
+       "at 0:20.409, the fragment 0:05.307-0:18.449 was inserted",
+       "at 4:17.317, the fragment 1:52.886-2:09.224 was inserted",
+       "segment 1:52.886-2:09.224 change speed by +2.71%",
+       "at 4:00.609, the fragment 1:55.312-2:12.276 was inserted",
+       "segment 1:55.312-2:12.276 change speed by +1.53%",
+       "at 4:33.224, the fragment 3:40.321-3:45.298 was inserted",
+       "segment 3:40.321-4:12.985 change speed by -4.81%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB3DLCPACK01OF05"
+    },
+    {
+     "type": "meme",
+     "youtube": "yoL_Mr97e4Q",
+     "youtube_url": "https://www.youtube.com/watch?v=yoL_Mr97e4Q",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "meme",
+     "youtube": "uen_1bL_TXc",
+     "youtube_url": "https://www.youtube.com/watch?v=uen_1bL_TXc",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "si5lMoF3M-M",
+     "youtube_url": "https://www.youtube.com/watch?v=si5lMoF3M-M",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "breakingthehabit",
+   "artist": "Linkin Park",
+   "title": "Breaking the Habit",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "v2H4l9RpkwM",
+     "youtube_url": "https://www.youtube.com/watch?v=v2H4l9RpkwM",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 3827,
+     "pack": "RB3DLCPACK05OF05"
+    }
+   ]
+  },
+  {
+   "con_id": "burnitdown",
+   "artist": "Linkin Park",
+   "title": "Burn It Down",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "dxytyRy-O1k",
+     "youtube_url": "https://www.youtube.com/watch?v=dxytyRy-O1k",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "crawling2",
+   "artist": "Linkin Park",
+   "title": "Crawling",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Gd9OhYroLN0",
+     "youtube_url": "https://www.youtube.com/watch?v=Gd9OhYroLN0",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "intheend_linkin2",
+   "artist": "Linkin Park",
+   "title": "In the End",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "eVTXPUF4Oz4",
+     "youtube_url": "https://www.youtube.com/watch?v=eVTXPUF4Oz4",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 2.797,
+        "ref_end": 215.598,
+        "vid_start": 0.0,
+        "vid_end": 212.793,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:02.797 black (count-in, before the music)",
+       "segment 3:32.793-3:38.230 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "RB3DLCPACK03OF05"
+    }
+   ]
+  },
+  {
+   "con_id": "numb2",
+   "artist": "Linkin Park",
+   "title": "Numb",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "kXYiU_JCYtU",
+     "youtube_url": "https://www.youtube.com/watch?v=kXYiU_JCYtU",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -522,
+     "pack": "RB3DLCPACK03OF05"
+    }
+   ]
+  },
+  {
+   "con_id": "waitingfortheend",
+   "artist": "Linkin Park",
+   "title": "Waiting for the End",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "5qF_qbaWt3Q",
+     "youtube_url": "https://www.youtube.com/watch?v=5qF_qbaWt3Q",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  }
+ ]
+}

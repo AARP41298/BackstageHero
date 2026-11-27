@@ -3,6 +3,151 @@
  "name": "Custom Songs",
  "songs": [
   {
+   "con_id": "o335134366_dinosaurioanacl",
+   "artist": "31 Minutos",
+   "title": "Dinosaurio Anacleto",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "8gE8QZFUSDU",
+     "youtube_url": "https://www.youtube.com/watch?v=8gE8QZFUSDU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Dragonballgt",
+   "artist": "Aaron Montalvo",
+   "title": "Mi Corazon Encantado",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "CJr8am6pZco",
+     "youtube_url": "https://www.youtube.com/watch?v=CJr8am6pZco",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "dbgtending",
+   "artist": "Aaron Montalvo",
+   "title": "Sola Nunca Estarás",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "TpVsxv_tMb8",
+     "youtube_url": "https://www.youtube.com/watch?v=TpVsxv_tMb8",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "fan",
+     "youtube": "CiJbMmUdO1M",
+     "youtube_url": "https://www.youtube.com/watch?v=CiJbMmUdO1M",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o989847809",
+   "artist": "Adrian Barba",
+   "title": "El Poder Nuestro Es",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "u9hrMzr81cA",
+     "youtube_url": "https://www.youtube.com/watch?v=u9hrMzr81cA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "angelesfuimos",
+   "artist": "Adrián Barba",
+   "title": "Ángeles Fuimos",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "nPJxTbVAxHU",
+     "youtube_url": "https://www.youtube.com/watch?v=nPJxTbVAxHU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "WindV4",
+   "artist": "Akeboshi",
+   "title": "Wind",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "z2p8bHvrxBU",
+     "youtube_url": "https://www.youtube.com/watch?v=z2p8bHvrxBU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Maracas_Sky",
+   "artist": "Alberto Vazquez",
+   "title": "Maracas (Ft. Joan Sebastian)",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "Ab2xBO5Y_5w",
+     "youtube_url": "https://www.youtube.com/watch?v=Ab2xBO5Y_5w",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 198.99,
+        "vid_start": 12.76,
+        "vid_end": 204.383,
+        "speed": 0.963
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:12.760 was cut (intro)",
+       "segment 0:12.760-3:24.383 change speed by -3.70%",
+       "segment 3:24.383-6:56.230 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (alternate)",
+     "pack": "Maracas_Sky_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "DueleElAmor",
+   "artist": "Aleks Syntek",
+   "title": "Duele El Amor (ft. Ana Torroja)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "VuDc8HQ3Rbg",
+     "youtube_url": "https://www.youtube.com/watch?v=VuDc8HQ3Rbg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o947649727",
+   "artist": "Aleks Syntek",
+   "title": "Intocable (Album Version)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "xraKpchXF1c",
+     "youtube_url": "https://www.youtube.com/watch?v=xraKpchXF1c",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -528,
+     "pack": "IntocableAV_rb3con"
+    }
+   ]
+  },
+  {
    "con_id": "far_horsewithnoname",
    "artist": "America",
    "title": "A Horse With No Name",
@@ -57,6 +202,93 @@
      "youtube": "kHLHSlExFis",
      "youtube_url": "https://www.youtube.com/watch?v=kHLHSlExFis",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "HarukaKanata",
+   "artist": "Asian Kung-Fu Generation",
+   "title": "Haruka Kanata",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "nJ6A6GC_ki4",
+     "youtube_url": "https://www.youtube.com/watch?v=nJ6A6GC_ki4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Rewrite",
+   "artist": "Asian Kung-Fu Generation",
+   "title": "Rewrite",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "ZmeudwRMrsU",
+     "youtube_url": "https://www.youtube.com/watch?v=ZmeudwRMrsU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "CarryOn",
+   "artist": "Avenged Sevenfold",
+   "title": "Carry On",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "uJbrTgUL0Dk",
+     "youtube_url": "https://www.youtube.com/watch?v=uJbrTgUL0Dk",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -84289,
+     "pack": "CarryOn_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "DileAlAmorST",
+   "artist": "Aventura",
+   "title": "Dile Al Amor",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "0XCot42qTvA",
+     "youtube_url": "https://www.youtube.com/watch?v=0XCot42qTvA",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -6190,
+     "pack": "DileAlAmorST"
+    }
+   ]
+  },
+  {
+   "con_id": "EllayYo",
+   "artist": "Aventura",
+   "title": "Ella y Yo (ft. Don Omar)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Lg_Pn45gyMs",
+     "youtube_url": "https://www.youtube.com/watch?v=Lg_Pn45gyMs",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ElPerdedorRM",
+   "artist": "Aventura",
+   "title": "El Perdedor",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "elGZbcpGzdU",
+     "youtube_url": "https://www.youtube.com/watch?v=elGZbcpGzdU",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -5156,
+     "pack": "ElPerdedorRM"
     }
    ]
   },
@@ -139,6 +371,35 @@
    ]
   },
   {
+   "con_id": "o178878686_rosapastel_bela",
+   "artist": "Belanova",
+   "title": "Rosa Pastel",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "bUkJLkoh3kA",
+     "youtube_url": "https://www.youtube.com/watch?v=bUkJLkoh3kA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o718861747_luzsingravedad",
+   "artist": "Belinda",
+   "title": "Luz Sin Gravedad",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "wNKUxtV1VJE",
+     "youtube_url": "https://www.youtube.com/watch?v=wNKUxtV1VJE",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 6865,
+     "pack": "Belinda - Luz Sin Gravedad"
+    }
+   ]
+  },
+  {
    "con_id": "dingo_everythingiwantedv0",
    "artist": "Billie Eilish",
    "title": "everything i wanted",
@@ -173,6 +434,41 @@
      "type": "official",
      "youtube": "IHNzOHi8sJs",
      "youtube_url": "https://www.youtube.com/watch?v=IHNzOHi8sJs",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o20781282",
+   "artist": "Bob Esponja",
+   "title": "La Cancion De Gary",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "0ZPggIXElm4",
+     "youtube_url": "https://www.youtube.com/watch?v=0ZPggIXElm4",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "official",
+     "youtube": "0Sppzpo_Z2c",
+     "youtube_url": "https://www.youtube.com/watch?v=0Sppzpo_Z2c",
+     "title": "Bob Esponja - Gary, vuelve a mí (La Canción de Gary) (Edit Completo) (Latino) (Video & Letra)",
+     "offset_ms": -6389,
+     "pack": "Bob Esponja - La Cancion De Gary",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "BlowMeAway",
+   "artist": "Breaking Benjamin",
+   "title": "Blow Me Away",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "4YshHpybh2I",
+     "youtube_url": "https://www.youtube.com/watch?v=4YshHpybh2I",
      "submitted_by": "AARP41298"
     }
    ]
@@ -217,6 +513,107 @@
    ]
   },
   {
+   "con_id": "Ynosfuimosenuna",
+   "artist": "BZRP",
+   "title": "Quevedo: Bzrp Music Sessions, Vol. 52",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "A_g3lMcWVy0",
+     "youtube_url": "https://www.youtube.com/watch?v=A_g3lMcWVy0",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.996,
+        "ref_end": 208.895,
+        "vid_start": 0.0,
+        "vid_end": 204.889,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.996 black (count-in, before the music)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Ynosfuimosenuna"
+    }
+   ]
+  },
+  {
+   "con_id": "eresfull",
+   "artist": "Cafe Tacuba",
+   "title": "Eres",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "98Akpf1ph2o",
+     "youtube_url": "https://www.youtube.com/watch?v=98Akpf1ph2o",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 5999,
+     "pack": "eresfull_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "laingrata",
+   "artist": "Café Tacvba",
+   "title": "La Ingrata",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "kIr8hsVTCzg",
+     "youtube_url": "https://www.youtube.com/watch?v=kIr8hsVTCzg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "afuera",
+   "artist": "Caifanes",
+   "title": "Afuera",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "DNbG5IIA71w",
+     "youtube_url": "https://www.youtube.com/watch?v=DNbG5IIA71w",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Atrevetete",
+   "artist": "Calle 13",
+   "title": "Atrévete-Te-Te",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "vXtJkDHEAAc",
+     "youtube_url": "https://www.youtube.com/watch?v=vXtJkDHEAAc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o650846299",
+   "artist": "Cartel De Santa",
+   "title": "Culon Culito",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "WXcSrGbDPl4",
+     "youtube_url": "https://www.youtube.com/watch?v=WXcSrGbDPl4",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -20286,
+     "pack": "Culon Culito_rb3con"
+    }
+   ]
+  },
+  {
    "con_id": "Redbone",
    "artist": "Childish Gambino",
    "title": "Redbone",
@@ -226,6 +623,148 @@
      "youtube": "ezbsbkqoRrs",
      "youtube_url": "https://www.youtube.com/watch?v=ezbsbkqoRrs",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "YoTeAtrapoTuMeAtrapasMGMv",
+   "artist": "Claudia Bramnfsette",
+   "title": "Yo te Atrapo, Tú me Atrapas",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "oeLO_BaArcE",
+     "youtube_url": "https://www.youtube.com/watch?v=oeLO_BaArcE",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 1.0,
+        "ref_end": 228.103,
+        "vid_start": 0.0,
+        "vid_end": 227.103,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 228.103,
+        "ref_end": 241.609,
+        "vid_start": 113.551,
+        "vid_end": 127.157,
+        "speed": 1.0074
+       }
+      ],
+      "log": [
+       "0:00.000-0:01.000 black (count-in, before the music)",
+       "at 3:48.103, the fragment 1:53.551-2:07.157 was inserted",
+       "segment 1:53.551-2:07.157 change speed by +0.74%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "YoTeAtrapoTuMeAtrapasMGMv0_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "digimonadventure",
+   "artist": "César Franco",
+   "title": "Butter-Fly (Si tu lo Deseas)",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "7PXb7ZHwITg",
+     "youtube_url": "https://www.youtube.com/watch?v=7PXb7ZHwITg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Pasarela",
+   "artist": "DJ Nelson/ Dálmata",
+   "title": "Pasarela",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "BxM6yKVDUy4",
+     "youtube_url": "https://www.youtube.com/watch?v=BxM6yKVDUy4",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "fan",
+     "youtube": "3D0ErgFZyiU",
+     "youtube_url": "https://www.youtube.com/watch?v=3D0ErgFZyiU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o839775808",
+   "artist": "DLD",
+   "title": "Arsénico",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "odaQc7AhMhc",
+     "youtube_url": "https://www.youtube.com/watch?v=odaQc7AhMhc",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -16707,
+     "pack": "Arsenico_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "o512305871",
+   "artist": "DLD",
+   "title": "Mi Vida",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "dapgfO59ar8",
+     "youtube_url": "https://www.youtube.com/watch?v=dapgfO59ar8",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 264.02,
+        "vid_start": 34.127,
+        "vid_end": 298.129,
+        "speed": 0.9999
+       },
+       {
+        "ref_start": 264.02,
+        "ref_end": 286.53,
+        "vid_start": 282.428,
+        "vid_end": 304.938,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:34.127 was cut (intro)",
+       "at 4:24.020, the fragment 4:42.428-4:58.129 was inserted",
+       "segment 5:04.938-5:19.350 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Mi Vida_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "VirtualDiva",
+   "artist": "Don Omar",
+   "title": "Virtual Diva",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "vRBgZ4aMPio",
+     "youtube_url": "https://www.youtube.com/watch?v=vRBgZ4aMPio",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -64076,
+     "pack": "VirtualDiva"
     }
    ]
   },
@@ -252,6 +791,22 @@
      "youtube": "QZXc39hT8t4",
      "youtube_url": "https://www.youtube.com/watch?v=QZXc39hT8t4",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Asieslavida",
+   "artist": "Elefante",
+   "title": "Asi es la vida",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "GbSXNzWXQYw",
+     "youtube_url": "https://www.youtube.com/watch?v=GbSXNzWXQYw",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -6216,
+     "pack": "Asieslavida_rb3con"
     }
    ]
   },
@@ -340,6 +895,82 @@
    ]
   },
   {
+   "con_id": "aya_godknows",
+   "artist": "ENOZ",
+   "title": "God knows...",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "ZBeQbNV-FPc",
+     "youtube_url": "https://www.youtube.com/watch?v=ZBeQbNV-FPc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Pepasv#",
+   "artist": "Farruko",
+   "title": "Pepas",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "y8trd3gjJt0",
+     "youtube_url": "https://www.youtube.com/watch?v=y8trd3gjJt0",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -1921,
+     "pack": "Pepasv1_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "GBabyQueenV2",
+   "artist": "Gorillaz",
+   "title": "Baby Queen",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "ovWFEOqrkBI",
+     "youtube_url": "https://www.youtube.com/watch?v=ovWFEOqrkBI",
+     "submitted_by": "AARP41298",
+     "title": "database (alternate)",
+     "offset_ms": 154,
+     "pack": "GBabyQueenV2_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "GDoncamatic",
+   "artist": "Gorillaz",
+   "title": "Doncamatic (feat. Daley)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "OJQyTnD74gk",
+     "youtube_url": "https://www.youtube.com/watch?v=OJQyTnD74gk",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.101,
+        "ref_end": 204.793,
+        "vid_start": 0.0,
+        "vid_end": 201.54,
+        "speed": 0.9992
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.101 black (count-in, before the music)",
+       "segment 3:21.540-3:28.930 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "GDoncamatic_rb3con"
+    }
+   ]
+  },
+  {
    "con_id": "GDesoleV3",
    "artist": "Gorillaz",
    "title": "Désolé",
@@ -362,6 +993,22 @@
      "youtube": "LCet4yrfp4o",
      "youtube_url": "https://www.youtube.com/watch?v=LCet4yrfp4o",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "GTheLostChord",
+   "artist": "Gorillaz",
+   "title": "The Lost Chord (feat. Leee John)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "FJVV8o6vgso",
+     "youtube_url": "https://www.youtube.com/watch?v=FJVV8o6vgso",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -4028,
+     "pack": "GTheLostChord_rb3con"
     }
    ]
   },
@@ -398,6 +1045,144 @@
    ]
   },
   {
+   "con_id": "GRocktheHouseV2",
+   "artist": "Gorillaz",
+   "title": "Rock the House",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "lRlmM88zzbY",
+     "youtube_url": "https://www.youtube.com/watch?v=lRlmM88zzbY",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 159.472,
+        "vid_start": 21.11,
+        "vid_end": 180.582,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 159.472,
+        "ref_end": 186.685,
+        "vid_start": 46.597,
+        "vid_end": 73.866,
+        "speed": 1.0021
+       },
+       {
+        "ref_start": 186.685,
+        "ref_end": 190.386,
+        "vid_start": 74.129,
+        "vid_end": 77.618,
+        "speed": 0.9427
+       },
+       {
+        "ref_start": 190.386,
+        "ref_end": 200.691,
+        "vid_start": 55.385,
+        "vid_end": 65.482,
+        "speed": 0.9798
+       },
+       {
+        "ref_start": 200.691,
+        "ref_end": 204.893,
+        "vid_start": 65.115,
+        "vid_end": 69.907,
+        "speed": 1.1404
+       },
+       {
+        "ref_start": 204.893,
+        "ref_end": 266.721,
+        "vid_start": 158.972,
+        "vid_end": 220.8,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 266.721,
+        "ref_end": 281.228,
+        "vid_start": 110.35,
+        "vid_end": 124.857,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:21.110 was cut (intro)",
+       "at 2:39.472, the fragment 0:46.597-1:13.866 was inserted",
+       "segment 0:46.597-1:13.866 change speed by +0.21%",
+       "at 3:10.386, the fragment 0:55.385-1:05.482 was inserted",
+       "segment 0:55.385-1:05.482 change speed by -2.02%",
+       "at 3:20.691, the fragment 1:05.115-1:09.907 was inserted",
+       "segment 1:05.115-1:09.907 change speed by +14.04%",
+       "at 3:06.685, the fragment 1:14.129-1:17.618 was inserted",
+       "segment 1:14.129-1:17.618 change speed by -5.73%",
+       "at 4:26.721, the fragment 1:50.350-2:04.857 was inserted",
+       "at 3:24.893, the fragment 2:38.972-3:00.582 was inserted"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "GRocktheHouseV2_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "GSilentRunning",
+   "artist": "Gorillaz",
+   "title": "Silent Running (featuring Adeleye Omotayo)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "_0Pf48RqSsg",
+     "youtube_url": "https://www.youtube.com/watch?v=_0Pf48RqSsg",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.874,
+        "ref_end": 19.609,
+        "vid_start": 0.0,
+        "vid_end": 18.537,
+        "speed": 0.9894
+       },
+       {
+        "ref_start": 19.609,
+        "ref_end": 207.794,
+        "vid_start": 2.9,
+        "vid_end": 191.091,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 207.794,
+        "ref_end": 241.409,
+        "vid_start": 175.378,
+        "vid_end": 209.006,
+        "speed": 1.0004
+       },
+       {
+        "ref_start": 241.409,
+        "ref_end": 267.421,
+        "vid_start": 191.238,
+        "vid_end": 216.786,
+        "speed": 0.9822
+       }
+      ],
+      "log": [
+       "0:00.000-0:00.874 black (count-in, before the music)",
+       "segment 0:00.000-0:18.537 change speed by -1.06%",
+       "at 0:19.609, the fragment 0:02.900-0:18.537 was inserted",
+       "at 3:27.794, the fragment 2:55.378-3:11.091 was inserted",
+       "at 4:01.409, the fragment 3:11.238-3:29.006 was inserted",
+       "segment 3:11.238-3:36.786 change speed by -1.78%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "GSilentRunning_rb3con"
+    }
+   ]
+  },
+  {
    "con_id": "StrobeliteJIM",
    "artist": "Gorillaz",
    "title": "Strobelite (feat. Peven Everett)",
@@ -420,6 +1205,446 @@
      "youtube": "HEXWRTEbj1I",
      "youtube_url": "https://www.youtube.com/watch?v=HEXWRTEbj1I",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "fugg_faceMyFears1x",
+   "artist": "Hikaru Utada & Skrillex",
+   "title": "Face My Fears",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Kvnwnf9UftA",
+     "youtube_url": "https://www.youtube.com/watch?v=Kvnwnf9UftA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "devuelveme",
+   "artist": "Hombres G",
+   "title": "Devuélveme a mi chica",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "26jj4pNhxO0",
+     "youtube_url": "https://www.youtube.com/watch?v=26jj4pNhxO0",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 5.502,
+        "ref_end": 95.543,
+        "vid_start": 12.981,
+        "vid_end": 103.388,
+        "speed": 1.0041
+       },
+       {
+        "ref_start": 95.543,
+        "ref_end": 105.747,
+        "vid_start": 58.861,
+        "vid_end": 69.015,
+        "speed": 0.9951
+       },
+       {
+        "ref_start": 105.747,
+        "ref_end": 127.958,
+        "vid_start": 46.721,
+        "vid_end": 69.017,
+        "speed": 1.0038
+       },
+       {
+        "ref_start": 127.958,
+        "ref_end": 172.178,
+        "vid_start": 46.686,
+        "vid_end": 91.111,
+        "speed": 1.0046
+       },
+       {
+        "ref_start": 172.178,
+        "ref_end": 198.59,
+        "vid_start": 69.013,
+        "vid_end": 94.834,
+        "speed": 0.9776
+       },
+       {
+        "ref_start": 198.59,
+        "ref_end": 262.119,
+        "vid_start": 0.0,
+        "vid_end": 63.529,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:05.502 black (count-in, before the music)",
+       "at 3:18.590, the fragment 0:00.000-1:03.529 was inserted",
+       "segment 0:12.981-1:43.388 change speed by +0.41%",
+       "at 2:07.958, the fragment 0:46.686-1:31.111 was inserted",
+       "segment 0:46.686-1:31.111 change speed by +0.46%",
+       "at 1:45.747, the fragment 0:46.721-1:09.017 was inserted",
+       "segment 0:46.721-1:09.017 change speed by +0.38%",
+       "at 1:35.543, the fragment 0:58.861-1:09.015 was inserted",
+       "segment 0:58.861-1:09.015 change speed by -0.49%",
+       "at 2:52.178, the fragment 1:09.013-1:34.834 was inserted",
+       "segment 1:09.013-1:34.834 change speed by -2.24%",
+       "segment 1:43.388-3:26.770 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "devuelveme_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "TQHGRB3ESP",
+   "artist": "Hombres G",
+   "title": "Te Quiero",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "niq81NyGCAg",
+     "youtube_url": "https://www.youtube.com/watch?v=niq81NyGCAg",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 4.802,
+        "ref_end": 5.502,
+        "vid_start": 0.0,
+        "vid_end": 0.0,
+        "speed": 0.0
+       },
+       {
+        "ref_start": 5.502,
+        "ref_end": 230.871,
+        "vid_start": 0.0,
+        "vid_end": 222.601,
+        "speed": 0.9877
+       },
+       {
+        "ref_start": 230.871,
+        "ref_end": 233.906,
+        "vid_start": 111.25,
+        "vid_end": 114.351,
+        "speed": 1.0217
+       }
+      ],
+      "log": [
+       "0:00.000-0:04.802 black (count-in, before the music)",
+       "segment 0:00.000-3:42.601 change speed by -1.23%",
+       "at 0:04.802, the frame at 0:00.000 was held for 0.700s",
+       "at 3:50.871, the fragment 1:51.250-1:54.351 was inserted",
+       "segment 1:51.250-1:54.351 change speed by +2.17%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (alternate)",
+     "pack": "TeQuiero_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "EntreDosTierras",
+   "artist": "Héroes del Silencio",
+   "title": "Entre Dos Tierras",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "SzimletXB7M",
+     "youtube_url": "https://www.youtube.com/watch?v=SzimletXB7M",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -2835,
+     "pack": "EntreDosTierras_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "MalditoDuende",
+   "artist": "Héroes del Silencio",
+   "title": "Maldito Duende",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "SqB4FSettTI",
+     "youtube_url": "https://www.youtube.com/watch?v=SqB4FSettTI",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -4120,
+     "pack": "MalditoDuende"
+    }
+   ]
+  },
+  {
+   "con_id": "Mortal_Kombat",
+   "artist": "The Immortals",
+   "title": "Mortal Kombat (Techno Syndrome)",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "FnedlyPZoLI",
+     "youtube_url": "https://www.youtube.com/watch?v=FnedlyPZoLI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "zoey101theme",
+   "artist": "Jamie Lynn Spears",
+   "title": "Follow Me",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "RX6YeYT3ed8",
+     "youtube_url": "https://www.youtube.com/watch?v=RX6YeYT3ed8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Porquetevas",
+   "artist": "Jeanette",
+   "title": "Porque te vas",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "TjUhXbGdLYo",
+     "youtube_url": "https://www.youtube.com/watch?v=TjUhXbGdLYo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o503159034_esoymas_joanseb",
+   "artist": "Joan Sebastian",
+   "title": "Eso Y Mas",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "WIBcys2nMtc",
+     "youtube_url": "https://www.youtube.com/watch?v=WIBcys2nMtc",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 6.201,
+        "ref_end": 164.875,
+        "vid_start": 0.0,
+        "vid_end": 158.668,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:06.201 black (count-in, before the music)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Joan Sebastian - Eso Y Mas"
+    }
+   ]
+  },
+  {
+   "con_id": "o694192759_eltriste_josjos",
+   "artist": "José José",
+   "title": "El Triste",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "v7usZ-jU3oI",
+     "youtube_url": "https://www.youtube.com/watch?v=v7usZ-jU3oI",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "E20G25SCAEg",
+     "youtube_url": "https://www.youtube.com/watch?v=E20G25SCAEg",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 263.62,
+        "vid_start": 6.692,
+        "vid_end": 292.842,
+        "speed": 1.0855
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:06.692 was cut (intro)",
+       "segment 0:06.692-4:52.842 change speed by +8.55%",
+       "segment 4:52.842-5:33.270 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (alternate)",
+     "pack": "Eltriste"
+    }
+   ]
+  },
+  {
+   "con_id": "o12866974_fotografiaftnell",
+   "artist": "Juanes",
+   "title": "Fotografia (Ft. Nelly Furtado)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "flr8vDQ9Wuc",
+     "youtube_url": "https://www.youtube.com/watch?v=flr8vDQ9Wuc",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 4630,
+     "pack": "Juanes - Fotografia"
+    }
+   ]
+  },
+  {
+   "con_id": "nvstademo",
+   "artist": "Juanes",
+   "title": "Nada Valgo Sin Tu Amor",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "zWjXipKSjdg",
+     "youtube_url": "https://www.youtube.com/watch?v=zWjXipKSjdg",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 2.054,
+        "ref_end": 199.39,
+        "vid_start": 0.0,
+        "vid_end": 197.264,
+        "speed": 0.9996
+       }
+      ],
+      "log": [
+       "0:00.000-0:02.054 black (count-in, before the music)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Nada_Valgo_Sin_Tu_Amor"
+    }
+   ]
+  },
+  {
+   "con_id": "Querida",
+   "artist": "Juan Gabriel",
+   "title": "Querida",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "mmt4EO3oXSI",
+     "youtube_url": "https://www.youtube.com/watch?v=mmt4EO3oXSI",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "1hf7oFCL1Sg",
+     "youtube_url": "https://www.youtube.com/watch?v=1hf7oFCL1Sg",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 5.368,
+        "ref_end": 320.646,
+        "vid_start": 0.0,
+        "vid_end": 315.043,
+        "speed": 0.9993
+       },
+       {
+        "ref_start": 320.646,
+        "ref_end": 327.748,
+        "vid_start": 277.831,
+        "vid_end": 285.063,
+        "speed": 1.0183
+       }
+      ],
+      "log": [
+       "0:00.000-0:05.368 black (count-in, before the music)",
+       "at 5:20.646, the fragment 4:37.831-4:45.063 was inserted",
+       "segment 4:37.831-4:45.063 change speed by +1.83%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (alternate)",
+     "pack": "Querida_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "o28058779",
+   "artist": "Julieta Venegas",
+   "title": "Me Voy",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "y8rBC6GCUjg",
+     "youtube_url": "https://www.youtube.com/watch?v=y8rBC6GCUjg",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 5675,
+     "pack": "Me VoyV2_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "lacalledelassirenas_rb3co",
+   "artist": "Kabah",
+   "title": "La calle de las sirenas",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "7PeGKDfVlHA",
+     "youtube_url": "https://www.youtube.com/watch?v=7PeGKDfVlHA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RenaiCirculationV2",
+   "artist": "Kana Hanazawa",
+   "title": "Renai Circulation",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "uKxyLmbOc0Q",
+     "youtube_url": "https://www.youtube.com/watch?v=uKxyLmbOc0Q",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Sky_PopStars_Down",
+   "artist": "K/DA",
+   "title": "PopStars (ft Madison Beer, (G)I-DLE, Jaira Burns)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "UOxkGD8qRB4",
+     "youtube_url": "https://www.youtube.com/watch?v=UOxkGD8qRB4",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.658,
+        "ref_end": 197.389,
+        "vid_start": 0.0,
+        "vid_end": 193.514,
+        "speed": 0.9989
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.658 black (count-in, before the music)",
+       "segment 3:13.514-3:22.890 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Sky_PopStars_Down"
     }
    ]
   },
@@ -450,6 +1675,187 @@
    ]
   },
   {
+   "con_id": "Wavinflag",
+   "artist": "K'naan",
+   "title": "Wavin' Flag (ft David Bisbal)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "XYMfyjByGl4",
+     "youtube_url": "https://www.youtube.com/watch?v=XYMfyjByGl4",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.756,
+        "ref_end": 237.508,
+        "vid_start": 0.0,
+        "vid_end": 233.532,
+        "speed": 0.9991
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.756 black (count-in, before the music)",
+       "segment 3:53.532-3:54.970 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Wavinflag"
+    }
+   ]
+  },
+  {
+   "con_id": "ROSASlODVbyAldoenv",
+   "artist": "La Oreja de Van Gogh",
+   "title": "Rosas",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "nYnLVWXmRm8",
+     "youtube_url": "https://www.youtube.com/watch?v=nYnLVWXmRm8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "brillas",
+   "artist": "León Larregui",
+   "title": "Brillas",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Mcj75l2gJcY",
+     "youtube_url": "https://www.youtube.com/watch?v=Mcj75l2gJcY",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 237.308,
+        "vid_start": 13.706,
+        "vid_end": 251.014,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 237.308,
+        "ref_end": 244.811,
+        "vid_start": 125.457,
+        "vid_end": 132.96,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:13.706 was cut (intro)",
+       "at 3:57.308, the fragment 2:05.457-2:12.960 was inserted"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "brillas_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "o943604480",
+   "artist": "Los Acosta",
+   "title": "Como Una Novela",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "d6x2gyBFWVg",
+     "youtube_url": "https://www.youtube.com/watch?v=d6x2gyBFWVg",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 4322,
+     "pack": "Como Una Novela_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "o851588148_miamigoeldearri",
+   "artist": "Los Inquietos Del Norte",
+   "title": "Mi Amigo El De Arriba",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "A7LMQnYnxmw",
+     "youtube_url": "https://www.youtube.com/watch?v=A7LMQnYnxmw",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 86.839,
+        "vid_start": 63.547,
+        "vid_end": 150.359,
+        "speed": 0.9997
+       },
+       {
+        "ref_start": 86.839,
+        "ref_end": 148.867,
+        "vid_start": 159.283,
+        "vid_end": 220.965,
+        "speed": 0.9944
+       }
+      ],
+      "log": [
+       "segment 0:00.000-1:03.547 was cut (intro)",
+       "segment 2:30.359-2:39.283 was cut",
+       "segment 2:39.283-3:40.965 change speed by -0.56%",
+       "segment 3:40.965-3:55.950 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Los Inquietos - Mi Amigo El De Arriba"
+    }
+   ]
+  },
+  {
+   "con_id": "nunca",
+   "artist": "Los Ángeles Azules",
+   "title": "Nunca Es Suficiente ft. Natalia Lafourcade (Live)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "k76BgIb89-s",
+     "youtube_url": "https://www.youtube.com/watch?v=k76BgIb89-s",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ahoratepuedes_luis",
+   "artist": "Luis Miguel",
+   "title": "Ahora te Puedes Marchar",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "yG7MPEQm1-w",
+     "youtube_url": "https://www.youtube.com/watch?v=yG7MPEQm1-w",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.293,
+        "ref_end": 195.088,
+        "vid_start": 0.0,
+        "vid_end": 191.764,
+        "speed": 0.9998
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.293 black (count-in, before the music)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "ahoratepuedes_luis_rb3con"
+    }
+   ]
+  },
+  {
    "con_id": "o412790795",
    "artist": "Madonna",
    "title": "Hung Up",
@@ -463,6 +1869,284 @@
    ]
   },
   {
+   "con_id": "benditalaluz",
+   "artist": "Maná",
+   "title": "Bendita tu luz (ft Juan Luis Guerra)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "44kityInDvM",
+     "youtube_url": "https://www.youtube.com/watch?v=44kityInDvM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "labioscompartidos_shad",
+   "artist": "Maná",
+   "title": "Labios Compartidos",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "1IgOZaQqB58",
+     "youtube_url": "https://www.youtube.com/watch?v=1IgOZaQqB58",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 1.002,
+        "ref_end": 246.712,
+        "vid_start": 0.0,
+        "vid_end": 245.699,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 246.712,
+        "ref_end": 251.814,
+        "vid_start": 2.696,
+        "vid_end": 7.213,
+        "speed": 0.8853
+       },
+       {
+        "ref_start": 251.814,
+        "ref_end": 293.733,
+        "vid_start": 238.911,
+        "vid_end": 280.848,
+        "speed": 1.0004
+       },
+       {
+        "ref_start": 293.733,
+        "ref_end": 310.041,
+        "vid_start": 257.42,
+        "vid_end": 273.376,
+        "speed": 0.9784
+       },
+       {
+        "ref_start": 310.041,
+        "ref_end": 315.343,
+        "vid_start": 261.883,
+        "vid_end": 266.423,
+        "speed": 0.8563
+       },
+       {
+        "ref_start": 315.343,
+        "ref_end": 326.248,
+        "vid_start": 265.82,
+        "vid_end": 276.725,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:01.002 black (count-in, before the music)",
+       "at 4:06.712, the fragment 0:02.696-0:07.213 was inserted",
+       "segment 0:02.696-0:07.213 change speed by -11.47%",
+       "at 4:11.814, the fragment 3:58.911-4:05.699 was inserted",
+       "at 4:53.733, the fragment 4:17.420-4:33.376 was inserted",
+       "segment 4:17.420-4:33.376 change speed by -2.16%",
+       "at 5:10.041, the fragment 4:21.883-4:26.423 was inserted",
+       "segment 4:21.883-4:26.423 change speed by -14.37%",
+       "at 5:15.343, the fragment 4:25.820-4:36.725 was inserted",
+       "segment 4:40.848-4:45.530 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "labioscompartidos_shad"
+    }
+   ]
+  },
+  {
+   "con_id": "mariposamana",
+   "artist": "Maná",
+   "title": "Mariposa Traicionera",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "av3wkasS-WQ",
+     "youtube_url": "https://www.youtube.com/watch?v=av3wkasS-WQ",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "official",
+     "youtube": "FT8HG4EOn9o",
+     "youtube_url": "https://www.youtube.com/watch?v=FT8HG4EOn9o",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "Rayandoelsol",
+   "artist": "Maná",
+   "title": "Rayando el Sol",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "8lbsQyMhMT8",
+     "youtube_url": "https://www.youtube.com/watch?v=8lbsQyMhMT8",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.58,
+        "ref_end": 246.174,
+        "vid_start": 0.0,
+        "vid_end": 244.011,
+        "speed": 0.9936
+       },
+       {
+        "ref_start": 246.174,
+        "ref_end": 250.714,
+        "vid_start": 227.003,
+        "vid_end": 231.605,
+        "speed": 1.0137
+       }
+      ],
+      "log": [
+       "0:00.000-0:00.580 black (count-in, before the music)",
+       "segment 0:00.000-4:04.011 change speed by -0.64%",
+       "at 4:06.174, the fragment 3:47.003-3:51.605 was inserted",
+       "segment 3:47.003-3:51.605 change speed by +1.37%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Rayandoelsol"
+    }
+   ]
+  },
+  {
+   "con_id": "Telloreunrio",
+   "artist": "Maná",
+   "title": "Te Lloré Un Río (ft. Christian Nodal)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "SBh34m-6hIg",
+     "youtube_url": "https://www.youtube.com/watch?v=SBh34m-6hIg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o74018854_clavadoenunbar_m",
+   "artist": "Mana",
+   "title": "Clavado En Un Bar",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "fBrX8ym3dBM",
+     "youtube_url": "https://www.youtube.com/watch?v=fBrX8ym3dBM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o435479774",
+   "artist": "Mana",
+   "title": "En El Muelle De San Blas (Album Version)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "teprNzF6J1I",
+     "youtube_url": "https://www.youtube.com/watch?v=teprNzF6J1I",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o878166623_mandaunasenal_m",
+   "artist": "Mana",
+   "title": "Manda Una Senal",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "PUvuO7Vsi9E",
+     "youtube_url": "https://www.youtube.com/watch?v=PUvuO7Vsi9E",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SheepQueen_MeGustasTu_rb3",
+   "artist": "Manu Chao",
+   "title": "Me Gustas Tú",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "b22wgo919FM",
+     "youtube_url": "https://www.youtube.com/watch?v=b22wgo919FM",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.001,
+        "ref_end": 5.402,
+        "vid_start": 0.0,
+        "vid_end": 0.0,
+        "speed": 0.0
+       },
+       {
+        "ref_start": 5.402,
+        "ref_end": 87.24,
+        "vid_start": 0.0,
+        "vid_end": 81.837,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 87.24,
+        "ref_end": 128.158,
+        "vid_start": 10.868,
+        "vid_end": 51.771,
+        "speed": 0.9996
+       },
+       {
+        "ref_start": 128.158,
+        "ref_end": 157.071,
+        "vid_start": 91.646,
+        "vid_end": 120.553,
+        "speed": 0.9998
+       },
+       {
+        "ref_start": 157.071,
+        "ref_end": 178.781,
+        "vid_start": 98.629,
+        "vid_end": 120.49,
+        "speed": 1.007
+       },
+       {
+        "ref_start": 178.781,
+        "ref_end": 216.598,
+        "vid_start": 98.608,
+        "vid_end": 136.365,
+        "speed": 0.9984
+       },
+       {
+        "ref_start": 216.598,
+        "ref_end": 246.312,
+        "vid_start": 124.757,
+        "vid_end": 154.47,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.001 black (count-in, before the music)",
+       "at 0:03.001, the frame at 0:00.000 was held for 2.401s",
+       "at 1:27.240, the fragment 0:10.868-0:51.771 was inserted",
+       "segment 1:21.837-1:31.646 was cut",
+       "at 2:58.781, the fragment 1:38.608-2:00.553 was inserted",
+       "at 2:37.071, the fragment 1:38.629-2:00.490 was inserted",
+       "segment 1:38.629-2:00.490 change speed by +0.70%",
+       "at 3:36.598, the fragment 2:04.757-2:16.365 was inserted",
+       "segment 2:34.470-2:40.930 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "SheepQueen_MeGustasTu_rb3con"
+    }
+   ]
+  },
+  {
    "con_id": "MM_TaintedLove_V1",
    "artist": "Marilyn Manson",
    "title": "Tainted Love",
@@ -471,6 +2155,64 @@
      "type": "fan",
      "youtube": "be5eF5SNKbE",
      "youtube_url": "https://www.youtube.com/watch?v=be5eF5SNKbE",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "official",
+     "youtube": "srcb-zmKDOE",
+     "youtube_url": "https://www.youtube.com/watch?v=srcb-zmKDOE",
+     "title": "Tainted Love",
+     "offset_ms": 0,
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 198.79,
+        "vid_start": 4.002,
+        "vid_end": 202.792,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 198.79,
+        "ref_end": 205.493,
+        "vid_start": 101.346,
+        "vid_end": 108.149,
+        "speed": 1.0149
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:04.002 was cut (intro)",
+       "at 3:18.790, the fragment 1:41.346-1:48.149 was inserted",
+       "segment 1:41.346-1:48.149 change speed by +1.49%"
+      ]
+     },
+     "pack": "MM_TaintedLove_V1_rb3con",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RunningIn90s",
+   "artist": "Max Coveri",
+   "title": "Running in the 90's",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "uytnXIuzRa4",
+     "youtube_url": "https://www.youtube.com/watch?v=uytnXIuzRa4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o683859159_whatsuppeople_m",
+   "artist": "Maximum the Hormone",
+   "title": "What's Up, People?!",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "dQpVgeKmVn8",
+     "youtube_url": "https://www.youtube.com/watch?v=dQpVgeKmVn8",
      "submitted_by": "AARP41298"
     }
    ]
@@ -547,6 +2289,22 @@
    ]
   },
   {
+   "con_id": "o977568523_extasisftcartel",
+   "artist": "Millonario & W. Corona",
+   "title": "Extasis (Ft. Cartel de Santa)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "WB58k5bDFp8",
+     "youtube_url": "https://www.youtube.com/watch?v=WB58k5bDFp8",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -12480,
+     "pack": "Millonario & W Corona - Extasis"
+    }
+   ]
+  },
+  {
    "con_id": "Corona",
    "artist": "Minutemen",
    "title": "Corona",
@@ -556,6 +2314,333 @@
      "youtube": "xNp6i1btPFU",
      "youtube_url": "https://www.youtube.com/watch?v=xNp6i1btPFU",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RBBP_M12O_M_D",
+   "artist": "Miranda!",
+   "title": "Don",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "eap0G9ldKc0",
+     "youtube_url": "https://www.youtube.com/watch?v=eap0G9ldKc0",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": 2653,
+     "pack": "don miranda"
+    }
+   ]
+  },
+  {
+   "con_id": "MirandaPerfecta",
+   "artist": "Miranda!",
+   "title": "Perfecta (ft. Julieta Venegas)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "a3hOeU7w59o",
+     "youtube_url": "https://www.youtube.com/watch?v=a3hOeU7w59o",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "amateur",
+   "artist": "Molotov",
+   "title": "Amateur (Rock Me Amadeus)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Pke3A2XuBLg",
+     "youtube_url": "https://www.youtube.com/watch?v=Pke3A2XuBLg",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 1.638,
+        "ref_end": 107.349,
+        "vid_start": 0.0,
+        "vid_end": 105.446,
+        "speed": 0.9975
+       },
+       {
+        "ref_start": 107.349,
+        "ref_end": 142.164,
+        "vid_start": 116.753,
+        "vid_end": 151.569,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 142.164,
+        "ref_end": 232.705,
+        "vid_start": 174.107,
+        "vid_end": 264.607,
+        "speed": 0.9995
+       },
+       {
+        "ref_start": 232.705,
+        "ref_end": 254.778,
+        "vid_start": 253.331,
+        "vid_end": 275.325,
+        "speed": 0.9964
+       },
+       {
+        "ref_start": 254.778,
+        "ref_end": 269.222,
+        "vid_start": 137.662,
+        "vid_end": 152.169,
+        "speed": 1.0044
+       }
+      ],
+      "log": [
+       "0:00.000-0:01.638 black (count-in, before the music)",
+       "segment 0:00.000-1:45.446 change speed by -0.25%",
+       "segment 1:45.446-1:56.753 was cut",
+       "at 4:14.778, the fragment 2:17.662-2:31.569 was inserted",
+       "segment 2:17.662-2:32.169 change speed by +0.44%",
+       "segment 2:32.169-2:54.107 was cut",
+       "at 3:52.705, the fragment 4:13.331-4:24.607 was inserted",
+       "segment 4:13.331-4:35.325 change speed by -0.36%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "amateur_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "gimmepower",
+   "artist": "Molotov",
+   "title": "Gimme The Power",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "9YI4aqaVSg0",
+     "youtube_url": "https://www.youtube.com/watch?v=9YI4aqaVSg0",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o336245558_putoalbumversio",
+   "artist": "Molotov",
+   "title": "Puto (Album Version)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "CzEbm7yup7g",
+     "youtube_url": "https://www.youtube.com/watch?v=CzEbm7yup7g",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "tu_falta_mon",
+   "artist": "Mon Laferte",
+   "title": "Tu Falta de Querer",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "WT-VE9OyAJk",
+     "youtube_url": "https://www.youtube.com/watch?v=WT-VE9OyAJk",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 2.452,
+        "ref_end": 282.428,
+        "vid_start": 0.0,
+        "vid_end": 279.896,
+        "speed": 0.9997
+       }
+      ],
+      "log": [
+       "0:00.000-0:02.452 black (count-in, before the music)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "tu_falta_mon_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "bp_gamblerumbleFV2",
+   "artist": "m.o.v.e",
+   "title": "Gamble Rumble",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "KhTxlm4REQc",
+     "youtube_url": "https://www.youtube.com/watch?v=KhTxlm4REQc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "bp_rageyourdreamFV2_rb3co",
+   "artist": "m.o.v.e",
+   "title": "Rage Your Dream",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "KoFSQeOAYz4",
+     "youtube_url": "https://www.youtube.com/watch?v=KoFSQeOAYz4",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -2884,
+     "pack": "bp_rageyourdreamFV2_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "o904800027_aluminia_nightm",
+   "artist": "Nightmare",
+   "title": "Aluminia",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "fhgwSyRmAb8",
+     "youtube_url": "https://www.youtube.com/watch?v=fhgwSyRmAb8",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 3.402,
+        "ref_end": 154.571,
+        "vid_start": 7.004,
+        "vid_end": 158.172,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 154.571,
+        "ref_end": 158.372,
+        "vid_start": 154.244,
+        "vid_end": 158.196,
+        "speed": 1.0397
+       },
+       {
+        "ref_start": 158.372,
+        "ref_end": 162.774,
+        "vid_start": 154.199,
+        "vid_end": 158.546,
+        "speed": 0.9875
+       },
+       {
+        "ref_start": 162.774,
+        "ref_end": 171.778,
+        "vid_start": 64.729,
+        "vid_end": 73.733,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 171.778,
+        "ref_end": 177.081,
+        "vid_start": 71.232,
+        "vid_end": 76.535,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 177.081,
+        "ref_end": 186.185,
+        "vid_start": 92.542,
+        "vid_end": 101.646,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 186.185,
+        "ref_end": 188.686,
+        "vid_start": 20.909,
+        "vid_end": 23.411,
+        "speed": 1.0004
+       },
+       {
+        "ref_start": 188.686,
+        "ref_end": 191.087,
+        "vid_start": 22.485,
+        "vid_end": 24.974,
+        "speed": 1.0367
+       },
+       {
+        "ref_start": 191.087,
+        "ref_end": 201.192,
+        "vid_start": 64.029,
+        "vid_end": 74.134,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 201.192,
+        "ref_end": 207.795,
+        "vid_start": 71.432,
+        "vid_end": 78.035,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 207.795,
+        "ref_end": 259.918,
+        "vid_start": 47.301,
+        "vid_end": 99.414,
+        "speed": 0.9998
+       },
+       {
+        "ref_start": 259.918,
+        "ref_end": 282.529,
+        "vid_start": 81.336,
+        "vid_end": 103.731,
+        "speed": 0.9904
+       },
+       {
+        "ref_start": 282.529,
+        "ref_end": 296.735,
+        "vid_start": 85.714,
+        "vid_end": 99.934,
+        "speed": 1.001
+       },
+       {
+        "ref_start": 296.735,
+        "ref_end": 312.742,
+        "vid_start": 34.559,
+        "vid_end": 48.352,
+        "speed": 0.8617
+       },
+       {
+        "ref_start": 312.742,
+        "ref_end": 343.956,
+        "vid_start": 0.0,
+        "vid_end": 31.214,
+        "speed": 1.0
+       }
+      ],
+      "log": [
+       "0:00.000-0:03.402 black (count-in, before the music)",
+       "at 5:12.742, the fragment 0:00.000-0:31.214 was inserted",
+       "at 3:06.185, the fragment 0:20.909-0:23.411 was inserted",
+       "at 3:08.686, the fragment 0:22.485-0:24.974 was inserted",
+       "segment 0:22.485-0:24.974 change speed by +3.67%",
+       "at 4:56.735, the fragment 0:34.559-0:48.352 was inserted",
+       "segment 0:34.559-0:48.352 change speed by -13.83%",
+       "at 3:27.795, the fragment 0:47.301-1:39.414 was inserted",
+       "at 3:11.087, the fragment 1:04.029-1:14.134 was inserted",
+       "at 2:42.774, the fragment 1:04.729-1:13.733 was inserted",
+       "at 2:51.778, the fragment 1:11.232-1:16.535 was inserted",
+       "at 3:21.192, the fragment 1:11.432-1:18.035 was inserted",
+       "at 4:19.918, the fragment 1:21.336-1:43.731 was inserted",
+       "segment 1:21.336-1:43.731 change speed by -0.96%",
+       "at 4:42.529, the fragment 1:25.714-1:39.934 was inserted",
+       "at 2:57.081, the fragment 1:32.542-1:41.646 was inserted",
+       "at 2:38.372, the fragment 2:34.199-2:38.196 was inserted",
+       "segment 2:34.199-2:38.546 change speed by -1.25%",
+       "at 2:34.571, the fragment 2:34.244-2:38.172 was inserted",
+       "segment 2:34.244-2:38.196 change speed by +3.97%",
+       "segment 2:38.546-5:16.330 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Nightmare - Aluminia"
     }
    ]
   },
@@ -599,6 +2684,106 @@
    ]
   },
   {
+   "con_id": "ozzyhellraiser1x",
+   "artist": "Ozzy Osbourne",
+   "title": "Hellraiser",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "zw79RVnlCb0",
+     "youtube_url": "https://www.youtube.com/watch?v=zw79RVnlCb0",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 5.226,
+        "ref_end": 296.757,
+        "vid_start": 0.0,
+        "vid_end": 293.333,
+        "speed": 1.0062
+       },
+       {
+        "ref_start": 296.757,
+        "ref_end": 310.741,
+        "vid_start": 146.666,
+        "vid_end": 160.672,
+        "speed": 1.0016
+       }
+      ],
+      "log": [
+       "0:00.000-0:05.226 black (count-in, before the music)",
+       "segment 0:00.000-4:53.333 change speed by +0.62%",
+       "at 4:56.757, the fragment 2:26.666-2:40.672 was inserted"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "ozzyhellraiser1x_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "LaCarencia",
+   "artist": "Panteón Rococó",
+   "title": "La Carencia",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "KhFpayF72xA",
+     "youtube_url": "https://www.youtube.com/watch?v=KhFpayF72xA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "ladosisperfectav3_Sky_rb3",
+   "artist": "Panteon Rococo",
+   "title": "La Dosis Perfecta",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "o0H2IZLc9dY",
+     "youtube_url": "https://www.youtube.com/watch?v=o0H2IZLc9dY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RC_PR_TBL",
+   "artist": "Papa Roach",
+   "title": "...To Be Loved",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "REuLlW2ktMg",
+     "youtube_url": "https://www.youtube.com/watch?v=REuLlW2ktMg",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -1007,
+     "pack": "RC_PR_TBL_rb3con"
+    },
+    {
+     "type": "meme",
+     "youtube": "CeJDbyJwL7E",
+     "youtube_url": "https://www.youtube.com/watch?v=CeJDbyJwL7E",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o511745129_bailandoextende",
+   "artist": "Paradisio",
+   "title": "Bailando (Extended Radio Version)",
+   "videos": [
+    {
+     "type": "fan",
+     "vimeo": "1246442244",
+     "vimeo_url": "https://vimeo.com/1246442244",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "con_id": "Decode",
    "artist": "Paramore",
    "title": "Decode",
@@ -620,6 +2805,84 @@
      "type": "official",
      "youtube": "TvnYmWpD_T8",
      "youtube_url": "https://www.youtube.com/watch?v=TvnYmWpD_T8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "DarteunBesov#",
+   "artist": "Prince Royce",
+   "title": "Darte Un Beso (Rhythm Version)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "bdOXnTbyk0g",
+     "youtube_url": "https://www.youtube.com/watch?v=bdOXnTbyk0g",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o613264533_citaenelquirof",
+   "artist": "PXNDX",
+   "title": "Cita En El Quirófano",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "qroJpc5GgMo",
+     "youtube_url": "https://www.youtube.com/watch?v=qroJpc5GgMo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o588380220_cuandonoescomo",
+   "artist": "PXNDX",
+   "title": "Cuando No Es Como Debiera Ser",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "AhQpZiZFdw8",
+     "youtube_url": "https://www.youtube.com/watch?v=AhQpZiZFdw8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o644867682_disculpalosmal",
+   "artist": "PXNDX",
+   "title": "Disculpa Los Malos Pensamientos",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "xQfqhGPwacU",
+     "youtube_url": "https://www.youtube.com/watch?v=xQfqhGPwacU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "malaventuradospanda_rb3co",
+   "artist": "PXNDX",
+   "title": "Los Malaventurados no Lloran",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "bdz90srbneU",
+     "youtube_url": "https://www.youtube.com/watch?v=bdz90srbneU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "narcisistapanda",
+   "artist": "PXNDX",
+   "title": "Narcisista por Excelencia",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "kP6_nlTdPgI",
+     "youtube_url": "https://www.youtube.com/watch?v=kP6_nlTdPgI",
      "submitted_by": "AARP41298"
     }
    ]
@@ -665,6 +2928,32 @@
      "type": "official",
      "youtube": "u5CVsCnxyXg",
      "youtube_url": "https://www.youtube.com/watch?v=u5CVsCnxyXg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RadioheadParanoidAndroid_",
+   "artist": "Radiohead",
+   "title": "Paranoid Android",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "fHiGbolFFGw",
+     "youtube_url": "https://www.youtube.com/watch?v=fHiGbolFFGw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "RadioheadStreetSpirit_rb3",
+   "artist": "Radiohead",
+   "title": "Street Spirit (Fade Out)",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "LCJblaUkkfc",
+     "youtube_url": "https://www.youtube.com/watch?v=LCJblaUkkfc",
      "submitted_by": "AARP41298"
     }
    ]
@@ -722,6 +3011,38 @@
    ]
   },
   {
+   "con_id": "estecorazon",
+   "artist": "RBD",
+   "title": "Este Corazón",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "Tkdxb9KnVe8",
+     "youtube_url": "https://www.youtube.com/watch?v=Tkdxb9KnVe8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o759994759",
+   "artist": "RBD",
+   "title": "Sálvame",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "RoayB0pLRC0",
+     "youtube_url": "https://www.youtube.com/watch?v=RoayB0pLRC0",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "fan",
+     "youtube": "h-ck74tWarI",
+     "youtube_url": "https://www.youtube.com/watch?v=h-ck74tWarI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "con_id": "o291244726_sendmeanangel_r",
    "artist": "Real Life",
    "title": "Send Me an Angel",
@@ -730,6 +3051,51 @@
      "type": "official",
      "youtube": "0R6WIbx8ysE",
      "youtube_url": "https://www.youtube.com/watch?v=0R6WIbx8ysE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "HistoriadeuntaxiMT",
+   "artist": "Ricado Arjona",
+   "title": "Historia De Un Taxi",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "-apU2sviHCM",
+     "youtube_url": "https://www.youtube.com/watch?v=-apU2sviHCM",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "o245129962_chalaheadchalat",
+   "artist": "Ricardo Silva",
+   "title": "Cha-La Head-Cha-La (TV Size)",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "cie7scVUdQE",
+     "youtube_url": "https://www.youtube.com/watch?v=cie7scVUdQE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "UnchainedMagmalody_rb3con",
+   "artist": "the Righteous Brothers",
+   "title": "Unchained Melody",
+   "videos": [
+    {
+     "type": "meme",
+     "youtube": "MAB0QImjO-c",
+     "youtube_url": "https://www.youtube.com/watch?v=MAB0QImjO-c",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "IYj2hex99gY",
+     "youtube_url": "https://www.youtube.com/watch?v=IYj2hex99gY",
      "submitted_by": "AARP41298"
     }
    ]
@@ -930,6 +3296,19 @@
    ]
   },
   {
+   "con_id": "o749211040_entredostierras",
+   "artist": "Till Lindemann",
+   "title": "Entre Dos Tierras",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "FtEYp7x-lI4",
+     "youtube_url": "https://www.youtube.com/watch?v=FtEYp7x-lI4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "con_id": "SheepQueen_7thElement_rb3",
    "artist": "Vitas",
    "title": "The 7th Element",
@@ -938,6 +3317,19 @@
      "type": "alternate",
      "youtube": "IwzUs1IMdyQ",
      "youtube_url": "https://www.youtube.com/watch?v=IwzUs1IMdyQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "SenbonzakuraWagakkiBand_r",
+   "artist": "Wagakki Band",
+   "title": "Senbonzakura",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "K_xTet06SUo",
+     "youtube_url": "https://www.youtube.com/watch?v=K_xTet06SUo",
      "submitted_by": "AARP41298"
     }
    ]
@@ -952,6 +3344,123 @@
      "youtube": "auzfTPp4moA",
      "youtube_url": "https://www.youtube.com/watch?v=auzfTPp4moA",
      "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "labiosrotos",
+   "artist": "Zoé",
+   "title": "Labios Rotos",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "7h2ryr_uUEs",
+     "youtube_url": "https://www.youtube.com/watch?v=7h2ryr_uUEs",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.658,
+        "ref_end": 248.613,
+        "vid_start": 0.0,
+        "vid_end": 247.89,
+        "speed": 0.9997
+       }
+      ],
+      "log": [
+       "0:00.000-0:00.658 black (count-in, before the music)",
+       "segment 4:07.890-4:22.110 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "labiosrotos_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "lunazoe",
+   "artist": "Zoé",
+   "title": "Luna",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "6W4L2O-JQ-w",
+     "youtube_url": "https://www.youtube.com/watch?v=6W4L2O-JQ-w",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 2.08,
+        "ref_end": 285.429,
+        "vid_start": 0.0,
+        "vid_end": 283.367,
+        "speed": 1.0001
+       }
+      ],
+      "log": [
+       "0:00.000-0:02.080 black (count-in, before the music)",
+       "segment 4:43.367-5:01.650 was cut (outro)"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "lunazoe_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "Sonezoe",
+   "artist": "Zoé",
+   "title": "Soñé",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "HJqlA_HTEU8",
+     "youtube_url": "https://www.youtube.com/watch?v=HJqlA_HTEU8",
+     "submitted_by": "AARP41298",
+     "autoedit": {
+      "segments": [
+       {
+        "ref_start": 0.0,
+        "ref_end": 231.504,
+        "vid_start": 1.0,
+        "vid_end": 232.505,
+        "speed": 1.0
+       },
+       {
+        "ref_start": 231.504,
+        "ref_end": 272.924,
+        "vid_start": 116.253,
+        "vid_end": 157.772,
+        "speed": 1.0024
+       }
+      ],
+      "log": [
+       "segment 0:00.000-0:01.000 was cut (intro)",
+       "at 3:51.504, the fragment 1:56.253-2:37.772 was inserted",
+       "segment 1:56.253-2:37.772 change speed by +0.24%"
+      ]
+     },
+     "offset_ms": 0,
+     "title": "database (official)",
+     "pack": "Sonezoe_rb3con"
+    }
+   ]
+  },
+  {
+   "con_id": "o29823828_nada_zoe",
+   "artist": "ZOE",
+   "title": "Nada",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "_O_O4XesuA4",
+     "youtube_url": "https://www.youtube.com/watch?v=_O_O4XesuA4",
+     "submitted_by": "AARP41298",
+     "title": "database (official)",
+     "offset_ms": -479,
+     "pack": "ZOE - Nada"
     }
    ]
   }

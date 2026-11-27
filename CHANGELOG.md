@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.1 (2026-11-26)
+
+- Music video database: 153 more songs, 171 more video links. Most are
+  customs (UGC+, +108 songs); also RB1 / RB2 / RB3, their DLC (new: RB2 DLC
+  and RB3 DLC), RB4 DLC and The Beatles: Rock Band.
+
 ## 2.4.0 (2026-11-26)
 
 - **🔍 Search again** and the **frame collage** are gone: every video link

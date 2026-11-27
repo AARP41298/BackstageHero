@@ -3,6 +3,19 @@
  "name": "The Beatles: Rock Band",
  "songs": [
   {
+   "con_id": "tbrb_herecomesthesunv3",
+   "artist": "The Beatles",
+   "title": "Here Comes The Sun",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "KQetemT1sWc",
+     "youtube_url": "https://www.youtube.com/watch?v=KQetemT1sWc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "The Beatles",
    "title": "Revolution",
    "charter": "Harmonix",
@@ -20,6 +33,19 @@
     }
    ],
    "con_id": "tbrb_revolutionv2"
+  },
+  {
+   "con_id": "tbrb_twistandshoutv2",
+   "artist": "The Beatles",
+   "title": "Twist And Shout",
+   "videos": [
+    {
+     "type": "fan",
+     "youtube": "9nKjdntgGsI",
+     "youtube_url": "https://www.youtube.com/watch?v=9nKjdntgGsI",
+     "submitted_by": "AARP41298"
+    }
+   ]
   }
  ]
 }

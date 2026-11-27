@@ -84,6 +84,19 @@
    ]
   },
   {
+   "con_id": "shootingstar",
+   "artist": "Bad Company",
+   "title": "Shooting Star",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "QWkpenUniVg",
+     "youtube_url": "https://www.youtube.com/watch?v=QWkpenUniVg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Beastie Boys",
    "title": "So WhatCha Want",
    "charter": "Harmonix",
@@ -554,6 +567,32 @@
    ]
   },
   {
+   "con_id": "mountainsong",
+   "artist": "Jane's Addiction",
+   "title": "Mountain Song",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "1kAIMlISHhU",
+     "youtube_url": "https://www.youtube.com/watch?v=1kAIMlISHhU",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "badreputation",
+   "artist": "Joan Jett",
+   "title": "Bad Reputation",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "nO6YL09T8Fw",
+     "youtube_url": "https://www.youtube.com/watch?v=nO6YL09T8Fw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Journey",
    "title": "Any Way You Want It",
    "charter": "Harmonix",
@@ -569,6 +608,19 @@
      "sync_credit": "t1redmonkey#7540",
      "from_sheet": "https://docs.google.com/spreadsheets/d/1QJ7wotWFoNNSwzIIIAGRcf4WAaYz1pXjhljYSk5h9DI",
      "chart_source": "Rock Band 2"
+    }
+   ]
+  },
+  {
+   "con_id": "painkiller",
+   "artist": "Judas Priest",
+   "title": "Painkiller",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "nM__lPTWThU",
+     "youtube_url": "https://www.youtube.com/watch?v=nM__lPTWThU",
+     "submitted_by": "AARP41298"
     }
    ]
   },
@@ -707,6 +759,25 @@
    ]
   },
   {
+   "con_id": "spiritinthesky",
+   "artist": "Norman Greenbaum",
+   "title": "Spirit in the Sky",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "YqYN-1vMM9k",
+     "youtube_url": "https://www.youtube.com/watch?v=YqYN-1vMM9k",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "W2msh0jut2Y",
+     "youtube_url": "https://www.youtube.com/watch?v=W2msh0jut2Y",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "The Offspring",
    "title": "Come Out and Play (Keep 'em Separated)",
    "charter": "Harmonix",
@@ -830,6 +901,19 @@
    ]
   },
   {
+   "con_id": "giveitall",
+   "artist": "Rise Against",
+   "title": "Give It All",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "dhldbymXK-8",
+     "youtube_url": "https://www.youtube.com/watch?v=dhldbymXK-8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Silversun Pickups",
    "title": "Lazy Eye",
    "charter": "Harmonix",
@@ -902,6 +986,19 @@
      "offset_ms": 0,
      "title": "database (official)",
      "pack": "RB2-Rock-Band-2-Export"
+    }
+   ]
+  },
+  {
+   "con_id": "coolforcats",
+   "artist": "Squeeze",
+   "title": "Cool for Cats",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "uJ2cEc_TCH8",
+     "youtube_url": "https://www.youtube.com/watch?v=uJ2cEc_TCH8",
+     "submitted_by": "AARP41298"
     }
    ]
   },

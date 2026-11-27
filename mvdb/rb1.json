@@ -769,6 +769,19 @@
    ]
   },
   {
+   "con_id": "gimmeshelter",
+   "artist": "The Rolling Stones",
+   "title": "Gimme Shelter",
+   "videos": [
+    {
+     "type": "alternate",
+     "youtube": "COqFP9reE4Y",
+     "youtube_url": "https://www.youtube.com/watch?v=COqFP9reE4Y",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Weezer",
    "title": "Say it Ain't So",
    "charter": "Harmonix",

@@ -3,6 +3,84 @@
  "name": "Rock Band 1/2 DLC",
  "songs": [
   {
+   "con_id": "attack",
+   "artist": "30 Seconds to Mars",
+   "title": "Attack",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "acIU7yxzJ70",
+     "youtube_url": "https://www.youtube.com/watch?v=acIU7yxzJ70",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "kingsandqueens",
+   "artist": "30 Seconds to Mars",
+   "title": "Kings and Queens",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "hTMrlHHVx8A",
+     "youtube_url": "https://www.youtube.com/watch?v=hTMrlHHVx8A",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "thisiswar",
+   "artist": "30 Seconds to Mars",
+   "title": "This Is War",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Zcps2fJKuAI",
+     "youtube_url": "https://www.youtube.com/watch?v=Zcps2fJKuAI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "afterlife",
+   "artist": "Avenged Sevenfold",
+   "title": "Afterlife",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "HIRNdveLnJI",
+     "youtube_url": "https://www.youtube.com/watch?v=HIRNdveLnJI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "batcountry",
+   "artist": "Avenged Sevenfold",
+   "title": "Bat Country",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "IHS3qJdxefY",
+     "youtube_url": "https://www.youtube.com/watch?v=IHS3qJdxefY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "scream",
+   "artist": "Avenged Sevenfold",
+   "title": "Scream",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "tj1sYEciOyQ",
+     "youtube_url": "https://www.youtube.com/watch?v=tj1sYEciOyQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "con_id": "adamssong",
    "artist": "Blink-182",
    "title": "Adam's Song",
@@ -11,6 +89,19 @@
      "type": "official",
      "youtube": "2MRdtXWcgIw",
      "youtube_url": "https://www.youtube.com/watch?v=2MRdtXWcgIw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "dammit",
+   "artist": "Blink-182",
+   "title": "Dammit",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "sT0g16_LQaQ",
+     "youtube_url": "https://www.youtube.com/watch?v=sT0g16_LQaQ",
      "submitted_by": "AARP41298"
     }
    ]
@@ -55,6 +146,45 @@
    ]
   },
   {
+   "con_id": "imissyou",
+   "artist": "Blink-182",
+   "title": "I Miss You",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "s1tAYmMjLdY",
+     "youtube_url": "https://www.youtube.com/watch?v=s1tAYmMjLdY",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "therockshow",
+   "artist": "Blink-182",
+   "title": "The Rock Show",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "z7hhDINyBP0",
+     "youtube_url": "https://www.youtube.com/watch?v=z7hhDINyBP0",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "whatsmyageagain",
+   "artist": "Blink-182",
+   "title": "What's My Age Again?",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "K7l5ZeVVoCA",
+     "youtube_url": "https://www.youtube.com/watch?v=K7l5ZeVVoCA",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "con_id": "fortunateson2",
    "artist": "Creedence Clearwater Revival",
    "title": "Fortunate Son (Original Version)",
@@ -69,6 +199,19 @@
      "type": "meme",
      "youtube": "We2Bn1I6Wpo",
      "youtube_url": "https://www.youtube.com/watch?v=We2Bn1I6Wpo",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "LamentoBoliviano",
+   "artist": "Enanitos Verdes",
+   "title": "Lamento Boliviano",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "hReAuaAuJOE",
+     "youtube_url": "https://www.youtube.com/watch?v=hReAuaAuJOE",
      "submitted_by": "AARP41298"
     }
    ]
@@ -108,6 +251,32 @@
      "type": "official",
      "youtube": "RRKJiM9Njr8",
      "youtube_url": "https://www.youtube.com/watch?v=RRKJiM9Njr8",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "myironlung",
+   "artist": "Radiohead",
+   "title": "My Iron Lung",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "pRU-6vaKaf4",
+     "youtube_url": "https://www.youtube.com/watch?v=pRU-6vaKaf4",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "pushit",
+   "artist": "Static-X",
+   "title": "Push It",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Ps0MfBG5-Uo",
+     "youtube_url": "https://www.youtube.com/watch?v=Ps0MfBG5-Uo",
      "submitted_by": "AARP41298"
     }
    ]

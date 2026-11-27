@@ -3,6 +3,45 @@
  "name": "Rock Band 3",
  "songs": [
   {
+   "con_id": "rehab",
+   "artist": "Amy Winehouse",
+   "title": "Rehab",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "KUmZp8pR1uc",
+     "youtube_url": "https://www.youtube.com/watch?v=KUmZp8pR1uc",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "rocklobster",
+   "artist": "The B-52's",
+   "title": "Rock Lobster",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "n4QSYx4wVQg",
+     "youtube_url": "https://www.youtube.com/watch?v=n4QSYx4wVQg",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "smokeonthewater",
+   "artist": "Deep Purple",
+   "title": "Smoke on the Water",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "Q2FzZSBD5LE",
+     "youtube_url": "https://www.youtube.com/watch?v=Q2FzZSBD5LE",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
    "artist": "Def Leppard",
    "title": "Foolin'",
    "charter": "Harmonix",
@@ -193,6 +232,70 @@
     }
    ],
    "con_id": "combatbaby"
+  },
+  {
+   "con_id": "crazytrain",
+   "artist": "Ozzy Osbourne",
+   "title": "Crazy Train",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "FVovq9TGBw0",
+     "youtube_url": "https://www.youtube.com/watch?v=FVovq9TGBw0",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "alternate",
+     "youtube": "tMDFv5m18Pw",
+     "youtube_url": "https://www.youtube.com/watch?v=tMDFv5m18Pw",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "miserybusiness2",
+   "artist": "Paramore",
+   "title": "Misery Business",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "aCyGvGEtOwc",
+     "youtube_url": "https://www.youtube.com/watch?v=aCyGvGEtOwc",
+     "submitted_by": "AARP41298"
+    },
+    {
+     "type": "fan",
+     "youtube": "kRO9f7KOqHI",
+     "youtube_url": "https://www.youtube.com/watch?v=kRO9f7KOqHI",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "bohemianrhapsody",
+   "artist": "Queen",
+   "title": "Bohemian Rhapsody",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "fJ9rUzIMcZQ",
+     "youtube_url": "https://www.youtube.com/watch?v=fJ9rUzIMcZQ",
+     "submitted_by": "AARP41298"
+    }
+   ]
+  },
+  {
+   "con_id": "duhast",
+   "artist": "Rammstein",
+   "title": "Du Hast",
+   "videos": [
+    {
+     "type": "official",
+     "youtube": "W3q8Od5qJio",
+     "youtube_url": "https://www.youtube.com/watch?v=W3q8Od5qJio",
+     "submitted_by": "AARP41298"
+    }
+   ]
   },
   {
    "artist": "The Ravonettes",
